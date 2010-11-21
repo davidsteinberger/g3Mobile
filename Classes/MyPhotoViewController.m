@@ -1,0 +1,168 @@
+//
+//  MyPhotoViewController.m
+//  gallery3
+//
+//  Created by David Steinberger on 11/15/10.
+//  Copyright 2010 -. All rights reserved.
+//
+
+#import "MyPhotoViewController.h"
+
+#import "AppDelegate.h"
+#import "MockPhotoSource.h"
+#import "extThree20JSON/extThree20JSON.h"
+
+@implementation MyPhotoViewController
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+		/*self.navigationItem.backBarButtonItem =
+		[[[UIBarButtonItem alloc]
+		  initWithTitle:
+		  TTLocalizedString(@"Photo",
+							@"Title for back button that returns to photo browser")
+		  style: UIBarButtonItemStylePlain
+		  target: nil
+		  action: nil] autorelease];
+		*/
+		self.statusBarStyle = UIStatusBarStyleBlackTranslucent;
+		self.navigationBarStyle = UIBarStyleBlackTranslucent;
+		self.navigationBarTintColor = nil;
+		self.wantsFullScreenLayout = YES;
+		self.hidesBottomBarWhenPushed = YES;
+		
+		self.navigationItem.rightBarButtonItem
+		= [[[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered
+										   target:self action:@selector(setSettings)] autorelease];	  
+		
+		self.defaultImage = TTIMAGE(@"bundle://Three20.bundle/images/photoDefault.png");
+	}
+	
+	return self;
+}
+
+- (void)viewDidAppear {
+	//self.navigationController.navigationBar.bar = UIBarStyleDefault;
+	self.navigationItem.rightBarButtonItem
+    = [[[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered
+									   target:self action:@selector(setSettings)] autorelease];		
+}
+
+- (void)loadView {
+	
+	//[self uploadImage];
+	
+	CGRect screenFrame = [UIScreen mainScreen].bounds;
+	self.view = [[[UIView alloc] initWithFrame:screenFrame] autorelease];
+	
+	CGRect innerFrame = CGRectMake(0, 0,
+								   screenFrame.size.width, screenFrame.size.height);
+	_innerView = [[UIView alloc] initWithFrame:innerFrame];
+	_innerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	[self.view addSubview:_innerView];
+	
+	_scrollView = [[TTScrollView alloc] initWithFrame:screenFrame];
+	_scrollView.delegate = self;
+	_scrollView.dataSource = self;
+	_scrollView.rotateEnabled = NO;
+	_scrollView.backgroundColor = [UIColor blackColor];
+	_scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	[_innerView addSubview:_scrollView];
+	
+	_nextButton = [[UIBarButtonItem alloc] initWithImage:
+				   TTIMAGE(@"bundle://Three20.bundle/images/nextIcon.png")
+												   style:UIBarButtonItemStylePlain target:self action:@selector(nextAction)];
+	_previousButton = [[UIBarButtonItem alloc] initWithImage:
+					   TTIMAGE(@"bundle://Three20.bundle/images/previousIcon.png")
+													   style:UIBarButtonItemStylePlain target:self action:@selector(previousAction)];
+	
+	_clickActionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction//TTIMAGE(@"UIBarButtonReply.png")
+																	 target:self action:@selector(clickActionItem)];
+	
+	_clickComposeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose//TTIMAGE(@"UIBarButtonReply.png")
+																	  target:self action:@selector(clickComposeItem)];
+	
+	UIBarButtonItem* playButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:
+									UIBarButtonSystemItemPlay target:self action:@selector(playAction)] autorelease];
+	playButton.tag = 1;
+	
+	UIBarItem* space = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:
+						 UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+	
+	_toolbar = [[UIToolbar alloc] initWithFrame:
+				CGRectMake(0, screenFrame.size.height - TT_ROW_HEIGHT,
+						   screenFrame.size.width, TT_ROW_HEIGHT)];
+	if (self.navigationBarStyle == UIBarStyleDefault) {
+		_toolbar.tintColor = TTSTYLEVAR(toolbarTintColor);
+	}
+	
+	_toolbar.barStyle = self.navigationBarStyle;
+	_toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
+	_toolbar.items = [NSArray arrayWithObjects:
+					  _clickActionItem, space, _previousButton, space, _nextButton, space, _clickComposeItem, nil];
+	
+	[_innerView addSubview:_toolbar];
+}
+
+- (void)viewDidLoad {
+
+}
+
+- (void)clickComposeItem {
+	MockPhoto* p = (MockPhoto *) self.centerPhoto;
+	NSString* itemID = p.albumID;
+	TTNavigator* navigator = [TTNavigator navigator];
+	[navigator openURLAction:[[TTURLAction actionWithURLPath:[@"tt://comments/" stringByAppendingString:itemID]] applyAnimated:YES]];
+}
+
+- (void)clickActionItem {
+	MockPhoto* p = (MockPhoto *) self.centerPhoto;
+	NSString* albumID = p.albumID;
+	NSLog(@"clickActionItem clicked (%@)", albumID);
+	
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:nil
+											   destructiveButtonTitle:nil
+													otherButtonTitles:nil];
+	
+	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+	
+	[actionSheet addButtonWithTitle:@"Comments"];
+	[actionSheet addButtonWithTitle:@"Delete"];
+	[actionSheet addButtonWithTitle:@"Cancel"];
+	actionSheet.cancelButtonIndex = 2;
+	actionSheet.destructiveButtonIndex = 1; 
+	
+    [actionSheet showInView:self.view];
+}
+
+- (NSString *)urlEncodeValue:(NSString *)str
+{
+	NSString *result = (NSString *) CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)str, NULL, CFSTR("?=&+"), kCFStringEncodingUTF8);
+	return [result autorelease];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	MockPhoto* p = (MockPhoto *) self.centerPhoto;
+	NSString* itemID = p.albumID;
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	
+	NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
+	if (buttonIndex == 0) {
+		TTNavigator* navigator = [TTNavigator navigator];
+		[navigator openURLAction:[[TTURLAction actionWithURLPath:[@"tt://comments/" stringByAppendingString:itemID]] applyAnimated:YES]];
+	}
+	if (buttonIndex == 1) {
+		
+	}
+
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+
+{
+	NSLog(@"[actionSheet didDismissWithButtonIndex]");
+}
+
+@end
