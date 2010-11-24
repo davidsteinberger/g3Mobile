@@ -1,12 +1,15 @@
 #import "Three20/Three20.h"
 
 #import "AppDelegate.h"
-#import "CatalogController.h"
-#import "PhotoTest1Controller.h"
+//#import "PhotoTest1Controller.h"
 #import "MyAlbum.h"
 #import "MyThumbsViewController.h"
 #import "MyCommentsViewController.h"
-#import "sqlite3.h"
+#import "MySettingsController.h"
+#import "MyLoginViewController.h"
+#import <sqlite3.h>
+
+
 
 @implementation AppDelegate
 
@@ -19,42 +22,61 @@
 // UIApplicationDelegate
 
 - (void)applicationDidFinishLaunching:(UIApplication*)application {
-	NSString *filePath = [self copyDatabaseToDocuments];
-	[self readSettingsFromDatabaseWithPath:filePath];
-	self.baseURL = @"http://localhost/~David/gallery3/index.php";
-//	self.baseURL = @"http://192.168.0.10/~David/gallery3/index.php";
+
+	
+//	self.baseURL = @"http://localhost/~David/gallery3/index.php";
+//	self.baseURL = @"http://192.168.0.4/~David/gallery3/index.php";
 //	self.baseURL = @"http://www.david-steinberger.at/gallery3";
 	
-	NSLog(@"user: %@", self.user);
-	NSLog(@"password: %@", self.password);
-	[self login];
+//	NSLog(@"user: %@", self.user);
+//	NSLog(@"password: %@", self.password);
+//	[self login];
 	
-  TTNavigator* navigator = [TTNavigator navigator];
-  navigator.supportsShakeToReload = YES;
-  navigator.persistenceMode = TTNavigatorPersistenceModeAll;
+	TTNavigator* navigator = [TTNavigator navigator];
+	navigator.supportsShakeToReload = YES;
+	navigator.persistenceMode = TTNavigatorPersistenceModeAll;
 
-  TTURLMap* map = navigator.URLMap;
-  [map from:@"*" toViewController:[TTWebController class]];
-  [map from:@"tt://catalog" toViewController:[CatalogController class]];
-  [map from:@"tt://photoTest1" toViewController:[PhotoTest1Controller class]];
-  [map from:@"tt://photoTest2/(initWithAlbumID:)" toViewController:[MyThumbsViewController class]];
+	TTURLMap* map = navigator.URLMap;
 	
+	[map from:@"tt://thumbs/(initWithAlbumID:)" toViewController:[MyThumbsViewController class]];
 	[map from:@"tt://comments/(initWithItemID:)" toViewController:[MyCommentsViewController class]
-	 transition:UIViewAnimationTransitionFlipFromLeft];
+	transition:UIViewAnimationTransitionFlipFromLeft];
 	[map from:@"tt://upload/(uploadImage:)" toViewController:[MyThumbsViewController class]
-	 transition:UIViewAnimationTransitionFlipFromLeft];
+	transition:UIViewAnimationTransitionFlipFromLeft];
+	[map from:@"tt://login" toModalViewController:[MyLoginViewController class]
+	transition:UIViewAnimationTransitionFlipFromLeft];
+	
+	NSString* dbFilePath = [self copyDatabaseToDocuments];
+	[self readSettingsFromDatabaseWithPath:dbFilePath];
+	
+	if (![navigator restoreViewControllers]) {
+		if (self.baseURL == nil || self.challenge == nil) {
+			[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://login"]];
+		}
+		else {
+			[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://thumbs/1"]];
+		}
 
-  if (![navigator restoreViewControllers]) {
-    [navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://photoTest2/1"]];
-//	  [navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://upload/"]];
-  }
+	}
 }
 
+- (void)finishedLogin {
+	
+	//NSLog(@"baseURL: %@", self.baseURL);
+	//NSLog(@"user: %@", self.user);
+	//NSLog(@"password: %@", self.password);
+	//NSLog(@"challenge: %@", self.challenge);
+	
+	TTNavigator* navigator = [TTNavigator navigator];
+	[navigator removeAllViewControllers];
+	[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://thumbs/1"]];
+}
+/*
 - (BOOL)application:(UIApplication*)application handleOpenURL:(NSURL*)URL {
   [[TTNavigator navigator] openURLAction:[TTURLAction actionWithURLPath:URL.absoluteString]];
   return YES;
 }
-
+*/
 #pragma mark Database Methods
 
 - (NSString *)copyDatabaseToDocuments {
@@ -62,7 +84,7 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsPath = [paths objectAtIndex:0];
     NSString *filePath = [documentsPath stringByAppendingPathComponent:@"g3DB.sqlite"];
-	
+	//NSLog(@"filePath: %@", filePath);
     if ( ![fileManager fileExistsAtPath:filePath] ) {
         NSString *bundleCopy = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"g3DB.sqlite"];
 		[fileManager copyItemAtPath:bundleCopy toPath:filePath error:nil];
@@ -82,11 +104,17 @@
 				NSString *var = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 0)];
 				NSString *value = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 1)];
 				
-				if ([var isEqual:@"user"]) {
-					self.user = value;					
+				if ([var isEqual:@"baseURL"]) {
+					self.baseURL = value;					
 				}
-				else {
+				else if ([var isEqual:@"username"]){
+					self.user = value;
+				}
+				else if ([var isEqual:@"password"]){
 					self.password = value;
+				}
+				else if ([var isEqual:@"challenge"]){
+					self.challenge = value;
 				}
 			}
 		}
@@ -117,7 +145,7 @@
 												 returningResponse:&response error:&error];	
 	self.challenge = [[[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding] substringFromIndex: 1];
 	self.challenge = [self.challenge substringToIndex:[self.challenge length] - 1];
-	NSLog(@"response: %@", [[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding]);
+	//NSLog(@"response: %@", [[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding]);
 }
 
 @end

@@ -12,6 +12,11 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		63A3B51C129C3BDE00E04981 /* MyLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B514129C3BDE00E04981 /* MyLogin.m */; };
+		63A3B51D129C3BDE00E04981 /* MyLoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B516129C3BDE00E04981 /* MyLoginModel.m */; };
+		63A3B51E129C3BDE00E04981 /* MyLoginDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B519129C3BDE00E04981 /* MyLoginDataSource.m */; };
+		63A3B51F129C3BDE00E04981 /* MyLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B51B129C3BDE00E04981 /* MyLoginViewController.m */; };
+		63A3B71C129C5EA200E04981 /* MyItemDeleter.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B71B129C5EA200E04981 /* MyItemDeleter.m */; };
 		63B253171299BBB000BA9323 /* libextThree20JSON+YAJL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B2530C1299BBA400BA9323 /* libextThree20JSON+YAJL.a */; };
 		63B253181299BBB300BA9323 /* libThree20.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B2523E1299BB8700BA9323 /* libThree20.a */; };
 		63B253191299BBB500BA9323 /* libThree20Core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B2528C1299BB9500BA9323 /* libThree20Core.a */; };
@@ -22,7 +27,6 @@
 		63B2531E1299BBC500BA9323 /* libThree20UINavigator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B252E61299BB9500BA9323 /* libThree20UINavigator.a */; };
 		63B253341299BC7600BA9323 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B253331299BC7600BA9323 /* QuartzCore.framework */; };
 		63B254181299BD3100BA9323 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253E81299BD3100BA9323 /* AppDelegate.m */; };
-		63B254191299BD3100BA9323 /* CatalogController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253EA1299BD3100BA9323 /* CatalogController.m */; };
 		63B2541A1299BD3100BA9323 /* MyCommentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253EE1299BD3100BA9323 /* MyCommentsDataSource.m */; };
 		63B2541B1299BD3100BA9323 /* MyComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253F21299BD3100BA9323 /* MyComment.m */; };
 		63B2541C1299BD3100BA9323 /* MyCommentsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253F41299BD3100BA9323 /* MyCommentsModel.m */; };
@@ -31,7 +35,6 @@
 		63B2541F1299BD3100BA9323 /* FlipsideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253FC1299BD3100BA9323 /* FlipsideView.m */; };
 		63B254201299BD3100BA9323 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253FE1299BD3100BA9323 /* FlipsideViewController.m */; };
 		63B254211299BD3100BA9323 /* MockPhotoSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254011299BD3100BA9323 /* MockPhotoSource.m */; };
-		63B254221299BD3100BA9323 /* PhotoTest1Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254041299BD3100BA9323 /* PhotoTest1Controller.m */; };
 		63B254231299BD3100BA9323 /* TTButtonContent+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254071299BD3100BA9323 /* TTButtonContent+g3.m */; };
 		63B254241299BD3100BA9323 /* TTURLImageResponse+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254091299BD3100BA9323 /* TTURLImageResponse+g3.m */; };
 		63B254251299BD3100BA9323 /* TTImageView+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B2540B1299BD3100BA9323 /* TTImageView+g3.m */; };
@@ -43,6 +46,7 @@
 		63B255ED1299C60900BA9323 /* g3DB.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EB1299C60900BA9323 /* g3DB.sqlite */; };
 		63B255EE1299C60900BA9323 /* FlipsideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EC1299C60900BA9323 /* FlipsideView.xib */; };
 		63B255F01299C63300BA9323 /* Three20.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EF1299C63300BA9323 /* Three20.bundle */; };
+		63B257AE1299D51800BA9323 /* MySettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B257AD1299D51800BA9323 /* MySettingsController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -469,6 +473,16 @@
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Gallery3_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gallery3_Prefix.pch; sourceTree = "<group>"; };
+		63A3B513129C3BDE00E04981 /* MyLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLogin.h; sourceTree = "<group>"; };
+		63A3B514129C3BDE00E04981 /* MyLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLogin.m; sourceTree = "<group>"; };
+		63A3B515129C3BDE00E04981 /* MyLoginModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLoginModel.h; sourceTree = "<group>"; };
+		63A3B516129C3BDE00E04981 /* MyLoginModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLoginModel.m; sourceTree = "<group>"; };
+		63A3B518129C3BDE00E04981 /* MyLoginDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLoginDataSource.h; sourceTree = "<group>"; };
+		63A3B519129C3BDE00E04981 /* MyLoginDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLoginDataSource.m; sourceTree = "<group>"; };
+		63A3B51A129C3BDE00E04981 /* MyLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLoginViewController.h; sourceTree = "<group>"; };
+		63A3B51B129C3BDE00E04981 /* MyLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLoginViewController.m; sourceTree = "<group>"; };
+		63A3B71A129C5EA200E04981 /* MyItemDeleter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyItemDeleter.h; sourceTree = "<group>"; };
+		63A3B71B129C5EA200E04981 /* MyItemDeleter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyItemDeleter.m; sourceTree = "<group>"; };
 		63B2520E1299BB8600BA9323 /* Three20.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Three20.xcodeproj; path = ../three20/src/Three20/Three20.xcodeproj; sourceTree = SOURCE_ROOT; };
 		63B252731299BB9500BA9323 /* Three20Core.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Three20Core.xcodeproj; path = ../../Iphone/three20/src/Three20Core/Three20Core.xcodeproj; sourceTree = SOURCE_ROOT; };
 		63B252761299BB9500BA9323 /* Three20Network.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Three20Network.xcodeproj; path = ../../Iphone/three20/src/Three20Network/Three20Network.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -478,10 +492,8 @@
 		63B252821299BB9500BA9323 /* Three20UINavigator.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Three20UINavigator.xcodeproj; path = ../../Iphone/three20/src/Three20UINavigator/Three20UINavigator.xcodeproj; sourceTree = SOURCE_ROOT; };
 		63B252F41299BBA400BA9323 /* extThree20JSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extThree20JSON.xcodeproj; path = ../three20/src/extThree20JSON/extThree20JSON.xcodeproj; sourceTree = SOURCE_ROOT; };
 		63B253331299BC7600BA9323 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		63B253E71299BD3100BA9323 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
-		63B253E81299BD3100BA9323 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Classes/AppDelegate.m; sourceTree = "<group>"; };
-		63B253E91299BD3100BA9323 /* CatalogController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CatalogController.h; path = Classes/CatalogController.h; sourceTree = "<group>"; };
-		63B253EA1299BD3100BA9323 /* CatalogController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CatalogController.m; path = Classes/CatalogController.m; sourceTree = "<group>"; };
+		63B253E71299BD3100BA9323 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		63B253E81299BD3100BA9323 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		63B253ED1299BD3100BA9323 /* MyCommentsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCommentsDataSource.h; sourceTree = "<group>"; };
 		63B253EE1299BD3100BA9323 /* MyCommentsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCommentsDataSource.m; sourceTree = "<group>"; };
 		63B253F11299BD3100BA9323 /* MyComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyComment.h; sourceTree = "<group>"; };
@@ -498,8 +510,6 @@
 		63B253FE1299BD3100BA9323 /* FlipsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlipsideViewController.m; sourceTree = "<group>"; };
 		63B254001299BD3100BA9323 /* MockPhotoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockPhotoSource.h; sourceTree = "<group>"; };
 		63B254011299BD3100BA9323 /* MockPhotoSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockPhotoSource.m; sourceTree = "<group>"; };
-		63B254031299BD3100BA9323 /* PhotoTest1Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoTest1Controller.h; sourceTree = "<group>"; };
-		63B254041299BD3100BA9323 /* PhotoTest1Controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoTest1Controller.m; sourceTree = "<group>"; };
 		63B254061299BD3100BA9323 /* TTButtonContent+g3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTButtonContent+g3.h"; sourceTree = "<group>"; };
 		63B254071299BD3100BA9323 /* TTButtonContent+g3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TTButtonContent+g3.m"; sourceTree = "<group>"; };
 		63B254081299BD3100BA9323 /* TTURLImageResponse+g3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTURLImageResponse+g3.h"; sourceTree = "<group>"; };
@@ -519,6 +529,8 @@
 		63B255EB1299C60900BA9323 /* g3DB.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = g3DB.sqlite; sourceTree = "<group>"; };
 		63B255EC1299C60900BA9323 /* FlipsideView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FlipsideView.xib; sourceTree = "<group>"; };
 		63B255EF1299C63300BA9323 /* Three20.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Three20.bundle; path = ../../iPhone/three20/src/Three20.bundle; sourceTree = SOURCE_ROOT; };
+		63B257AC1299D51800BA9323 /* MySettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySettingsController.h; sourceTree = "<group>"; };
+		63B257AD1299D51800BA9323 /* MySettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySettingsController.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Gallery3-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Gallery3-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -548,13 +560,17 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				63B254151299BD3100BA9323 /* Upload */,
+				63B253E71299BD3100BA9323 /* AppDelegate.h */,
+				63B253E81299BD3100BA9323 /* AppDelegate.m */,
+				63A3B510129C3BDE00E04981 /* Login */,
+				63B254151299BD3100BA9323 /* Upload_Delete */,
 				63B2540E1299BD3100BA9323 /* Album */,
 				63B253FF1299BD3100BA9323 /* Photos */,
-				63B253FA1299BD3100BA9323 /* Flipside View */,
 				63B253EB1299BD3100BA9323 /* Comments */,
 				63B253F71299BD3100BA9323 /* Base64 */,
 				63B2520C1299BB6800BA9323 /* Dependencies */,
+				63B257801299D4E500BA9323 /* Settings (depr) */,
+				63B253FA1299BD3100BA9323 /* Flipside View (depr) */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -570,10 +586,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				63B253E71299BD3100BA9323 /* AppDelegate.h */,
-				63B253E81299BD3100BA9323 /* AppDelegate.m */,
-				63B253E91299BD3100BA9323 /* CatalogController.h */,
-				63B253EA1299BD3100BA9323 /* CatalogController.m */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -613,6 +625,45 @@
 				63B253331299BC7600BA9323 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		63A3B510129C3BDE00E04981 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				63A3B51A129C3BDE00E04981 /* MyLoginViewController.h */,
+				63A3B51B129C3BDE00E04981 /* MyLoginViewController.m */,
+				63A3B517129C3BDE00E04981 /* Data Source */,
+				63A3B511129C3BDE00E04981 /* Models */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
+		63A3B511129C3BDE00E04981 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				63A3B515129C3BDE00E04981 /* MyLoginModel.h */,
+				63A3B516129C3BDE00E04981 /* MyLoginModel.m */,
+				63A3B512129C3BDE00E04981 /* Objects */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		63A3B512129C3BDE00E04981 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				63A3B513129C3BDE00E04981 /* MyLogin.h */,
+				63A3B514129C3BDE00E04981 /* MyLogin.m */,
+			);
+			name = Objects;
+			sourceTree = "<group>";
+		};
+		63A3B517129C3BDE00E04981 /* Data Source */ = {
+			isa = PBXGroup;
+			children = (
+				63A3B518129C3BDE00E04981 /* MyLoginDataSource.h */,
+				63A3B519129C3BDE00E04981 /* MyLoginDataSource.m */,
+			);
+			name = "Data Source";
 			sourceTree = "<group>";
 		};
 		63B2520C1299BB6800BA9323 /* Dependencies */ = {
@@ -794,7 +845,7 @@
 			path = TTCatalog;
 			sourceTree = "<group>";
 		};
-		63B253FA1299BD3100BA9323 /* Flipside View */ = {
+		63B253FA1299BD3100BA9323 /* Flipside View (depr) */ = {
 			isa = PBXGroup;
 			children = (
 				63B253FB1299BD3100BA9323 /* FlipsideView.h */,
@@ -802,27 +853,17 @@
 				63B253FD1299BD3100BA9323 /* FlipsideViewController.h */,
 				63B253FE1299BD3100BA9323 /* FlipsideViewController.m */,
 			);
-			name = "Flipside View";
+			name = "Flipside View (depr)";
 			sourceTree = "<group>";
 		};
 		63B253FF1299BD3100BA9323 /* Photos */ = {
 			isa = PBXGroup;
 			children = (
 				63B254051299BD3100BA9323 /* Photo Thumbnails */,
-				63B254021299BD3100BA9323 /* Photo Browser */,
 				63B254001299BD3100BA9323 /* MockPhotoSource.h */,
 				63B254011299BD3100BA9323 /* MockPhotoSource.m */,
 			);
 			name = Photos;
-			sourceTree = "<group>";
-		};
-		63B254021299BD3100BA9323 /* Photo Browser */ = {
-			isa = PBXGroup;
-			children = (
-				63B254031299BD3100BA9323 /* PhotoTest1Controller.h */,
-				63B254041299BD3100BA9323 /* PhotoTest1Controller.m */,
-			);
-			name = "Photo Browser";
 			sourceTree = "<group>";
 		};
 		63B254051299BD3100BA9323 /* Photo Thumbnails */ = {
@@ -853,13 +894,24 @@
 			name = Album;
 			sourceTree = "<group>";
 		};
-		63B254151299BD3100BA9323 /* Upload */ = {
+		63B254151299BD3100BA9323 /* Upload_Delete */ = {
 			isa = PBXGroup;
 			children = (
 				63B254161299BD3100BA9323 /* MyImageUploader.h */,
 				63B254171299BD3100BA9323 /* MyImageUploader.m */,
+				63A3B71A129C5EA200E04981 /* MyItemDeleter.h */,
+				63A3B71B129C5EA200E04981 /* MyItemDeleter.m */,
 			);
-			name = Upload;
+			name = Upload_Delete;
+			sourceTree = "<group>";
+		};
+		63B257801299D4E500BA9323 /* Settings (depr) */ = {
+			isa = PBXGroup;
+			children = (
+				63B257AC1299D51800BA9323 /* MySettingsController.h */,
+				63B257AD1299D51800BA9323 /* MySettingsController.m */,
+			);
+			name = "Settings (depr)";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1329,7 +1381,6 @@
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				63B254181299BD3100BA9323 /* AppDelegate.m in Sources */,
-				63B254191299BD3100BA9323 /* CatalogController.m in Sources */,
 				63B2541A1299BD3100BA9323 /* MyCommentsDataSource.m in Sources */,
 				63B2541B1299BD3100BA9323 /* MyComment.m in Sources */,
 				63B2541C1299BD3100BA9323 /* MyCommentsModel.m in Sources */,
@@ -1338,7 +1389,6 @@
 				63B2541F1299BD3100BA9323 /* FlipsideView.m in Sources */,
 				63B254201299BD3100BA9323 /* FlipsideViewController.m in Sources */,
 				63B254211299BD3100BA9323 /* MockPhotoSource.m in Sources */,
-				63B254221299BD3100BA9323 /* PhotoTest1Controller.m in Sources */,
 				63B254231299BD3100BA9323 /* TTButtonContent+g3.m in Sources */,
 				63B254241299BD3100BA9323 /* TTURLImageResponse+g3.m in Sources */,
 				63B254251299BD3100BA9323 /* TTImageView+g3.m in Sources */,
@@ -1347,6 +1397,12 @@
 				63B254281299BD3100BA9323 /* TTThumbsViewController+g3.m in Sources */,
 				63B254291299BD3100BA9323 /* MyThumbsViewController.m in Sources */,
 				63B2542A1299BD3100BA9323 /* MyImageUploader.m in Sources */,
+				63B257AE1299D51800BA9323 /* MySettingsController.m in Sources */,
+				63A3B51C129C3BDE00E04981 /* MyLogin.m in Sources */,
+				63A3B51D129C3BDE00E04981 /* MyLoginModel.m in Sources */,
+				63A3B51E129C3BDE00E04981 /* MyLoginDataSource.m in Sources */,
+				63A3B51F129C3BDE00E04981 /* MyLoginViewController.m in Sources */,
+				63A3B71C129C5EA200E04981 /* MyItemDeleter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1444,7 +1500,7 @@
 				HEADER_SEARCH_PATHS = "../three20/Build/Products/three20/**";
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.1;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -1460,7 +1516,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.1;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};

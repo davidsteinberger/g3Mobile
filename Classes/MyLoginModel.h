@@ -1,14 +1,17 @@
-#import <Three20/Three20.h>
+#import "Three20/Three20.h"
 
-@class MyCommentsModel;
+@class MyLogin;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-@interface MyCommentsDataSource : TTListDataSource {
-  MyCommentsModel* _searchFeedModel;
+@interface MyLoginModel : TTURLRequestModel {
+    MyLogin* _credentials;
 }
 
-- (id)initWithSearchQuery:(NSString*)searchQuery;
+- (void)login:(NSString*)username password:(NSString*)password;
+
+@property (nonatomic, readonly) MyLogin* credentials;
 
 @end
+

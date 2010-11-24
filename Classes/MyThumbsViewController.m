@@ -1,22 +1,18 @@
 
-
+#import "AppDelegate.h"
 #import "MyThumbsViewController.h"
 #import "MockPhotoSource.h"
 #import "MyAlbum.h"
 #import "FlipsideViewController.h"
 #import "MyImageUploader.h"
+#import "MyItemDeleter.h"
 
 @implementation MyThumbsViewController
 
 - (void)setSettings {
-	NSLog(@"setSettings called");
-	FlipsideViewController *controller = [[FlipsideViewController alloc] initWithNibName:@"FlipsideView" bundle:nil];
-	controller.delegate = self;
-	
-	controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-	[self presentModalViewController:controller animated:YES];
-	
-	[controller release];
+	//NSLog(@"setSettings called");
+	TTNavigator* navigator = [TTNavigator navigator];
+	[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://login"]];
 }
 
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
@@ -25,11 +21,16 @@
 }
 
 - (void)viewDidLoad {
-	self.navigationItem.rightBarButtonItem
-    = [[[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered
-									   target:self action:@selector(setSettings)] autorelease];	
-	
-	//[self loadAlbum:@"7180"];
+
+	MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
+
+	//show logout only when on root-album
+	if ([ps.albumID isEqualToString: @"1"]) {
+		self.navigationItem.rightBarButtonItem
+		= [[[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered
+										   target:self action:@selector(setSettings)] autorelease];	
+		
+	} ;
 	
 	_clickActionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction//TTIMAGE(@"UIBarButtonReply.png")
 																	 target:self action:@selector(clickActionItem)];
@@ -83,11 +84,41 @@
 
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	
-	NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
+	//NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
 
 	if (buttonIndex == 0) {
 		[self presentModalViewController:pickerController animated:YES];
 	}	
+	if (buttonIndex == 1) {
+		UIAlertView *dialog = [[UIAlertView alloc] init];
+		[dialog setDelegate:self];
+		[dialog setTitle:@"Confirm Deletion"];
+		[dialog addButtonWithTitle:@"Cancel"];
+		[dialog addButtonWithTitle:@"OK"];
+		[dialog show];		
+	}
+}
+
+- (void)modalView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if ([alertView isKindOfClass:[UIAlertView class]]) {
+		if (buttonIndex == 1) {
+			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+			MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
+			
+			NSString* url = [appDelegate.baseURL stringByAppendingString:@"/rest/item/"];
+			url = [url stringByAppendingString:ps.albumID];
+
+			[MyItemDeleter initWithItemID:ps.albumID];
+			//NSLog(@"parentURL: %@", ps.parentURL);
+			[[TTURLCache sharedCache] removeURL:ps.parentURL fromDisk:YES];
+			
+			TTNavigator* navigator = [TTNavigator navigator];
+			[navigator removeAllViewControllers];
+			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+		}
+	}
+    [alertView release];
 }
 
 #pragma mark UIImagePickerController Methods
@@ -103,7 +134,10 @@
 	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:ps.albumID];
 	NSString* result = [uploader uploadImage:picture];
 	
-	NSLog(@"uploading result: %@", result);
+	//NSLog(@"uploading result: %@", result);
+
+	// force a reload (yes it's a hack ;))
+	[self loadAlbum:ps.albumID];
 }
 
 - (void) viewWillAppear: (BOOL) animated
@@ -123,7 +157,7 @@
 	{
 		[self loadAlbum:albumID];
 	}
-	return self; 
+	return self;
 }
 
 - (void)loadAlbum:(NSString* ) albumID {
@@ -155,6 +189,8 @@
 			isAlbum = NO;
 		}
 		
+		NSString* parent = [entity objectForKey:@"parent"];
+		
 		NSString* photoID = [NSString stringWithString:[entity objectForKey:@"id"]];
 		
 		MockPhoto* mph = [[[MockPhoto alloc]
@@ -162,13 +198,22 @@
 						   smallURL:thumb_url
 						   size:CGSizeMake(200, 100)
 						   isAlbum:isAlbum
-						   albumID:photoID] autorelease];
+						   albumID:photoID
+						   parentURL:parent] autorelease];
 		
 		[album addObject:mph];
 	}
 	
+	
+	NSString* albumParent = [g3Album.albumEntity objectForKey:@"parent"];
+	if (albumParent == nil) {
+		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
+	}
+	
 	self.photoSource = [[MockPhotoSource alloc]
 						initWithType:MockPhotoSourceNormal
+						parentURL:albumParent
 						albumID:albumID
 						title:@"David's Pictures"
 						photos:[[NSArray alloc] initWithArray:album]

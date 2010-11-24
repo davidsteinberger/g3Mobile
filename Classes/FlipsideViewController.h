@@ -12,13 +12,20 @@
 
 @interface FlipsideViewController : UIViewController {
 	id <FlipsideViewControllerDelegate> delegate;
-	IBOutlet UISwitch *toggleSwitch;
 	AppDelegate *appDelegate;	
+	
+	UITextField* _website;
+	UITextField* _username;
+	UITextField* _password;
 }
 
 @property (nonatomic, assign) id <FlipsideViewControllerDelegate> delegate;
+@property (nonatomic, retain) IBOutlet UITextField* website;
+@property (nonatomic, retain) IBOutlet UITextField* username;
+@property (nonatomic, retain) IBOutlet UITextField* password;
+
 - (IBAction)done;
-- (IBAction)save;
+- (IBAction)login;
 
 @end
 

@@ -1,29 +1,26 @@
-
-#import "Three20/Three20.h"
-
-#import "MyComment.h"
+#import "MyLogin.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-@implementation MyComment
+@implementation MyLogin
 
-@synthesize created = _created;
-@synthesize postId  = _postId;
-@synthesize text    = _text;
-@synthesize name    = _name;
+
+@synthesize baseURL = _baseURL;
+@synthesize username = _username;
+@synthesize password = _password;
+@synthesize challenge = _challenge;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)dealloc {
-  TT_RELEASE_SAFELY(_created);
-  TT_RELEASE_SAFELY(_postId);
-  TT_RELEASE_SAFELY(_text);
-  TT_RELEASE_SAFELY(_name);
-
-  [super dealloc];
+    TT_RELEASE_SAFELY(_baseURL);
+	TT_RELEASE_SAFELY(_username);
+    TT_RELEASE_SAFELY(_password);
+	TT_RELEASE_SAFELY(_challenge);
+    [super dealloc];
 }
 
-
 @end
+

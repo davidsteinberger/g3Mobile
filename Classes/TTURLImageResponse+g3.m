@@ -56,7 +56,7 @@
 					//          NSData* data = UIImagePNGRepresentation(image);
 					//          [[TTURLCache sharedCache] storeData:data forURL:request.URL];
 					//        }
-					NSLog(@"store for urlPath: %@", request.urlPath);
+					//NSLog(@"store for urlPath: %@", request.urlPath);
 					[[TTURLCache sharedCache] storeImage:image forURL:request.urlPath];
 				}
 				
@@ -94,7 +94,7 @@
 	NSData *returnedData = [NSURLConnection sendSynchronousRequest:request1
 														   returningResponse:&response error:&error];	
 	*challenge = [[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding];
-	NSLog(@"response: %@", [[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding]);
+	//NSLog(@"response: %@", [[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding]);
 }
 
 @end

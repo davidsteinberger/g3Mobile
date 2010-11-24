@@ -10,6 +10,7 @@
 
 #import "AppDelegate.h"
 #import "MockPhotoSource.h"
+#import "MyItemDeleter.h"
 #import "extThree20JSON/extThree20JSON.h"
 
 @implementation MyPhotoViewController
@@ -118,7 +119,7 @@
 - (void)clickActionItem {
 	MockPhoto* p = (MockPhoto *) self.centerPhoto;
 	NSString* albumID = p.albumID;
-	NSLog(@"clickActionItem clicked (%@)", albumID);
+	//NSLog(@"clickActionItem clicked (%@)", albumID);
 	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
@@ -148,21 +149,40 @@
 	NSString* itemID = p.albumID;
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	
-	NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
+	//NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
 	if (buttonIndex == 0) {
 		TTNavigator* navigator = [TTNavigator navigator];
 		[navigator openURLAction:[[TTURLAction actionWithURLPath:[@"tt://comments/" stringByAppendingString:itemID]] applyAnimated:YES]];
 	}
 	if (buttonIndex == 1) {
-		
+		UIAlertView *dialog = [[UIAlertView alloc] init];
+		[dialog setDelegate:self];
+		[dialog setTitle:@"Confirm Deletion"];
+		[dialog addButtonWithTitle:@"Cancel"];
+		[dialog addButtonWithTitle:@"OK"];
+		[dialog show];		
 	}
-
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-
+//- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+- (void)modalView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-	NSLog(@"[actionSheet didDismissWithButtonIndex]");
+    if ([alertView isKindOfClass:[UIAlertView class]]) {
+		if (buttonIndex == 1) {
+			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+			MockPhoto* p = (MockPhoto *) self.centerPhoto;
+			NSString* photoID = p.albumID;
+			[MyItemDeleter initWithItemID:photoID];	
+			NSString* url = [appDelegate.baseURL stringByAppendingString:@"/rest/item/"];
+			url = [url stringByAppendingString:photoID];
+			[[TTURLCache sharedCache] removeURL:p.parentURL fromDisk:YES];
+			
+			TTNavigator* navigator = [TTNavigator navigator];
+			[navigator removeAllViewControllers];
+			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+		}
+	}
+    [alertView release];
 }
 
 @end

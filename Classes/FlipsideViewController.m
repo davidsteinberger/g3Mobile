@@ -15,12 +15,15 @@
 
 @synthesize delegate;
 
+@synthesize website = _website;
+@synthesize username = _username;
+@synthesize password = _password;
+
 - (void)viewDidLoad {
     [super viewDidLoad];	
     self.view.backgroundColor = [UIColor viewFlipsideBackgroundColor];      
 
 	appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	//toggleSwitch.on = appDelegate.updateLocation;
 	
 }
 
@@ -30,9 +33,8 @@
 	[self.delegate flipsideViewControllerDidFinish:self];	
 }
 
--(IBAction)save {
-	NSLog(@"save");
-
+-(IBAction)login {
+	//NSLog(@"save");
 }
 
 
@@ -58,7 +60,6 @@
 
 
 - (void)dealloc {
-	[toggleSwitch release];
     [super dealloc];
 }
 

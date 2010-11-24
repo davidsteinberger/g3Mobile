@@ -13,7 +13,7 @@
 
 - (void)reload {
 	if (!_request && _imageURL) {
-		NSLog(@"imageUrl: %@",_imageURL);
+		//NSLog(@"imageUrl: %@",_imageURL);
 		UIImage* image = [[TTURLCache sharedCache] imageForURL:_imageURL];
 
 		if (image) {

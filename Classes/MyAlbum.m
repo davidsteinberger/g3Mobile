@@ -16,6 +16,7 @@
 
 @synthesize root = _root;
 @synthesize array = _array;
+@synthesize albumEntity = _albumEntity;
 @synthesize members = _members;
 
 -(id)init {
@@ -67,8 +68,10 @@
 //    request.cacheExpirationAge = TT_CACHE_EXPIRATION_AGE_NEVER;
 	
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
-
+	
+	if (appDelegate.challenge != nil) {
+		[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+	}
     request.response = [[[TTURLJSONResponse alloc] init] autorelease];
 
     [request sendSynchronously];
@@ -108,6 +111,8 @@
 	
 	if (!self->_parentLoaded) {
 		self->_parentLoaded = YES;
+		self.albumEntity = [feed objectForKey:@"entity"];
+		
 		NSMutableArray* members = [[feed objectForKey:@"members"] retain];		
 		
 		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -138,7 +143,7 @@
 }
 
 - (void)request:(TTURLRequest *)request didFailLoadWithError:(NSError *)error {
-	NSLog(@"error: %@", error);
+	//NSLog(@"error: %@", error);
 }
 
 @end

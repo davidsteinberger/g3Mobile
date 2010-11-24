@@ -12,15 +12,17 @@ typedef enum {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 @interface MockPhotoSource : TTURLRequestModel <TTPhotoSource> {
-  MockPhotoSourceType _type;
-  NSString* _title;
-  NSMutableArray* _photos;
-  NSArray* _tempPhotos;
-  NSTimer* _fakeLoadTimer;
+	MockPhotoSourceType _type;
+	NSString* _title;
+	NSMutableArray* _photos;
+	NSArray* _tempPhotos;
+	NSTimer* _fakeLoadTimer;
 	NSString* _albumID;
+	NSString* _parentURL;
 }
 
 @property (nonatomic, retain) NSString* albumID;
+@property (nonatomic, retain) NSString* parentURL;
 
 - (id)initWithType:(MockPhotoSourceType)type title:(NSString*)title
       photos:(NSArray*)photos photos2:(NSArray*)photos2;
@@ -40,10 +42,12 @@ typedef enum {
 @public
 	BOOL _isAlbum;
 	NSString* _albumID;
+	NSString* _parentURL;
 }
 
 @property BOOL isAlbum;
 @property(nonatomic, retain) NSString* albumID;
+@property (nonatomic, retain) NSString* parentURL;
 
 - (id)initWithURL:(NSString*)URL smallURL:(NSString*)smallURL size:(CGSize)size isAlbum:(BOOL)isAlbum albumID:(NSString*)albumID;
 

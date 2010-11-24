@@ -4,6 +4,7 @@
 
 @synthesize title = _title;
 @synthesize albumID = _albumID;
+@synthesize parentURL = _parentURL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // private
@@ -46,11 +47,12 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // NSObject
 
-- (id)initWithType:(MockPhotoSourceType)type albumID:(NSString*)albumID title:(NSString*)title photos:(NSArray*)photos
+- (id)initWithType:(MockPhotoSourceType)type parentURL:(NSString*)parentURL albumID:(NSString*)albumID title:(NSString*)title photos:(NSArray*)photos
       photos2:(NSArray*)photos2 {
   if (self = [super init]) {
     _type = type;
-	  _albumID = [albumID copy];
+	_parentURL = [parentURL copy];
+	_albumID = [albumID copy];
     _title = [title copy];
     _photos = photos2 ? [photos mutableCopy] : [[NSMutableArray alloc] init];
     _tempPhotos = photos2 ? [photos2 retain] : [photos retain];
@@ -143,17 +145,18 @@
 
 @implementation MockPhoto
 
-@synthesize photoSource = _photoSource, size = _size, index = _index, caption = _caption, isAlbum = _isAlbum, albumID = _albumID;
+@synthesize photoSource = _photoSource, size = _size, index = _index, caption = _caption,
+isAlbum = _isAlbum, albumID = _albumID, parentURL = _parentURL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // NSObject
 
-- (id)initWithURL:(NSString*)URL smallURL:(NSString*)smallURL size:(CGSize)size isAlbum:(BOOL)isAlbum albumID:(NSString*)albumID{
-	return [self initWithURL:URL smallURL:smallURL size:size caption:nil isAlbum:isAlbum albumID:albumID];
+- (id)initWithURL:(NSString*)URL smallURL:(NSString*)smallURL size:(CGSize)size isAlbum:(BOOL)isAlbum albumID:(NSString*)albumID parentURL:(NSString*)parentURL{
+	return [self initWithURL:URL smallURL:smallURL size:size caption:nil isAlbum:isAlbum albumID:albumID parentURL:parentURL];
 }
 
 - (id)initWithURL:(NSString*)URL smallURL:(NSString*)smallURL size:(CGSize)size
-    caption:(NSString*)caption isAlbum:(BOOL)isAlbum albumID:(NSString*)albumID{
+    caption:(NSString*)caption isAlbum:(BOOL)isAlbum albumID:(NSString*)albumID parentURL:(NSString*)parentURL{
   if (self = [super init]) {
     _photoSource = nil;
     _URL = [URL copy];
@@ -164,6 +167,7 @@
     _index = NSIntegerMax;
 	_isAlbum = isAlbum;
 	  _albumID = albumID;
+	  _parentURL = parentURL;
   }
   return self;
 }

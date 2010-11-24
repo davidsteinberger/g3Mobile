@@ -18,7 +18,7 @@
 		
 		//image = [[TTURLCache sharedCache] imageForURL:_urlPath];
 		
-		NSLog(@"retrieve for urlPath: %@", _urlPath);
+		//NSLog(@"retrieve for urlPath: %@", _urlPath);
 		if (nil != image) {
 			_image = [image retain];
 		} else {

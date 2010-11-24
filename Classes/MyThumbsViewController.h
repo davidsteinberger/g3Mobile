@@ -4,7 +4,7 @@
 
 #import "FlipsideViewController.h"
 
-@interface MyThumbsViewController : TTThumbsViewController <FlipsideViewControllerDelegate> {
+@interface MyThumbsViewController : TTThumbsViewController <UIActionSheetDelegate, FlipsideViewControllerDelegate> {
 	UIToolbar* _toolbar;
 	UIBarButtonItem* _clickActionItem;
 	

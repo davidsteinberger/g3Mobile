@@ -33,7 +33,7 @@
 	if (shouldNavigate) {
 		if (isAlbum) {
 			TTNavigator* navigator = [TTNavigator navigator];
-			[navigator openURLAction:[[TTURLAction actionWithURLPath:[@"tt://photoTest2/" stringByAppendingString:albumID]] applyAnimated:YES]];
+			[navigator openURLAction:[[TTURLAction actionWithURLPath:[@"tt://thumbs/" stringByAppendingString:albumID]] applyAnimated:YES]];
 		} else {
 			NSString* URL = [self URLForPhoto:photo];
 			if (URL) {
