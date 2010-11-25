@@ -9,6 +9,18 @@
 
 @implementation MyThumbsViewController
 
+//@synthesize album = _album;
+//@synthesize g3Album = _g3Album;
+
+- (void)dealloc {
+	TT_RELEASE_SAFELY(self->_toolbar);
+	TT_RELEASE_SAFELY(self->_clickActionItem);
+	TT_RELEASE_SAFELY(self->_pickerController);
+//	TT_RELEASE_SAFELY(self->_album);
+//	TT_RELEASE_SAFELY(self->_g3Album);
+	[super dealloc];
+}
+
 - (void)setSettings {
 	//NSLog(@"setSettings called");
 	TTNavigator* navigator = [TTNavigator navigator];
@@ -21,9 +33,9 @@
 }
 
 - (void)viewDidLoad {
-
+	
 	MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
-
+	
 	//show logout only when on root-album
 	if ([ps.albumID isEqualToString: @"1"]) {
 		self.navigationItem.rightBarButtonItem
@@ -34,12 +46,13 @@
 	
 	_clickActionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction//TTIMAGE(@"UIBarButtonReply.png")
 																	 target:self action:@selector(clickActionItem)];
-	UIBarItem* space = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:
-						 UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-	
 	_toolbar = [[UIToolbar alloc] initWithFrame:
 				CGRectMake(0, self.view.height - TT_ROW_HEIGHT,
 						   self.view.width, TT_ROW_HEIGHT)];
+	
+	UIBarItem* space = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:
+						 UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+	
 	if (self.navigationBarStyle == UIBarStyleDefault) {
 		_toolbar.tintColor = TTSTYLEVAR(toolbarTintColor);
 	}
@@ -51,23 +64,23 @@
 	
 	[self.view addSubview:_toolbar];
 	
-	pickerController = [[UIImagePickerController alloc] init];
-	pickerController.allowsImageEditing = NO;
-	pickerController.delegate = self;
+	_pickerController = [[UIImagePickerController alloc] init];
+	_pickerController.allowsImageEditing = NO;
+	_pickerController.delegate = self;
 	if ( [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront] == YES) {
-		pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+		_pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
 	} else {
-		pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+		_pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
 	}
-
+	
 }
 
 - (void) clickActionItem {
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+	UIActionSheet *actionSheet = [[[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
                                                     cancelButtonTitle:nil
 											   destructiveButtonTitle:nil
-													otherButtonTitles:nil];
+													otherButtonTitles:nil] autorelease];
 	
 	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
 	
@@ -81,16 +94,16 @@
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-
+	
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	
 	//NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
-
+	
 	if (buttonIndex == 0) {
-		[self presentModalViewController:pickerController animated:YES];
+		[self presentModalViewController:_pickerController animated:YES];
 	}	
 	if (buttonIndex == 1) {
-		UIAlertView *dialog = [[UIAlertView alloc] init];
+		UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
 		[dialog setDelegate:self];
 		[dialog setTitle:@"Confirm Deletion"];
 		[dialog addButtonWithTitle:@"Cancel"];
@@ -107,8 +120,7 @@
 			MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
 			
 			NSString* url = [appDelegate.baseURL stringByAppendingString:@"/rest/item/"];
-			url = [url stringByAppendingString:ps.albumID];
-
+			
 			[MyItemDeleter initWithItemID:ps.albumID];
 			//NSLog(@"parentURL: %@", ps.parentURL);
 			[[TTURLCache sharedCache] removeURL:ps.parentURL fromDisk:YES];
@@ -118,7 +130,6 @@
 			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
 		}
 	}
-    [alertView release];
 }
 
 #pragma mark UIImagePickerController Methods
@@ -130,12 +141,11 @@
 	[self dismissModalViewControllerAnimated:YES];
 	
 	UIImage* picture = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-
+	
 	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:ps.albumID];
 	NSString* result = [uploader uploadImage:picture];
-	
 	//NSLog(@"uploading result: %@", result);
-
+	
 	// force a reload (yes it's a hack ;))
 	[self loadAlbum:ps.albumID];
 }
@@ -162,8 +172,9 @@
 
 - (void)loadAlbum:(NSString* ) albumID {
 	
-	NSMutableArray* album = [[NSMutableArray alloc] init];
+	NSLog(@"albumID: %@", albumID);
 	
+	NSMutableArray* album = [[NSMutableArray alloc] init];
 	MyAlbum* g3Album = [[MyAlbum alloc] initWithID:albumID];
 	
 	NSArray *keyArray = [g3Album.array allKeys];
@@ -180,6 +191,9 @@
 		NSString* resize_url = [entity objectForKey:@"resize_url_public"];
 		if (resize_url == nil) {
 			resize_url = [entity objectForKey:@"resize_url"];
+			if (resize_url == nil) {
+				resize_url = thumb_url;
+			}
 		}
 		
 		BOOL isAlbum;
@@ -190,35 +204,52 @@
 		}
 		
 		NSString* parent = [entity objectForKey:@"parent"];
+		if (parent == nil) {
+			parent = @"1";
+		}
 		
-		NSString* photoID = [NSString stringWithString:[entity objectForKey:@"id"]];
+		NSString* photoID = [entity objectForKey:@"id"];
+		if (photoID == nil) {
+			photoID = @"1";
+		}
+		
+		NSLog(@"resize_url, thumb_url, isAlbum, photoID, parent : %@, %@, %i, %@, %@",resize_url, 
+																				thumb_url, isAlbum, photoID, parent);
+		NSLog(@"\n\n");
 		
 		MockPhoto* mph = [[[MockPhoto alloc]
-						   initWithURL:resize_url
-						   smallURL:thumb_url
+						   initWithURL:[NSString stringWithString: resize_url]
+						   smallURL:[NSString stringWithString: thumb_url]
 						   size:CGSizeMake(200, 100)
 						   isAlbum:isAlbum
-						   albumID:photoID
-						   parentURL:parent] autorelease];
+						   albumID:[NSString stringWithString: photoID]
+						   parentURL:[NSString stringWithString: parent]] autorelease];
 		
 		[album addObject:mph];
 	}
 	
-	
-	NSString* albumParent = [g3Album.albumEntity objectForKey:@"parent"];
-	if (albumParent == nil) {
+	NSString* albumParent = nil;
+	if ([g3Album.albumEntity objectForKey:@"parent"] == nil) {
 		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
+	} else {
+		albumParent = [g3Album.albumEntity objectForKey:@"parent"];
 	}
 	
-	self.photoSource = [[MockPhotoSource alloc]
-						initWithType:MockPhotoSourceNormal
-						parentURL:albumParent
-						albumID:albumID
-						title:@"David's Pictures"
-						photos:[[NSArray alloc] initWithArray:album]
-						photos2:nil];
+	NSLog(@"parentURL, albumID : %@, %@", albumParent, albumID);
+	//[NSString stringWithString: albumParent];
+	//[NSString stringWithString: albumID];
 	
+	self.photoSource = [[[MockPhotoSource alloc]
+						 initWithType:MockPhotoSourceNormal
+						 parentURL:[NSString stringWithString: albumParent]
+						 albumID:[NSString stringWithString: albumID]
+						 title:@"David's Pictures"
+						 photos:album
+						 photos2:nil] autorelease];
+
+	//[albumParent release];
+	TT_RELEASE_SAFELY(g3Album);
 }
 
 @end

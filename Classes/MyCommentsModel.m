@@ -93,7 +93,7 @@
 	
 	if (!self->_parentLoaded) {
 		self->_parentLoaded = YES;
-		NSMutableArray* members = [[feed objectForKey:@"members"] retain];		
+		NSMutableArray* members = [feed objectForKey:@"members"];		
 		
 		for (NSString *member in members) {
 			
@@ -106,9 +106,6 @@
 		}
 	} else {
 		NSArray* entries = [feed objectForKey:@"entity"];
-
-		NSMutableArray* posts = [[NSMutableArray alloc] initWithCapacity:[entries count]];
-		
 		MyComment* post = [[MyComment alloc] init];
 		
 		NSDate* date = [NSDate dateWithTimeIntervalSince1970:[[entries objectForKey:@"created"] floatValue]];
@@ -118,14 +115,13 @@
 		post.text = [entries objectForKey:@"text"];
 		post.name = [entries objectForKey:@"author_id"];
 		post.name = @"Guest User";
-		
-		//[gravatar request:@"d.steinberger@gmx.at"];
-		
+
 		//NSLog(@"post: %@", post);
 		//NSLog(@"post.postId: %@", post.postId);
 		//NSLog(@"post.text: %@", post.text);
 		
 		[self.posts addObject:post];
+		[post release];
 	}
 
 

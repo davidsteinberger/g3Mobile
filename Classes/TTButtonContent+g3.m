@@ -25,7 +25,10 @@
 			}
 		} else {
 			TTURLRequest* request = [TTURLRequest requestWithURL:_imageURL delegate:self];
-			request.response = [[[TTURLImageResponse alloc] init] autorelease];
+			TTURLImageResponse* response = [[TTURLImageResponse alloc] init];
+			request.response = response;
+			TT_RELEASE_SAFELY(response);										   
+										   
 			//dcab652d8b00b106e81a6f758d65e90b
 			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 			[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
@@ -39,7 +42,7 @@
 	self.image = response.image;
 	[_button setNeedsDisplay];
 	
-	TT_RELEASE_SAFELY(_request);
+	//TT_RELEASE_SAFELY(_request);
 	
 	if ([_delegate respondsToSelector:@selector(imageView:didLoadImage:)]) {
 		[_delegate imageView:nil didLoadImage:response.image];

@@ -89,7 +89,7 @@
         NSString *bundleCopy = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"g3DB.sqlite"];
 		[fileManager copyItemAtPath:bundleCopy toPath:filePath error:nil];
     }
-    return filePath;
+    return [[filePath autorelease] retain];
 }
 
 -(void) readSettingsFromDatabaseWithPath:(NSString *)filePath {
@@ -143,8 +143,13 @@
 	//set request url to the NSURLConnection
 	NSData *returnedData = [NSURLConnection sendSynchronousRequest:request1
 												 returningResponse:&response error:&error];	
-	self.challenge = [[[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding] substringFromIndex: 1];
-	self.challenge = [self.challenge substringToIndex:[self.challenge length] - 1];
+	[request1 release];
+	NSString* returnString = [[[[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding] substringFromIndex: 1] substringToIndex:[self.challenge length] - 1];
+
+	self.challenge = returnString;
+	TT_RELEASE_SAFELY(returnString);
+
+	//[returnString release];
 	//NSLog(@"response: %@", [[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding]);
 }
 

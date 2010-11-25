@@ -19,10 +19,6 @@
     [super dealloc];
 }
 
-- (NSString*) getChallenge {
-	return @"test";
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)login:(NSString *) baseURL username:(NSString *)username password:(NSString *)password {
 	
@@ -72,7 +68,8 @@
 	challenge = [challenge substringToIndex:[challenge length] - 1];
 	
 	MyLogin* login = request.userInfo;
-	login.challenge = challenge;
+	login.challenge = [challenge copy];
+	TT_RELEASE_SAFELY(challenge);
 	[super didUpdateObject:login atIndexPath:nil];
 	
 	[self store:login];

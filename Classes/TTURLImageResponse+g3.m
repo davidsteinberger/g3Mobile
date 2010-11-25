@@ -14,8 +14,6 @@
 - (NSError*)request:(TTURLRequest*)request processResponse:(NSHTTPURLResponse*)response
 			   data:(id)data {
 	
-	NSString *challenge = nil;
-	
 	//[self login:&challenge];
 	
 		// This response is designed for NSData and UIImage objects, so if we get anything else it's
@@ -43,8 +41,10 @@
 			}
 			
 			if (nil == image) {
-				NSData *dataObj = [NSData dataWithBase64EncodedString:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+				NSString* base64String = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+				NSData *dataObj = [NSData dataWithBase64EncodedString:base64String];
 				image = [UIImage imageWithData:dataObj];
+				//[base64String release];
 			}
 			
 			if (nil != image) {
@@ -72,29 +72,5 @@
 		return nil;
 		
 	}
-
--(void)login:(NSString **)challenge {
-	NSMutableURLRequest *request1 = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://localhost/~David/test/rest"]];
-	
-	//set HTTP Method
-	[request1 setHTTPMethod:@"POST"];
-	
-	//Implement request_body for send request here username and password set into the body.
-	NSString *request_body = [NSString 
-							  stringWithFormat:@"user=%@&password=%@",
-							  [@"admin"        stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-							  [@"gallery3"        stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-							  ];
-	//set request body into HTTPBody.
-	[request1 setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
-	
-	NSURLResponse *response = nil;
-	NSError *error = nil;
-	//set request url to the NSURLConnection
-	NSData *returnedData = [NSURLConnection sendSynchronousRequest:request1
-														   returningResponse:&response error:&error];	
-	*challenge = [[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding];
-	//NSLog(@"response: %@", [[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding]);
-}
 
 @end

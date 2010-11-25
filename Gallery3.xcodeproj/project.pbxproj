@@ -563,7 +563,7 @@
 				63B253E71299BD3100BA9323 /* AppDelegate.h */,
 				63B253E81299BD3100BA9323 /* AppDelegate.m */,
 				63A3B510129C3BDE00E04981 /* Login */,
-				63B254151299BD3100BA9323 /* Upload_Delete */,
+				63B254151299BD3100BA9323 /* Rest Helpers */,
 				63B2540E1299BD3100BA9323 /* Album */,
 				63B253FF1299BD3100BA9323 /* Photos */,
 				63B253EB1299BD3100BA9323 /* Comments */,
@@ -884,8 +884,6 @@
 		63B2540E1299BD3100BA9323 /* Album */ = {
 			isa = PBXGroup;
 			children = (
-				63B2540F1299BD3100BA9323 /* MyAlbum.h */,
-				63B254101299BD3100BA9323 /* MyAlbum.m */,
 				63B254111299BD3100BA9323 /* TTThumbsViewController+g3.h */,
 				63B254121299BD3100BA9323 /* TTThumbsViewController+g3.m */,
 				63B254131299BD3100BA9323 /* MyThumbsViewController.h */,
@@ -894,15 +892,17 @@
 			name = Album;
 			sourceTree = "<group>";
 		};
-		63B254151299BD3100BA9323 /* Upload_Delete */ = {
+		63B254151299BD3100BA9323 /* Rest Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				63B2540F1299BD3100BA9323 /* MyAlbum.h */,
+				63B254101299BD3100BA9323 /* MyAlbum.m */,
 				63B254161299BD3100BA9323 /* MyImageUploader.h */,
 				63B254171299BD3100BA9323 /* MyImageUploader.m */,
 				63A3B71A129C5EA200E04981 /* MyItemDeleter.h */,
 				63A3B71B129C5EA200E04981 /* MyItemDeleter.m */,
 			);
-			name = Upload_Delete;
+			name = "Rest Helpers";
 			sourceTree = "<group>";
 		};
 		63B257801299D4E500BA9323 /* Settings (depr) */ = {

@@ -28,19 +28,11 @@
 			//NSLog(@"result: %@", [request allHTTPHeaderFields]);
 			
 			TTURLRequest* request = [TTURLRequest requestWithURL:_urlPath delegate:self];
-			request.response = [[[TTURLImageResponse alloc] init] autorelease];
+			TTURLImageResponse* response = [[TTURLImageResponse alloc] init];
+			request.response = response;
+			TT_RELEASE_SAFELY(response);
 			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-			//NSString *tmp = [NSString stringWithFormat:@"%@\r\n",[appDelegate.challenge stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-			//stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]]
-			//NSLog(@"result: %@", tmp);
-			//NSString* object = [NSString stringWithString:appDelegate.challenge];
-			//NSString* key = [NSString stringWithString:@"X-Gallery-Request-Key"];
-			//[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-			//[appDelegate.challenge stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-			//@"82808119e8f7a55e35ab0817b46f5c09"
-			/*[TTURLRequest setDefaultHTTPHeaders:[NSDictionary dictionaryWithObjectsAndKeys:
-											 object,
-											key, nil]];*/
+			
 			[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
 			
 			//NSLog(@"appDelegate.challenge: %@", appDelegate.challenge);

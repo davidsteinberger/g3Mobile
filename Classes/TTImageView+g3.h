@@ -10,8 +10,6 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString* tmp;
-
 @interface TTImageView(g3) 
 
 @end

@@ -22,6 +22,14 @@ static int counter = 0;
 	return self;
 }
 
+
+-(void) dealloc {
+	TT_RELEASE_SAFELY(self.albumID);
+	TT_RELEASE_SAFELY(self.returnURL)
+	[super dealloc];
+}
+
+
 - (void)uploadImage {
 	[self uploadImage:nil];
 }

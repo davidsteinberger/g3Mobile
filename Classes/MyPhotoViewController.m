@@ -42,6 +42,13 @@
 	return self;
 }
 
+- (void) dealloc {
+	TT_RELEASE_SAFELY(_clickComposeItem);
+	TT_RELEASE_SAFELY(_clickActionItem);
+	
+	[super dealloc];
+}
+
 - (void)viewDidAppear {
 	//self.navigationController.navigationBar.bar = UIBarStyleDefault;
 	self.navigationItem.rightBarButtonItem
@@ -58,11 +65,11 @@
 	
 	CGRect innerFrame = CGRectMake(0, 0,
 								   screenFrame.size.width, screenFrame.size.height);
-	_innerView = [[UIView alloc] initWithFrame:innerFrame];
+	_innerView = [[[UIView alloc] initWithFrame:innerFrame] autorelease];
 	_innerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:_innerView];
 	
-	_scrollView = [[TTScrollView alloc] initWithFrame:screenFrame];
+	_scrollView = [[[TTScrollView alloc] autorelease] initWithFrame:screenFrame];
 	_scrollView.delegate = self;
 	_scrollView.dataSource = self;
 	_scrollView.rotateEnabled = NO;
@@ -70,12 +77,12 @@
 	_scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[_innerView addSubview:_scrollView];
 	
-	_nextButton = [[UIBarButtonItem alloc] initWithImage:
+	_nextButton = [[[UIBarButtonItem alloc] initWithImage:
 				   TTIMAGE(@"bundle://Three20.bundle/images/nextIcon.png")
-												   style:UIBarButtonItemStylePlain target:self action:@selector(nextAction)];
-	_previousButton = [[UIBarButtonItem alloc] initWithImage:
+												   style:UIBarButtonItemStylePlain target:self action:@selector(nextAction)] autorelease];
+	_previousButton = [[[UIBarButtonItem alloc] initWithImage:
 					   TTIMAGE(@"bundle://Three20.bundle/images/previousIcon.png")
-													   style:UIBarButtonItemStylePlain target:self action:@selector(previousAction)];
+													   style:UIBarButtonItemStylePlain target:self action:@selector(previousAction)] autorelease];
 	
 	_clickActionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction//TTIMAGE(@"UIBarButtonReply.png")
 																	 target:self action:@selector(clickActionItem)];
@@ -97,10 +104,11 @@
 		_toolbar.tintColor = TTSTYLEVAR(toolbarTintColor);
 	}
 	
+	
 	_toolbar.barStyle = self.navigationBarStyle;
 	_toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	_toolbar.items = [NSArray arrayWithObjects:
-					  _clickActionItem, space, _previousButton, space, _nextButton, space, _clickComposeItem, nil];
+					  _clickActionItem, space, _previousButton, space, playButton, space, _nextButton, space, _clickComposeItem, nil];
 	
 	[_innerView addSubview:_toolbar];
 }
@@ -121,11 +129,11 @@
 	NSString* albumID = p.albumID;
 	//NSLog(@"clickActionItem clicked (%@)", albumID);
 	
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+	UIActionSheet *actionSheet = [[[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
                                                     cancelButtonTitle:nil
 											   destructiveButtonTitle:nil
-													otherButtonTitles:nil];
+													otherButtonTitles:nil] autorelease];
 	
 	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
 	
@@ -155,7 +163,7 @@
 		[navigator openURLAction:[[TTURLAction actionWithURLPath:[@"tt://comments/" stringByAppendingString:itemID]] applyAnimated:YES]];
 	}
 	if (buttonIndex == 1) {
-		UIAlertView *dialog = [[UIAlertView alloc] init];
+		UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
 		[dialog setDelegate:self];
 		[dialog setTitle:@"Confirm Deletion"];
 		[dialog addButtonWithTitle:@"Cancel"];
@@ -174,7 +182,6 @@
 			NSString* photoID = p.albumID;
 			[MyItemDeleter initWithItemID:photoID];	
 			NSString* url = [appDelegate.baseURL stringByAppendingString:@"/rest/item/"];
-			url = [url stringByAppendingString:photoID];
 			[[TTURLCache sharedCache] removeURL:p.parentURL fromDisk:YES];
 			
 			TTNavigator* navigator = [TTNavigator navigator];
@@ -182,7 +189,6 @@
 			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
 		}
 	}
-    [alertView release];
 }
 
 @end

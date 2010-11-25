@@ -31,6 +31,21 @@
 	return [self initWithNibName:nil bundle:nil];
 }
 
+- (void)dealloc {
+	TT_RELEASE_SAFELY(_nextButton);
+	TT_RELEASE_SAFELY(_previousButton);
+	
+	TT_RELEASE_SAFELY(_clickComposeItem);
+	TT_RELEASE_SAFELY(_clickActionItem);
+	
+	TT_RELEASE_SAFELY(_innerView);
+	TT_RELEASE_SAFELY(_scrollView);
+	
+	TT_RELEASE_SAFELY(_toolbar);
+	TT_RELEASE_SAFELY(_itemID);
+	[super dealloc];
+}
+
 - (NSString *)urlEncodeValue:(NSString *)str
 {
 	NSString *result = (NSString *) CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)str, NULL, CFSTR("?=&+"), kCFStringEncodingUTF8);
@@ -136,11 +151,13 @@
 	
 	//Data returned by WebService
 	NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
-	NSString *returnString = [[NSString alloc] initWithData:returnData encoding: NSUTF8StringEncoding];
+	//NSString *returnString = [[NSString alloc] initWithData:returnData encoding: NSUTF8StringEncoding];
+	//NSLog(returnString);
+	//[returnString release];
+	
+	[request release];
 	
 	[[TTURLCache sharedCache] removeURL:[[appDelegate.baseURL stringByAppendingString: @"/rest/item_comments/"] stringByAppendingString:self.itemID] fromDisk:YES];
-	//NSLog(returnString);
-	
 	TTNavigator* navigator = [TTNavigator navigator];
 	TTURLAction* urlaction = [TTURLAction actionWithURLPath:@""];
 	//[navigator openURLAction:[TTURLAction actionWithURLPath: parentURLPath]]];

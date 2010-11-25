@@ -20,8 +20,6 @@
 	MockPhoto* p = (MockPhoto *) photo;
 	BOOL isAlbum = p.isAlbum;
 	NSString* albumID = p.albumID;
-//		NSLog(@"photo selected; isAlbum: %@", isAlbum);
-//		NSLog(@"photo selected; albumID: %@", p.albumID);
 	
 	[_delegate thumbsViewController:self didSelectPhoto:photo];
 

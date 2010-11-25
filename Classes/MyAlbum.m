@@ -17,7 +17,6 @@
 @synthesize root = _root;
 @synthesize array = _array;
 @synthesize albumEntity = _albumEntity;
-@synthesize members = _members;
 
 -(id)init {
 	[self initWithUrl:nil];
@@ -33,77 +32,47 @@
 }
 
 -(id)initWithUrl:(NSString* )url {
+	// setObject:forKey: will be called on array ... so it must be allocated
 	self.array = [[NSMutableDictionary alloc] init];
-	self.members = [[NSMutableArray alloc] init];
-	
-	[self getAlbum:url:YES];
+	self.albumEntity = [[NSMutableArray alloc] init];
+	[self getAlbum:url];
 	return self;
 }
 
 -(void) dealloc {
-	[self.array release];
-	[self.members release];
-	[self.root release];
-}
-
--(void)reload {
+	TT_RELEASE_SAFELY(_array);	
+	TT_RELEASE_SAFELY(_albumEntity);
 	
+	[super dealloc];
 }
 
-+ (BOOL)isAlbum:(NSString *)url {
-	
-}
-
--(void)getAlbum:(NSString* )url:(BOOL)recursive {
+-(void)getAlbum:(NSString* )url {
 	NSString* g3Url = url;
 	//NSLog(@"url: %@", url);
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
 	if (url == nil) {
-		g3Url = @"http://localhost/~David/gallery3/rest/item/1";
+		g3Url = [appDelegate.baseURL stringByAppendingString: @"/rest/item/1"];
 	}
+	
 	TTURLRequest* request = [TTURLRequest
                              requestWithURL: g3Url
                              delegate: self];
 	
-//    request.cachePolicy = cachePolicy | TTURLRequestCachePolicyEtag;
-//    request.cacheExpirationAge = TT_CACHE_EXPIRATION_AGE_NEVER;
-	
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    //request.cachePolicy = TTURLRequestCachePolicyEtag;
+	// cache for 1 week
+    request.cacheExpirationAge = TT_DEFAULT_CACHE_EXPIRATION_AGE;
 	
 	if (appDelegate.challenge != nil) {
 		[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
 	}
-    request.response = [[[TTURLJSONResponse alloc] init] autorelease];
-
+	
+	// IMPORTANT: SEEMS TO WORK ONLY VIA AUTO-RELEASE-POOL!!!
+	TTURLJSONResponse* response = [[TTURLJSONResponse alloc] init];
+    request.response = response;
+	TT_RELEASE_SAFELY(response);
     [request sendSynchronously];
 }
-/*
-- (void)requestDidFinishLoad:(TTURLRequest*)request {
-	TTURLJSONResponse* response = request.response;
-	TTDASSERT([response.rootObject isKindOfClass:[NSDictionary class]]);
-	
-	NSDictionary* feed = response.rootObject;
-	//TTDASSERT([[feed objectForKey:@"data"] isKindOfClass:[NSArray class]]);
-	
-	NSMutableArray* entity = [[feed objectForKey:@"entity"] retain];
-	NSMutableArray* members = [[feed objectForKey:@"members"] retain];
-	
-	NSMutableDictionary* element = [[NSMutableDictionary alloc] init];
-
-	//NSLog(@"self.array: %@",self.array);
-	//self.members = tmp;
-	
-	if (!self->_parentLoaded) {
-		self->_parentLoaded = YES;
-		for (NSString *member in members) {
-			[self getAlbum:member:NO];
-		}
-	} else {
-		[element setObject:entity forKey:@"entity"];
-		[self.array setObject:element forKey:request.urlPath];
-	}
-
-}
-*/
 
 - (void)requestDidFinishLoad:(TTURLRequest*)request {
 	TTURLJSONResponse* response = request.response;	
@@ -113,7 +82,7 @@
 		self->_parentLoaded = YES;
 		self.albumEntity = [feed objectForKey:@"entity"];
 		
-		NSMutableArray* members = [[feed objectForKey:@"members"] retain];		
+		NSMutableArray* members = [feed objectForKey:@"members"];		
 		
 		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		NSString* itemsURL = nil;
@@ -128,16 +97,17 @@
 					NSASCIIStringEncoding];
 		//NSLog(@"itemsURL: %@", itemsURL);
 		
-		[self getAlbum:itemsURL:NO];
+		
+		[self getAlbum:itemsURL];
 	} else {
 		for (NSDictionary* member in feed) {
 			//NSLog(@"member: %@", member);
-			NSMutableArray* entity = [[member objectForKey:@"entity"] retain];
-			NSDictionary* url = [[member objectForKey:@"url"] retain];
+			NSMutableArray* entity = [member objectForKey:@"entity"];
+			NSDictionary* url = [member objectForKey:@"url"];
 			NSMutableDictionary* element = [[NSMutableDictionary alloc] init];
 			[element setObject:entity forKey:@"entity"];
 			[self.array setObject:element forKey:url];
-			//NSLog(@"self.array: %@", self.array);
+			[element release];
 		}
 	}
 }

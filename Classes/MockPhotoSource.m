@@ -82,6 +82,10 @@
   TT_RELEASE_SAFELY(_photos);
   TT_RELEASE_SAFELY(_tempPhotos);
   TT_RELEASE_SAFELY(_title);
+	
+	TT_RELEASE_SAFELY(_albumID);
+	TT_RELEASE_SAFELY(_parentURL);
+	
   [super dealloc];
 }
 
