@@ -6,15 +6,9 @@
 #import "MyAlbum.h"
 
 @interface MyThumbsViewController : TTThumbsViewController <UIActionSheetDelegate, FlipsideViewControllerDelegate> {
-	//NSMutableArray* _album;
-	//MyAlbum* _g3Album;
-	
 	UIToolbar* _toolbar;
 	UIBarButtonItem* _clickActionItem;
 	UIImagePickerController* _pickerController;
 }
-
-//@property (nonatomic, retain) NSMutableArray* album;
-//@property (nonatomic, retain) MyAlbum* g3Album;
 
 @end

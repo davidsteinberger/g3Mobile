@@ -69,6 +69,13 @@
 - (void)loadView {
 	[super loadView];
 	
+	UIBarButtonItem *rightButton = [[[UIBarButtonItem alloc]
+									 initWithTitle:@"Edit"
+									 style:UIBarButtonSystemItemEdit
+									 target:self
+									 action:@selector(toggleEdit)]
+									autorelease];
+	self.navigationItem.rightBarButtonItem = rightButton;	
 	
 	self.tableView = [[[UITableView alloc] initWithFrame:self.view.bounds  
                                                     style:UITableViewStyleGrouped] autorelease];  
@@ -149,8 +156,10 @@
 	//set request body into HTTPBody.
 	[request setHTTPBody: requestData];
 	
+	[NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
+	
 	//Data returned by WebService
-	NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
+	//NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
 	//NSString *returnString = [[NSString alloc] initWithData:returnData encoding: NSUTF8StringEncoding];
 	//NSLog(returnString);
 	//[returnString release];
@@ -165,6 +174,26 @@
 	[[self navigationController] popViewControllerAnimated:YES];
 } 
 
+/*
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    [super setEditing:editing animated:animated];
+    [self.tableView setEditing:editing animated:animated];
+	[self.tableView reloadData];
+} 
+*/
+
+- (void)toggleEdit
+{
+    [self.tableView setEditing:!self.tableView.editing animated:YES];
+    NSString *label = self.tableView.editing == YES ? @"Done" : @"Edit";
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
+											   initWithTitle:label
+											   style:UIBarButtonSystemItemEdit
+											   target:self
+											   action:@selector(toggleEdit)]
+											   autorelease];
+}
 
 @end
 

@@ -65,7 +65,7 @@
         _passwordField.clearsOnBeginEditing = NO;
         _passwordField.delegate = self;
 //        _passwordField.text = @"";
-        _passwordField.text = @"gallery3";
+       _passwordField.text = @"gallery3";
         [itemsRow addObject:_passwordField];
         
         [items addObject:itemsRow];

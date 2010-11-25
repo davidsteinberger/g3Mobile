@@ -24,6 +24,7 @@
 }
 
 -(id)initWithID:(NSString* )albumId {
+	//NSLog(@"albumId: %@", albumId);
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	NSString* url = [appDelegate.baseURL stringByAppendingString:@"/rest/item/"];
 	url = [url stringByAppendingString:(NSString *) albumId];

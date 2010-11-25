@@ -15,5 +15,6 @@
 }
 
 + (id) initWithItemID:(NSString *)itemID;
++ (id) initWithItemID:(NSString *)itemID type:(NSString *)type;
 
 @end

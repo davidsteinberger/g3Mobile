@@ -43,10 +43,12 @@
 }
 
 - (void) dealloc {
+	
 	TT_RELEASE_SAFELY(_clickComposeItem);
 	TT_RELEASE_SAFELY(_clickActionItem);
 	
-	[super dealloc];
+	//[super dealloc];
+	//
 }
 
 - (void)viewDidAppear {
@@ -125,8 +127,6 @@
 }
 
 - (void)clickActionItem {
-	MockPhoto* p = (MockPhoto *) self.centerPhoto;
-	NSString* albumID = p.albumID;
 	//NSLog(@"clickActionItem clicked (%@)", albumID);
 	
 	UIActionSheet *actionSheet = [[[UIActionSheet alloc] initWithTitle:nil
@@ -155,7 +155,6 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	MockPhoto* p = (MockPhoto *) self.centerPhoto;
 	NSString* itemID = p.albumID;
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	
 	//NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
 	if (buttonIndex == 0) {
@@ -181,7 +180,7 @@
 			MockPhoto* p = (MockPhoto *) self.centerPhoto;
 			NSString* photoID = p.albumID;
 			[MyItemDeleter initWithItemID:photoID];	
-			NSString* url = [appDelegate.baseURL stringByAppendingString:@"/rest/item/"];
+
 			[[TTURLCache sharedCache] removeURL:p.parentURL fromDisk:YES];
 			
 			TTNavigator* navigator = [TTNavigator navigator];

@@ -3,6 +3,8 @@
 #import "MyCommentsModel.h"
 #import "MyComment.h"
 
+#import "MyItemDeleter.h"
+
 // Three20 Additions
 #import <Three20Core/NSDateAdditions.h>
 
@@ -88,6 +90,37 @@
   return NSLocalizedString(@"Sorry, there was an error loading the Comments.", @"");
 }
 
+/*
+- (void)tableView:(UITableView *)tableView
+commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        [self.items removeObjectAtIndex:indexPath.row];
+        NSArray *objects = [NSArray arrayWithObjects:indexPath, nil];
+        [tableView deleteRowsAtIndexPaths:objects
+						 withRowAnimation:UITableViewRowAnimationBottom];
+    }
+}
+*/
+
+- (void)tableView:(UITableView *)tableView
+commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+		NSArray *objects = [NSArray arrayWithObjects:indexPath, nil];
+		if (indexPath.row < [self.items count]) {
+			MyComment* mc = [self->_searchFeedModel.posts objectAtIndex:indexPath.row];
+			[MyItemDeleter initWithItemID:[mc.postId stringValue] type:@"comment"];
+			[self.items removeObjectAtIndex:indexPath.row];
+			[tableView deleteRowsAtIndexPaths:objects
+							 withRowAnimation:UITableViewRowAnimationBottom];			
+		}
+	}
+}
 
 @end
 

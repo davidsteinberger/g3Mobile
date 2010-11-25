@@ -14,13 +14,22 @@
 @implementation MyItemDeleter
 
 + (id) initWithItemID:(NSString *)itemID {
+	[self initWithItemID:itemID type:nil];
+}
 
++ (id) initWithItemID:(NSString *)itemID type:(NSString *)type {
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	
 	//---bring everything together
 	
 	//create http-request
-	NSString* url = [appDelegate.baseURL stringByAppendingString:@"/rest/item/"];
+	NSString* url;
+	if (type == nil) {
+		url = [appDelegate.baseURL stringByAppendingString:@"/rest/item/"];
+	} else {
+		url = [[[appDelegate.baseURL stringByAppendingString:@"/rest/"] stringByAppendingString:type] stringByAppendingString:@"/"];
+	}
+	
 	url = [url stringByAppendingString:itemID];
 	TTURLRequest *request = [TTURLRequest
 									requestWithURL: url

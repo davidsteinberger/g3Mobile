@@ -68,7 +68,7 @@
 	challenge = [challenge substringToIndex:[challenge length] - 1];
 	
 	MyLogin* login = request.userInfo;
-	login.challenge = [challenge copy];
+	login.challenge = challenge;
 	TT_RELEASE_SAFELY(challenge);
 	[super didUpdateObject:login atIndexPath:nil];
 	

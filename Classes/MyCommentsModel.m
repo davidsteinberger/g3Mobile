@@ -48,8 +48,8 @@
 	  [request setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
 	  [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
 	  
-    request.cachePolicy = cachePolicy | TTURLRequestCachePolicyEtag;
-    request.cacheExpirationAge = TT_CACHE_EXPIRATION_AGE_NEVER;
+    //request.cachePolicy = cachePolicy | TTURLRequestCachePolicyEtag;
+    //request.cacheExpirationAge = TT_CACHE_EXPIRATION_AGE_NEVER;
 
     TTURLJSONResponse* response = [[TTURLJSONResponse alloc] init];
     request.response = response;

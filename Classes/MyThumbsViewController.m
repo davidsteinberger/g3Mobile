@@ -9,15 +9,11 @@
 
 @implementation MyThumbsViewController
 
-//@synthesize album = _album;
-//@synthesize g3Album = _g3Album;
-
 - (void)dealloc {
 	TT_RELEASE_SAFELY(self->_toolbar);
 	TT_RELEASE_SAFELY(self->_clickActionItem);
 	TT_RELEASE_SAFELY(self->_pickerController);
-//	TT_RELEASE_SAFELY(self->_album);
-//	TT_RELEASE_SAFELY(self->_g3Album);
+
 	[super dealloc];
 }
 
@@ -42,7 +38,10 @@
 		= [[[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered
 										   target:self action:@selector(setSettings)] autorelease];	
 		
-	} ;
+	} else {
+		NSLog(@"Not implemented yet");
+	}
+
 	
 	_clickActionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction//TTIMAGE(@"UIBarButtonReply.png")
 																	 target:self action:@selector(clickActionItem)];
@@ -94,9 +93,7 @@
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	
+		
 	//NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
 	
 	if (buttonIndex == 0) {
@@ -119,8 +116,6 @@
 			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 			MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
 			
-			NSString* url = [appDelegate.baseURL stringByAppendingString:@"/rest/item/"];
-			
 			[MyItemDeleter initWithItemID:ps.albumID];
 			//NSLog(@"parentURL: %@", ps.parentURL);
 			[[TTURLCache sharedCache] removeURL:ps.parentURL fromDisk:YES];
@@ -136,18 +131,22 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
-	//NSLog(@"photosource: %@", ps.albumID);
+	NSLog(@"photosource: %@", ps.albumID);
 	
 	[self dismissModalViewControllerAnimated:YES];
 	
 	UIImage* picture = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
 	
-	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:ps.albumID];
-	NSString* result = [uploader uploadImage:picture];
+	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:[NSString stringWithString:ps.albumID]];
+	[uploader uploadImage:picture];
+	TT_RELEASE_SAFELY(uploader);
+
+	//NSString* result = [uploader uploadImage:picture];
 	//NSLog(@"uploading result: %@", result);
 	
 	// force a reload (yes it's a hack ;))
-	[self loadAlbum:ps.albumID];
+	//NSString* albumID = [[[NSString alloc] initWithString: ps.albumID] autorelease];
+	[self loadAlbum:[NSString stringWithString:ps.albumID]];
 }
 
 - (void) viewWillAppear: (BOOL) animated
@@ -171,10 +170,9 @@
 }
 
 - (void)loadAlbum:(NSString* ) albumID {
+	//NSLog(@"albumID: %@", albumID);
 	
-	NSLog(@"albumID: %@", albumID);
-	
-	NSMutableArray* album = [[NSMutableArray alloc] init];
+	NSMutableArray* album = [[[NSMutableArray alloc] init] autorelease];
 	MyAlbum* g3Album = [[MyAlbum alloc] initWithID:albumID];
 	
 	NSArray *keyArray = [g3Album.array allKeys];
@@ -213,10 +211,6 @@
 			photoID = @"1";
 		}
 		
-		NSLog(@"resize_url, thumb_url, isAlbum, photoID, parent : %@, %@, %i, %@, %@",resize_url, 
-																				thumb_url, isAlbum, photoID, parent);
-		NSLog(@"\n\n");
-		
 		MockPhoto* mph = [[[MockPhoto alloc]
 						   initWithURL:[NSString stringWithString: resize_url]
 						   smallURL:[NSString stringWithString: thumb_url]
@@ -229,16 +223,19 @@
 	}
 	
 	NSString* albumParent = nil;
-	if ([g3Album.albumEntity objectForKey:@"parent"] == nil) {
-		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
-	} else {
-		albumParent = [g3Album.albumEntity objectForKey:@"parent"];
-	}
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	
-	NSLog(@"parentURL, albumID : %@, %@", albumParent, albumID);
-	//[NSString stringWithString: albumParent];
-	//[NSString stringWithString: albumID];
+	if ([g3Album.albumEntity count] > 0) {
+		if ([g3Album.albumEntity objectForKey:@"parent"] != nil) {
+			albumParent = [g3Album.albumEntity objectForKey:@"parent"];
+		} else {
+			albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
+		}
+	} else {		
+		albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
+	}
+
+	NSLog(@"albumParent: %@", albumParent);
 	
 	self.photoSource = [[[MockPhotoSource alloc]
 						 initWithType:MockPhotoSourceNormal
@@ -248,7 +245,7 @@
 						 photos:album
 						 photos2:nil] autorelease];
 
-	//[albumParent release];
+	//TT_RELEASE_SAFELY(album);
 	TT_RELEASE_SAFELY(g3Album);
 }
 
