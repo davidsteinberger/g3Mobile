@@ -113,9 +113,7 @@
 {
     if ([alertView isKindOfClass:[UIAlertView class]]) {
 		if (buttonIndex == 1) {
-			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 			MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
-			
 			[MyItemDeleter initWithItemID:ps.albumID];
 			//NSLog(@"parentURL: %@", ps.parentURL);
 			[[TTURLCache sharedCache] removeURL:ps.parentURL fromDisk:YES];
@@ -130,14 +128,15 @@
 #pragma mark UIImagePickerController Methods
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-	MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
-	NSLog(@"photosource: %@", ps.albumID);
+	MockPhotoSource* ps;
+	
+	ps = (MockPhotoSource* ) self.photoSource;
 	
 	[self dismissModalViewControllerAnimated:YES];
 	
 	UIImage* picture = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
 	
-	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:[NSString stringWithString:ps.albumID]];
+	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:[[[NSString alloc] initWithString:ps.albumID] autorelease]];
 	[uploader uploadImage:picture];
 	TT_RELEASE_SAFELY(uploader);
 
@@ -146,6 +145,7 @@
 	
 	// force a reload (yes it's a hack ;))
 	//NSString* albumID = [[[NSString alloc] initWithString: ps.albumID] autorelease];
+	
 	[self loadAlbum:[NSString stringWithString:ps.albumID]];
 }
 
@@ -172,7 +172,7 @@
 - (void)loadAlbum:(NSString* ) albumID {
 	//NSLog(@"albumID: %@", albumID);
 	
-	NSMutableArray* album = [[[NSMutableArray alloc] init] autorelease];
+	NSMutableArray* album = [[NSMutableArray alloc] init];
 	MyAlbum* g3Album = [[MyAlbum alloc] initWithID:albumID];
 	
 	NSArray *keyArray = [g3Album.array allKeys];
@@ -235,8 +235,8 @@
 		albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
 	}
 
-	NSLog(@"albumParent: %@", albumParent);
-	
+	//NSLog(@"albumParent: %@", albumParent);
+	NSLog(@"\n\nalbumID: %@", albumID);
 	self.photoSource = [[[MockPhotoSource alloc]
 						 initWithType:MockPhotoSourceNormal
 						 parentURL:[NSString stringWithString: albumParent]
@@ -245,7 +245,7 @@
 						 photos:album
 						 photos2:nil] autorelease];
 
-	//TT_RELEASE_SAFELY(album);
+	TT_RELEASE_SAFELY(album);
 	TT_RELEASE_SAFELY(g3Album);
 }
 

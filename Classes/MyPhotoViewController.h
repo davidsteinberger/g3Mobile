@@ -11,8 +11,8 @@
 #import <Three20/Three20.h>
 
 @interface MyPhotoViewController : TTPhotoViewController<UITableViewDelegate, UIImagePickerControllerDelegate> {
-	UIBarButtonItem* _clickComposeItem;
-	UIBarButtonItem* _clickActionItem;
+	//UIBarButtonItem* _clickComposeItem;
+	//UIBarButtonItem* _clickActionItem;
 }
 
 @end

@@ -102,7 +102,8 @@
         [_passwordField becomeFirstResponder];
     }
     else {
-        [_loginModel login:_baseURL.text username:_usernameField.text password:_passwordField.text];
+		[_passwordField resignFirstResponder];
+		[_loginModel login:_baseURL.text username:_usernameField.text password:_passwordField.text];
     }
     return YES;
 }

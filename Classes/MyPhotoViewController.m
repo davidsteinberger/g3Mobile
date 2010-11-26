@@ -43,12 +43,7 @@
 }
 
 - (void) dealloc {
-	
-	TT_RELEASE_SAFELY(_clickComposeItem);
-	TT_RELEASE_SAFELY(_clickActionItem);
-	
-	//[super dealloc];
-	//
+
 }
 
 - (void)viewDidAppear {
@@ -86,11 +81,11 @@
 					   TTIMAGE(@"bundle://Three20.bundle/images/previousIcon.png")
 													   style:UIBarButtonItemStylePlain target:self action:@selector(previousAction)] autorelease];
 	
-	_clickActionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction//TTIMAGE(@"UIBarButtonReply.png")
-																	 target:self action:@selector(clickActionItem)];
+	UIBarButtonItem* _clickActionItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction//TTIMAGE(@"UIBarButtonReply.png")
+																	 target:self action:@selector(clickActionItem)] autorelease];
 	
-	_clickComposeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose//TTIMAGE(@"UIBarButtonReply.png")
-																	  target:self action:@selector(clickComposeItem)];
+	UIBarButtonItem* _clickComposeItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose//TTIMAGE(@"UIBarButtonReply.png")
+																	   target:self action:@selector(clickComposeItem)] autorelease];
 	
 	UIBarButtonItem* playButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:
 									UIBarButtonSystemItemPlay target:self action:@selector(playAction)] autorelease];

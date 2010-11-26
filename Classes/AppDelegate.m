@@ -89,7 +89,7 @@
         NSString *bundleCopy = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"g3DB.sqlite"];
 		[fileManager copyItemAtPath:bundleCopy toPath:filePath error:nil];
     }
-    return [[filePath autorelease] retain];
+    return [filePath retain];
 }
 
 -(void) readSettingsFromDatabaseWithPath:(NSString *)filePath {

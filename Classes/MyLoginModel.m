@@ -64,11 +64,12 @@
 - (void)requestDidFinishLoad:(TTURLRequest*)request {
 	TTURLDataResponse* dr = request.response;
 	NSData* data = dr.data;
-	NSString* challenge = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] substringFromIndex: 1];
-	challenge = [challenge substringToIndex:[challenge length] - 1];
+	NSString* challenge = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	
 	MyLogin* login = request.userInfo;
-	login.challenge = challenge;
+	login.challenge = [[challenge substringFromIndex: 1] substringToIndex:[challenge length] - 2];
+	//@"e73394e9813e38b5f7aa8c52f71174a3";
+	//[[challenge substringFromIndex: 1] substringToIndex:[challenge length] - 2];
 	TT_RELEASE_SAFELY(challenge);
 	[super didUpdateObject:login atIndexPath:nil];
 	

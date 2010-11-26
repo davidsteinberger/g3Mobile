@@ -11,11 +11,9 @@
 
 @interface MyImageUploader : NSObject {
 	NSString* _albumID;
-	NSString* _returnURL;
 }
 
 @property (nonatomic, retain) NSString* albumID;
-@property (nonatomic, retain) NSString* returnURL;
 
 - (id)initWithAlbumID:(NSString* ) albumID;
 

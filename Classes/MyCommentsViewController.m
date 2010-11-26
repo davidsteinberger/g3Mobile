@@ -167,8 +167,9 @@
 	[request release];
 	
 	[[TTURLCache sharedCache] removeURL:[[appDelegate.baseURL stringByAppendingString: @"/rest/item_comments/"] stringByAppendingString:self.itemID] fromDisk:YES];
-	TTNavigator* navigator = [TTNavigator navigator];
-	TTURLAction* urlaction = [TTURLAction actionWithURLPath:@""];
+	
+	//TTNavigator* navigator = [TTNavigator navigator];
+	//TTURLAction* urlaction = [TTURLAction actionWithURLPath:@""];
 	//[navigator openURLAction:[TTURLAction actionWithURLPath: parentURLPath]]];
 	
 	[[self navigationController] popViewControllerAnimated:YES];

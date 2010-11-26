@@ -15,18 +15,14 @@ static int counter = 0;
 @implementation MyImageUploader
 
 @synthesize albumID = _albumID;
-@synthesize returnURL = _returnURL;
 
 - (id)initWithAlbumID:(NSString* ) albumID {
-	self.albumID = albumID;
+	self.albumID = [[NSString alloc] initWithString:albumID];
 	return self;
 }
 
-
 -(void) dealloc {
 	TT_RELEASE_SAFELY(self.albumID);
-	TT_RELEASE_SAFELY(self.returnURL)
-	[super dealloc];
 }
 
 
