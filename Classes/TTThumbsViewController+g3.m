@@ -13,13 +13,13 @@
 @implementation TTThumbsViewController(album)
 
 - (TTPhotoViewController*)createPhotoViewController {
-	return [[[MyPhotoViewController alloc] init] autorelease];
+	return [[MyPhotoViewController alloc] init];
 }
 	
 - (void)thumbsTableViewCell:(TTThumbsTableViewCell*)cell didSelectPhoto:(id<TTPhoto>)photo {
 	MockPhoto* p = (MockPhoto *) photo;
 	BOOL isAlbum = p.isAlbum;
-	NSString* albumID = p.albumID;
+	NSString* albumID = p.photoID;
 	
 	[_delegate thumbsViewController:self didSelectPhoto:photo];
 

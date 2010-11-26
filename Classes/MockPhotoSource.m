@@ -150,17 +150,17 @@
 @implementation MockPhoto
 
 @synthesize photoSource = _photoSource, size = _size, index = _index, caption = _caption,
-isAlbum = _isAlbum, albumID = _albumID, parentURL = _parentURL;
+isAlbum = _isAlbum, photoID = _photoID, parentURL = _parentURL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // NSObject
 
-- (id)initWithURL:(NSString*)URL smallURL:(NSString*)smallURL size:(CGSize)size isAlbum:(BOOL)isAlbum albumID:(NSString*)albumID parentURL:(NSString*)parentURL{
-	return [self initWithURL:URL smallURL:smallURL size:size caption:nil isAlbum:isAlbum albumID:albumID parentURL:parentURL];
+- (id)initWithURL:(NSString*)URL smallURL:(NSString*)smallURL size:(CGSize)size isAlbum:(BOOL)isAlbum photoID:(NSString*)photoID parentURL:(NSString*)parentURL{
+	return [self initWithURL:URL smallURL:smallURL size:size caption:nil isAlbum:isAlbum photoID:photoID parentURL:parentURL];
 }
 
 - (id)initWithURL:(NSString*)URL smallURL:(NSString*)smallURL size:(CGSize)size
-    caption:(NSString*)caption isAlbum:(BOOL)isAlbum albumID:(NSString*)albumID parentURL:(NSString*)parentURL{
+    caption:(NSString*)caption isAlbum:(BOOL)isAlbum photoID:(NSString*)photoID parentURL:(NSString*)parentURL{
   if (self = [super init]) {
     _photoSource = nil;
     _URL = [URL copy];
@@ -170,7 +170,7 @@ isAlbum = _isAlbum, albumID = _albumID, parentURL = _parentURL;
     _caption = [caption copy];
     _index = NSIntegerMax;
 	_isAlbum = isAlbum;
-	  _albumID = albumID;
+	  _photoID = photoID;
 	  _parentURL = parentURL;
   }
   return self;

@@ -86,7 +86,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)requestDidFinishLoad:(TTURLRequest*)request {
   TTURLJSONResponse* response = request.response;
-  TTDASSERT([response.rootObject isKindOfClass:[NSDictionary class]]);
+  //TTDASSERT([response.rootObject isKindOfClass:[NSDictionary class]]);
 
   NSDictionary* feed = response.rootObject;
   //TTDASSERT([[feed objectForKey:@"entity"] isKindOfClass:[NSArray class]]); 

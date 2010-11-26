@@ -216,7 +216,7 @@
 						   smallURL:[NSString stringWithString: thumb_url]
 						   size:CGSizeMake(200, 100)
 						   isAlbum:isAlbum
-						   albumID:[NSString stringWithString: photoID]
+						   photoID:[NSString stringWithString: photoID]
 						   parentURL:[NSString stringWithString: parent]] autorelease];
 		
 		[album addObject:mph];

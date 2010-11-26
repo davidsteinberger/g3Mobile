@@ -43,7 +43,7 @@
 }
 
 - (void) dealloc {
-
+	[super dealloc];
 }
 
 - (void)viewDidAppear {
@@ -116,7 +116,7 @@
 
 - (void)clickComposeItem {
 	MockPhoto* p = (MockPhoto *) self.centerPhoto;
-	NSString* itemID = p.albumID;
+	NSString* itemID = p.photoID;
 	TTNavigator* navigator = [TTNavigator navigator];
 	[navigator openURLAction:[[TTURLAction actionWithURLPath:[@"tt://comments/" stringByAppendingString:itemID]] applyAnimated:YES]];
 }
@@ -149,7 +149,7 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	MockPhoto* p = (MockPhoto *) self.centerPhoto;
-	NSString* itemID = p.albumID;
+	NSString* itemID = p.photoID;
 	
 	//NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
 	if (buttonIndex == 0) {
@@ -173,7 +173,7 @@
 		if (buttonIndex == 1) {
 			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 			MockPhoto* p = (MockPhoto *) self.centerPhoto;
-			NSString* photoID = p.albumID;
+			NSString* photoID = p.photoID;
 			[MyItemDeleter initWithItemID:photoID];	
 
 			[[TTURLCache sharedCache] removeURL:p.parentURL fromDisk:YES];
