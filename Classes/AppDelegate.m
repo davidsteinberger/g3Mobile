@@ -21,6 +21,14 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // UIApplicationDelegate
 
+
+- (void)dealloc {
+	TT_RELEASE_SAFELY(self->_user);
+	TT_RELEASE_SAFELY(self->_password);
+	TT_RELEASE_SAFELY(self->_challenge);
+	TT_RELEASE_SAFELY(self->_baseURL);	
+}
+
 - (void)applicationDidFinishLaunching:(UIApplication*)application {
 
 	
@@ -33,11 +41,12 @@
 //	[self login];
 	
 	TTNavigator* navigator = [TTNavigator navigator];
-	navigator.supportsShakeToReload = YES;
+	//navigator.supportsShakeToReload = YES;
+	navigator.supportsShakeToReload = NO;
 	navigator.persistenceMode = TTNavigatorPersistenceModeAll;
 
 	TTURLMap* map = navigator.URLMap;
-	
+	//[map from:@"*" toViewController:[MyThumbsViewController class]];
 	[map from:@"tt://thumbs/(initWithAlbumID:)" toViewController:[MyThumbsViewController class]];
 	[map from:@"tt://comments/(initWithItemID:)" toViewController:[MyCommentsViewController class]
 	transition:UIViewAnimationTransitionFlipFromLeft];

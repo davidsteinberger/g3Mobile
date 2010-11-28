@@ -161,6 +161,10 @@
 	//[self.navigationController setToolbarHidden: YES animated: animated];
 } 
 
+- (id)init {
+	NSLog(@"here");
+}
+
 - (id)initWithAlbumID:(NSString*)albumID {
 	if( self = [super init] )
 	{
