@@ -29,6 +29,11 @@
 }
 
 - (void)viewDidLoad {
+	/*
+	UIProgressView *progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+	[progressView setFrame:CGRectMake(0,0,320,100)];
+	[self.view addSubview:progressView];
+	*/
 	
 	MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
 	
@@ -136,17 +141,19 @@
 	
 	UIImage* picture = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
 	
-	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:[[[NSString alloc] initWithString:ps.albumID] autorelease]];
+	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:[[[NSString alloc] initWithString:ps.albumID] autorelease] delegate:self];
 	[uploader uploadImage:picture];
 	TT_RELEASE_SAFELY(uploader);
+
+	//TT_RELEASE_SAFELY(info);
+	//TT_RELEASE_SAFELY(picker);
 
 	//NSString* result = [uploader uploadImage:picture];
 	//NSLog(@"uploading result: %@", result);
 	
 	// force a reload (yes it's a hack ;))
 	//NSString* albumID = [[[NSString alloc] initWithString: ps.albumID] autorelease];
-	
-	[self loadAlbum:[NSString stringWithString:ps.albumID]];
+	//[self loadAlbum:[NSString stringWithString:ps.albumID]];
 }
 
 - (void) viewWillAppear: (BOOL) animated
@@ -162,7 +169,7 @@
 } 
 
 - (id)init {
-	NSLog(@"here");
+	//NSLog(@"here");
 }
 
 - (id)initWithAlbumID:(NSString*)albumID {
@@ -175,6 +182,10 @@
 
 - (void)loadAlbum:(NSString* ) albumID {
 	//NSLog(@"albumID: %@", albumID);
+	
+	//[_model load:TTURLRequestCachePolicyNetwork more:NO];
+	//[self invalidateModel];
+	//[self invalidateView]; 
 	
 	NSMutableArray* album = [[NSMutableArray alloc] init];
 	MyAlbum* g3Album = [[MyAlbum alloc] initWithID:albumID];
@@ -238,9 +249,7 @@
 	} else {		
 		albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
 	}
-
-	//NSLog(@"albumParent: %@", albumParent);
-	NSLog(@"\n\nalbumID: %@", albumID);
+	
 	self.photoSource = [[[MockPhotoSource alloc]
 						 initWithType:MockPhotoSourceNormal
 						 parentURL:[NSString stringWithString: albumParent]
@@ -253,4 +262,7 @@
 	TT_RELEASE_SAFELY(g3Album);
 }
 
+-(void) reload {
+	[self updateView];
+}
 @end

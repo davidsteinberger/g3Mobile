@@ -8,5 +8,5 @@
 
 #import "Three20UI/private/TTButtonContent.h"
 
-@interface TTButtonContent (my) 
+@interface TTButtonContent(g3)
 @end

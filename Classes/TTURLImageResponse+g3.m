@@ -44,7 +44,7 @@
 				NSString* base64String = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 				NSData *dataObj = [NSData dataWithBase64EncodedString:base64String];
 				image = [UIImage imageWithData:dataObj];
-				//[base64String release];
+				[base64String release];
 			}
 			
 			if (nil != image) {

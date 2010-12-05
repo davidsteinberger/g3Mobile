@@ -7,14 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MyThumbsViewController.h"
 
 
 @interface MyImageUploader : NSObject {
 	NSString* _albumID;
+	MyThumbsViewController* _delegate;
+	
+	UIAlertView* _progressAlert;
+	UIActivityIndicatorView* _activityView;
+	UIProgressView* _progressView;
 }
 
 @property (nonatomic, retain) NSString* albumID;
+@property (nonatomic, retain) MyThumbsViewController* delegate;
 
-- (id)initWithAlbumID:(NSString* ) albumID;
+- (id)initWithAlbumID:(NSString* )albumID progressView:(UIProgressView* )progressView;
 
 @end

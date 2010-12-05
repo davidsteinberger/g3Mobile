@@ -49,7 +49,7 @@
 
 -(void)getAlbum:(NSString* )url {
 	NSString* g3Url = url;
-	//NSLog(@"url: %@", url);
+	NSLog(@"url: %@", url);
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
 	if (url == nil) {

@@ -9,6 +9,10 @@
 	UIToolbar* _toolbar;
 	UIBarButtonItem* _clickActionItem;
 	UIImagePickerController* _pickerController;
+	
+	UIAlertView* _progressAlert;
+	UIActivityIndicatorView* _activityView;
+	UIProgressView* _progressView;
 }
 
 @end

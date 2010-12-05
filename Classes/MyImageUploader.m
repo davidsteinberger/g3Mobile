@@ -15,14 +15,22 @@ static int counter = 0;
 @implementation MyImageUploader
 
 @synthesize albumID = _albumID;
+@synthesize delegate = _delegate;
 
-- (id)initWithAlbumID:(NSString* ) albumID {
+- (id)initWithAlbumID:(NSString* ) albumID delegate:(MyThumbsViewController* )delegate{
+
+	[self createProgressionAlertWithMessage:@"Image upload" withActivity:NO];
+	
+	self.delegate = delegate;
 	self.albumID = [[NSString alloc] initWithString:albumID];
 	return self;
 }
 
 -(void) dealloc {
 	TT_RELEASE_SAFELY(self.albumID);
+	TT_RELEASE_SAFELY(self->_progressAlert);
+	TT_RELEASE_SAFELY(self->_activityView);
+	TT_RELEASE_SAFELY(self->_progressView);
 }
 
 
@@ -30,18 +38,27 @@ static int counter = 0;
 	[self uploadImage:nil];
 }
 
-- (NSString* )uploadImage:(UIImage* ) image {
+- (void)uploadImage:(UIImage* ) image {
 	
 	if (image == nil) {
 		image = TTIMAGE(@"bundle://defaultPerson.png");
 	}
+
+	//UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+	/* Adjust the indicator so it is up a few pixels from the bottom of the alert
+	indicator.center = CGPointMake(_progressAlert.bounds.size.width / 2, _progressAlert.bounds.size.height - 50);
+	[indicator startAnimating];
+	[_progressAlert addSubview:indicator];
+	[indicator release];*/
 	
+	NSLog(@"before jpg!");
 	NSData *imageData = UIImageJPEGRepresentation(image, 0.9);
+	NSLog(@"after jpg!");
 	
-	return [self uploadImageData:imageData];
+	[self uploadImageData:imageData];
 }
 
-- (NSString* )uploadImageData:(NSData* ) data {
+- (void)uploadImageData:(NSData* ) data {
 	
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	
@@ -90,13 +107,77 @@ static int counter = 0;
 	[request setHTTPBody:body];
 	
 	// now lets make the connection to the web
-	NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-	NSString *returnString = [[[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding] autorelease];
+	//NSData* returnData = [NSURLConnection send:request returningResponse:nil error:nil];
+	[NSURLConnection connectionWithRequest:request delegate:self];
+
+	//NSString *returnString = [[[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding] autorelease];
+	
+	//[NSURLConnection connectionWithRequest:request delegate:self];
+	//NSLog(@"url to be removed: %@", urlString);
+
+/*
+	[[TTURLCache sharedCache] removeURL:@"http://192.168.2.102/~David/gallery3/index.php/rest/item/6870" fromDisk:YES];
+    [[TTURLCache sharedCache] removeURL:@"http://192.168.2.102/~David/gallery3/index.php/rest/item/5166" fromDisk:YES];
+    [[TTURLCache sharedCache] removeURL:@"http://192.168.2.102/~David/gallery3/index.php/rest/item/5188" fromDisk:YES];
+	
+	[[TTURLCache sharedCache] removeURL:@"http://192.168.2.102/~David/gallery3/index.php/rest/item/5159" fromDisk:YES];
+	*/
+	
+	//[[TTURLCache sharedCache] removeAll:YES];
+	//[[TTURLCache sharedCache] removeURL:@"http://192.168.2.102/~David/gallery3/index.php/rest/items?urls=%5B%22http://192.168.2.102/~David/gallery3/index.php/rest/item/7468%22,%22http://192.168.2.102/~David/gallery3/index.php/rest/item/6870%22,%22http://192.168.2.102/~David/gallery3/index.php/rest/item/5166%22,%22http://192.168.2.102/~David/gallery3/index.php/rest/item/5188%22%5D" fromDisk:YES];
 	
 	[[TTURLCache sharedCache] removeURL:urlString fromDisk:YES];
+	/*[self.delegate loadAlbum:[NSString stringWithString:self.albumID]];
+	TTNavigator* navigator = [TTNavigator navigator];
+	[navigator reload];*/
 	
-	return returnString;
+	//return returnString;
 	//NSLog(returnString);
+}
+
+- (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
+ {
+	/*NSLog(@"totalBytesWritten: %i", totalBytesWritten);
+	NSLog(@"totalBytesExpectedToWrite: %i", totalBytesExpectedToWrite);
+	 NSLog(@"set: %f", (CGFloat)totalBytesWritten / (CGFloat)totalBytesExpectedToWrite);
+	NSLog(@"\n\n");*/
+	 
+	_progressView.progress = (CGFloat)totalBytesWritten / (CGFloat)totalBytesExpectedToWrite;
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+	//[self.delegate reload];
+	[_progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+	
+	[self.delegate loadAlbum:[NSString stringWithString:self.albumID]];
+	TTNavigator* navigator = [TTNavigator navigator];
+	[navigator reload];
+	
+	[self.delegate loadAlbum:[NSString stringWithString:self.albumID]];
+	
+	[self.delegate reload];
+}
+
+- (void) createProgressionAlertWithMessage:(NSString *)message withActivity:(BOOL)activity
+{
+	_progressAlert = [[UIAlertView alloc] initWithTitle: message
+												message: @"Please wait..."
+											   delegate: self
+									  cancelButtonTitle: nil
+									  otherButtonTitles: nil];
+	
+	// Create the progress bar and add it to the alert
+	if (activity) {
+		_activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+		_activityView.frame = CGRectMake(139.0f-18.0f, 80.0f, 37.0f, 37.0f);
+		[_progressAlert addSubview:_activityView];
+		[_activityView startAnimating];
+	} else {
+		_progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(30.0f, 80.0f, 225.0f, 90.0f)];
+		[_progressAlert addSubview:_progressView];
+		[_progressView setProgressViewStyle: UIProgressViewStyleBar];
+	}
+	[_progressAlert show];
 }
 
 @end
