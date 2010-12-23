@@ -1,0 +1,30 @@
+Installation / Setup instructions:
+
+Setup Gallery3:
+1) Install Gallery3 
+   see: http://gallery.menalto.com/gallery_3.0_released
+2) enable the REST-module
+   go to Admin->Modules and check-on 'REST API Module' and hit 'Update'
+2) create/modifiy a user for the mobile-client
+   go to Admin->Users/Groups and create a user (and a group)
+     (the example code is based on a user 'admin' and password 'gallery3')
+   go back to your gallery3 and grant this user-group rights 
+     on whatever you want to see on your mobile client
+
+The Development-Environment:
+3) install Xcode 3.2.4 + iOS 4.2 SDK 
+   (download from apple)
+
+The Code:
+4) get the latest three20 library:
+   git clone git://github.com/facebook/three20.git
+5) get the latest g3Mobile code:
+   git clone git://github.com/dave8401/g3Mobile.git
+
+!!!NOTE: the three20- AND(!) the g3Mobile-folder MUST(!) be in the same parent folder!!!
+
+Run it:
+6) fire up 'g3Mobile.xcodeproj' and hit the 'Build and Debug'-button
+7) enjoy and contribute with new ideas, code, testing, ...
+
+More to follow ...

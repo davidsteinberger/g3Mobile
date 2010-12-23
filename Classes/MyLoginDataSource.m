@@ -37,9 +37,7 @@
         _baseURL.clearButtonMode = UITextFieldViewModeWhileEditing;
         _baseURL.clearsOnBeginEditing = NO;
         _baseURL.delegate = self;
-//		_baseURL.text = @"";
-        _baseURL.text = @"http://192.168.1.101/~David/gallery3";
-//		_baseURL.text = @"http://www.david-steinberger.at/gallery3/index.php";
+        _baseURL.text = @"http://YOUR-DOMAIN/gallery3/index.php";
         [itemsRow addObject:_baseURL];
 		
         _usernameField = [[UITextField alloc] init];
@@ -51,7 +49,6 @@
         _usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _usernameField.clearsOnBeginEditing = NO;
         _usernameField.delegate = self;
-//        _usernameField.text = @"";
         _usernameField.text = @"admin";
         [itemsRow addObject:_usernameField];
         
@@ -64,7 +61,6 @@
         _passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _passwordField.clearsOnBeginEditing = NO;
         _passwordField.delegate = self;
-//        _passwordField.text = @"";
        _passwordField.text = @"gallery3";
         [itemsRow addObject:_passwordField];
         
