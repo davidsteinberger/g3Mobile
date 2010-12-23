@@ -24,9 +24,8 @@ typedef enum {
 @property (nonatomic, retain) NSString* albumID;
 @property (nonatomic, retain) NSString* parentURL;
 
-- (id)initWithType:(MockPhotoSourceType)type title:(NSString*)title
-      photos:(NSArray*)photos photos2:(NSArray*)photos2;
-
+- (id)initWithType:(MockPhotoSourceType)type parentURL:(NSString*)parentURL albumID:(NSString*)albumID title:(NSString*)title photos:(NSArray*)photos
+		   photos2:(NSArray*)photos2;
 @end
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,8 +48,6 @@ typedef enum {
 @property(nonatomic, retain) NSString* photoID;
 @property (nonatomic, retain) NSString* parentURL;
 
-- (id)initWithURL:(NSString*)URL smallURL:(NSString*)smallURL size:(CGSize)size isAlbum:(BOOL)isAlbum albumID:(NSString*)albumID;
+- (id)initWithURL:(NSString*)URL smallURL:(NSString*)smallURL size:(CGSize)size isAlbum:(BOOL)isAlbum photoID:(NSString*)photoID parentURL:(NSString*)parentURL;
 
-- (id)initWithURL:(NSString*)URL smallURL:(NSString*)smallURL size:(CGSize)size
-		  caption:(NSString*)caption isAlbum:(BOOL)isAlbum albumID:(NSString*)albumID;
 @end

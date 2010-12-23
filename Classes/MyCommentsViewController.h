@@ -7,7 +7,7 @@
 #import "Three20UI/UIViewAdditions.h"
 #import "Three20/Three20.h"
 
-@interface MyCommentsViewController : TTTableViewController {
+@interface MyCommentsViewController : TTTableViewController <TTPostControllerDelegate> {
 	UIBarButtonItem*  _nextButton;
 	UIBarButtonItem*  _previousButton;
 	

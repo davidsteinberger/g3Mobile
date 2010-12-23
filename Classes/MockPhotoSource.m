@@ -170,18 +170,20 @@ isAlbum = _isAlbum, photoID = _photoID, parentURL = _parentURL;
     _caption = [caption copy];
     _index = NSIntegerMax;
 	_isAlbum = isAlbum;
-	  _photoID = photoID;
-	  _parentURL = parentURL;
+	  _photoID = [photoID copy];
+	  _parentURL = [parentURL copy];
   }
   return self;
 }
 
 - (void)dealloc {
-  TT_RELEASE_SAFELY(_URL);
-  TT_RELEASE_SAFELY(_smallURL);
-  TT_RELEASE_SAFELY(_thumbURL);
-  TT_RELEASE_SAFELY(_caption);
-  [super dealloc];
+	TT_RELEASE_SAFELY(_thumbURL);
+	TT_RELEASE_SAFELY(_smallURL);
+	TT_RELEASE_SAFELY(_URL);
+	TT_RELEASE_SAFELY(_caption);
+	TT_RELEASE_SAFELY(_photoID);
+	TT_RELEASE_SAFELY(_parentURL);
+	[super dealloc];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

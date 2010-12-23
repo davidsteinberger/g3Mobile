@@ -6,8 +6,11 @@
 #import "FlipsideViewController.h"
 #import "MyImageUploader.h"
 #import "MyItemDeleter.h"
+#import "AddAlbumViewController.h"
 
 @implementation MyThumbsViewController
+
+@synthesize albumID = _albumID;
 
 - (void)dealloc {
 	TT_RELEASE_SAFELY(self->_toolbar);
@@ -21,6 +24,22 @@
 	//NSLog(@"setSettings called");
 	TTNavigator* navigator = [TTNavigator navigator];
 	[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://login"]];
+}
+
+- (NSString *)urlEncodeValue:(NSString *)str
+{
+	NSString *result = (NSString *) CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)str, NULL, CFSTR("?=&+"), kCFStringEncodingUTF8);
+	return [result autorelease];
+}
+
+- (void)addAlbum {
+	//NSLog(@"Add Album for albumID: %@", self.albumID);
+	
+	AddAlbumViewController* addAlbum = [[AddAlbumViewController alloc] initWithAlbumID: self.albumID delegate: self];
+
+	//[self presentModalViewController:addAlbum animated:YES];
+	[self.navigationController pushViewController:addAlbum animated:YES];
+	TT_RELEASE_SAFELY(addAlbum);
 }
 
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
@@ -43,10 +62,7 @@
 		= [[[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered
 										   target:self action:@selector(setSettings)] autorelease];	
 		
-	} else {
-		NSLog(@"Not implemented yet");
 	}
-
 	
 	_clickActionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction//TTIMAGE(@"UIBarButtonReply.png")
 																	 target:self action:@selector(clickActionItem)];
@@ -69,7 +85,6 @@
 	[self.view addSubview:_toolbar];
 	
 	_pickerController = [[UIImagePickerController alloc] init];
-	_pickerController.allowsImageEditing = NO;
 	_pickerController.delegate = self;
 	if ( [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront] == YES) {
 		_pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -89,10 +104,11 @@
 	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
 	
 	[actionSheet addButtonWithTitle:@"Upload"];
+	[actionSheet addButtonWithTitle:@"Add Album"];
 	[actionSheet addButtonWithTitle:@"Delete"];
 	[actionSheet addButtonWithTitle:@"Cancel"];
-	actionSheet.cancelButtonIndex = 2;
-	actionSheet.destructiveButtonIndex = 1; 
+	actionSheet.cancelButtonIndex = 3;
+	actionSheet.destructiveButtonIndex = 2; 
 	
     [actionSheet showInView:self.view];
 }
@@ -105,6 +121,9 @@
 		[self presentModalViewController:_pickerController animated:YES];
 	}	
 	if (buttonIndex == 1) {
+		[self addAlbum];
+	}
+	if (buttonIndex == 2) {
 		UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
 		[dialog setDelegate:self];
 		[dialog setTitle:@"Confirm Deletion"];
@@ -144,49 +163,43 @@
 	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:[[[NSString alloc] initWithString:ps.albumID] autorelease] delegate:self];
 	[uploader uploadImage:picture];
 	TT_RELEASE_SAFELY(uploader);
+}
 
-	//TT_RELEASE_SAFELY(info);
-	//TT_RELEASE_SAFELY(picker);
-
-	//NSString* result = [uploader uploadImage:picture];
-	//NSLog(@"uploading result: %@", result);
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
 	
-	// force a reload (yes it's a hack ;))
-	//NSString* albumID = [[[NSString alloc] initWithString: ps.albumID] autorelease];
-	//[self loadAlbum:[NSString stringWithString:ps.albumID]];
+}
+
+#pragma mark UINavigationController Methods
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+	
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+	
 }
 
 - (void) viewWillAppear: (BOOL) animated
 {
 	[super viewWillAppear: animated];
-	//[self.navigationController setToolbarHidden: NO animated: animated];
 }
 
 - (void) viewWillDisappear: (BOOL) animated
 {
 	[super viewWillDisappear: animated];
-	//[self.navigationController setToolbarHidden: YES animated: animated];
 } 
-
-- (id)init {
-	//NSLog(@"here");
-}
 
 - (id)initWithAlbumID:(NSString*)albumID {
 	if( self = [super init] )
 	{
+		self.albumID = albumID;
 		[self loadAlbum:albumID];
 	}
 	return self;
 }
 
 - (void)loadAlbum:(NSString* ) albumID {
-	//NSLog(@"albumID: %@", albumID);
-	
-	//[_model load:TTURLRequestCachePolicyNetwork more:NO];
-	//[self invalidateModel];
-	//[self invalidateView]; 
-	
+	//NSLog(@"albumID: %@", albumID); 
+
 	NSMutableArray* album = [[NSMutableArray alloc] init];
 	MyAlbum* g3Album = [[MyAlbum alloc] initWithID:albumID];
 	
@@ -195,10 +208,13 @@
 		NSDictionary* obj = [g3Album.array objectForKey:[ keyArray objectAtIndex:i]];
 		NSDictionary* entity = [obj objectForKey:@"entity"];
 		//NSLog(@"iterating over: %@", entity);
-		
+
 		NSString* thumb_url = [entity objectForKey:@"thumb_url_public"];
 		if (thumb_url == nil) {
 			thumb_url = [entity objectForKey:@"thumb_url"];
+			if (thumb_url == nil) {
+				thumb_url = @"bundle://empty.png";
+			}
 		}
 		
 		NSString* resize_url = [entity objectForKey:@"resize_url_public"];
@@ -206,6 +222,9 @@
 			resize_url = [entity objectForKey:@"resize_url"];
 			if (resize_url == nil) {
 				resize_url = thumb_url;
+				if (resize_url == nil) {
+					resize_url = @"bundle://empty.png";
+				}
 			}
 		}
 		
@@ -226,10 +245,28 @@
 			photoID = @"1";
 		}
 		
+		id iWidth = [entity objectForKey:@"resize_width"];
+		id iHeight = [entity objectForKey:@"resize_height"];
+		
+		short int width = 100;
+		short int height = 100;
+		
+		if ([iWidth isKindOfClass:[NSString class]] && [iHeight isKindOfClass:[NSString class]]) {
+			if ([@"" isEqualToString:iWidth] || [@"" isEqualToString:iHeight]) {
+				//NSLog(@"String is empty!!!");
+				width = 100;
+				height = 100;
+			}	
+			else if ([iWidth length] > 0 && [iHeight length] > 0 ) {
+				width = [iWidth longLongValue];
+				height = [iHeight longLongValue];
+			}
+		}
+				
 		MockPhoto* mph = [[[MockPhoto alloc]
 						   initWithURL:[NSString stringWithString: resize_url]
 						   smallURL:[NSString stringWithString: thumb_url]
-						   size:CGSizeMake(200, 100)
+						   size:CGSizeMake(width, height)
 						   isAlbum:isAlbum
 						   photoID:[NSString stringWithString: photoID]
 						   parentURL:[NSString stringWithString: parent]] autorelease];
@@ -238,13 +275,19 @@
 	}
 	
 	NSString* albumParent = nil;
+	NSString* albumTitle = nil;
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	
 	if ([g3Album.albumEntity count] > 0) {
-		if ([g3Album.albumEntity objectForKey:@"parent"] != nil) {
-			albumParent = [g3Album.albumEntity objectForKey:@"parent"];
+		if ([g3Album.albumEntity valueForKey:@"parent"] != nil) {
+			albumParent = [g3Album.albumEntity valueForKey:@"parent"];
 		} else {
 			albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
+		}
+		if ([g3Album.albumEntity valueForKey:@"title"] != nil) {
+			albumTitle = [g3Album.albumEntity valueForKey:@"title"];
+		} else {
+			albumTitle = @"";
 		}
 	} else {		
 		albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
@@ -254,7 +297,7 @@
 						 initWithType:MockPhotoSourceNormal
 						 parentURL:[NSString stringWithString: albumParent]
 						 albumID:[NSString stringWithString: albumID]
-						 title:@"David's Pictures"
+						 title:albumTitle
 						 photos:album
 						 photos2:nil] autorelease];
 

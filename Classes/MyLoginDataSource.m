@@ -38,7 +38,7 @@
         _baseURL.clearsOnBeginEditing = NO;
         _baseURL.delegate = self;
 //		_baseURL.text = @"";
-        _baseURL.text = @"http://192.168.1.100/~David/gallery3/index.php";
+        _baseURL.text = @"http://192.168.1.101/~David/gallery3";
 //		_baseURL.text = @"http://www.david-steinberger.at/gallery3/index.php";
         [itemsRow addObject:_baseURL];
 		
@@ -99,7 +99,11 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField.returnKeyType == UIReturnKeyNext) {
-        [_passwordField becomeFirstResponder];
+		if (textField.placeholder == @"Website") {
+			[_usernameField becomeFirstResponder];
+		} else {
+			[_passwordField becomeFirstResponder];
+		}
     }
     else {
 		[_passwordField resignFirstResponder];

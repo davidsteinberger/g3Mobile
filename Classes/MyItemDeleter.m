@@ -14,7 +14,7 @@
 @implementation MyItemDeleter
 
 + (id) initWithItemID:(NSString *)itemID {
-	[self initWithItemID:itemID type:nil];
+	return [self initWithItemID:itemID type:nil];
 }
 
 + (id) initWithItemID:(NSString *)itemID type:(NSString *)type {

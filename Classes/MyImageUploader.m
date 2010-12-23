@@ -17,7 +17,7 @@ static int counter = 0;
 @synthesize albumID = _albumID;
 @synthesize delegate = _delegate;
 
-- (id)initWithAlbumID:(NSString* ) albumID delegate:(MyThumbsViewController* )delegate{
+- (id)initWithAlbumID:(NSString* ) albumID delegate:(MyThumbsViewController* )delegate {
 
 	[self createProgressionAlertWithMessage:@"Image upload" withActivity:NO];
 	
@@ -27,10 +27,8 @@ static int counter = 0;
 }
 
 -(void) dealloc {
-	TT_RELEASE_SAFELY(self.albumID);
-	TT_RELEASE_SAFELY(self->_progressAlert);
-	TT_RELEASE_SAFELY(self->_activityView);
-	TT_RELEASE_SAFELY(self->_progressView);
+	TT_RELEASE_SAFELY(_albumID);
+	[super dealloc];
 }
 
 
@@ -41,19 +39,10 @@ static int counter = 0;
 - (void)uploadImage:(UIImage* ) image {
 	
 	if (image == nil) {
-		image = TTIMAGE(@"bundle://defaultPerson.png");
+		image = TTIMAGE(@"bundle://empty.png");
 	}
 
-	//UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-	/* Adjust the indicator so it is up a few pixels from the bottom of the alert
-	indicator.center = CGPointMake(_progressAlert.bounds.size.width / 2, _progressAlert.bounds.size.height - 50);
-	[indicator startAnimating];
-	[_progressAlert addSubview:indicator];
-	[indicator release];*/
-	
-	NSLog(@"before jpg!");
 	NSData *imageData = UIImageJPEGRepresentation(image, 0.9);
-	NSLog(@"after jpg!");
 	
 	[self uploadImageData:imageData];
 }
@@ -146,16 +135,16 @@ static int counter = 0;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-	//[self.delegate reload];
 	[_progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-	
+	//NSLog(@"albumID: %@", self.albumID);
 	[self.delegate loadAlbum:[NSString stringWithString:self.albumID]];
+	
 	TTNavigator* navigator = [TTNavigator navigator];
 	[navigator reload];
 	
-	[self.delegate loadAlbum:[NSString stringWithString:self.albumID]];
-	
-	[self.delegate reload];
+	TT_RELEASE_SAFELY(self->_progressAlert);
+	TT_RELEASE_SAFELY(self->_activityView);
+	TT_RELEASE_SAFELY(self->_progressView);
 }
 
 - (void) createProgressionAlertWithMessage:(NSString *)message withActivity:(BOOL)activity

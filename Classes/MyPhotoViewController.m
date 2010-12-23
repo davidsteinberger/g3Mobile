@@ -11,9 +11,13 @@
 #import "AppDelegate.h"
 #import "MockPhotoSource.h"
 #import "MyItemDeleter.h"
+#import "MyAlbumUpdater.h"
+
 #import "extThree20JSON/extThree20JSON.h"
 
 @implementation MyPhotoViewController
+
+@synthesize parentController = _parentController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -133,10 +137,11 @@
 	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
 	
 	[actionSheet addButtonWithTitle:@"Comments"];
+	[actionSheet addButtonWithTitle:@"Make Cover"];
 	[actionSheet addButtonWithTitle:@"Delete"];
 	[actionSheet addButtonWithTitle:@"Cancel"];
-	actionSheet.cancelButtonIndex = 2;
-	actionSheet.destructiveButtonIndex = 1; 
+	actionSheet.cancelButtonIndex = 3;
+	actionSheet.destructiveButtonIndex = 2; 
 	
     [actionSheet showInView:self.view];
 }
@@ -157,6 +162,18 @@
 		[navigator openURLAction:[[TTURLAction actionWithURLPath:[@"tt://comments/" stringByAppendingString:itemID]] applyAnimated:YES]];
 	}
 	if (buttonIndex == 1) {
+		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		MockPhoto* p = (MockPhoto *) self.centerPhoto;
+		NSString* url = p.parentURL;
+		NSArray* chunks = [url componentsSeparatedByString: @"/"];
+		NSString* albumID = [chunks objectAtIndex:[chunks count] - 1 ];
+		//NSLog(@"albumID: %@", albumID);
+		MyAlbumUpdater* updater = [[MyAlbumUpdater alloc] initWithItemID:albumID];
+		[updater setValue:[[appDelegate.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:p.photoID] param: @"album_cover"];
+		[updater update];
+		TT_RELEASE_SAFELY(updater);
+	}
+	if (buttonIndex == 2) {
 		UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
 		[dialog setDelegate:self];
 		[dialog setTitle:@"Confirm Deletion"];
@@ -171,7 +188,6 @@
 {
     if ([alertView isKindOfClass:[UIAlertView class]]) {
 		if (buttonIndex == 1) {
-			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 			MockPhoto* p = (MockPhoto *) self.centerPhoto;
 			NSString* photoID = p.photoID;
 			[MyItemDeleter initWithItemID:photoID];	

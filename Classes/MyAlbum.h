@@ -13,13 +13,13 @@
 
 @interface MyAlbum : NSObject {
 	NSMutableDictionary* _array;
-	NSMutableArray* _albumEntity;
+	NSMutableDictionary* _albumEntity;
 	BOOL _parentLoaded;
 }
 
 @property(nonatomic, retain) NSArray* root;
 @property(nonatomic, retain) NSMutableDictionary* array;
-@property(nonatomic, retain) NSMutableArray* albumEntity;
+@property(nonatomic, retain) NSMutableDictionary* albumEntity;
 
 - (id)init;
 - (id)initWithID:(NSString* )albumId;

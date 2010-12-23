@@ -53,17 +53,15 @@
   }
 	
   if ([items count] == 0) {
-	  [items addObject:[TTTableMessageItem itemWithTitle: nil
-												 caption: @"No Comments yet"
-													text: nil
-											   timestamp: nil
-												imageURL: nil
-													 URL: nil]];
+	  /*
+	  NSMutableString *temp = [NSMutableString stringWithString:@"No Comments Yet!"];
+	  [temp replaceOccurrencesOfString:@"&nbsp;" withString:@" " options:NSLiteralSearch range:NSMakeRange(0, [temp length])];
+	  TTTableStyledTextItem *newItem = [TTTableStyledTextItem itemWithText:[TTStyledText textFromXHTML:[NSString stringWithString:temp]]];
+	  */
+	  
+	  [items addObject:[TTTableTextItem itemWithText:@"No Comments Yet!" URL:nil]];
   }
-/*	NSString* localImage = @"bundle://defaultPerson.png";
-	[items addObject:[TTTableImageItem itemWithText:@"TTTableImageItem" imageURL:localImage
-												URL:@"tt://tableItemTest"]];
-*/
+
   self.items = items;
   TT_RELEASE_SAFELY(items);
 }

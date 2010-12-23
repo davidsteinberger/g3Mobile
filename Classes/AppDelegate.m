@@ -7,6 +7,7 @@
 #import "MyCommentsViewController.h"
 #import "MySettingsController.h"
 #import "MyLoginViewController.h"
+#import "AddAlbumViewController.h"
 #import <sqlite3.h>
 
 
@@ -26,7 +27,8 @@
 	TT_RELEASE_SAFELY(self->_user);
 	TT_RELEASE_SAFELY(self->_password);
 	TT_RELEASE_SAFELY(self->_challenge);
-	TT_RELEASE_SAFELY(self->_baseURL);	
+	TT_RELEASE_SAFELY(self->_baseURL);
+	[super dealloc];
 }
 
 - (void)applicationDidFinishLaunching:(UIApplication*)application {
@@ -55,11 +57,14 @@
 	[map from:@"tt://login" toModalViewController:[MyLoginViewController class]
 	transition:UIViewAnimationTransitionFlipFromLeft];
 	
+	[map from:@"tt://addAlbum/(initWithAlbumID:)" toViewController:[AddAlbumViewController class]];
+	
 	NSString* dbFilePath = [self copyDatabaseToDocuments];
 	[self readSettingsFromDatabaseWithPath:dbFilePath];
 	
 	if (![navigator restoreViewControllers]) {
 		if (self.baseURL == nil || self.challenge == nil) {
+			//[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://addAlbum/1"]];
 			[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://login"]];
 		}
 		else {
@@ -98,7 +103,7 @@
         NSString *bundleCopy = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"g3DB.sqlite"];
 		[fileManager copyItemAtPath:bundleCopy toPath:filePath error:nil];
     }
-    return [filePath retain];
+    return [[NSString stringWithString:filePath] retain];
 }
 
 -(void) readSettingsFromDatabaseWithPath:(NSString *)filePath {
@@ -152,14 +157,11 @@
 	//set request url to the NSURLConnection
 	NSData *returnedData = [NSURLConnection sendSynchronousRequest:request1
 												 returningResponse:&response error:&error];	
-	[request1 release];
-	NSString* returnString = [[[[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding] substringFromIndex: 1] substringToIndex:[self.challenge length] - 1];
 
-	self.challenge = returnString;
+	TT_RELEASE_SAFELY(request1);
+	NSString* returnString = [[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding];
+	self.challenge = [[returnString substringFromIndex: 1] substringToIndex:[self.challenge length] - 1];
 	TT_RELEASE_SAFELY(returnString);
-
-	//[returnString release];
-	//NSLog(@"response: %@", [[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding]);
 }
 
 @end

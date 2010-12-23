@@ -12,6 +12,9 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		636B7F1912BFE98D00ECDCDD /* MyAlbumUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 636B7F1812BFE98D00ECDCDD /* MyAlbumUpdater.m */; };
+		636B811112C0243500ECDCDD /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 636B811012C0243500ECDCDD /* empty.png */; };
+		639788D012BEBA24000FBD09 /* defaultPerson.png in Resources */ = {isa = PBXBuildFile; fileRef = 639788CF12BEBA24000FBD09 /* defaultPerson.png */; };
 		63A3B51C129C3BDE00E04981 /* MyLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B514129C3BDE00E04981 /* MyLogin.m */; };
 		63A3B51D129C3BDE00E04981 /* MyLoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B516129C3BDE00E04981 /* MyLoginModel.m */; };
 		63A3B51E129C3BDE00E04981 /* MyLoginDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B519129C3BDE00E04981 /* MyLoginDataSource.m */; };
@@ -47,6 +50,7 @@
 		63B255EE1299C60900BA9323 /* FlipsideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EC1299C60900BA9323 /* FlipsideView.xib */; };
 		63B255F01299C63300BA9323 /* Three20.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EF1299C63300BA9323 /* Three20.bundle */; };
 		63B257AE1299D51800BA9323 /* MySettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B257AD1299D51800BA9323 /* MySettingsController.m */; };
+		63E13C7F12BED4C6003248F4 /* AddAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -473,6 +477,10 @@
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Gallery3_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gallery3_Prefix.pch; sourceTree = "<group>"; };
+		636B7F1712BFE98D00ECDCDD /* MyAlbumUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAlbumUpdater.h; sourceTree = "<group>"; };
+		636B7F1812BFE98D00ECDCDD /* MyAlbumUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAlbumUpdater.m; sourceTree = "<group>"; };
+		636B811012C0243500ECDCDD /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = "<group>"; };
+		639788CF12BEBA24000FBD09 /* defaultPerson.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultPerson.png; sourceTree = "<group>"; };
 		63A3B513129C3BDE00E04981 /* MyLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLogin.h; sourceTree = "<group>"; };
 		63A3B514129C3BDE00E04981 /* MyLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLogin.m; sourceTree = "<group>"; };
 		63A3B515129C3BDE00E04981 /* MyLoginModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLoginModel.h; sourceTree = "<group>"; };
@@ -531,6 +539,8 @@
 		63B255EF1299C63300BA9323 /* Three20.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Three20.bundle; path = ../../iPhone/three20/src/Three20.bundle; sourceTree = SOURCE_ROOT; };
 		63B257AC1299D51800BA9323 /* MySettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySettingsController.h; sourceTree = "<group>"; };
 		63B257AD1299D51800BA9323 /* MySettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySettingsController.m; sourceTree = "<group>"; };
+		63E13C7D12BED4C6003248F4 /* AddAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAlbumViewController.h; sourceTree = "<group>"; };
+		63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddAlbumViewController.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Gallery3-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Gallery3-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -607,6 +617,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				636B811012C0243500ECDCDD /* empty.png */,
+				639788CF12BEBA24000FBD09 /* defaultPerson.png */,
 				63B255EF1299C63300BA9323 /* Three20.bundle */,
 				63B255EB1299C60900BA9323 /* g3DB.sqlite */,
 				63B255EC1299C60900BA9323 /* FlipsideView.xib */,
@@ -888,6 +900,8 @@
 				63B254121299BD3100BA9323 /* TTThumbsViewController+g3.m */,
 				63B254131299BD3100BA9323 /* MyThumbsViewController.h */,
 				63B254141299BD3100BA9323 /* MyThumbsViewController.m */,
+				63E13C7D12BED4C6003248F4 /* AddAlbumViewController.h */,
+				63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */,
 			);
 			name = Album;
 			sourceTree = "<group>";
@@ -901,6 +915,8 @@
 				63B254171299BD3100BA9323 /* MyImageUploader.m */,
 				63A3B71A129C5EA200E04981 /* MyItemDeleter.h */,
 				63A3B71B129C5EA200E04981 /* MyItemDeleter.m */,
+				636B7F1712BFE98D00ECDCDD /* MyAlbumUpdater.h */,
+				636B7F1812BFE98D00ECDCDD /* MyAlbumUpdater.m */,
 			);
 			name = "Rest Helpers";
 			sourceTree = "<group>";
@@ -1369,6 +1385,8 @@
 				63B255ED1299C60900BA9323 /* g3DB.sqlite in Resources */,
 				63B255EE1299C60900BA9323 /* FlipsideView.xib in Resources */,
 				63B255F01299C63300BA9323 /* Three20.bundle in Resources */,
+				639788D012BEBA24000FBD09 /* defaultPerson.png in Resources */,
+				636B811112C0243500ECDCDD /* empty.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1403,6 +1421,8 @@
 				63A3B51E129C3BDE00E04981 /* MyLoginDataSource.m in Sources */,
 				63A3B51F129C3BDE00E04981 /* MyLoginViewController.m in Sources */,
 				63A3B71C129C5EA200E04981 /* MyItemDeleter.m in Sources */,
+				63E13C7F12BED4C6003248F4 /* AddAlbumViewController.m in Sources */,
+				636B7F1912BFE98D00ECDCDD /* MyAlbumUpdater.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,6 +22,9 @@
 @property (nonatomic, retain) NSString* albumID;
 @property (nonatomic, retain) MyThumbsViewController* delegate;
 
-- (id)initWithAlbumID:(NSString* )albumID progressView:(UIProgressView* )progressView;
+- (id)initWithAlbumID:(NSString* ) albumID delegate:(MyThumbsViewController* )delegate;
+- (void)uploadImage:(UIImage* ) image;
+- (void)uploadImageData:(NSData* ) data;
+- (void) createProgressionAlertWithMessage:(NSString *)message withActivity:(BOOL)activity;
 
 @end

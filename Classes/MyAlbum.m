@@ -28,14 +28,10 @@
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	NSString* url = [appDelegate.baseURL stringByAppendingString:@"/rest/item/"];
 	url = [url stringByAppendingString:(NSString *) albumId];
-	[self initWithUrl:url];
-	return self;
+	return [self initWithUrl:url];
 }
 
 -(id)initWithUrl:(NSString* )url {
-	// setObject:forKey: will be called on array ... so it must be allocated
-	self.array = [[NSMutableDictionary alloc] init];
-	self.albumEntity = [[NSMutableArray alloc] init];
 	[self getAlbum:url];
 	return self;
 }
@@ -49,7 +45,8 @@
 
 -(void)getAlbum:(NSString* )url {
 	NSString* g3Url = url;
-	NSLog(@"url: %@", url);
+
+	//NSLog(@"url: %@", url);
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
 	if (url == nil) {
@@ -68,48 +65,54 @@
 		[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
 	}
 	
-	// IMPORTANT: SEEMS TO WORK ONLY VIA AUTO-RELEASE-POOL!!!
 	TTURLJSONResponse* response = [[TTURLJSONResponse alloc] init];
     request.response = response;
 	TT_RELEASE_SAFELY(response);
-    [request sendSynchronously];
+	[request sendSynchronously];
+	
 }
 
 - (void)requestDidFinishLoad:(TTURLRequest*)request {
-	TTURLJSONResponse* response = request.response;	
+	TTURLJSONResponse* response = request.response;
 	NSDictionary* feed = response.rootObject;
 	
 	if (!self->_parentLoaded) {
 		self->_parentLoaded = YES;
-		self.albumEntity = [feed objectForKey:@"entity"];
-		
-		NSMutableArray* members = [feed objectForKey:@"members"];		
-		
 		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		NSString* itemsURL = nil;
-		itemsURL = [appDelegate.baseURL stringByAppendingString:@"/rest/items?urls=["];
-		for (NSString *member in members) {
+
+		NSDictionary* tmpEntity = [feed objectForKey:@"entity"];
+		
+		TT_RELEASE_SAFELY(_albumEntity);
+		_albumEntity = [[NSDictionary alloc] initWithDictionary:tmpEntity];;
+		
+		NSMutableArray* tmpMembers = [feed objectForKey:@"members"];
+		
+		NSString* itemsURL = [[[NSString alloc] initWithString:[appDelegate.baseURL stringByAppendingString:@"/rest/items?urls=["]] autorelease];
+
+		for (NSString *member in tmpMembers) {
 			NSString* tmp = [[@"\"" stringByAppendingString:member] stringByAppendingString:@"\","];
 			itemsURL = [itemsURL stringByAppendingString:tmp];
 		}
+
 		itemsURL = [itemsURL substringToIndex:[itemsURL length] - 1];
 		itemsURL = [itemsURL stringByAppendingString:@"]"];
 		itemsURL = [itemsURL stringByAddingPercentEscapesUsingEncoding:
 					NSASCIIStringEncoding];
 		//NSLog(@"itemsURL: %@", itemsURL);
-		
-		
+				
 		[self getAlbum:itemsURL];
 	} else {
+		NSMutableDictionary* elements = [[NSMutableDictionary alloc] initWithCapacity:[feed count]];
 		for (NSDictionary* member in feed) {
 			//NSLog(@"member: %@", member);
-			NSMutableArray* entity = [member objectForKey:@"entity"];
+			NSDictionary* entity = [member objectForKey:@"entity"];
 			NSDictionary* url = [member objectForKey:@"url"];
-			NSMutableDictionary* element = [[NSMutableDictionary alloc] init];
-			[element setObject:entity forKey:@"entity"];
-			[self.array setObject:element forKey:url];
-			[element release];
+
+			NSMutableDictionary* element = [NSMutableDictionary dictionaryWithObject:entity forKey:@"entity"];
+			[elements setObject:element forKey:url];
 		}
+		TT_RELEASE_SAFELY(_array);
+		_array = elements;
 	}
 }
 
