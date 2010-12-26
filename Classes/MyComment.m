@@ -13,7 +13,7 @@
 @synthesize postId  = _postId;
 @synthesize text    = _text;
 @synthesize name    = _name;
-
+@synthesize avatar_url = _avatar_url;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)dealloc {
@@ -21,6 +21,7 @@
   TT_RELEASE_SAFELY(_postId);
   TT_RELEASE_SAFELY(_text);
   TT_RELEASE_SAFELY(_name);
+  TT_RELEASE_SAFELY(_avatar_url);
 
   [super dealloc];
 }

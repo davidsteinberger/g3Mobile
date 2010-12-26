@@ -82,6 +82,47 @@
     [request sendSynchronously];
 }
 
+- (NSDictionary* )getUserDetails:(NSString* )author_id {
+	//NSLog(@"Members load");
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	
+    // setting up the request object
+	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+	[request setURL:[NSURL URLWithString:[[appDelegate.baseURL stringByAppendingString:@"/rest/user/"] stringByAppendingString:author_id]]];
+	[request setHTTPMethod:@"GET"];
+	
+	// set needed headers
+	[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+	[request setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
+	
+	// now lets make the connection to the web
+	NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
+	
+	NSDictionary* jsonData = [returnData yajl_JSON];
+	NSDictionary* entity = [jsonData objectForKey:@"entity"];
+	NSString* tmpDisplayName = [entity objectForKey:@"display_name"];
+	NSString* tmpAvatarUrl = [entity objectForKey:@"avatar_url"];
+	
+	if ((NSNull*)tmpDisplayName == [NSNull null]) {
+		tmpDisplayName = @"Unknown User";
+	}
+	
+	if ((NSNull*)tmpAvatarUrl == [NSNull null]) {
+		tmpAvatarUrl = @"bundle://defaultPerson.png";
+	}
+	
+	NSDictionary* array = [[[NSDictionary alloc] initWithObjectsAndKeys:
+							tmpDisplayName, @"display_name", tmpAvatarUrl, @"avatar_url", nil]
+						   autorelease];
+	
+	//[array setValue:tmpDisplayName forKey:@"display_name"];
+	//[array setValue:tmpAvatarUrl forKey:@"avatar_url"];
+	
+	//NSString* displayName = [NSString stringWithString:tmpDisplayName];
+	
+	TT_RELEASE_SAFELY(request);
+	return array;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)requestDidFinishLoad:(TTURLRequest*)request {
@@ -105,7 +146,7 @@
 			[self loadMembers:commentsURL];		
 		}
 	} else {
-		NSArray* entries = [feed objectForKey:@"entity"];
+		NSDictionary* entries = [feed objectForKey:@"entity"];
 		MyComment* post = [[MyComment alloc] init];
 		
 		NSDate* date = [NSDate dateWithTimeIntervalSince1970:[[entries objectForKey:@"created"] floatValue]];
@@ -113,12 +154,25 @@
 		post.postId = [NSNumber numberWithLongLong:
 					   [[entries objectForKey:@"id"] longLongValue]];
 		post.text = [entries objectForKey:@"text"];
-		post.name = [entries objectForKey:@"author_id"];
-		post.name = @"Guest User";
-
-		//NSLog(@"post: %@", post);
-		//NSLog(@"post.postId: %@", post.postId);
-		//NSLog(@"post.text: %@", post.text);
+		
+		// get the guest-name of the commment
+		NSString* tmpName = [entries objectForKey:@"guest_name"];
+		NSString* tmpAuthorID = [entries objectForKey:@"author_id"];
+		
+		if ((NSNull*)tmpName == [NSNull null]) {
+			// get user-name from user_rest			
+			if ((NSNull*)tmpAuthorID != [NSNull null]) {
+				NSDictionary* otherValues = [self getUserDetails:tmpAuthorID];
+				post.name = [otherValues objectForKey:@"display_name"];
+				post.avatar_url = [otherValues objectForKey:@"avatar_url"];
+			} else {
+				post.name = @"Unknown User";
+				post.avatar_url = @"bundle://defaultPerson.png";
+			}
+		} else {
+			post.name = @"Unknown User";
+			post.avatar_url = @"bundle://defaultPerson.png";
+		}
 		
 		[self.posts addObject:post];
 		[post release];

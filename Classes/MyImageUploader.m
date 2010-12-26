@@ -42,7 +42,7 @@ static int counter = 0;
 		image = TTIMAGE(@"bundle://empty.png");
 	}
 
-	NSData *imageData = UIImageJPEGRepresentation(image, 0.9);
+	NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
 	
 	[self uploadImageData:imageData];
 }

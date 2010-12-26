@@ -159,31 +159,12 @@
 	
 	[NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
 	
-	//Data returned by WebService
-	//NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
-	//NSString *returnString = [[NSString alloc] initWithData:returnData encoding: NSUTF8StringEncoding];
-	//NSLog(returnString);
-	//[returnString release];
-	
 	[request release];
 	
 	[[TTURLCache sharedCache] removeURL:[[appDelegate.baseURL stringByAppendingString: @"/rest/item_comments/"] stringByAppendingString:self.itemID] fromDisk:YES];
-	
-	//TTNavigator* navigator = [TTNavigator navigator];
-	//TTURLAction* urlaction = [TTURLAction actionWithURLPath:@""];
-	//[navigator openURLAction:[TTURLAction actionWithURLPath: parentURLPath]]];
-	
+		
 	[[self navigationController] popViewControllerAnimated:YES];
 } 
-
-/*
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated
-{
-    [super setEditing:editing animated:animated];
-    [self.tableView setEditing:editing animated:animated];
-	[self.tableView reloadData];
-} 
-*/
 
 - (void)toggleEdit
 {

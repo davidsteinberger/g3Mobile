@@ -48,17 +48,11 @@
                                                caption: nil
                                                   text: post.text
                                              timestamp: post.created
-											  imageURL: @"http://www.gravatar.com/avatar/543e0e8031b09e7de6f7244cc4b8aac9?s=80"
+											  imageURL: post.avatar_url
 												   URL: nil]];
   }
 	
   if ([items count] == 0) {
-	  /*
-	  NSMutableString *temp = [NSMutableString stringWithString:@"No Comments Yet!"];
-	  [temp replaceOccurrencesOfString:@"&nbsp;" withString:@" " options:NSLiteralSearch range:NSMakeRange(0, [temp length])];
-	  TTTableStyledTextItem *newItem = [TTTableStyledTextItem itemWithText:[TTStyledText textFromXHTML:[NSString stringWithString:temp]]];
-	  */
-	  
 	  [items addObject:[TTTableTextItem itemWithText:@"No Comments Yet!" URL:nil]];
   }
 
