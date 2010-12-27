@@ -7,6 +7,7 @@
 #import "MyImageUploader.h"
 #import "MyItemDeleter.h"
 #import "AddAlbumViewController.h"
+#import "UpdateAlbumViewController.h"
 
 @implementation MyThumbsViewController
 
@@ -32,19 +33,16 @@
 	return [result autorelease];
 }
 
-- (void)addAlbum {
-	//NSLog(@"Add Album for albumID: %@", self.albumID);
-	
-	AddAlbumViewController* addAlbum = [[AddAlbumViewController alloc] initWithAlbumID: self.albumID delegate: self];
-
-	//[self presentModalViewController:addAlbum animated:YES];
+- (void)addAlbum {	
+	AddAlbumViewController* addAlbum = [[AddAlbumViewController alloc] initWithParentAlbumID: self.albumID delegate: self];
 	[self.navigationController pushViewController:addAlbum animated:YES];
 	TT_RELEASE_SAFELY(addAlbum);
 }
 
-- (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
-    
-	[self dismissModalViewControllerAnimated:YES];
+- (void)updateAlbum {
+	UpdateAlbumViewController* updateAlbum = [[UpdateAlbumViewController alloc] initWithAlbumID: self.albumID delegate: self];
+	[self.navigationController pushViewController:updateAlbum animated:YES];
+	TT_RELEASE_SAFELY(updateAlbum);
 }
 
 - (void)viewDidLoad {
@@ -105,10 +103,11 @@
 	
 	[actionSheet addButtonWithTitle:@"Upload"];
 	[actionSheet addButtonWithTitle:@"Add Album"];
+	[actionSheet addButtonWithTitle:@"Change Album"];
 	[actionSheet addButtonWithTitle:@"Delete"];
 	[actionSheet addButtonWithTitle:@"Cancel"];
-	actionSheet.cancelButtonIndex = 3;
-	actionSheet.destructiveButtonIndex = 2; 
+	actionSheet.cancelButtonIndex = 4;
+	actionSheet.destructiveButtonIndex = 3; 
 	
     [actionSheet showInView:self.view];
 }
@@ -124,6 +123,9 @@
 		[self addAlbum];
 	}
 	if (buttonIndex == 2) {
+		[self updateAlbum];
+	}
+	if (buttonIndex == 3) {
 		UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
 		[dialog setDelegate:self];
 		[dialog setTitle:@"Confirm Deletion"];

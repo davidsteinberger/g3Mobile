@@ -11,12 +11,13 @@
 #import "AppDelegate.h"
 #import "MyImageUploader.h"
 
-#import "AddAlbumViewController.h"
+#import "UpdateAlbumViewController.h"
 
 
-@implementation AddAlbumViewController
+@implementation UpdateAlbumViewController
 
-@synthesize parentAlbumID = _parentAlbumID;
+@synthesize albumID = _albumID;
+@synthesize entity = _entity;
 @synthesize delegate = _delegate;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -24,7 +25,7 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-		self.title = @"Add Album";
+		self.title = @"Update Album";
 		self.navigationItem.backBarButtonItem =
 		[[[UIBarButtonItem alloc] initWithTitle:@"Album" style:UIBarButtonItemStyleBordered
 										 target:nil action:nil] autorelease];
@@ -34,15 +35,16 @@
 	return self;
 }
 
-- (id)initWithParentAlbumID: (NSString* )albumID delegate: (MyThumbsViewController *)delegate {
-	self.parentAlbumID = albumID;	
+- (id)initWithAlbumID: (NSString* )albumID delegate: (MyThumbsViewController *)delegate {
+	self.albumID = albumID;
 	self.delegate = delegate;
-
+	
 	return [self initWithNibName:nil bundle: nil];
 }
 
 - (void)dealloc {
-	TT_RELEASE_SAFELY(_parentAlbumID);
+	TT_RELEASE_SAFELY(_albumID);
+	TT_RELEASE_SAFELY(_entity);
 	TT_RELEASE_SAFELY(_albumName);
 	TT_RELEASE_SAFELY(_albumTitle);
 	[super dealloc];
@@ -52,20 +54,21 @@
 // TTModelViewController
 
 - (void)createModel {
+	[self loadAlbum];
 	_albumName = [[UITextField alloc] init];
-	_albumName.placeholder = @"My Album";
+	_albumName.placeholder = @"New Name";
 	_albumName.delegate = self;
-	//_albumName.text = @"Name";
+	_albumName.text = [self.entity objectForKey:@"name"];
 	_albumName.returnKeyType = UIReturnKeyNext;
 	
 	TTTableControlItem* cAlbumName = [TTTableControlItem itemWithCaption:@"Name"
 															   control:_albumName];
 
 	_albumTitle = [[UITextField alloc] init];
-	_albumTitle.placeholder = @"My Title";
+	_albumTitle.placeholder = @"New Title";
 	_albumTitle.delegate = self;
 	_albumTitle.returnKeyType = UIReturnKeyGo;
-	//_albumTitle.text = @"Title";
+	_albumTitle.text = [self.entity objectForKey:@"title"];
 	
 	TTTableControlItem* cAlbumTitle = [TTTableControlItem itemWithCaption:@"Title"
 																 control:_albumTitle];
@@ -92,7 +95,7 @@
     else {
 		[_albumTitle resignFirstResponder];
 		
-		[self addAlbum];
+		[self updateAlbum];
     }
     return YES;
 }
@@ -100,7 +103,33 @@
 #pragma mark -
 #pragma mark helpers
 
-- (void)addAlbum {
+- (void) loadAlbum {
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	
+	//create http-request
+	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[[appDelegate.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.albumID]]];
+	
+	//set http-headers
+	[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+	[request setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
+	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
+	
+	//set 'post'-method
+	[request setHTTPMethod: @"GET"];
+	
+	NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
+	
+	NSDictionary* arrayFromData = [returnData yajl_JSON];
+	NSDictionary* entity = [arrayFromData objectForKey:@"entity"];
+	
+	if ((NSNull*)entity != [NSNull null]) {
+		self.entity = entity;
+	}
+	
+	TT_RELEASE_SAFELY(request);
+}
+
+- (void)updateAlbum {
 	//NSLog(@"Add Album for albumID: %@", self.albumID);
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	
@@ -121,11 +150,11 @@
 	//---bring everything together
 	
 	//create http-request
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[[appDelegate.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.parentAlbumID]]];
+	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[[appDelegate.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.albumID]]];
 	
 	//set http-headers
 	[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
-	[request setValue:@"post" forHTTPHeaderField:@"X-Gallery-Request-Method"];
+	[request setValue:@"put" forHTTPHeaderField:@"X-Gallery-Request-Method"];
 	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
 	
 	//set 'post'-method
@@ -134,22 +163,13 @@
 	//set request body into HTTPBody.
 	[request setHTTPBody: requestData];
 	
-	NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
-	
-	NSDictionary *arrayFromData = [returnData yajl_JSON];
-	NSString* url = [arrayFromData objectForKey:@"url"];
-	NSArray* chunks = [url componentsSeparatedByString: @"/"];
-	NSString* newAlbumID = [chunks objectAtIndex:[chunks count] - 1 ];
+	[NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
 	
 	[request release];
-	NSLog(@"returnString: %@", [chunks objectAtIndex:[chunks count] - 1 ]);
-	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:[[[NSString alloc] initWithString:newAlbumID] autorelease] delegate:nil];
-	[uploader uploadImage:nil];
-	TT_RELEASE_SAFELY(uploader);
 	
-	[[TTURLCache sharedCache] removeURL:[[appDelegate.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:self.parentAlbumID] fromDisk:YES];
+	[[TTURLCache sharedCache] removeAll:YES];
 	
-	[self.delegate loadAlbum:self.parentAlbumID];
+	[self.delegate loadAlbum:@"1"];
 	
 	TTNavigator* navigator = [TTNavigator navigator];
 	[navigator reload];
