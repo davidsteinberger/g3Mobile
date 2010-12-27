@@ -66,11 +66,11 @@
 	
 	CGRect innerFrame = CGRectMake(0, 0,
 								   screenFrame.size.width, screenFrame.size.height);
-	_innerView = [[[UIView alloc] initWithFrame:innerFrame] autorelease];
+	_innerView = [[UIView alloc] initWithFrame:innerFrame];
 	_innerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:_innerView];
 	
-	_scrollView = [[[TTScrollView alloc] autorelease] initWithFrame:screenFrame];
+	_scrollView = [[TTScrollView alloc] initWithFrame:screenFrame];
 	_scrollView.delegate = self;
 	_scrollView.dataSource = self;
 	_scrollView.rotateEnabled = NO;
