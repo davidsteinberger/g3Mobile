@@ -32,43 +32,29 @@
 }
 
 - (void)applicationDidFinishLaunching:(UIApplication*)application {
-
-	
-//	self.baseURL = @"http://localhost/~David/gallery3/index.php";
-//	self.baseURL = @"http://192.168.0.4/~David/gallery3/index.php";
-//	self.baseURL = @"http://www.david-steinberger.at/gallery3";
-	
-//	NSLog(@"user: %@", self.user);
-//	NSLog(@"password: %@", self.password);
-//	[self login];
 	
 	TTNavigator* navigator = [TTNavigator navigator];
-	//navigator.supportsShakeToReload = YES;
 	navigator.supportsShakeToReload = NO;
 	navigator.persistenceMode = TTNavigatorPersistenceModeAll;
 
 	TTURLMap* map = navigator.URLMap;
-	//[map from:@"*" toViewController:[MyThumbsViewController class]];
 	[map from:@"tt://thumbs/(initWithAlbumID:)" toViewController:[MyThumbsViewController class]];
 	[map from:@"tt://comments/(initWithItemID:)" toViewController:[MyCommentsViewController class]
 	transition:UIViewAnimationTransitionFlipFromLeft];
 	[map from:@"tt://upload/(uploadImage:)" toViewController:[MyThumbsViewController class]
 	transition:UIViewAnimationTransitionFlipFromLeft];
-	[map from:@"tt://login" toModalViewController:[MyLoginViewController class]
+	[map from:@"tt://login" toViewController:[MyLoginViewController class]
 	transition:UIViewAnimationTransitionFlipFromLeft];
-	
-	[map from:@"tt://addAlbum/(initWithAlbumID:)" toViewController:[AddAlbumViewController class]];
 	
 	NSString* dbFilePath = [self copyDatabaseToDocuments];
 	[self readSettingsFromDatabaseWithPath:dbFilePath];
 	
 	if (![navigator restoreViewControllers]) {
 		if (self.baseURL == nil || self.challenge == nil) {
-			//[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://addAlbum/1"]];
-			[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://login"]];
+			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://login"] applyAnimated:YES]];
 		}
 		else {
-			[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://thumbs/1"]];
+			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
 		}
 
 	}

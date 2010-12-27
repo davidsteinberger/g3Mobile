@@ -12,7 +12,7 @@
 
 #import "MyThumbsViewController.h";
 
-@interface MyPhotoViewController : TTPhotoViewController<UITableViewDelegate, UIImagePickerControllerDelegate> {
+@interface MyPhotoViewController : TTPhotoViewController<UITableViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate> {
 	MyThumbsViewController* _parentController;
 	
 	//UIBarButtonItem* _clickComposeItem;
