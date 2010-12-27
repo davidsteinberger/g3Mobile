@@ -6,6 +6,17 @@
 #import <extThree20JSON/extThree20JSON.h>
 #import "AppDelegate.h"
 
+#import <CommonCrypto/CommonDigest.h>
+
+NSString *md5 (NSString *str) {
+	const char *cStr = [str UTF8String];
+	unsigned char result[CC_MD5_DIGEST_LENGTH];
+	CC_MD5( cStr, strlen(cStr), result );
+	return [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
+			result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7],
+			result[8], result[9], result[10], result[11], result[12], result[13], result[14], result[15]];
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -158,8 +169,9 @@
 		// get the guest-name of the commment
 		NSString* tmpName = [entries objectForKey:@"guest_name"];
 		NSString* tmpAuthorID = [entries objectForKey:@"author_id"];
+		NSString* tmpEmail = [entries objectForKey:@"guest_email"];
 		
-		if ((NSNull*)tmpName == [NSNull null]) {
+		if ((NSNull*)tmpName == [NSNull null] || (NSNull*)tmpEmail == [NSNull null]) {
 			// get user-name from user_rest			
 			if ((NSNull*)tmpAuthorID != [NSNull null]) {
 				NSDictionary* otherValues = [self getUserDetails:tmpAuthorID];
@@ -169,9 +181,9 @@
 				post.name = @"Unknown User";
 				post.avatar_url = @"bundle://defaultPerson.png";
 			}
-		} else {
+		} else if ((NSNull*)tmpEmail != [NSNull null]) {
 			post.name = @"Unknown User";
-			post.avatar_url = @"bundle://defaultPerson.png";
+			post.avatar_url = [@"http://www.gravatar.com/avatar/" stringByAppendingFormat:@"%@?s=80", md5(tmpEmail)];
 		}
 		
 		[self.posts addObject:post];
