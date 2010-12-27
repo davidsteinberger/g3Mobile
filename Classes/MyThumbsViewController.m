@@ -24,7 +24,7 @@
 - (void)setSettings {
 	//NSLog(@"setSettings called");
 	TTNavigator* navigator = [TTNavigator navigator];
-	[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://login"]];
+	[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://login"] applyAnimated:YES]];
 }
 
 - (NSString *)urlEncodeValue:(NSString *)str
@@ -57,7 +57,7 @@
 	//show logout only when on root-album
 	if ([ps.albumID isEqualToString: @"1"]) {
 		self.navigationItem.rightBarButtonItem
-		= [[[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered
+		= [[[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered
 										   target:self action:@selector(setSettings)] autorelease];	
 		
 	}

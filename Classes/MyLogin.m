@@ -11,6 +11,7 @@
 @synthesize username = _username;
 @synthesize password = _password;
 @synthesize challenge = _challenge;
+@synthesize imageQuality = _imageQuality;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

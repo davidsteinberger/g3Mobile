@@ -20,7 +20,7 @@
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)login:(NSString *) baseURL username:(NSString *)username password:(NSString *)password {
+- (void)login:(NSString *) baseURL username:(NSString *)username password:(NSString *)password imageQuality:(float)imageQuality {
 	
 	NSString* url = [baseURL stringByAppendingString:@"/rest"];
     TTURLRequest *request = [TTURLRequest requestWithURL:url delegate:self];
@@ -47,6 +47,7 @@
 	userInfo.baseURL = baseURL;
     userInfo.username = username;
     userInfo.password = password;
+	userInfo.imageQuality = imageQuality;
     request.userInfo = userInfo;
     TT_RELEASE_SAFELY(userInfo);
     
@@ -68,8 +69,7 @@
 	
 	MyLogin* login = request.userInfo;
 	login.challenge = [[challenge substringFromIndex: 1] substringToIndex:[challenge length] - 2];
-	//@"e73394e9813e38b5f7aa8c52f71174a3";
-	//[[challenge substringFromIndex: 1] substringToIndex:[challenge length] - 2];
+
 	TT_RELEASE_SAFELY(challenge);
 	[super didUpdateObject:login atIndexPath:nil];
 	
@@ -137,20 +137,6 @@
 	//NSLog(@"error: %@", error);
 	[super didFailLoadWithError:nil];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)request:(TTURLRequest*)request
-didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge*)challenge {
-    if ([challenge previousFailureCount] == 0) {
-        MyLogin* userInfo = request.userInfo;
-        NSURLCredential* newCredential = [NSURLCredential credentialWithUser:userInfo.username password:userInfo.password persistence:NSURLCredentialPersistencePermanent];
-        [[challenge sender] useCredential:newCredential forAuthenticationChallenge:challenge];
-        
-    } else {
-        [[challenge sender] cancelAuthenticationChallenge:challenge];
-    }
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////

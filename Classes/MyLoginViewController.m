@@ -4,18 +4,29 @@
 #import "MyLoginDataSource.h"
 #import "MyLogin.h"
 
+#import "MySettings.h"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 @implementation MyLoginViewController
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+		self.title = @"Comments feed";
+		self.variableHeightRows = YES;
+	}
+	
+	return self;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (id) init {
-  if (self = [super init]) {
+  //if (self = [super init]) {
     self.tableViewStyle = UITableViewStyleGrouped;
-  }
-  return self;
+  //}
+	return [self initWithNibName:nil bundle:nil];;
 }
 
 
@@ -36,8 +47,8 @@
 - (void)loadView {
     [super loadView];
 	
-    // disable scrolling after the table view is created
-    self.tableView.scrollEnabled = NO;
+    self.tableView.scrollEnabled = YES;
+	self.autoresizesForKeyboard = YES;
     
 	self.tableView = [[[UITableView alloc] initWithFrame:self.view.bounds  
 												   style:UITableViewStyleGrouped] autorelease];  
@@ -49,15 +60,17 @@
     // Create an empty table view a activity label to better update the table
     _emptyTable = [[UITableView alloc] initWithFrame:self.tableView.frame style:UITableViewStyleGrouped];
     TTTableActivityItem *activityCell = [TTTableActivityItem itemWithText:@"Logging in"];
-    _emptyTable.rowHeight = 160;
+    _emptyTable.rowHeight = 300;
     _emptyTable.backgroundColor = [UIColor clearColor];
     _emptyTable.dataSource = [[TTListDataSource dataSourceWithItems:[NSArray arrayWithObject:activityCell]] retain];
     _emptyTable.scrollEnabled = NO;
-	
-	//NSLog(@"test for model %@", [self.model getChallenge]);
-    
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	
+//	GlobalSettings save
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,6 +109,8 @@
 	appDelegate.user = settings.username;
 	appDelegate.password = settings.password;
 	appDelegate.challenge = settings.challenge;
+
+	[GlobalSettings save:settings.baseURL withUser:settings.username withPassword:settings.password withChallenge:settings.challenge withImageQuality:settings.imageQuality];
 	
 	[appDelegate finishedLogin];
 	

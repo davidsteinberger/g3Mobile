@@ -3,6 +3,8 @@
 #import "MyLoginModel.h"
 #import "MyLogin.h"
 
+#import "MySettings.h"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,11 +27,12 @@
         NSMutableArray *items = [[NSMutableArray alloc] init];
         NSMutableArray *sections = [[NSMutableArray alloc] init];
         
-        [sections addObject:@""];
+        [sections addObject:@"Global"];
         NSMutableArray *itemsRow = [[NSMutableArray alloc] init];
+		NSMutableArray *itemsRow2 = [[NSMutableArray alloc] init];
         
 		_baseURL = [[UITextField alloc] init];
-        _baseURL.placeholder = @"Website";
+        _baseURL.placeholder = @"http://example.com";
         _baseURL.keyboardType = UIKeyboardTypeURL;
         _baseURL.returnKeyType = UIReturnKeyNext;
         _baseURL.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -37,11 +40,14 @@
         _baseURL.clearButtonMode = UITextFieldViewModeWhileEditing;
         _baseURL.clearsOnBeginEditing = NO;
         _baseURL.delegate = self;
-        _baseURL.text = @"http://YOUR-DOMAIN/gallery3/index.php";
-        [itemsRow addObject:_baseURL];
+		
+		_baseURL.text = GlobalSettings.baseURL;
+		TTTableControlItem* cBaseURL = [TTTableControlItem itemWithCaption:@"Website"
+																   control:_baseURL];
+        [itemsRow addObject:cBaseURL];
 		
         _usernameField = [[UITextField alloc] init];
-        _usernameField.placeholder = @"Username";
+        _usernameField.placeholder = @"*****";
         _usernameField.keyboardType = UIKeyboardTypeDefault;
         _usernameField.returnKeyType = UIReturnKeyNext;
         _usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -49,11 +55,13 @@
         _usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _usernameField.clearsOnBeginEditing = NO;
         _usernameField.delegate = self;
-        _usernameField.text = @"admin";
-        [itemsRow addObject:_usernameField];
+
+		TTTableControlItem* cUsernameField = [TTTableControlItem itemWithCaption:@"Username"
+																   control:_usernameField];
+        [itemsRow addObject:cUsernameField];
         
         _passwordField = [[UITextField alloc] init];
-        _passwordField.placeholder = @"Password";
+        _passwordField.placeholder = @"*****";
         _passwordField.returnKeyType = UIReturnKeyGo;
         _passwordField.secureTextEntry = YES;
         _passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -61,16 +69,37 @@
         _passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _passwordField.clearsOnBeginEditing = NO;
         _passwordField.delegate = self;
-       _passwordField.text = @"gallery3";
-        [itemsRow addObject:_passwordField];
-        
-        [items addObject:itemsRow];
+
+        TTTableControlItem* cPasswordField = [TTTableControlItem itemWithCaption:@"Password"
+																		 control:_passwordField];
+        [itemsRow addObject:cPasswordField];		
+		
+		[sections addObject:@"Other"];
+		
+		_imageQualityField = [[[UISlider alloc] init] autorelease];
+		_imageQualityField.minimumValue = 0;
+		_imageQualityField.maximumValue = 1;
+		
+		_imageQualityField.value = GlobalSettings.imageQuality ? GlobalSettings.imageQuality : 0.5;
+		
+		[_imageQualityField addTarget:self
+							   action:@selector(imageQualityChanged:) 
+					 forControlEvents:UIControlEventTouchUpInside ];
+		
+		TTTableControlItem* imageQuality = [TTTableControlItem itemWithCaption:@"Image Quality" control:_imageQualityField];
+		
+		[itemsRow2 addObject:imageQuality];
+
+		[items addObject:itemsRow];
+		[items addObject:itemsRow2];		
+		
         TT_RELEASE_SAFELY(itemsRow);
+		TT_RELEASE_SAFELY(itemsRow2);
         
         _items = items;
         _sections = sections;
         
-        [_baseURL becomeFirstResponder];
+        //[_baseURL becomeFirstResponder];
     }
     return self;
 }
@@ -94,20 +123,27 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	cursorPosition = ++cursorPosition % 3;
     if (textField.returnKeyType == UIReturnKeyNext) {
-		if (textField.placeholder == @"Website") {
+		if (cursorPosition == 1) {
 			[_usernameField becomeFirstResponder];
-		} else {
+		}
+		else if (cursorPosition == 2) {
 			[_passwordField becomeFirstResponder];
 		}
     }
     else {
 		[_passwordField resignFirstResponder];
-		[_loginModel login:_baseURL.text username:_usernameField.text password:_passwordField.text];
+		cursorPosition = 0;
+		[_loginModel login:_baseURL.text username:_usernameField.text password:_passwordField.text imageQuality:_imageQualityField.value];
     }
     return YES;
 }
 
+- (void)imageQualityChanged:(UISlider*)control {
+	NSNumber* number = [NSNumber numberWithFloat:control.value];
+	GlobalSettings.imageQuality = [number floatValue];
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -10,6 +10,8 @@
 
 #import "AppDelegate.h"
 
+#import "MySettings.h"
+
 static int counter = 0;
 
 @implementation MyImageUploader
@@ -42,7 +44,7 @@ static int counter = 0;
 		image = TTIMAGE(@"bundle://empty.png");
 	}
 
-	NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
+	NSData *imageData = UIImageJPEGRepresentation(image, GlobalSettings.imageQuality ? GlobalSettings.imageQuality : 0.5);
 	
 	[self uploadImageData:imageData];
 }

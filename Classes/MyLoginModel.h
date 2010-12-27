@@ -9,7 +9,7 @@
     MyLogin* _credentials;
 }
 
-- (void)login:(NSString*)username password:(NSString*)password;
+- (void)login:(NSString *) baseURL username:(NSString *)username password:(NSString *)password imageQuality:(float)imageQuality;
 
 @property (nonatomic, readonly) MyLogin* credentials;
 

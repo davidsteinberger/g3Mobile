@@ -8,12 +8,13 @@
     NSString *_username;
     NSString *_password;
 	NSString *_challenge;
+	float _imageQuality;
 }
 
 @property (nonatomic, copy) NSString *baseURL;
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *password;
 @property (nonatomic, copy) NSString *challenge;
-
+@property (nonatomic) float imageQuality;
 
 @end
