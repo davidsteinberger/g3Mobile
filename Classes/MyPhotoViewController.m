@@ -78,12 +78,12 @@
 	_scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[_innerView addSubview:_scrollView];
 	
-	_nextButton = [[[UIBarButtonItem alloc] initWithImage:
+	_nextButton = [[UIBarButtonItem alloc] initWithImage:
 				   TTIMAGE(@"bundle://Three20.bundle/images/nextIcon.png")
-												   style:UIBarButtonItemStylePlain target:self action:@selector(nextAction)] autorelease];
-	_previousButton = [[[UIBarButtonItem alloc] initWithImage:
+												   style:UIBarButtonItemStylePlain target:self action:@selector(nextAction)];
+	_previousButton = [[UIBarButtonItem alloc] initWithImage:
 					   TTIMAGE(@"bundle://Three20.bundle/images/previousIcon.png")
-													   style:UIBarButtonItemStylePlain target:self action:@selector(previousAction)] autorelease];
+													   style:UIBarButtonItemStylePlain target:self action:@selector(previousAction)];
 	
 	UIBarButtonItem* _clickActionItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction//TTIMAGE(@"UIBarButtonReply.png")
 																	 target:self action:@selector(clickActionItem)] autorelease];
@@ -171,6 +171,10 @@
 		MyAlbumUpdater* updater = [[MyAlbumUpdater alloc] initWithItemID:albumID];
 		[updater setValue:[[appDelegate.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:p.photoID] param: @"album_cover"];
 		[updater update];
+		[[TTURLCache sharedCache] removeAll:YES];
+		TTNavigator* navigator = [TTNavigator navigator];
+		[navigator removeAllViewControllers];
+		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
 		TT_RELEASE_SAFELY(updater);
 	}
 	if (buttonIndex == 2) {
