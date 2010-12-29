@@ -1,7 +1,5 @@
 #import "Three20/Three20.h"
 
-static int cursorPosition = 0;
-
 @class MyModel;
 
 @interface MyLoginDataSource : TTSectionedDataSource <UITextFieldDelegate> {

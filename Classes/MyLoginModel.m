@@ -74,7 +74,6 @@
 	[super didUpdateObject:login atIndexPath:nil];
 	
 	[self store:login];
-	//NSLog(@"authenticated");
 }
 
 -(void) store:(MyLogin *)login {

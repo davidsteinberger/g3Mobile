@@ -22,7 +22,8 @@
 @property(nonatomic, retain) MyThumbsViewController* delegate;
 
 - (id)initWithAlbumID: (NSString* )albumID delegate: (MyThumbsViewController *)delegate;
-- (void)addAlbum;
 - (void)loadAlbum;
+- (void)updateAlbum;
+- (NSString *)urlEncodeValue:(NSString *)str;
 
 @end

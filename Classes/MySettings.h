@@ -30,6 +30,6 @@
  withPassword:(NSString*)password
 withChallenge:(NSString*)challenge 
 withImageQuality:(float) imageQuality;
-- (float)getImageQuality;
+- (float)imageQuality;
 
 @end

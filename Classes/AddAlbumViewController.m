@@ -157,8 +157,7 @@
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
-- (NSString *)urlEncodeValue:(NSString *)str
-{
+- (NSString *)urlEncodeValue:(NSString *)str {
 	NSString *result = (NSString *) CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)str, NULL, CFSTR("?=&+"), kCFStringEncodingUTF8);
 	return [result autorelease];
 }

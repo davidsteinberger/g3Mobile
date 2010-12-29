@@ -21,5 +21,6 @@
 
 - (id)initWithParentAlbumID: (NSString* )albumID delegate: (MyThumbsViewController *)delegate;
 - (void)addAlbum;
+- (NSString *)urlEncodeValue:(NSString *)str;
 
 @end
