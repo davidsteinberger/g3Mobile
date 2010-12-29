@@ -167,18 +167,10 @@
 	
 	[request release];
 	
-	[[TTURLCache sharedCache] removeAll:YES];
-	
-	[self.delegate loadAlbum:@"1"];
-	
-	TTNavigator* navigator = [TTNavigator navigator];
-	[navigator reload];
-	
-	[self.navigationController popViewControllerAnimated:YES];
+	[self.delegate updateFinished];
 }
 
-- (NSString *)urlEncodeValue:(NSString *)str
-{
+- (NSString *)urlEncodeValue:(NSString *)str {
 	NSString *result = (NSString *) CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)str, NULL, CFSTR("?=&+"), kCFStringEncodingUTF8);
 	return [result autorelease];
 }

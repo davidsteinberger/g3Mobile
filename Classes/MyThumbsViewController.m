@@ -310,4 +310,12 @@
 -(void) reload {
 	[self updateView];
 }
+
+- (void)updateFinished {
+	[[TTURLCache sharedCache] removeAll:YES];
+	TTNavigator* navigator = [TTNavigator navigator];
+	[navigator removeAllViewControllers];
+	[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+}
+
 @end

@@ -66,13 +66,6 @@
 	[NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
 	
 	[request release];
-		
-	[[TTURLCache sharedCache] removeURL:[[appDelegate.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:@"1"] fromDisk:YES];
-	[[TTURLCache sharedCache] removeAll:YES];
-	
-	TTNavigator* navigator = [TTNavigator navigator];
-	[navigator removeAllViewControllers];
-	[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
 }
 
 - (NSString *)urlEncodeValue:(NSString *)str

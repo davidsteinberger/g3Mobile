@@ -15,13 +15,13 @@
 		6358A4BB12C880EB0043D18A /* MySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6358A4BA12C880EB0043D18A /* MySettings.m */; };
 		636B7F1912BFE98D00ECDCDD /* MyAlbumUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 636B7F1812BFE98D00ECDCDD /* MyAlbumUpdater.m */; };
 		636B811112C0243500ECDCDD /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 636B811012C0243500ECDCDD /* empty.png */; };
-		636F02DE12C3FD27007C834B /* G_LOGO.png in Resources */ = {isa = PBXBuildFile; fileRef = 636F02DD12C3FD27007C834B /* G_LOGO.png */; };
 		639788D012BEBA24000FBD09 /* defaultPerson.png in Resources */ = {isa = PBXBuildFile; fileRef = 639788CF12BEBA24000FBD09 /* defaultPerson.png */; };
 		63A3B51C129C3BDE00E04981 /* MyLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B514129C3BDE00E04981 /* MyLogin.m */; };
 		63A3B51D129C3BDE00E04981 /* MyLoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B516129C3BDE00E04981 /* MyLoginModel.m */; };
 		63A3B51E129C3BDE00E04981 /* MyLoginDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B519129C3BDE00E04981 /* MyLoginDataSource.m */; };
 		63A3B51F129C3BDE00E04981 /* MyLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B51B129C3BDE00E04981 /* MyLoginViewController.m */; };
 		63A3B71C129C5EA200E04981 /* MyItemDeleter.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B71B129C5EA200E04981 /* MyItemDeleter.m */; };
+		63AF930B12CA9161001092B5 /* G_LOGO.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF930A12CA9161001092B5 /* G_LOGO.png */; };
 		63B253171299BBB000BA9323 /* libextThree20JSON+YAJL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B2530C1299BBA400BA9323 /* libextThree20JSON+YAJL.a */; };
 		63B253181299BBB300BA9323 /* libThree20.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B2523E1299BB8700BA9323 /* libThree20.a */; };
 		63B253191299BBB500BA9323 /* libThree20Core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B2528C1299BB9500BA9323 /* libThree20Core.a */; };
@@ -486,7 +486,6 @@
 		636B7F1712BFE98D00ECDCDD /* MyAlbumUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAlbumUpdater.h; sourceTree = "<group>"; };
 		636B7F1812BFE98D00ECDCDD /* MyAlbumUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAlbumUpdater.m; sourceTree = "<group>"; };
 		636B811012C0243500ECDCDD /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = "<group>"; };
-		636F02DD12C3FD27007C834B /* G_LOGO.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = G_LOGO.png; path = ../../iPhone/g3Mobile/G_LOGO.png; sourceTree = SOURCE_ROOT; };
 		639788CF12BEBA24000FBD09 /* defaultPerson.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultPerson.png; sourceTree = "<group>"; };
 		63A3B513129C3BDE00E04981 /* MyLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLogin.h; sourceTree = "<group>"; };
 		63A3B514129C3BDE00E04981 /* MyLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLogin.m; sourceTree = "<group>"; };
@@ -498,6 +497,7 @@
 		63A3B51B129C3BDE00E04981 /* MyLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLoginViewController.m; sourceTree = "<group>"; };
 		63A3B71A129C5EA200E04981 /* MyItemDeleter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyItemDeleter.h; sourceTree = "<group>"; };
 		63A3B71B129C5EA200E04981 /* MyItemDeleter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyItemDeleter.m; sourceTree = "<group>"; };
+		63AF930A12CA9161001092B5 /* G_LOGO.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = G_LOGO.png; sourceTree = "<group>"; };
 		63B2520E1299BB8600BA9323 /* Three20.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Three20.xcodeproj; path = ../three20/src/Three20/Three20.xcodeproj; sourceTree = SOURCE_ROOT; };
 		63B252731299BB9500BA9323 /* Three20Core.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Three20Core.xcodeproj; path = ../../Iphone/three20/src/Three20Core/Three20Core.xcodeproj; sourceTree = SOURCE_ROOT; };
 		63B252761299BB9500BA9323 /* Three20Network.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Three20Network.xcodeproj; path = ../../Iphone/three20/src/Three20Network/Three20Network.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -629,7 +629,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				636F02DD12C3FD27007C834B /* G_LOGO.png */,
+				63AF930A12CA9161001092B5 /* G_LOGO.png */,
 				636B811012C0243500ECDCDD /* empty.png */,
 				639788CF12BEBA24000FBD09 /* defaultPerson.png */,
 				63B255EF1299C63300BA9323 /* Three20.bundle */,
@@ -1402,7 +1402,7 @@
 				63B255F01299C63300BA9323 /* Three20.bundle in Resources */,
 				639788D012BEBA24000FBD09 /* defaultPerson.png in Resources */,
 				636B811112C0243500ECDCDD /* empty.png in Resources */,
-				636F02DE12C3FD27007C834B /* G_LOGO.png in Resources */,
+				63AF930B12CA9161001092B5 /* G_LOGO.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
