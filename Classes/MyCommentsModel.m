@@ -23,55 +23,79 @@ NSString *md5 (NSString *str) {
 @implementation MyCommentsModel
 
 @synthesize searchQuery = _searchQuery;
-@synthesize posts      = _posts;
+@synthesize itemID		= _itemID;
+@synthesize comments    = _comments;
+@synthesize userDetails = _userDetails;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)initWithSearchQuery:(NSString*)searchQuery {
-  if (self = [super init]) {
-    self.searchQuery = searchQuery;
-  }
-	self.posts = [[NSMutableArray alloc] init];
-  return self;
+	if (self = [super init]) {
+		self.searchQuery = searchQuery;
+		self.comments = [NSMutableArray array];
+		self->_count = 0;		
+	}
+	return self;
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) dealloc {
   TT_RELEASE_SAFELY(_searchQuery);
-  TT_RELEASE_SAFELY(_posts);
+  TT_RELEASE_SAFELY(_comments);
   [super dealloc];
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark --
+#pragma mark TTModel methods
+
 - (void)load:(TTURLRequestCachePolicy)cachePolicy more:(BOOL)more {
-  if (!self.isLoading && TTIsStringWithAnyText(_searchQuery)) {
-	  AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	  NSString* url = [NSString stringWithString:_searchQuery];
+	self->_cacheExpirationAge = TT_DEFAULT_CACHE_EXPIRATION_AGE;
+	
+	done = NO;
+	loading = YES;
+	
+	if (cachePolicy == TTURLRequestCachePolicyNetwork) {
+		self->_cacheExpirationAge = 0;
+		self.comments = nil;
+		self.comments = [NSMutableArray array];
+	}
+	
+	if (self.isLoading && TTIsStringWithAnyText(_searchQuery)) {
+		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		NSString* url = [NSString stringWithString:_searchQuery];
 
-    TTURLRequest* request = [TTURLRequest
-                             requestWithURL: url
-                             delegate: self];
-	  
-	  //set http-headers
-	  [request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
-	  [request setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
-	  [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
-	  
-    //request.cachePolicy = cachePolicy | TTURLRequestCachePolicyEtag;
-    //request.cacheExpirationAge = TT_CACHE_EXPIRATION_AGE_NEVER;
+		TTURLRequest* request = [TTURLRequest
+							 requestWithURL: url
+							 delegate: self];
 
-    TTURLJSONResponse* response = [[TTURLJSONResponse alloc] init];
-    request.response = response;
-    TT_RELEASE_SAFELY(response);
+		//set http-headers
+		[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+		[request setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
+		[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
 
-    [request sendSynchronously];
-  }
+		request.cacheExpirationAge = self->_cacheExpirationAge;
+
+		TTURLJSONResponse* response = [[TTURLJSONResponse alloc] init];
+		request.response = response;
+		TT_RELEASE_SAFELY(response);
+		
+		request.userInfo = @"comments";
+
+		[request send];
+	}
+}
+
+- (BOOL)isLoaded {
+	return done;
+}
+
+- (BOOL)isLoading {
+	return loading;
 }
 
 - (void)loadMembers:(NSString* )url {
-	//NSLog(@"Members load");
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	
     TTURLRequest* request = [TTURLRequest
@@ -83,80 +107,67 @@ NSString *md5 (NSString *str) {
 	[request setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
 	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
 	
-//    request.cachePolicy = cachePolicy | TTURLRequestCachePolicyEtag;
-    request.cacheExpirationAge = TT_CACHE_EXPIRATION_AGE_NEVER;
+    request.cacheExpirationAge = self->_cacheExpirationAge;
 	
     TTURLJSONResponse* response = [[TTURLJSONResponse alloc] init];
     request.response = response;
     TT_RELEASE_SAFELY(response);
 	
-    [request sendSynchronously];
+	request.userInfo = @"members";
+	
+    [request send];
 }
 
-- (NSDictionary* )getUserDetails:(NSString* )author_id {
-	//NSLog(@"Members load");
+- (void)getUserDetails:(NSString* )author_id {
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	
-    // setting up the request object
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-	[request setURL:[NSURL URLWithString:[[appDelegate.baseURL stringByAppendingString:@"/rest/user/"] stringByAppendingString:author_id]]];
-	[request setHTTPMethod:@"GET"];
+	TTURLRequest* request = [TTURLRequest
+                             requestWithURL: [[appDelegate.baseURL stringByAppendingString:@"/rest/user/"] stringByAppendingString:author_id]
+                             delegate: self];
 	
-	// set needed headers
+	//set http-headers
 	[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
 	[request setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
+	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
 	
-	// now lets make the connection to the web
-	NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
+	request.cacheExpirationAge = self->_cacheExpirationAge;
 	
-	NSDictionary* jsonData = [returnData yajl_JSON];
-	NSDictionary* entity = [jsonData objectForKey:@"entity"];
-	NSString* tmpDisplayName = [entity objectForKey:@"display_name"];
-	NSString* tmpAvatarUrl = [entity objectForKey:@"avatar_url"];
+	TTURLJSONResponse* response = [[TTURLJSONResponse alloc] init];
+    request.response = response;
+    TT_RELEASE_SAFELY(response);
 	
-	if ((NSNull*)tmpDisplayName == [NSNull null]) {
-		tmpDisplayName = @"Unknown User";
-	}
+	request.userInfo = @"userDetails";
 	
-	if ((NSNull*)tmpAvatarUrl == [NSNull null]) {
-		tmpAvatarUrl = @"bundle://defaultPerson.png";
-	}
-	
-	NSDictionary* array = [[[NSDictionary alloc] initWithObjectsAndKeys:
-							tmpDisplayName, @"display_name", tmpAvatarUrl, @"avatar_url", nil]
-						   autorelease];
-	
-	//[array setValue:tmpDisplayName forKey:@"display_name"];
-	//[array setValue:tmpAvatarUrl forKey:@"avatar_url"];
-	
-	//NSString* displayName = [NSString stringWithString:tmpDisplayName];
-	
-	TT_RELEASE_SAFELY(request);
-	return array;
+    [request sendSynchronously];	
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)requestDidFinishLoad:(TTURLRequest*)request {
-  TTURLJSONResponse* response = request.response;
-  //TTDASSERT([response.rootObject isKindOfClass:[NSDictionary class]]);
 
-  NSDictionary* feed = response.rootObject;
-  //TTDASSERT([[feed objectForKey:@"entity"] isKindOfClass:[NSArray class]]); 
+	NSString* userInfo = ((NSString*)request.userInfo);
 	
-	if (!self->_parentLoaded) {
-		self->_parentLoaded = YES;
+	if ([userInfo isEqualToString: @"comments"]) {
+		TTURLJSONResponse* response = request.response;
+		NSDictionary* feed = response.rootObject;
+		
 		NSMutableArray* members = [feed objectForKey:@"members"];		
+		_memberCount = [members count];
 		
 		for (NSString *member in members) {
-			
 			NSString* commentsURL = member;
 			commentsURL = [commentsURL stringByAddingPercentEscapesUsingEncoding:
 						   NSASCIIStringEncoding];
-			//NSLog(@"commentsURL: %@", commentsURL);
-						
-			[self loadMembers:commentsURL];		
+			[self loadMembers:commentsURL];
 		}
-	} else {
+	} else if ([userInfo isEqualToString: @"members"]) {
+		_count++;
+		TTURLJSONResponse* response = request.response;
+		NSDictionary* feed = response.rootObject;
+		
+		if ([feed count] == 0) {
+			return;
+		}
+		
 		NSDictionary* entries = [feed objectForKey:@"entity"];
 		MyComment* post = [[MyComment alloc] init];
 		
@@ -174,7 +185,8 @@ NSString *md5 (NSString *str) {
 		if ((NSNull*)tmpName == [NSNull null] || (NSNull*)tmpEmail == [NSNull null]) {
 			// get user-name from user_rest			
 			if ((NSNull*)tmpAuthorID != [NSNull null]) {
-				NSDictionary* otherValues = [self getUserDetails:tmpAuthorID];
+				[self getUserDetails:tmpAuthorID];
+				NSDictionary* otherValues = self.userDetails;
 				post.name = [otherValues objectForKey:@"display_name"];
 				post.avatar_url = [otherValues objectForKey:@"avatar_url"];
 			} else {
@@ -183,15 +195,42 @@ NSString *md5 (NSString *str) {
 			}
 		} else if ((NSNull*)tmpEmail != [NSNull null]) {
 			post.name = @"Unknown User";
-			post.avatar_url = [@"http://www.gravatar.com/avatar/" stringByAppendingFormat:@"%@?s=80", md5(tmpEmail)];
+			post.avatar_url = @"bundle://defaultPerson.png";
 		}
 		
-		[self.posts addObject:post];
+		[self.comments addObject:post];
 		[post release];
+	} else if ([userInfo isEqualToString: @"userDetails"]) {
+		TTURLJSONResponse* response = request.response;
+		NSDictionary* feed = response.rootObject;
+		
+		NSDictionary* entity = [feed objectForKey:@"entity"];
+		NSString* tmpDisplayName = [entity objectForKey:@"display_name"];
+		NSString* tmpAvatarUrl = [entity objectForKey:@"avatar_url"];
+		
+		if ((NSNull*)tmpDisplayName == [NSNull null]) {
+			tmpDisplayName = @"Unknown User";
+		}
+		
+		if ((NSNull*)tmpAvatarUrl == [NSNull null]) {
+			tmpAvatarUrl = @"bundle://defaultPerson.png";
+		}
+		
+		NSDictionary* array = [[NSDictionary alloc] initWithObjectsAndKeys:
+							   tmpDisplayName, @"display_name", tmpAvatarUrl, @"avatar_url", nil];
+		
+		self.userDetails = array;
+		
+		TT_RELEASE_SAFELY(array);
+		return;
 	}
 
-
-  [super requestDidFinishLoad:request];
+	if(_memberCount == _count) {
+		_count = 0;
+		done = YES;
+		loading = NO;
+		[self didFinishLoad];
+	}
 }
 
 - (void)requestHandler:(id)sender {

@@ -17,33 +17,22 @@
 
 @synthesize itemID = _itemID;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-  if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-    self.title = @"Comments feed";
-    self.variableHeightRows = YES;
-  }
-
-  return self;
+- (id)initWithItemID:(NSString* )itemID {
+	self = [super init];
+	self.itemID = itemID;
+	self.variableHeightRows = YES;
+	return self;
+	//[self initWithNibName:nil bundle:nil];
 }
 
-- (id)initWithItemID:(NSString* )itemID {
-	self.itemID = itemID;
-	return [self initWithNibName:nil bundle:nil];
+- (void)viewDidLoad {
+	[super viewDidLoad];
 }
 
 - (void)dealloc {
-	TT_RELEASE_SAFELY(_nextButton);
-	TT_RELEASE_SAFELY(_previousButton);
-	
 	TT_RELEASE_SAFELY(_clickComposeItem);
 	TT_RELEASE_SAFELY(_clickActionItem);
-	
-	TT_RELEASE_SAFELY(_innerView);
-	TT_RELEASE_SAFELY(_scrollView);
-	
 	TT_RELEASE_SAFELY(_toolbar);
-	TT_RELEASE_SAFELY(_itemID);
 	[super dealloc];
 }
 
@@ -57,8 +46,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)createModel {
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-  self.dataSource = [[[MyCommentsDataSource alloc]
-                      initWithSearchQuery:[[appDelegate.baseURL stringByAppendingString: @"/rest/item_comments/"] stringByAppendingString:self.itemID]] autorelease];
+	MyCommentsDataSource* ds = [[MyCommentsDataSource alloc] initWithSearchQuery:
+					   [[appDelegate.baseURL stringByAppendingString: @"/rest/item_comments/"] stringByAppendingString:self.itemID]];
+	self.dataSource = ds;
+	TT_RELEASE_SAFELY(ds);
 }
 
 
@@ -78,13 +69,8 @@
 									autorelease];
 	self.navigationItem.rightBarButtonItem = rightButton;	
 	
-	self.tableView = [[[UITableView alloc] initWithFrame:self.view.bounds  
-                                                    style:UITableViewStyleGrouped] autorelease];  
-	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;  
 	self.variableHeightRows = YES;  
-	self.title = @"Comments";  
-	[self.view addSubview:self.tableView];  
-	
+	self.title = @"Comments";   
 	
 	_clickActionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction//TTIMAGE(@"UIBarButtonReply.png")
 																	 target:self action:@selector(clickActionItem)];
@@ -94,12 +80,7 @@
 	
 	UIBarItem* space = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:
 						 UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-	
-	/*NSLog(@"width: %i", self.view.height);
-	NSLog(@"height: %i", self.view.width);
-	NSLog(@"rheight: %i", TT_ROW_HEIGHT);
-	NSLog(@"rwidth: %i", TT_ROW_HEIGHT);
-	 */
+
 	_toolbar = [[UIToolbar alloc] initWithFrame:
 				CGRectMake(0, self.view.height - TT_ROW_HEIGHT,
 						   self.view.width, TT_ROW_HEIGHT)];
@@ -166,8 +147,7 @@
 	[[self navigationController] popViewControllerAnimated:YES];
 } 
 
-- (void)toggleEdit
-{
+- (void)toggleEdit {
     [self.tableView setEditing:!self.tableView.editing animated:YES];
     NSString *label = self.tableView.editing == YES ? @"Done" : @"Edit";
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
