@@ -23,6 +23,5 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
-- (void)updateFinished;
 
 @end

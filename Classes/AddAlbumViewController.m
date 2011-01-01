@@ -10,6 +10,7 @@
 
 #import "AppDelegate.h"
 #import "MyImageUploader.h"
+#import "MyAlbum.h"
 
 #import "AddAlbumViewController.h"
 
@@ -147,14 +148,14 @@
 	[uploader uploadImage:nil];
 	TT_RELEASE_SAFELY(uploader);
 	
-	[[TTURLCache sharedCache] removeURL:[[appDelegate.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:self.parentAlbumID] fromDisk:YES];
-	
-	[self.delegate loadAlbum:self.parentAlbumID];
-	
-	TTNavigator* navigator = [TTNavigator navigator];
-	[navigator reload];
-	
-	[self.navigationController popViewControllerAnimated:YES];
+	[MyAlbum updateFinishedWithItemURL:[[appDelegate.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:self.parentAlbumID] ];
+	int index = [[self.navigationController viewControllers] count] - 3;
+	if (index >= 0) {
+		[self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:index] animated:YES];
+	} else {
+		TTNavigator* navigator = [TTNavigator navigator];
+		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+	}
 }
 
 - (NSString *)urlEncodeValue:(NSString *)str {

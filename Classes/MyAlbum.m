@@ -14,7 +14,7 @@
 
 @implementation MyAlbum
 
-@synthesize root = _root;
+@synthesize albumID = _albumID;
 @synthesize array = _array;
 @synthesize albumEntity = _albumEntity;
 
@@ -24,10 +24,11 @@
 }
 
 -(id)initWithID:(NSString* )albumId {
-	//NSLog(@"albumId: %@", albumId);
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	NSString* url = [appDelegate.baseURL stringByAppendingString:@"/rest/item/"];
+	self.albumID = albumId;
+	NSString* url = [appDelegate.baseURL stringByAppendingString:@"/rest/tree/"];
 	url = [url stringByAppendingString:(NSString *) albumId];
+	url = [url stringByAppendingString:@"?depth=1"];
 	return [self initWithUrl:url];
 }
 
@@ -50,7 +51,7 @@
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
 	if (url == nil) {
-		g3Url = [appDelegate.baseURL stringByAppendingString: @"/rest/item/1"];
+		g3Url = [appDelegate.baseURL stringByAppendingString: @"/rest/tree/1?depth=1"];
 	}
 	
 	TTURLRequest* request = [TTURLRequest
@@ -69,55 +70,55 @@
     request.response = response;
 	TT_RELEASE_SAFELY(response);
 	[request sendSynchronously];
-	
 }
 
 - (void)requestDidFinishLoad:(TTURLRequest*)request {
 	TTURLJSONResponse* response = request.response;
-	NSDictionary* feed = response.rootObject;
+	NSMutableArray* feed = [response.rootObject objectForKey:@"entity"];
+
+	_albumEntity = [[NSDictionary alloc] initWithDictionary:[[feed objectAtIndex:0] objectForKey:@"entity"]];
+	[feed removeObjectAtIndex:0];	
 	
-	if (!self->_parentLoaded) {
-		self->_parentLoaded = YES;
-		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	NSMutableDictionary* elements = [[NSMutableDictionary alloc] initWithCapacity:[feed count]];
 
-		NSDictionary* tmpEntity = [feed objectForKey:@"entity"];
-		
-		TT_RELEASE_SAFELY(_albumEntity);
-		_albumEntity = [[NSDictionary alloc] initWithDictionary:tmpEntity];;
-		
-		NSMutableArray* tmpMembers = [feed objectForKey:@"members"];
-		
-		NSString* itemsURL = [[[NSString alloc] initWithString:[appDelegate.baseURL stringByAppendingString:@"/rest/items?urls=["]] autorelease];
+	for (NSDictionary* member in feed) {			
+		//NSLog(@"member: %@", member);
+		NSDictionary* entity = [member objectForKey:@"entity"];
+		NSDictionary* url = [member objectForKey:@"url"];
 
-		for (NSString *member in tmpMembers) {
-			NSString* tmp = [[@"\"" stringByAppendingString:member] stringByAppendingString:@"\","];
-			itemsURL = [itemsURL stringByAppendingString:tmp];
-		}
-
-		itemsURL = [itemsURL substringToIndex:[itemsURL length] - 1];
-		itemsURL = [itemsURL stringByAppendingString:@"]"];
-		itemsURL = [itemsURL stringByAddingPercentEscapesUsingEncoding:
-					NSASCIIStringEncoding];
-		//NSLog(@"itemsURL: %@", itemsURL);
-				
-		[self getAlbum:itemsURL];
-	} else {
-		NSMutableDictionary* elements = [[NSMutableDictionary alloc] initWithCapacity:[feed count]];
-		for (NSDictionary* member in feed) {
-			//NSLog(@"member: %@", member);
-			NSDictionary* entity = [member objectForKey:@"entity"];
-			NSDictionary* url = [member objectForKey:@"url"];
-
-			NSMutableDictionary* element = [NSMutableDictionary dictionaryWithObject:entity forKey:@"entity"];
-			[elements setObject:element forKey:url];
-		}
-		TT_RELEASE_SAFELY(_array);
-		_array = elements;
+		NSMutableDictionary* element = [NSMutableDictionary dictionaryWithObject:entity forKey:@"entity"];
+		[elements setObject:element forKey:url];
 	}
+	_array = elements;
 }
 
 - (void)request:(TTURLRequest *)request didFailLoadWithError:(NSError *)error {
 	//NSLog(@"error: %@", error);
 }
+
++ (void)updateFinished {
+	[MyAlbum updateFinishedWithItemID:nil];
+}
+
++ (void)updateFinishedWithItemID:(NSString*)itemID {
+	if (itemID == nil) {		
+		[self updateFinishedWithItemURL:nil];
+	} else {
+		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		NSString* url = [[appDelegate.baseURL stringByAppendingString:@"/rest/tree/"] stringByAppendingString:itemID];
+		[MyAlbum updateFinishedWithItemURL:[url stringByAppendingString:@"?depth=1"]];
+	}
+}
+
++ (void)updateFinishedWithItemURL:(NSString*)url {
+	
+	if (url != nil) {
+		NSString* treeURL = [url stringByReplacingOccurrencesOfString:@"/rest/item/" withString:@"/rest/tree/"];		
+		[[TTURLCache sharedCache] removeURL:[treeURL stringByAppendingString:@"?depth=1"] fromDisk:YES];
+	} else {
+		[[TTURLCache sharedCache] removeAll:YES];
+	}
+}
+
 
 @end

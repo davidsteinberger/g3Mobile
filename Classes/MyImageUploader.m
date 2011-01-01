@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 
 #import "MySettings.h"
+#import "MyAlbum.h"
 
 static int counter = 0;
 
@@ -30,6 +31,9 @@ static int counter = 0;
 
 -(void) dealloc {
 	TT_RELEASE_SAFELY(_albumID);
+	/*TT_RELEASE_SAFELY(self->_progressAlert);
+	TT_RELEASE_SAFELY(self->_activityView);
+	TT_RELEASE_SAFELY(self->_progressView);*/
 	[super dealloc];
 }
 
@@ -98,32 +102,9 @@ static int counter = 0;
 	[request setHTTPBody:body];
 	
 	// now lets make the connection to the web
-	//NSData* returnData = [NSURLConnection send:request returningResponse:nil error:nil];
 	[NSURLConnection connectionWithRequest:request delegate:self];
-
-	//NSString *returnString = [[[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding] autorelease];
 	
-	//[NSURLConnection connectionWithRequest:request delegate:self];
-	//NSLog(@"url to be removed: %@", urlString);
-
-/*
-	[[TTURLCache sharedCache] removeURL:@"http://192.168.2.102/~David/gallery3/index.php/rest/item/6870" fromDisk:YES];
-    [[TTURLCache sharedCache] removeURL:@"http://192.168.2.102/~David/gallery3/index.php/rest/item/5166" fromDisk:YES];
-    [[TTURLCache sharedCache] removeURL:@"http://192.168.2.102/~David/gallery3/index.php/rest/item/5188" fromDisk:YES];
-	
-	[[TTURLCache sharedCache] removeURL:@"http://192.168.2.102/~David/gallery3/index.php/rest/item/5159" fromDisk:YES];
-	*/
-	
-	//[[TTURLCache sharedCache] removeAll:YES];
-	//[[TTURLCache sharedCache] removeURL:@"http://192.168.2.102/~David/gallery3/index.php/rest/items?urls=%5B%22http://192.168.2.102/~David/gallery3/index.php/rest/item/7468%22,%22http://192.168.2.102/~David/gallery3/index.php/rest/item/6870%22,%22http://192.168.2.102/~David/gallery3/index.php/rest/item/5166%22,%22http://192.168.2.102/~David/gallery3/index.php/rest/item/5188%22%5D" fromDisk:YES];
-	
-	[[TTURLCache sharedCache] removeURL:urlString fromDisk:YES];
-	/*[self.delegate loadAlbum:[NSString stringWithString:self.albumID]];
-	TTNavigator* navigator = [TTNavigator navigator];
-	[navigator reload];*/
-	
-	//return returnString;
-	//NSLog(returnString);
+	[MyAlbum updateFinishedWithItemURL:[[appDelegate.baseURL stringByAppendingString:@"/rest/tree/"] stringByAppendingString:self.albumID]];
 }
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
@@ -143,28 +124,24 @@ static int counter = 0;
 	
 	TTNavigator* navigator = [TTNavigator navigator];
 	[navigator reload];
-	
-	TT_RELEASE_SAFELY(self->_progressAlert);
-	TT_RELEASE_SAFELY(self->_activityView);
-	TT_RELEASE_SAFELY(self->_progressView);
 }
 
 - (void) createProgressionAlertWithMessage:(NSString *)message withActivity:(BOOL)activity
 {
-	_progressAlert = [[UIAlertView alloc] initWithTitle: message
+	_progressAlert = [[[UIAlertView alloc] initWithTitle: message
 												message: @"Please wait..."
 											   delegate: self
 									  cancelButtonTitle: nil
-									  otherButtonTitles: nil];
+									  otherButtonTitles: nil] autorelease];
 	
 	// Create the progress bar and add it to the alert
 	if (activity) {
-		_activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+		_activityView = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
 		_activityView.frame = CGRectMake(139.0f-18.0f, 80.0f, 37.0f, 37.0f);
 		[_progressAlert addSubview:_activityView];
 		[_activityView startAnimating];
 	} else {
-		_progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(30.0f, 80.0f, 225.0f, 90.0f)];
+		_progressView = [[[UIProgressView alloc] initWithFrame:CGRectMake(30.0f, 80.0f, 225.0f, 90.0f)] autorelease];
 		[_progressAlert addSubview:_progressView];
 		[_progressView setProgressViewStyle: UIProgressViewStyleBar];
 	}

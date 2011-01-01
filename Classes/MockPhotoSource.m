@@ -51,9 +51,9 @@
       photos2:(NSArray*)photos2 {
   if (self = [super init]) {
     _type = type;
-	_parentURL = [parentURL copy];
-	_albumID = [albumID copy];
-    _title = [title copy];
+	_parentURL = [parentURL retain];
+	_albumID = [albumID retain];
+    _title = [title retain];
     _photos = photos2 ? [photos mutableCopy] : [[NSMutableArray alloc] init];
     _tempPhotos = photos2 ? [photos2 retain] : [photos retain];
     _fakeLoadTimer = nil;

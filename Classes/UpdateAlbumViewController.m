@@ -10,6 +10,7 @@
 
 #import "AppDelegate.h"
 #import "MyImageUploader.h"
+#import "MyAlbum.h"
 
 #import "UpdateAlbumViewController.h"
 
@@ -121,7 +122,7 @@
 	
 	NSDictionary* arrayFromData = [returnData yajl_JSON];
 	NSDictionary* entity = [arrayFromData objectForKey:@"entity"];
-	
+
 	if ((NSNull*)entity != [NSNull null]) {
 		self.entity = entity;
 	}
@@ -165,9 +166,12 @@
 	
 	[NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
 	
-	[request release];
+	TT_RELEASE_SAFELY(request);
 	
-	[self.delegate updateFinished];
+	[MyAlbum updateFinishedWithItemURL:[[appDelegate.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.albumID]];	
+	[MyAlbum updateFinishedWithItemURL:[self.entity valueForKey:@"parent"]];
+	
+	[self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:[[self.navigationController viewControllers] count] - 3] animated:YES];
 }
 
 - (NSString *)urlEncodeValue:(NSString *)str {

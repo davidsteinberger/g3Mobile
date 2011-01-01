@@ -12,6 +12,7 @@
 #import "MockPhotoSource.h"
 #import "MyItemDeleter.h"
 #import "MyAlbumUpdater.h"
+#import "MyAlbum.h"
 
 #import "extThree20JSON/extThree20JSON.h"
 
@@ -167,15 +168,19 @@
 		NSString* url = p.parentURL;
 		NSArray* chunks = [url componentsSeparatedByString: @"/"];
 		NSString* albumID = [chunks objectAtIndex:[chunks count] - 1 ];
-		//NSLog(@"albumID: %@", albumID);
+
 		MyAlbumUpdater* updater = [[MyAlbumUpdater alloc] initWithItemID:albumID];
 		[updater setValue:[[appDelegate.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:p.photoID] param: @"album_cover"];
 		[updater update];
-		[[TTURLCache sharedCache] removeAll:YES];
+		TT_RELEASE_SAFELY(updater);
+		
+		MyAlbum* g3Album = [[MyAlbum alloc] initWithID:albumID];
+		[MyAlbum updateFinishedWithItemURL:[g3Album.albumEntity valueForKey:@"parent"]];
+		TT_RELEASE_SAFELY(g3Album);
+		
 		TTNavigator* navigator = [TTNavigator navigator];
 		[navigator removeAllViewControllers];
-		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
-		TT_RELEASE_SAFELY(updater);
+		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];		
 	}
 	if (buttonIndex == 2) {
 		UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
@@ -187,20 +192,17 @@
 	}
 }
 
-//- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-- (void)modalView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
+- (void)modalView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if ([alertView isKindOfClass:[UIAlertView class]]) {
 		if (buttonIndex == 1) {
 			MockPhoto* p = (MockPhoto *) self.centerPhoto;
 			NSString* photoID = p.photoID;
 			[MyItemDeleter initWithItemID:photoID];	
 
-			[[TTURLCache sharedCache] removeURL:p.parentURL fromDisk:YES];
-			
+			[MyAlbum updateFinishedWithItemURL:p.parentURL];
 			TTNavigator* navigator = [TTNavigator navigator];
 			[navigator removeAllViewControllers];
-			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];		
 		}
 	}
 }

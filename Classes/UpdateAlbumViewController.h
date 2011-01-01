@@ -12,7 +12,7 @@
 @interface UpdateAlbumViewController : TTTableViewController <UITextFieldDelegate> {
 	MyThumbsViewController* _delegate;
 	NSString* _albumID;
-	NSDictionary* _entity;
+	NSDictionary* _entity;	
 	UITextField* _albumName;
 	UITextField* _albumTitle;
 }

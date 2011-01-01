@@ -40,9 +40,12 @@
 }
 
 - (void)updateAlbum {
-	UpdateAlbumViewController* updateAlbum = [[UpdateAlbumViewController alloc] initWithAlbumID: self.albumID delegate: self];
-	[self.navigationController pushViewController:updateAlbum animated:YES];
-	TT_RELEASE_SAFELY(updateAlbum);
+	MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
+	if (![ps.albumID isEqualToString: @"1"]) {
+		UpdateAlbumViewController* updateAlbum = [[UpdateAlbumViewController alloc] initWithAlbumID: self.albumID delegate: self];
+		[self.navigationController pushViewController:updateAlbum animated:YES];	
+		TT_RELEASE_SAFELY(updateAlbum);
+	}
 }
 
 - (void)viewDidLoad {
@@ -117,7 +120,7 @@
 	//NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
 	
 	if (buttonIndex == 0) {
-		[self presentModalViewController:_pickerController animated:YES];
+		[self presentModalViewController:_pickerController animated:YES];		
 	}	
 	if (buttonIndex == 1) {
 		[self addAlbum];
@@ -141,8 +144,11 @@
 		if (buttonIndex == 1) {
 			MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
 			[MyItemDeleter initWithItemID:ps.albumID];
-			//NSLog(@"parentURL: %@", ps.parentURL);
-			[[TTURLCache sharedCache] removeURL:ps.parentURL fromDisk:YES];
+
+			NSString* parentURL = ps.parentURL;
+			NSString* treeParentURL = [parentURL stringByReplacingOccurrencesOfString:@"/rest/item/" withString:@"/rest/tree/"];
+			
+			[[TTURLCache sharedCache] removeURL:[treeParentURL stringByAppendingString:@"?depth=1"] fromDisk:YES];
 			
 			TTNavigator* navigator = [TTNavigator navigator];
 			[navigator removeAllViewControllers];
@@ -168,7 +174,7 @@
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-	
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark UINavigationController Methods
@@ -200,7 +206,6 @@
 }
 
 - (void)loadAlbum:(NSString* ) albumID {
-	//NSLog(@"albumID: %@", albumID); 
 
 	NSMutableArray* album = [[NSMutableArray alloc] init];
 	MyAlbum* g3Album = [[MyAlbum alloc] initWithID:albumID];
@@ -209,7 +214,6 @@
 	for (int i=0; i < [keyArray count]; i++) {
 		NSDictionary* obj = [g3Album.array objectForKey:[ keyArray objectAtIndex:i]];
 		NSDictionary* entity = [obj objectForKey:@"entity"];
-		//NSLog(@"iterating over: %@", entity);
 
 		NSString* thumb_url = [entity objectForKey:@"thumb_url_public"];
 		if (thumb_url == nil) {
@@ -255,7 +259,6 @@
 		
 		if ([iWidth isKindOfClass:[NSString class]] && [iHeight isKindOfClass:[NSString class]]) {
 			if ([@"" isEqualToString:iWidth] || [@"" isEqualToString:iHeight]) {
-				//NSLog(@"String is empty!!!");
 				width = 100;
 				height = 100;
 			}	
@@ -309,13 +312,6 @@
 
 -(void) reload {
 	[self updateView];
-}
-
-- (void)updateFinished {
-	[[TTURLCache sharedCache] removeAll:YES];
-	TTNavigator* navigator = [TTNavigator navigator];
-	[navigator removeAllViewControllers];
-	[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
 }
 
 @end

@@ -12,12 +12,12 @@
 
 
 @interface MyAlbum : NSObject {
+	NSString* _albumID;
 	NSMutableDictionary* _array;
 	NSMutableDictionary* _albumEntity;
-	BOOL _parentLoaded;
 }
 
-@property(nonatomic, retain) NSArray* root;
+@property(nonatomic, retain) NSString* albumID;
 @property(nonatomic, retain) NSMutableDictionary* array;
 @property(nonatomic, retain) NSMutableDictionary* albumEntity;
 
@@ -28,5 +28,8 @@
 - (void)getAlbum:(NSString* )url;
 - (void)requestDidFinishLoad:(TTURLRequest*)request;
 - (void)request:(TTURLRequest *)request didFailLoadWithError:(NSError *)error;
++ (void)updateFinished;
++ (void)updateFinishedWithItemID:(NSString*)itemID;
++ (void)updateFinishedWithItemURL:(NSString*)url;
 
 @end
