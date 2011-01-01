@@ -46,17 +46,17 @@ withImageQuality:(float) imageQuality {
 	[prefs setObject:self.user forKey:@"user"];
 	[prefs setObject:self.password forKey:@"password"];
 	[prefs setObject:self.challenge forKey:@"challenge"];	
-	//[prefs setFloat:self.imageQuality forKey:@"imageQuality"];
+	[prefs setFloat:self.imageQuality forKey:@"imageQuality"];
 	
 	[prefs synchronize];
 }
 
-- (NSString*)getBaseUrl {
+- (NSString*)baseUrl {
 	NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
 	return [prefs stringForKey:@"baseURL"];
 }
 
-- (NSString*)getChallenge {
+- (NSString*)challenge {
 	NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
 	return [prefs stringForKey:@"challenge"];
 }
