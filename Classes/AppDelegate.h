@@ -1,8 +1,10 @@
 #import <Three20/Three20.h>
+@class Reachability;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate> {
 	NSString* _user;
 	NSString* _password;
+	Reachability* hostReach;
 @public
 	NSString* _challenge;
 	NSString* _baseURL;

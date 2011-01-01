@@ -10,6 +10,8 @@
 #import "AddAlbumViewController.h"
 #import <sqlite3.h>
 
+#import "Reachability.h"
+
 
 
 @implementation AppDelegate
@@ -18,6 +20,26 @@
 @synthesize password = _password;
 @synthesize challenge = _challenge;
 @synthesize baseURL = _baseURL;
+
+- (void) updateInterfaceWithReachability: (Reachability*) curReach {
+	BOOL connectionRequired= [curReach connectionRequired];
+	if (connectionRequired) {
+		UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
+		[dialog setDelegate:self];
+		[dialog setTitle:@"Network Lost"];
+		dialog.message = @"Internet connection required \nto browse new content!";
+		[dialog addButtonWithTitle:@"OK"];
+		[dialog show];
+	}
+}
+
+//Called by Reachability whenever status changes.
+- (void) reachabilityChanged: (NSNotification* )note
+{
+	Reachability* curReach = [note object];
+	NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
+	[self updateInterfaceWithReachability: curReach];
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // UIApplicationDelegate
@@ -32,6 +54,12 @@
 }
 
 - (void)applicationDidFinishLaunching:(UIApplication*)application {
+	
+	// Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
+    // method "reachabilityChanged" will be called. 
+    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(reachabilityChanged:) name: kReachabilityChangedNotification object: nil];
+	hostReach = [[Reachability reachabilityWithHostName: @"www.apple.com"] retain];
+	[hostReach startNotifier];
 	
 	TTNavigator* navigator = [TTNavigator navigator];
 	navigator.supportsShakeToReload = NO;

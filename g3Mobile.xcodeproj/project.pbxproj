@@ -52,6 +52,8 @@
 		63B255EE1299C60900BA9323 /* FlipsideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EC1299C60900BA9323 /* FlipsideView.xib */; };
 		63B255F01299C63300BA9323 /* Three20.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EF1299C63300BA9323 /* Three20.bundle */; };
 		63B257AE1299D51800BA9323 /* MySettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B257AD1299D51800BA9323 /* MySettingsController.m */; };
+		63BB542212CE434600764C23 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BB542112CE434600764C23 /* Reachability.m */; };
+		63BB544612CE43AB00764C23 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63BB544512CE43AB00764C23 /* SystemConfiguration.framework */; };
 		63E13C7F12BED4C6003248F4 /* AddAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */; };
 		63F4602212C8161C00116221 /* UpdateAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F4602112C8161C00116221 /* UpdateAlbumViewController.m */; };
 /* End PBXBuildFile section */
@@ -546,6 +548,9 @@
 		63B255EF1299C63300BA9323 /* Three20.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Three20.bundle; path = ../../iPhone/three20/src/Three20.bundle; sourceTree = SOURCE_ROOT; };
 		63B257AC1299D51800BA9323 /* MySettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySettingsController.h; sourceTree = "<group>"; };
 		63B257AD1299D51800BA9323 /* MySettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySettingsController.m; sourceTree = "<group>"; };
+		63BB542012CE434600764C23 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		63BB542112CE434600764C23 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		63BB544512CE43AB00764C23 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		63E13C7D12BED4C6003248F4 /* AddAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAlbumViewController.h; sourceTree = "<group>"; };
 		63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddAlbumViewController.m; sourceTree = "<group>"; };
 		63F4602012C8161C00116221 /* UpdateAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateAlbumViewController.h; sourceTree = "<group>"; };
@@ -570,6 +575,7 @@
 				63B2531D1299BBC200BA9323 /* libThree20UICommon.a in Frameworks */,
 				63B2531E1299BBC500BA9323 /* libThree20UINavigator.a in Frameworks */,
 				63B253341299BC7600BA9323 /* QuartzCore.framework in Frameworks */,
+				63BB544612CE43AB00764C23 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,6 +590,8 @@
 				6358A4B912C880EB0043D18A /* MySettings.h */,
 				6358A4BA12C880EB0043D18A /* MySettings.m */,
 				6358A4C412C8810C0043D18A /* SynthesizeSingleton.h */,
+				63BB542012CE434600764C23 /* Reachability.h */,
+				63BB542112CE434600764C23 /* Reachability.m */,
 				63A3B510129C3BDE00E04981 /* Login */,
 				63B2540E1299BD3100BA9323 /* Album */,
 				63B253FF1299BD3100BA9323 /* Photos */,
@@ -644,6 +652,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				63BB544512CE43AB00764C23 /* SystemConfiguration.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
@@ -1441,6 +1450,7 @@
 				636B7F1912BFE98D00ECDCDD /* MyAlbumUpdater.m in Sources */,
 				63F4602212C8161C00116221 /* UpdateAlbumViewController.m in Sources */,
 				6358A4BB12C880EB0043D18A /* MySettings.m in Sources */,
+				63BB542212CE434600764C23 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
