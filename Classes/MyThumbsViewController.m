@@ -164,13 +164,13 @@
 	
 	ps = (MockPhotoSource* ) self.photoSource;
 	
-	[self dismissModalViewControllerAnimated:YES];
-	
 	UIImage* picture = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
 	
 	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:[[[NSString alloc] initWithString:ps.albumID] autorelease] delegate:self];
 	[uploader uploadImage:picture];
 	TT_RELEASE_SAFELY(uploader);
+	
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
