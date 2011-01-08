@@ -14,8 +14,10 @@
 @interface AddAlbumViewController : TTTableViewController <UITextFieldDelegate> {
 	MyThumbsViewController* _delegate;
 	NSString* _parentAlbumID;
-	UITextField* _albumName;
+	
 	UITextField* _albumTitle;
+	UITextField* _description;
+	UITextField* _internetAddress;
 }
 
 @property(nonatomic, retain) NSString* parentAlbumID;

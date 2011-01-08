@@ -45,8 +45,9 @@
 - (void)dealloc {
 	TT_RELEASE_SAFELY(_albumID);
 	TT_RELEASE_SAFELY(_entity);
-	TT_RELEASE_SAFELY(_albumName);
 	TT_RELEASE_SAFELY(_albumTitle);
+	TT_RELEASE_SAFELY(_description);
+	TT_RELEASE_SAFELY(_internetAddress);
 	[super dealloc];
 }
 
@@ -113,30 +114,40 @@
 			self.entity = feed;
 		}
 	
-		_albumName = [[UITextField alloc] init];
-		_albumName.placeholder = @"New Name";
-		_albumName.delegate = self;
-		_albumName.text = [self.entity objectForKey:@"name"];
-		_albumName.returnKeyType = UIReturnKeyNext;
-		
-		TTTableControlItem* cAlbumName = [TTTableControlItem itemWithCaption:@"Name"
-																	 control:_albumName];
-		
 		_albumTitle = [[UITextField alloc] init];
-		_albumTitle.placeholder = @"New Title";
+		_albumTitle.placeholder = @"New Name";
 		_albumTitle.delegate = self;
+		_albumTitle.text = [self.entity objectForKey:@"name"];
 		_albumTitle.returnKeyType = UIReturnKeyGo;
-		_albumTitle.text = [self.entity objectForKey:@"title"];
 		
-		TTTableControlItem* cAlbumTitle = [TTTableControlItem itemWithCaption:@"Title"
-																	  control:_albumTitle];
+		TTTableControlItem* cAlbumTitle = [TTTableControlItem itemWithCaption:@"Name"
+																	 control:_albumTitle];
+		
+		_description = [[UITextField alloc] init];
+		_description.placeholder = @"New Title";
+		_description.delegate = self;
+		_description.returnKeyType = UIReturnKeyGo;
+		_description.text = [self.entity objectForKey:@"title"];
+		
+		TTTableControlItem* cAlbumDescription = [TTTableControlItem itemWithCaption:@"Title"
+																	  control:_description];
+		
+		_internetAddress = [[UITextField alloc] init];
+		_internetAddress.placeholder = @"Address";
+		_internetAddress.delegate = self;
+		_internetAddress.returnKeyType = UIReturnKeyGo;
+		_internetAddress.text = [self.entity objectForKey:@"slug"];
+		
+		TTTableControlItem* cInternetAddress = [TTTableControlItem itemWithCaption:@"Internet Address"
+																		   control:_internetAddress];
 		
 		self.dataSource = [TTSectionedDataSource dataSourceWithObjects:
 						   @"",
-						   cAlbumName,
 						   cAlbumTitle,
+						   cAlbumDescription,
+						   cInternetAddress,
 						   nil];	
-		[_albumName becomeFirstResponder];
+		[_albumTitle becomeFirstResponder];
 		
 		[super modelDidFinishLoad:self];
 	}
@@ -149,8 +160,41 @@
 
 }
 
+- (BOOL) textFieldShouldBeginEditing:(UITextField *)textField {
+	if (textField == _description)	{
+		NSString *textForPostController = _description.text;
+		NSDictionary* paramsArray = [NSDictionary dictionaryWithObjectsAndKeys:
+									 self, @"delegate",
+									 @"Add Description", @"titleView",
+									 textForPostController, @"text",
+									 nil];
+		
+		[[TTNavigator navigator] openURLAction:[[[TTURLAction actionWithURLPath:@"tt://loadFromVC/MyPostController"]
+												 applyQuery:paramsArray] applyAnimated:YES]];		
+		return NO;
+	}
+	else {
+		return YES;
+	}
+	
+}
+
+- (void)postController:(TTPostController*)postController didPostText:(NSString *)text withResult:(id)result {
+	_description.text = nil;
+	_description.text = text;
+	[_internetAddress becomeFirstResponder];
+}
+
+- (void)postControllerDidCancel:(TTPostController*)postController {
+	
+}
+
 - (void)request:(TTURLRequest *)request didFailLoadWithError:(NSError *)error {
-	//NSLog(@"error: %@", error);
+	TTAlertViewController* alert = [[[TTAlertViewController alloc] initWithTitle:@"Error" message:@"Please check fields for valid vaues!"] autorelease];
+    [alert addCancelButtonWithTitle:@"OK" URL:nil];
+    [alert showInView:self.view animated:YES];
+	
+	[self showLoading:NO];		
 }
 
 
@@ -172,10 +216,13 @@
 	// don't cache
 	request.cacheExpirationAge = 0;
 		
+	NSString *slug = ([_internetAddress.text isEqual:@""]) ? _albumTitle.text : _internetAddress.text;
 	NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:    
 							@"album", @"type",
-							_albumName.text, @"name",
+							_albumTitle.text, @"name",
 							_albumTitle.text, @"title",
+							_description.text, @"description",
+							slug, @"slug",
 							nil];  
 	
 	//json-encode & urlencode parameters

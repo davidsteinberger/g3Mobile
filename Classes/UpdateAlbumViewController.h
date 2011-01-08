@@ -14,8 +14,10 @@
 @interface UpdateAlbumViewController : TTTableViewController <TTModel, UITextFieldDelegate> {
 	NSString* _albumID;
 	NSDictionary* _entity;	
-	UITextField* _albumName;
+	
 	UITextField* _albumTitle;
+	UITextField* _description;
+	UITextField* _internetAddress;
 }
 
 @property(nonatomic, retain) NSString* albumID;

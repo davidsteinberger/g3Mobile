@@ -6,6 +6,7 @@
 //  Copyright 2010 -. All rights reserved.
 //
 
+#import "NSObject+YAJL.h"
 #import "extThree20JSON/extThree20JSON.h"
 
 #import "AppDelegate.h"
@@ -31,6 +32,9 @@
 		[[[UIBarButtonItem alloc] initWithTitle:@"Album" style:UIBarButtonItemStyleBordered
 										 target:nil action:nil] autorelease];
 		
+		//[[TTNavigator navigator].URLMap from:@"tt://post/description"
+		//							toObject:self selector:@selector(removeAllCache)];		
+		
 		self.tableViewStyle = UITableViewStyleGrouped;
 	}
 	return self;
@@ -44,60 +48,86 @@
 }
 
 - (void)dealloc {
+	//[[TTNavigator navigator].URLMap removeURL:@"tt://post/description"];
 	TT_RELEASE_SAFELY(_parentAlbumID);
-	TT_RELEASE_SAFELY(_albumName);
 	TT_RELEASE_SAFELY(_albumTitle);
+	TT_RELEASE_SAFELY(_description);
+	TT_RELEASE_SAFELY(_internetAddress);
 	[super dealloc];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // TTModelViewController
 
-- (void)createModel {
-	_albumName = [[UITextField alloc] init];
-	_albumName.placeholder = @"My Album";
-	_albumName.delegate = self;
-	//_albumName.text = @"Name";
-	_albumName.returnKeyType = UIReturnKeyNext;
-	
-	TTTableControlItem* cAlbumName = [TTTableControlItem itemWithCaption:@"Name"
-															   control:_albumName];
-
+- (void)createModel {	
 	_albumTitle = [[UITextField alloc] init];
-	_albumTitle.placeholder = @"My Title";
+	_albumTitle.placeholder = @"Title";
 	_albumTitle.delegate = self;
 	_albumTitle.returnKeyType = UIReturnKeyGo;
-	//_albumTitle.text = @"Title";
 	
-	TTTableControlItem* cAlbumTitle = [TTTableControlItem itemWithCaption:@"Title"
-																 control:_albumTitle];
+	TTTableControlItem* cAlbumName = [TTTableControlItem itemWithCaption:@"Title"
+															   control:_albumTitle];
+
+	_description = [[UITextField alloc] init];
+	_description.placeholder = @"Description";
+	_description.delegate = self;
+	_description.returnKeyType = UIReturnKeyGo;
+
+	TTTableControlItem* cAlbumTitle = [TTTableControlItem itemWithCaption:@"Description"
+																 control:_description];
+	
+	_internetAddress = [[UITextField alloc] init];
+	_internetAddress.placeholder = @"Address";
+	_internetAddress.delegate = self;
+	_internetAddress.returnKeyType = UIReturnKeyGo;
+	
+	TTTableControlItem* cInternetAddress = [TTTableControlItem itemWithCaption:@"Internet Address"
+																  control:_internetAddress];
 	
 	self.dataSource = [TTSectionedDataSource dataSourceWithObjects:
 					   @"",
 					   cAlbumName,
 					   cAlbumTitle,
-					   nil];	
-	[_albumName becomeFirstResponder];
+					   cInternetAddress,
+					   nil];
+	
+	[_albumTitle becomeFirstResponder];
+}
+
+- (BOOL) textFieldShouldBeginEditing:(UITextField *)textField {
+	if (textField == _description)	{
+		NSString *textForPostController = @"";
+		NSDictionary* paramsArray = [NSDictionary dictionaryWithObjectsAndKeys:
+									 self, @"delegate",
+									 @"Add Description", @"titleView",
+									 textForPostController, @"text",
+									 nil];
+		
+		[[TTNavigator navigator] openURLAction:[[[TTURLAction actionWithURLPath:@"tt://loadFromVC/MyPostController"]
+												 applyQuery:paramsArray] applyAnimated:YES]];		
+		return NO;
+	}
+	else {
+		return YES;
+	}
+
+}
+
+- (void)postController:(TTPostController*)postController didPostText:(NSString *)text withResult:(id)result {
+	_description.text = nil;
+	_description.text = text;
+	
+	[_internetAddress becomeFirstResponder];
+}
+
+- (void)postControllerDidCancel:(TTPostController*)postController {
+	
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark UITextFieldDelegate methods
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField.returnKeyType == UIReturnKeyNext) {
-		[_albumTitle becomeFirstResponder];
-    }
-    else {
-		[_albumTitle resignFirstResponder];
-		
-		[self addAlbum];
-    }
-    return YES;
-}
 
 #pragma mark -
 #pragma mark helpers
@@ -122,8 +152,10 @@
 	
 	NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:    
 							@"album", @"type",
-							_albumName.text, @"name",
+							_albumTitle.text, @"name",
 							_albumTitle.text, @"title",
+							_description.text, @"description",
+							_internetAddress.text, @"slug",
 							nil];  
 	
 	//json-encode & urlencode parameters
@@ -165,6 +197,14 @@
 			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
 		}
 	}
+}
+
+- (void)request:(TTURLRequest *)request didFailLoadWithError:(NSError *)error {
+	TTAlertViewController* alert = [[[TTAlertViewController alloc] initWithTitle:@"Error" message:@"Please check fields for valid vaues!"] autorelease];
+    [alert addCancelButtonWithTitle:@"OK" URL:nil];
+    [alert showInView:self.view animated:YES];
+	
+	[self showLoading:NO];	
 }
 
 - (NSString *)urlEncodeValue:(NSString *)str {
