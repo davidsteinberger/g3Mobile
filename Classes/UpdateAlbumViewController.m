@@ -68,13 +68,14 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField.returnKeyType == UIReturnKeyNext) {
 		[_albumTitle becomeFirstResponder];
+		return NO;
     }
     else {
 		[_albumTitle resignFirstResponder];
 		
 		[self updateAlbum];
+		return YES;
     }
-    return YES;
 }
 
 #pragma mark -
@@ -115,21 +116,21 @@
 		}
 	
 		_albumTitle = [[UITextField alloc] init];
-		_albumTitle.placeholder = @"New Name";
+		_albumTitle.placeholder = @"Title";
 		_albumTitle.delegate = self;
-		_albumTitle.text = [self.entity objectForKey:@"name"];
+		_albumTitle.text = [self.entity objectForKey:@"title"];
 		_albumTitle.returnKeyType = UIReturnKeyGo;
 		
-		TTTableControlItem* cAlbumTitle = [TTTableControlItem itemWithCaption:@"Name"
+		TTTableControlItem* cAlbumTitle = [TTTableControlItem itemWithCaption:@"Title"
 																	 control:_albumTitle];
 		
 		_description = [[UITextField alloc] init];
-		_description.placeholder = @"New Title";
+		_description.placeholder = @"Description";
 		_description.delegate = self;
 		_description.returnKeyType = UIReturnKeyGo;
-		_description.text = [self.entity objectForKey:@"title"];
+		_description.text = [self.entity objectForKey:@"description"];
 		
-		TTTableControlItem* cAlbumDescription = [TTTableControlItem itemWithCaption:@"Title"
+		TTTableControlItem* cAlbumDescription = [TTTableControlItem itemWithCaption:@"Description"
 																	  control:_description];
 		
 		_internetAddress = [[UITextField alloc] init];
@@ -186,7 +187,7 @@
 }
 
 - (void)postControllerDidCancel:(TTPostController*)postController {
-	
+	[_albumTitle becomeFirstResponder];
 }
 
 - (void)request:(TTURLRequest *)request didFailLoadWithError:(NSError *)error {

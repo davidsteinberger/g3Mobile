@@ -32,9 +32,6 @@
 		[[[UIBarButtonItem alloc] initWithTitle:@"Album" style:UIBarButtonItemStyleBordered
 										 target:nil action:nil] autorelease];
 		
-		//[[TTNavigator navigator].URLMap from:@"tt://post/description"
-		//							toObject:self selector:@selector(removeAllCache)];		
-		
 		self.tableViewStyle = UITableViewStyleGrouped;
 	}
 	return self;
@@ -48,7 +45,7 @@
 }
 
 - (void)dealloc {
-	//[[TTNavigator navigator].URLMap removeURL:@"tt://post/description"];
+	self.parentAlbumID = nil;
 	TT_RELEASE_SAFELY(_parentAlbumID);
 	TT_RELEASE_SAFELY(_albumTitle);
 	TT_RELEASE_SAFELY(_description);
@@ -85,7 +82,7 @@
 																  control:_internetAddress];
 	
 	self.dataSource = [TTSectionedDataSource dataSourceWithObjects:
-					   @"",
+					   @"Album Details",
 					   cAlbumName,
 					   cAlbumTitle,
 					   cInternetAddress,
@@ -117,17 +114,29 @@
 	_description.text = nil;
 	_description.text = text;
 	
-	[_internetAddress becomeFirstResponder];
+	[_albumTitle becomeFirstResponder];
 }
 
 - (void)postControllerDidCancel:(TTPostController*)postController {
-	
+	[_albumTitle becomeFirstResponder];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark UITextFieldDelegate methods
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField.returnKeyType == UIReturnKeyGo) {
+		[self addAlbum];
+		return YES;
+    }
+	else {
+		return NO;
+	}
+
+}
 
 #pragma mark -
 #pragma mark helpers
@@ -182,7 +191,7 @@
 		NSArray* chunks = [url componentsSeparatedByString: @"/"];
 		NSString* newAlbumID = [chunks objectAtIndex:[chunks count] - 1 ];
 		
-		MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:[[[NSString alloc] initWithString:newAlbumID] autorelease] delegate:nil];
+		MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:newAlbumID delegate:nil];
 		[uploader uploadImage:nil withDescription:@"to_be_deleted"];
 		TT_RELEASE_SAFELY(uploader);
 		

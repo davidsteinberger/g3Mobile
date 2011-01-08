@@ -30,15 +30,12 @@ static int counter = 0;
 	[self createProgressionAlertWithMessage:@"Image upload" withActivity:NO];
 	
 	self.delegate = delegate;
-	self.albumID = [[NSString alloc] initWithString:albumID];
+	self.albumID = albumID;
 	return self;
 }
 
 -(void) dealloc {
-	TT_RELEASE_SAFELY(_albumID);
-	/*TT_RELEASE_SAFELY(self->_progressAlert);
-	TT_RELEASE_SAFELY(self->_activityView);
-	TT_RELEASE_SAFELY(self->_progressView);*/
+	self.albumID = nil;
 	[super dealloc];
 }
 

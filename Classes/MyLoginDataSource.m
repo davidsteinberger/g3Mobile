@@ -5,8 +5,6 @@
 
 #import "MySettings.h"
 
-static int cursorPosition = 0;
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,27 +49,25 @@ static int cursorPosition = 0;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	cursorPosition = ++cursorPosition % 3;
-    if (textField.returnKeyType == UIReturnKeyNext) {
-		if (cursorPosition == 1) {
-			[_usernameField becomeFirstResponder];
-		}
-		else if (cursorPosition == 2) {
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {    
+	if (textField == _baseURL) {
+		[_usernameField becomeFirstResponder];
+	}
+	else {
+		if (textField == _usernameField) {
 			[_passwordField becomeFirstResponder];
 		}
-    }
-    else {
-		[_passwordField resignFirstResponder];
-		cursorPosition = 0;
-		
-		MyLogin *settings = [[MyLogin alloc] init];
-		settings.baseURL = _baseURL.text;
-		settings.username = _usernameField.text;
-		settings.password = _passwordField.text;
-		settings.imageQuality = _imageQualityField.value;
-		
-		[(MyLoginModel*)self.model login:[settings autorelease]];
+		else {
+			[_passwordField resignFirstResponder];
+			
+			MyLogin *settings = [[MyLogin alloc] init];
+			settings.baseURL = _baseURL.text;
+			settings.username = _usernameField.text;
+			settings.password = _passwordField.text;
+			settings.imageQuality = _imageQualityField.value;
+			
+			[(MyLoginModel*)self.model login:[settings autorelease]];
+		}
 	}
     return YES;
 }
@@ -122,7 +118,7 @@ static int cursorPosition = 0;
 	_usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	_usernameField.clearsOnBeginEditing = NO;
 	_usernameField.delegate = self;
-	_usernameField.text = @"admin";
+	
 	TTTableControlItem* cUsernameField = [TTTableControlItem itemWithCaption:@"Username"
 																	 control:_usernameField];
 	
@@ -136,7 +132,7 @@ static int cursorPosition = 0;
 	_passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	_passwordField.clearsOnBeginEditing = NO;
 	_passwordField.delegate = self;
-	_passwordField.text = @"gallery3";
+	
 	TTTableControlItem* cPasswordField = [TTTableControlItem itemWithCaption:@"Password"
 																	 control:_passwordField];
 	
