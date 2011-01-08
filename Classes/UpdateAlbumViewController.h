@@ -12,7 +12,6 @@
 @class MyThumbsViewController;
 
 @interface UpdateAlbumViewController : TTTableViewController <UITextFieldDelegate> {
-	MyThumbsViewController* _delegate;
 	NSString* _albumID;
 	NSDictionary* _entity;	
 	UITextField* _albumName;
@@ -21,9 +20,8 @@
 
 @property(nonatomic, retain) NSString* albumID;
 @property(nonatomic, retain) NSDictionary* entity;
-@property(nonatomic, retain) MyThumbsViewController* delegate;
 
-- (id)initWithAlbumID: (NSString* )albumID delegate: (MyThumbsViewController*)delegate;
+- (id)initWithAlbumID: (NSString* )albumID;
 - (void)loadAlbum;
 - (void)updateAlbum;
 - (NSString *)urlEncodeValue:(NSString *)str;

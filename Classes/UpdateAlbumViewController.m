@@ -18,7 +18,6 @@
 
 @synthesize albumID = _albumID;
 @synthesize entity = _entity;
-@synthesize delegate = _delegate;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // NSObject
@@ -35,9 +34,8 @@
 	return self;
 }
 
-- (id)initWithAlbumID: (NSString* )albumID delegate: (MyThumbsViewController*)delegate {
+- (id)initWithAlbumID: (NSString* )albumID {
 	self.albumID = albumID;
-	self.delegate = (id)delegate;
 	
 	return [self initWithNibName:nil bundle: nil];
 }

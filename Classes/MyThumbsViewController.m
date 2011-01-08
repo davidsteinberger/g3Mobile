@@ -45,19 +45,14 @@
 - (void)updateAlbum {
 	MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
 	if (![ps.albumID isEqualToString: @"1"]) {
-		UpdateAlbumViewController* updateAlbum = [[UpdateAlbumViewController alloc] initWithAlbumID: self.albumID delegate: self];
+		UpdateAlbumViewController* updateAlbum = [[UpdateAlbumViewController alloc] initWithAlbumID: self.albumID];
 		[self.navigationController pushViewController:updateAlbum animated:YES];	
 		TT_RELEASE_SAFELY(updateAlbum);
 	}
 }
 
 - (void)viewDidLoad {
-	/*
-	UIProgressView *progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-	[progressView setFrame:CGRectMake(0,0,320,100)];
-	[self.view addSubview:progressView];
-	*/
-	
+		
 	MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
 	
 	//show logout only when on root-album
