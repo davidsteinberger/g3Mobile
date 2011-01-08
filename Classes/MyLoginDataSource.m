@@ -33,7 +33,9 @@ static int cursorPosition = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)dealloc {
-	_baseURL.text = nil;
+	//_baseURL.text = nil;
+	self.sections = nil;
+	self.items = nil;
 	TT_RELEASE_SAFELY(_baseURL);
     TT_RELEASE_SAFELY(_usernameField);
     TT_RELEASE_SAFELY(_passwordField);
@@ -93,16 +95,9 @@ static int cursorPosition = 0;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)tableViewDidLoadModel:(UITableView*)tableView {
-	//_loginModel = [[MyLoginModel alloc] init];
-	
-	NSMutableArray *items = [[NSMutableArray alloc] init];
-	NSMutableArray *sections = [[NSMutableArray alloc] init];
-	
-	[sections addObject:@"Global"];
-	NSMutableArray *itemsRow = [[NSMutableArray alloc] init];
-	NSMutableArray *itemsRow2 = [[NSMutableArray alloc] init];
-	
+- (void)tableViewDidLoadModel:(UITableView*)tableView {	
+	// create ui-elements
+	// url for website
 	_baseURL = [[UITextField alloc] init];
 	_baseURL.placeholder = @"http://example.com";
 	_baseURL.keyboardType = UIKeyboardTypeURL;
@@ -116,8 +111,8 @@ static int cursorPosition = 0;
 	_baseURL.text = GlobalSettings.baseURL;
 	TTTableControlItem* cBaseURL = [TTTableControlItem itemWithCaption:@"Website"
 															   control:_baseURL];
-	[itemsRow addObject:cBaseURL];
 	
+	// username field
 	_usernameField = [[UITextField alloc] init];
 	_usernameField.placeholder = @"*****";
 	_usernameField.keyboardType = UIKeyboardTypeDefault;
@@ -130,8 +125,8 @@ static int cursorPosition = 0;
 	_usernameField.text = @"admin";
 	TTTableControlItem* cUsernameField = [TTTableControlItem itemWithCaption:@"Username"
 																	 control:_usernameField];
-	[itemsRow addObject:cUsernameField];
 	
+	// password field
 	_passwordField = [[UITextField alloc] init];
 	_passwordField.placeholder = @"*****";
 	_passwordField.returnKeyType = UIReturnKeyGo;
@@ -144,10 +139,8 @@ static int cursorPosition = 0;
 	_passwordField.text = @"gallery3";
 	TTTableControlItem* cPasswordField = [TTTableControlItem itemWithCaption:@"Password"
 																	 control:_passwordField];
-	[itemsRow addObject:cPasswordField];		
 	
-	[sections addObject:@"Other"];
-	
+	// image quality field
 	_imageQualityField = [[[UISlider alloc] init] autorelease];
 	_imageQualityField.minimumValue = 0.2;
 	_imageQualityField.maximumValue = 0.8;
@@ -158,18 +151,51 @@ static int cursorPosition = 0;
 						   action:@selector(imageQualityChanged:) 
 				 forControlEvents:UIControlEventTouchUpInside ];
 	
-	TTTableControlItem* imageQuality = [TTTableControlItem itemWithCaption:@"Image Quality" control:_imageQualityField];
+	TTTableControlItem* cImageQuality = [TTTableControlItem itemWithCaption:@"Image Quality" control:_imageQualityField];
 	
-	[itemsRow2 addObject:imageQuality];
+	// a button to clear all cache
+	CGRect appFrame = [UIScreen mainScreen].applicationFrame;
+	UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+	[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+	button.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
+	[button setTitle:@"Delete all Cache" forState:UIControlStateNormal];
+	[button addTarget:@"tt://removeAllCache" action:@selector(openURL)
+	 forControlEvents:UIControlEventTouchUpInside];
+	button.frame = CGRectMake(20, 20, appFrame.size.width - 40, 50);
 	
-	[items addObject:itemsRow];
-	[items addObject:itemsRow2];		
+	// put everything together (for the ttsectioneddatasource)
+	// create sections
+	NSMutableArray *sections = [[NSMutableArray alloc] init];
+	[sections addObject:@"Global"];
+	[sections addObject:@"Other"];
+	[sections addObject:@"Cache Settings"];
 	
-	TT_RELEASE_SAFELY(itemsRow);
-	TT_RELEASE_SAFELY(itemsRow2);
+	// create section items
+	// section 1 will hold items for login details
+	NSMutableArray *section1 = [[NSMutableArray alloc] init];
+	[section1 addObject:cBaseURL];	
+	[section1 addObject:cUsernameField];
+	[section1 addObject:cPasswordField];
+	// section 2 will hold the image quality slider
+	NSMutableArray *section2 = [[NSMutableArray alloc] init];
+	[section2 addObject:cImageQuality];
+	// section 3 will hold button for clearing the cache
+	NSMutableArray *section3 = [[NSMutableArray alloc] init];
+	[section3 addObject:button];
 	
-	_items = items;
-	_sections = sections;
+	// create array for ttsectioneddatasource
+	NSMutableArray *items = [[NSMutableArray alloc] init];
+	[items addObject:section1];
+	[items addObject:section2];
+	[items addObject:section3];
+	TT_RELEASE_SAFELY(section1);
+	TT_RELEASE_SAFELY(section2);
+	TT_RELEASE_SAFELY(section3);
+	
+	self.items = items;
+	self.sections = sections;
+	TT_RELEASE_SAFELY(sections);
+	TT_RELEASE_SAFELY(items);
 }
 
 

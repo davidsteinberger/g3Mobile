@@ -5,6 +5,7 @@
 #import "MyLogin.h"
 
 #import "MySettings.h"
+#import "MyAlbum.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -17,13 +18,51 @@
 		self.title = @"Settings";
 		self.variableHeightRows = YES;
 		self.tableViewStyle = UITableViewStyleGrouped;
+		
+		[[TTNavigator navigator].URLMap from:@"tt://removeAllCache"
+					   toObject:self selector:@selector(removeAllCache)];
 	}
 	
 	return self;
 }
 
+- (void)removeAllCache {
+//	[self dismissModalViewControllerAnimated:NO];
+	UIActionSheet *actionSheet = [[[UIActionSheet alloc] initWithTitle:nil
+															  delegate:self
+													 cancelButtonTitle:@"Cancel"
+												destructiveButtonTitle:nil
+													 otherButtonTitles:@"Really delete all cache?!", nil] autorelease];
+	
+	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+	
+	//[actionSheet addButtonWithTitle:@"Really delete all cache?!"];
+	//actionSheet.cancelButtonIndex = 4;
+	//actionSheet.destructiveButtonIndex = 3; 
+	
+    [actionSheet showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	
+	NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
+	
+	if (buttonIndex == 0) {
+		[MyAlbum updateFinished];
+		TTNavigator *navigator = [TTNavigator navigator];
+		[navigator removeAllViewControllers];
+		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+	}	
+}
+
+- (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
+	
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)dealloc {
+	[[TTNavigator navigator].URLMap removeURL:@"tt://removeAllCache"];
     TT_RELEASE_SAFELY(_emptyTable);
     [super dealloc];
 }
@@ -42,7 +81,7 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)showLoading:(BOOL)show {
-	NSLog(@"here");
+	//NSLog(@"here");
     /*if (show) {
         self.loadingView = _emptyTable;
     }
