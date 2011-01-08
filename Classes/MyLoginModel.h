@@ -1,15 +1,27 @@
 #import "Three20/Three20.h"
+#import "MyLogin.h"
+
+@protocol MyDatabaseRequestDelegate
+
+- (void)login:(MyLogin*)settings;
+
+@end
+
+
 
 @class MyLogin;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-@interface MyLoginModel : TTURLRequestModel {
+@interface MyLoginModel : TTURLRequestModel <MyDatabaseRequestDelegate> {
     MyLogin* _credentials;
+	
+	BOOL done;
+	BOOL loading;
 }
 
-- (void)login:(NSString *) baseURL username:(NSString *)username password:(NSString *)password imageQuality:(float)imageQuality;
+- (void)login:(MyLogin *)settings;
 - (void)store:(MyLogin *)login;
 
 @property (nonatomic, readonly) MyLogin* credentials;

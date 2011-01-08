@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-@interface MyLogin : NSObject <TTModel> {
+@interface MyLogin : NSObject {
 	NSString *_baseURL;
     NSString *_username;
     NSString *_password;
@@ -11,10 +11,10 @@
 	float _imageQuality;
 }
 
-@property (nonatomic, copy) NSString *baseURL;
-@property (nonatomic, copy) NSString *username;
-@property (nonatomic, copy) NSString *password;
-@property (nonatomic, copy) NSString *challenge;
+@property (nonatomic, retain) NSString *baseURL;
+@property (nonatomic, retain) NSString *username;
+@property (nonatomic, retain) NSString *password;
+@property (nonatomic, retain) NSString *challenge;
 @property (nonatomic) float imageQuality;
 
 @end

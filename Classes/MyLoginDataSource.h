@@ -1,9 +1,9 @@
 #import "Three20/Three20.h"
 
-@class MyModel;
+@class MyLoginModel;
 
 @interface MyLoginDataSource : TTSectionedDataSource <UITextFieldDelegate> {
-    MyModel* _loginModel;
+	MyLoginModel* _myLoginModel;
 	UITextField* _baseURL;
     UITextField* _usernameField;
     UITextField* _passwordField;

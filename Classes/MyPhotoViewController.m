@@ -59,7 +59,6 @@
 }
 
 - (void)loadView {
-	
 	//[self uploadImage];
 	
 	CGRect screenFrame = [UIScreen mainScreen].bounds;

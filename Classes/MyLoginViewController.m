@@ -14,21 +14,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-		self.title = @"Comments feed";
+		self.title = @"Settings";
 		self.variableHeightRows = YES;
+		self.tableViewStyle = UITableViewStyleGrouped;
 	}
 	
 	return self;
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (id) init {
-  //if (self = [super init]) {
-    self.tableViewStyle = UITableViewStyleGrouped;
-  //}
-	return [self initWithNibName:nil bundle:nil];;
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)dealloc {
@@ -36,41 +28,6 @@
     [super dealloc];
 }
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark -
-#pragma mark UIViewController
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)loadView {
-    [super loadView];
-	
-    self.tableView.scrollEnabled = YES;
-	self.autoresizesForKeyboard = YES;
-    
-	self.tableView = [[[UITableView alloc] initWithFrame:self.view.bounds  
-												   style:UITableViewStyleGrouped] autorelease];  
-	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;  
-	self.variableHeightRows = YES;  
-	self.title = @"Login";  
-	[self.view addSubview:self.tableView];
-	
-    // Create an empty table view a activity label to better update the table
-    _emptyTable = [[UITableView alloc] initWithFrame:self.tableView.frame style:UITableViewStyleGrouped];
-    TTTableActivityItem *activityCell = [TTTableActivityItem itemWithText:@"Logging in"];
-    _emptyTable.rowHeight = 300;
-    _emptyTable.backgroundColor = [UIColor clearColor];
-    _emptyTable.dataSource = [[TTListDataSource dataSourceWithItems:[NSArray arrayWithObject:activityCell]] retain];
-    _emptyTable.scrollEnabled = NO;
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-	
-//	GlobalSettings save
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,13 +42,20 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)showLoading:(BOOL)show {
-    if (show) {
+	NSLog(@"here");
+    /*if (show) {
         self.loadingView = _emptyTable;
     }
     else {
         self.loadingView = nil;
-    }
+    }*/
+	//self.loadingView = nil;
 }
+
+/*
+- (void)showModel:(BOOL)show {
+	NSLog(@"here");
+}*/
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,26 +63,21 @@
 #pragma mark -
 #pragma mark NSNotifications
 
+- (void)modelDidStartLoad:(id<TTModel>)model {
+	
+}
+
+- (void)modelDidFinishLoad:(id<TTModel>)model {}
+
+- (void)modelDidCancelLoad:(id<TTModel>)model {}
+
 
 - (void)model:(id<TTModel>)model didUpdateObject:(id)object atIndexPath:(NSIndexPath *)indexPath {
-    [[[TTNavigator navigator] rootViewController] dismissModalViewControllerAnimated:NO];
-
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	MyLogin* settings = object;
-	appDelegate.baseURL = settings.baseURL;
-	appDelegate.user = settings.username;
-	appDelegate.password = settings.password;
-	appDelegate.challenge = settings.challenge;
-
-	[GlobalSettings save:settings.baseURL withUser:settings.username withPassword:settings.password withChallenge:settings.challenge withImageQuality:settings.imageQuality];
-	
 	[appDelegate finishedLogin];
-	
-    [super model:model didUpdateObject:object atIndexPath:indexPath];
 }
 
 - (void)model:(id<TTModel>)model didFailLoadWithError:(NSError *)error {
-    //id userInfo = [error userInfo];
     TTAlertViewController* alert = [[[TTAlertViewController alloc] initWithTitle:@"Login" message:TTDescriptionForError(error)] autorelease];
     [alert addCancelButtonWithTitle:@"OK" URL:nil];
     [alert showInView:self.view animated:YES];

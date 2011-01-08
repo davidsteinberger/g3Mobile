@@ -1,8 +1,12 @@
 
 #import "MyLoginModel.h"
+#import "MyDatabase.h"
 #import "sqlite3.h"
 
 #import "MyLogin.h"
+
+#import "AppDelegate.h"
+#import "MySettings.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -13,22 +17,24 @@
 @synthesize credentials = _credentials;
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)dealloc {
     TT_RELEASE_SAFELY(_credentials);
     [super dealloc];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)login:(NSString *) baseURL username:(NSString *)username password:(NSString *)password imageQuality:(float)imageQuality {
-	
-	NSString* url = [baseURL stringByAppendingString:@"/rest"];
+///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark MyDatabaseRequestDelegate
+
+- (void)login:(MyLogin *)settings {
+	NSString* url = [settings.baseURL stringByAppendingString:@"/rest"];
     TTURLRequest *request = [TTURLRequest requestWithURL:url delegate:self];
 	
     NSString *request_body = [NSString 
 							  stringWithFormat:@"user=%@&password=%@",
-							  [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-							  [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+							  [settings.username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+							  [settings.password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
 							  ];
 	//set request body into HTTPBody.
 	request.httpBody = [request_body dataUsingEncoding:NSUTF8StringEncoding];
@@ -43,13 +49,7 @@
     request.response = response;
     TT_RELEASE_SAFELY(response);    
     
-    MyLogin* userInfo = [[MyLogin alloc] init];
-	userInfo.baseURL = baseURL;
-    userInfo.username = username;
-    userInfo.password = password;
-	userInfo.imageQuality = imageQuality;
-    request.userInfo = userInfo;
-    TT_RELEASE_SAFELY(userInfo);
+    request.userInfo = settings;
     
     [request send];
 }
@@ -65,22 +65,30 @@
 - (void)requestDidFinishLoad:(TTURLRequest*)request {
 	TTURLDataResponse* dr = request.response;
 	NSData* data = dr.data;
-	NSString* challenge = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	
-	MyLogin* login = request.userInfo;
-	login.challenge = [[challenge substringFromIndex: 1] substringToIndex:[challenge length] - 2];
 
+	MyLogin* login = request.userInfo;
+
+	NSString* challenge = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	login.challenge = nil;
+	login.challenge = [[challenge substringFromIndex: 1] substringToIndex:[challenge length] - 2];
 	TT_RELEASE_SAFELY(challenge);
-	[super didUpdateObject:login atIndexPath:nil];
 	
+	// the model stores for all other controllers the credentials in singleton GlobalSettings
+	[GlobalSettings save:login.baseURL withUsername:login.username withPassword:login.password withChallenge:login.challenge withImageQuality:login.imageQuality];
+
+	// the model further saves credentials to the database:
+	// this is for security only! should the app crash, 
+	// then the GlobalSettings class will automatically restore data from the database
+	// the overall datastorage should be switched to core-data with a proper schema later on!
 	[self store:login];
+	
+	// notify the controller that we are done
+	[super didUpdateObject:login atIndexPath:nil];
 }
 
 -(void) store:(MyLogin *)login {
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsPath = [paths objectAtIndex:0];
-    NSString *filePath = [documentsPath stringByAppendingPathComponent:@"g3DB.sqlite"];
-	//NSLog(@"filePath: %@", filePath);
+	NSString *filePath = [MyDatabase copyDatabaseToDocuments];
+
 	sqlite3 *database;
 	
 	if(sqlite3_open([filePath UTF8String], &database) == SQLITE_OK) {
@@ -133,7 +141,6 @@
 }
 
 - (void)request:(TTURLRequest *)request didFailLoadWithError:(NSError *)error {
-	//NSLog(@"error: %@", error);
 	[super didFailLoadWithError:nil];
 }
 
@@ -145,6 +152,10 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////
 - (BOOL)isLoaded {
     return YES;
+}
+
+- (BOOL)isLoading {
+	return YES;
 }
 
 
