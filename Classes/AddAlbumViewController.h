@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "Three20/Three20.h"
 
+@class MyThumbsViewController;
+
 @interface AddAlbumViewController : TTTableViewController <UITextFieldDelegate> {
 	MyThumbsViewController* _delegate;
 	NSString* _parentAlbumID;

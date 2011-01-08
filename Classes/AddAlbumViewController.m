@@ -6,9 +6,10 @@
 //  Copyright 2010 -. All rights reserved.
 //
 
-#import "NSObject+YAJL.h"
+#import "extThree20JSON/NSObject+YAJL.h"
 
 #import "AppDelegate.h"
+#import "MySettings.h"
 #import "MyImageUploader.h"
 #import "MyAlbum.h"
 
@@ -101,10 +102,7 @@
 #pragma mark -
 #pragma mark helpers
 
-- (void)addAlbum {
-	//NSLog(@"Add Album for albumID: %@", self.albumID);
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	
+- (void)addAlbum {	
 	//prepare http post parameter: item, text
 	NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:    
 							@"album", @"type",
@@ -122,10 +120,10 @@
 	//---bring everything together
 	
 	//create http-request
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[[appDelegate.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.parentAlbumID]]];
+	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[[GlobalSettings.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.parentAlbumID]]];
 	
 	//set http-headers
-	[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+	[request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
 	[request setValue:@"post" forHTTPHeaderField:@"X-Gallery-Request-Method"];
 	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
 	
@@ -145,15 +143,16 @@
 	[request release];
 	NSLog(@"returnString: %@", [chunks objectAtIndex:[chunks count] - 1 ]);
 	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:[[[NSString alloc] initWithString:newAlbumID] autorelease] delegate:nil];
-	[uploader uploadImage:nil];
+	[uploader uploadImage:nil withDescription:@"to_be_deleted"];
 	TT_RELEASE_SAFELY(uploader);
 	
-	[MyAlbum updateFinishedWithItemURL:[[appDelegate.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:self.parentAlbumID] ];
+	[MyAlbum updateFinishedWithItemURL:[[GlobalSettings.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:self.parentAlbumID] ];
 	int index = [[self.navigationController viewControllers] count] - 3;
 	if (index >= 0) {
 		[self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:index] animated:YES];
 	} else {
 		TTNavigator* navigator = [TTNavigator navigator];
+		[navigator removeAllViewControllers];
 		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
 	}
 }

@@ -7,6 +7,7 @@
 //
 
 #import "MyAlbum.h"
+#import "MySettings.h"
 #import "AppDelegate.h"
 #import "extThree20JSON/extThree20JSON.h"
 
@@ -24,9 +25,8 @@
 }
 
 -(id)initWithID:(NSString* )albumId {
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	self.albumID = albumId;
-	NSString* url = [appDelegate.baseURL stringByAppendingString:@"/rest/tree/"];
+	NSString* url = [GlobalSettings.baseURL stringByAppendingString:@"/rest/tree/"];
 	url = [url stringByAppendingString:(NSString *) albumId];
 	url = [url stringByAppendingString:@"?depth=1"];
 	return [self initWithUrl:url];
@@ -38,6 +38,7 @@
 }
 
 -(void) dealloc {
+	self.albumID = nil;
 	TT_RELEASE_SAFELY(_array);	
 	TT_RELEASE_SAFELY(_albumEntity);
 	
@@ -47,11 +48,8 @@
 -(void)getAlbum:(NSString* )url {
 	NSString* g3Url = url;
 
-	//NSLog(@"url: %@", url);
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
 	if (url == nil) {
-		g3Url = [appDelegate.baseURL stringByAppendingString: @"/rest/tree/1?depth=1"];
+		g3Url = [GlobalSettings.baseURL stringByAppendingString: @"/rest/tree/1?depth=1"];
 	}
 	
 	TTURLRequest* request = [TTURLRequest
@@ -62,8 +60,8 @@
 	// cache for 1 week
     request.cacheExpirationAge = TT_DEFAULT_CACHE_EXPIRATION_AGE;
 	
-	if (appDelegate.challenge != nil) {
-		[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+	if (GlobalSettings.challenge != nil) {
+		[request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
 	}
 	
 	TTURLJSONResponse* response = [[TTURLJSONResponse alloc] init];
@@ -104,8 +102,7 @@
 	if (itemID == nil) {		
 		[self updateFinishedWithItemURL:nil];
 	} else {
-		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		NSString* url = [[appDelegate.baseURL stringByAppendingString:@"/rest/tree/"] stringByAppendingString:itemID];
+		NSString* url = [[GlobalSettings.baseURL stringByAppendingString:@"/rest/tree/"] stringByAppendingString:itemID];
 		[MyAlbum updateFinishedWithItemURL:[url stringByAppendingString:@"?depth=1"]];
 	}
 }

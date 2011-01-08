@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 
 #import "MyItemDeleter.h"
+#import "MySettings.h"
 
 
 @implementation MyItemDeleter
@@ -18,16 +19,12 @@
 }
 
 + (id) initWithItemID:(NSString *)itemID type:(NSString *)type {
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	
-	//---bring everything together
-	
 	//create http-request
 	NSString* url;
 	if (type == nil) {
-		url = [appDelegate.baseURL stringByAppendingString:@"/rest/item/"];
+		url = [GlobalSettings.baseURL stringByAppendingString:@"/rest/item/"];
 	} else {
-		url = [[[appDelegate.baseURL stringByAppendingString:@"/rest/"] stringByAppendingString:type] stringByAppendingString:@"/"];
+		url = [[[GlobalSettings.baseURL stringByAppendingString:@"/rest/"] stringByAppendingString:type] stringByAppendingString:@"/"];
 	}
 	
 	url = [url stringByAppendingString:itemID];
@@ -36,7 +33,7 @@
 									delegate: self];
 	
 	//set http-headers
-	[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+	[request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
 	[request setValue:@"delete" forHTTPHeaderField:@"X-Gallery-Request-Method"];
 	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
 	
