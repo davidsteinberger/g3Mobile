@@ -12,6 +12,8 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		632A448B12D25F0B0055F67B /* MyUploadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 632A448A12D25F0B0055F67B /* MyUploadViewController.xib */; };
+		632A449112D261390055F67B /* MyUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 632A448F12D261390055F67B /* MyUploadViewController.m */; };
 		63351C6B12D2540E000D0950 /* libThree20Core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63351B9E12D25375000D0950 /* libThree20Core.a */; };
 		63351C6C12D25415000D0950 /* libThree20Network.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63351BB212D25383000D0950 /* libThree20Network.a */; };
 		63351C6D12D25419000D0950 /* libThree20Style.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63351BC612D2538B000D0950 /* libThree20Style.a */; };
@@ -19,8 +21,15 @@
 		63351C6F12D25421000D0950 /* libThree20UICommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63351BEE12D2539B000D0950 /* libThree20UICommon.a */; };
 		63351C7012D25425000D0950 /* libThree20UINavigator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63351C0212D253A2000D0950 /* libThree20UINavigator.a */; };
 		6358A4BB12C880EB0043D18A /* MySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6358A4BA12C880EB0043D18A /* MySettings.m */; };
+		636952D812D4FC5400CA3113 /* UIViewController+params.m in Sources */ = {isa = PBXBuildFile; fileRef = 636952D712D4FC5400CA3113 /* UIViewController+params.m */; };
+		6369534912D50A1200CA3113 /* MyPostController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6369534812D50A1200CA3113 /* MyPostController.m */; };
+		6369534C12D50A4700CA3113 /* MyPostController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6369534B12D50A4700CA3113 /* MyPostController.xib */; };
+		636954B412D52ACD00CA3113 /* UIImage+cropping.m in Sources */ = {isa = PBXBuildFile; fileRef = 636954B312D52ACD00CA3113 /* UIImage+cropping.m */; };
 		636B7F1912BFE98D00ECDCDD /* MyAlbumUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 636B7F1812BFE98D00ECDCDD /* MyAlbumUpdater.m */; };
 		636B811112C0243500ECDCDD /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 636B811012C0243500ECDCDD /* empty.png */; };
+		637452D512D3A162005FD8C6 /* UIImage+resizing.m in Sources */ = {isa = PBXBuildFile; fileRef = 637452D412D3A162005FD8C6 /* UIImage+resizing.m */; };
+		6374560612D3EFB2005FD8C6 /* StyleSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6374560512D3EFB2005FD8C6 /* StyleSheet.m */; };
+		6389A68C12D652C2002B59AB /* MyDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6389A68B12D652C2002B59AB /* MyDatabase.m */; };
 		639788D012BEBA24000FBD09 /* defaultPerson.png in Resources */ = {isa = PBXBuildFile; fileRef = 639788CF12BEBA24000FBD09 /* defaultPerson.png */; };
 		63A3B51C129C3BDE00E04981 /* MyLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B514129C3BDE00E04981 /* MyLogin.m */; };
 		63A3B51D129C3BDE00E04981 /* MyLoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B516129C3BDE00E04981 /* MyLoginModel.m */; };
@@ -482,12 +491,28 @@
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* g3Mobile_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = g3Mobile_Prefix.pch; sourceTree = "<group>"; };
+		632A448A12D25F0B0055F67B /* MyUploadViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyUploadViewController.xib; sourceTree = "<group>"; };
+		632A448E12D261390055F67B /* MyUploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyUploadViewController.h; sourceTree = "<group>"; };
+		632A448F12D261390055F67B /* MyUploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyUploadViewController.m; sourceTree = "<group>"; };
 		6358A4B912C880EB0043D18A /* MySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySettings.h; sourceTree = "<group>"; };
 		6358A4BA12C880EB0043D18A /* MySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySettings.m; sourceTree = "<group>"; };
 		6358A4C412C8810C0043D18A /* SynthesizeSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthesizeSingleton.h; sourceTree = "<group>"; };
+		636952D612D4FC5400CA3113 /* UIViewController+params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+params.h"; sourceTree = "<group>"; };
+		636952D712D4FC5400CA3113 /* UIViewController+params.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+params.m"; sourceTree = "<group>"; };
+		6369534712D50A1200CA3113 /* MyPostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPostController.h; sourceTree = "<group>"; };
+		6369534812D50A1200CA3113 /* MyPostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPostController.m; sourceTree = "<group>"; };
+		6369534B12D50A4700CA3113 /* MyPostController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyPostController.xib; sourceTree = "<group>"; };
+		636954B212D52ACD00CA3113 /* UIImage+cropping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+cropping.h"; sourceTree = "<group>"; };
+		636954B312D52ACD00CA3113 /* UIImage+cropping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+cropping.m"; sourceTree = "<group>"; };
 		636B7F1712BFE98D00ECDCDD /* MyAlbumUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAlbumUpdater.h; sourceTree = "<group>"; };
 		636B7F1812BFE98D00ECDCDD /* MyAlbumUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAlbumUpdater.m; sourceTree = "<group>"; };
 		636B811012C0243500ECDCDD /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = "<group>"; };
+		637452D312D3A162005FD8C6 /* UIImage+resizing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+resizing.h"; sourceTree = "<group>"; };
+		637452D412D3A162005FD8C6 /* UIImage+resizing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+resizing.m"; sourceTree = "<group>"; };
+		6374560412D3EFB2005FD8C6 /* StyleSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyleSheet.h; sourceTree = "<group>"; };
+		6374560512D3EFB2005FD8C6 /* StyleSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StyleSheet.m; sourceTree = "<group>"; };
+		6389A68A12D652C2002B59AB /* MyDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDatabase.h; sourceTree = "<group>"; };
+		6389A68B12D652C2002B59AB /* MyDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDatabase.m; sourceTree = "<group>"; };
 		639788CF12BEBA24000FBD09 /* defaultPerson.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultPerson.png; sourceTree = "<group>"; };
 		63A3B513129C3BDE00E04981 /* MyLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLogin.h; sourceTree = "<group>"; };
 		63A3B514129C3BDE00E04981 /* MyLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLogin.m; sourceTree = "<group>"; };
@@ -587,11 +612,8 @@
 			children = (
 				63B253E71299BD3100BA9323 /* AppDelegate.h */,
 				63B253E81299BD3100BA9323 /* AppDelegate.m */,
-				6358A4B912C880EB0043D18A /* MySettings.h */,
-				6358A4BA12C880EB0043D18A /* MySettings.m */,
-				6358A4C412C8810C0043D18A /* SynthesizeSingleton.h */,
-				63BB542012CE434600764C23 /* Reachability.h */,
-				63BB542112CE434600764C23 /* Reachability.m */,
+				636954B112D52A1600CA3113 /* Helpers */,
+				6374560312D3EFB2005FD8C6 /* Style Sheets */,
 				63A3B510129C3BDE00E04981 /* Login */,
 				63B2540E1299BD3100BA9323 /* Album */,
 				63B253FF1299BD3100BA9323 /* Photos */,
@@ -645,6 +667,8 @@
 				63B255EC1299C60900BA9323 /* FlipsideView.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* g3Mobile-Info.plist */,
+				632A448A12D25F0B0055F67B /* MyUploadViewController.xib */,
+				6369534B12D50A4700CA3113 /* MyPostController.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -737,6 +761,35 @@
 				63351C0C12D253A2000D0950 /* UINavigatorUnitTests-Xcode3.2.2.octest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		636954B112D52A1600CA3113 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				6358A4C412C8810C0043D18A /* SynthesizeSingleton.h */,
+				6358A4B912C880EB0043D18A /* MySettings.h */,
+				6358A4BA12C880EB0043D18A /* MySettings.m */,
+				63BB542012CE434600764C23 /* Reachability.h */,
+				63BB542112CE434600764C23 /* Reachability.m */,
+				637452D312D3A162005FD8C6 /* UIImage+resizing.h */,
+				637452D412D3A162005FD8C6 /* UIImage+resizing.m */,
+				636952D612D4FC5400CA3113 /* UIViewController+params.h */,
+				636952D712D4FC5400CA3113 /* UIViewController+params.m */,
+				636954B212D52ACD00CA3113 /* UIImage+cropping.h */,
+				636954B312D52ACD00CA3113 /* UIImage+cropping.m */,
+				6389A68A12D652C2002B59AB /* MyDatabase.h */,
+				6389A68B12D652C2002B59AB /* MyDatabase.m */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		6374560312D3EFB2005FD8C6 /* Style Sheets */ = {
+			isa = PBXGroup;
+			children = (
+				6374560412D3EFB2005FD8C6 /* StyleSheet.h */,
+				6374560512D3EFB2005FD8C6 /* StyleSheet.m */,
+			);
+			name = "Style Sheets";
 			sourceTree = "<group>";
 		};
 		63A3B510129C3BDE00E04981 /* Login */ = {
@@ -922,6 +975,10 @@
 				63B254121299BD3100BA9323 /* TTThumbsViewController+g3.m */,
 				63B254131299BD3100BA9323 /* MyThumbsViewController.h */,
 				63B254141299BD3100BA9323 /* MyThumbsViewController.m */,
+				632A448E12D261390055F67B /* MyUploadViewController.h */,
+				632A448F12D261390055F67B /* MyUploadViewController.m */,
+				6369534712D50A1200CA3113 /* MyPostController.h */,
+				6369534812D50A1200CA3113 /* MyPostController.m */,
 				63E13C7D12BED4C6003248F4 /* AddAlbumViewController.h */,
 				63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */,
 				63F4602012C8161C00116221 /* UpdateAlbumViewController.h */,
@@ -1412,6 +1469,8 @@
 				639788D012BEBA24000FBD09 /* defaultPerson.png in Resources */,
 				636B811112C0243500ECDCDD /* empty.png in Resources */,
 				63AF930B12CA9161001092B5 /* G_LOGO.png in Resources */,
+				632A448B12D25F0B0055F67B /* MyUploadViewController.xib in Resources */,
+				6369534C12D50A4700CA3113 /* MyPostController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1451,6 +1510,13 @@
 				63F4602212C8161C00116221 /* UpdateAlbumViewController.m in Sources */,
 				6358A4BB12C880EB0043D18A /* MySettings.m in Sources */,
 				63BB542212CE434600764C23 /* Reachability.m in Sources */,
+				632A449112D261390055F67B /* MyUploadViewController.m in Sources */,
+				637452D512D3A162005FD8C6 /* UIImage+resizing.m in Sources */,
+				6374560612D3EFB2005FD8C6 /* StyleSheet.m in Sources */,
+				636952D812D4FC5400CA3113 /* UIViewController+params.m in Sources */,
+				6369534912D50A1200CA3113 /* MyPostController.m in Sources */,
+				636954B412D52ACD00CA3113 /* UIImage+cropping.m in Sources */,
+				6389A68C12D652C2002B59AB /* MyDatabase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

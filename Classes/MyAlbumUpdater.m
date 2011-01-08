@@ -6,7 +6,7 @@
 //  Copyright 2010 -. All rights reserved.
 //
 
-#import "NSObject+YAJL.h"
+#import "extThree20JSON/NSObject+YAJL.h"
 
 #import "MyAlbumUpdater.h"
 

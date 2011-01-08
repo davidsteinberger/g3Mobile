@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "Three20/Three20.h"
 
+@class MyThumbsViewController;
+
 @interface UpdateAlbumViewController : TTTableViewController <UITextFieldDelegate> {
 	MyThumbsViewController* _delegate;
 	NSString* _albumID;
@@ -21,7 +23,7 @@
 @property(nonatomic, retain) NSDictionary* entity;
 @property(nonatomic, retain) MyThumbsViewController* delegate;
 
-- (id)initWithAlbumID: (NSString* )albumID delegate: (MyThumbsViewController *)delegate;
+- (id)initWithAlbumID: (NSString* )albumID delegate: (MyThumbsViewController*)delegate;
 - (void)loadAlbum;
 - (void)updateAlbum;
 - (NSString *)urlEncodeValue:(NSString *)str;

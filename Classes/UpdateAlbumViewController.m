@@ -6,10 +6,9 @@
 //  Copyright 2010 -. All rights reserved.
 //
 
-#import "NSObject+YAJL.h"
+#import "extThree20JSON/NSObject+YAJL.h"
 
 #import "AppDelegate.h"
-#import "MyImageUploader.h"
 #import "MyAlbum.h"
 
 #import "UpdateAlbumViewController.h"
@@ -36,9 +35,9 @@
 	return self;
 }
 
-- (id)initWithAlbumID: (NSString* )albumID delegate: (MyThumbsViewController *)delegate {
+- (id)initWithAlbumID: (NSString* )albumID delegate: (MyThumbsViewController*)delegate {
 	self.albumID = albumID;
-	self.delegate = delegate;
+	self.delegate = (id)delegate;
 	
 	return [self initWithNibName:nil bundle: nil];
 }
