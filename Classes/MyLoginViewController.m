@@ -36,16 +36,11 @@
 	
 	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
 	
-	//[actionSheet addButtonWithTitle:@"Really delete all cache?!"];
-	//actionSheet.cancelButtonIndex = 4;
-	//actionSheet.destructiveButtonIndex = 3; 
-	
     [actionSheet showInView:self.view];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	
-	NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
+	//NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
 	
 	if (buttonIndex == 0) {
 		[MyAlbum updateFinished];
