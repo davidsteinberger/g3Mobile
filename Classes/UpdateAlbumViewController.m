@@ -6,7 +6,9 @@
 //  Copyright 2010 -. All rights reserved.
 //
 
-#import "extThree20JSON/NSObject+YAJL.h"
+#import "extThree20JSON/extThree20JSON.h"
+
+#import "MySettings.h"
 
 #import "AppDelegate.h"
 #import "MyAlbum.h"
@@ -53,30 +55,6 @@
 
 - (void)createModel {
 	[self loadAlbum];
-	_albumName = [[UITextField alloc] init];
-	_albumName.placeholder = @"New Name";
-	_albumName.delegate = self;
-	_albumName.text = [self.entity objectForKey:@"name"];
-	_albumName.returnKeyType = UIReturnKeyNext;
-	
-	TTTableControlItem* cAlbumName = [TTTableControlItem itemWithCaption:@"Name"
-															   control:_albumName];
-
-	_albumTitle = [[UITextField alloc] init];
-	_albumTitle.placeholder = @"New Title";
-	_albumTitle.delegate = self;
-	_albumTitle.returnKeyType = UIReturnKeyGo;
-	_albumTitle.text = [self.entity objectForKey:@"title"];
-	
-	TTTableControlItem* cAlbumTitle = [TTTableControlItem itemWithCaption:@"Title"
-																 control:_albumTitle];
-	
-	self.dataSource = [TTSectionedDataSource dataSourceWithObjects:
-					   @"",
-					   cAlbumName,
-					   cAlbumTitle,
-					   nil];	
-	[_albumName becomeFirstResponder];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,37 +79,99 @@
 #pragma mark -
 #pragma mark helpers
 
-- (void) loadAlbum {
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	
-	//create http-request
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[[appDelegate.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.albumID]]];
+- (void)loadAlbum {
+	NSString *url = [[GlobalSettings.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.albumID];
+	TTURLRequest* request = [TTURLRequest
+                             requestWithURL: url
+                             delegate: self];
 	
 	//set http-headers
-	[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+	[request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
 	[request setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
 	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
 	
 	//set 'post'-method
-	[request setHTTPMethod: @"GET"];
+	request.httpMethod = @"GET";
 	
-	NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
+	// don't cache
+	request.cacheExpirationAge = 0;
+		
+	TTURLJSONResponse* response = [[TTURLJSONResponse alloc] init];
+    request.response = response;
+	TT_RELEASE_SAFELY(response);
 	
-	NSDictionary* arrayFromData = [returnData yajl_JSON];
-	NSDictionary* entity = [arrayFromData objectForKey:@"entity"];
-
-	if ((NSNull*)entity != [NSNull null]) {
-		self.entity = entity;
-	}
-	
-	TT_RELEASE_SAFELY(request);
+	request.userInfo = @"loadAlbum";
+	[request send];
 }
 
-- (void)updateAlbum {
-	//NSLog(@"Add Album for albumID: %@", self.albumID);
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+- (void)requestDidFinishLoad:(TTURLRequest*)request {
+	if ([request.userInfo isEqual:@"loadAlbum"]) {
+		TTURLJSONResponse* response = request.response;
+		NSMutableArray* feed = [response.rootObject objectForKey:@"entity"];
+		
+		if ((NSNull*)feed != [NSNull null]) {
+			self.entity = feed;
+		}
 	
-	//prepare http post parameter: item, text
+		_albumName = [[UITextField alloc] init];
+		_albumName.placeholder = @"New Name";
+		_albumName.delegate = self;
+		_albumName.text = [self.entity objectForKey:@"name"];
+		_albumName.returnKeyType = UIReturnKeyNext;
+		
+		TTTableControlItem* cAlbumName = [TTTableControlItem itemWithCaption:@"Name"
+																	 control:_albumName];
+		
+		_albumTitle = [[UITextField alloc] init];
+		_albumTitle.placeholder = @"New Title";
+		_albumTitle.delegate = self;
+		_albumTitle.returnKeyType = UIReturnKeyGo;
+		_albumTitle.text = [self.entity objectForKey:@"title"];
+		
+		TTTableControlItem* cAlbumTitle = [TTTableControlItem itemWithCaption:@"Title"
+																	  control:_albumTitle];
+		
+		self.dataSource = [TTSectionedDataSource dataSourceWithObjects:
+						   @"",
+						   cAlbumName,
+						   cAlbumTitle,
+						   nil];	
+		[_albumName becomeFirstResponder];
+		
+		[super modelDidFinishLoad:self];
+	}
+	if ([request.userInfo isEqual:@"updateAlbum"]) {
+		[MyAlbum updateFinishedWithItemURL:[[GlobalSettings.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.albumID]];	
+		[MyAlbum updateFinishedWithItemURL:[self.entity valueForKey:@"parent"]];
+		
+		[self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:[[self.navigationController viewControllers] count] - 3] animated:YES];
+	}
+
+}
+
+- (void)request:(TTURLRequest *)request didFailLoadWithError:(NSError *)error {
+	//NSLog(@"error: %@", error);
+}
+
+
+- (void)updateAlbum {
+	NSString *url = [[GlobalSettings.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.albumID];
+
+	TTURLRequest* request = [TTURLRequest
+                             requestWithURL: url
+                             delegate: self];
+	
+	//set http-headers
+	[request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+	[request setValue:@"put" forHTTPHeaderField:@"X-Gallery-Request-Method"];
+	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
+	
+	//set 'post'-method
+	request.httpMethod = @"POST";
+	
+	// don't cache
+	request.cacheExpirationAge = 0;
+		
 	NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:    
 							@"album", @"type",
 							_albumName.text, @"name",
@@ -142,33 +182,11 @@
 	NSString* requestString = [params yajl_JSONString];
 	requestString = [@"entity=" stringByAppendingString:[self urlEncodeValue:requestString]];
 	
-	//create data for http-request body
-	NSData *requestData = [NSData dataWithBytes: [requestString UTF8String] length: [requestString length]];
+	request.httpBody = [requestString dataUsingEncoding:NSUTF8StringEncoding];
 	
-	//---bring everything together
+	request.userInfo = @"updateAlbum";
 	
-	//create http-request
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[[appDelegate.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.albumID]]];
-	
-	//set http-headers
-	[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
-	[request setValue:@"put" forHTTPHeaderField:@"X-Gallery-Request-Method"];
-	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
-	
-	//set 'post'-method
-	[request setHTTPMethod: @"POST"];
-	
-	//set request body into HTTPBody.
-	[request setHTTPBody: requestData];
-	
-	[NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
-	
-	TT_RELEASE_SAFELY(request);
-	
-	[MyAlbum updateFinishedWithItemURL:[[appDelegate.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.albumID]];	
-	[MyAlbum updateFinishedWithItemURL:[self.entity valueForKey:@"parent"]];
-	
-	[self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:[[self.navigationController viewControllers] count] - 3] animated:YES];
+	[request send];	
 }
 
 - (NSString *)urlEncodeValue:(NSString *)str {

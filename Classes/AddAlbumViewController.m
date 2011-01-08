@@ -6,7 +6,7 @@
 //  Copyright 2010 -. All rights reserved.
 //
 
-#import "extThree20JSON/NSObject+YAJL.h"
+#import "extThree20JSON/extThree20JSON.h"
 
 #import "AppDelegate.h"
 #import "MySettings.h"
@@ -103,7 +103,23 @@
 #pragma mark helpers
 
 - (void)addAlbum {	
-	//prepare http post parameter: item, text
+	NSString *url = [[GlobalSettings.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.parentAlbumID];
+	
+	TTURLRequest* request = [TTURLRequest
+                             requestWithURL: url
+                             delegate: self];
+	
+	//set http-headers
+	[request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+	[request setValue:@"post" forHTTPHeaderField:@"X-Gallery-Request-Method"];
+	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
+	
+	//set 'post'-method
+	request.httpMethod = @"POST";
+	
+	// don't cache
+	request.cacheExpirationAge = 0;
+	
 	NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:    
 							@"album", @"type",
 							_albumName.text, @"name",
@@ -114,46 +130,40 @@
 	NSString* requestString = [params yajl_JSONString];
 	requestString = [@"entity=" stringByAppendingString:[self urlEncodeValue:requestString]];
 	
-	//create data for http-request body
-	NSData *requestData = [NSData dataWithBytes: [requestString UTF8String] length: [requestString length]];
+	request.httpBody = [requestString dataUsingEncoding:NSUTF8StringEncoding];
 	
-	//---bring everything together
+	request.userInfo = @"addAlbum";
 	
-	//create http-request
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[[GlobalSettings.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.parentAlbumID]]];
+	TTURLJSONResponse* response = [[TTURLJSONResponse alloc] init];
+    request.response = response;
+	TT_RELEASE_SAFELY(response);
 	
-	//set http-headers
-	[request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
-	[request setValue:@"post" forHTTPHeaderField:@"X-Gallery-Request-Method"];
-	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
-	
-	//set 'post'-method
-	[request setHTTPMethod: @"POST"];
-	
-	//set request body into HTTPBody.
-	[request setHTTPBody: requestData];
-	
-	NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
-	
-	NSDictionary *arrayFromData = [returnData yajl_JSON];
-	NSString* url = [arrayFromData objectForKey:@"url"];
-	NSArray* chunks = [url componentsSeparatedByString: @"/"];
-	NSString* newAlbumID = [chunks objectAtIndex:[chunks count] - 1 ];
-	
-	[request release];
-	NSLog(@"returnString: %@", [chunks objectAtIndex:[chunks count] - 1 ]);
-	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:[[[NSString alloc] initWithString:newAlbumID] autorelease] delegate:nil];
-	[uploader uploadImage:nil withDescription:@"to_be_deleted"];
-	TT_RELEASE_SAFELY(uploader);
-	
-	[MyAlbum updateFinishedWithItemURL:[[GlobalSettings.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:self.parentAlbumID] ];
-	int index = [[self.navigationController viewControllers] count] - 3;
-	if (index >= 0) {
-		[self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:index] animated:YES];
-	} else {
-		TTNavigator* navigator = [TTNavigator navigator];
-		[navigator removeAllViewControllers];
-		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+	[request send];
+}
+
+
+- (void)requestDidFinishLoad:(TTURLRequest*)request {
+	if ([request.userInfo isEqual:@"addAlbum"]) {
+		TTURLJSONResponse* response = request.response;
+		NSString* url = [response.rootObject objectForKey:@"url"];
+
+		NSArray* chunks = [url componentsSeparatedByString: @"/"];
+		NSString* newAlbumID = [chunks objectAtIndex:[chunks count] - 1 ];
+		
+		MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:[[[NSString alloc] initWithString:newAlbumID] autorelease] delegate:nil];
+		[uploader uploadImage:nil withDescription:@"to_be_deleted"];
+		TT_RELEASE_SAFELY(uploader);
+		
+		[MyAlbum updateFinishedWithItemURL:[[GlobalSettings.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:self.parentAlbumID] ];
+		
+		int index = [[self.navigationController viewControllers] count] - 3;
+		if (index >= 0) {
+			[self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:index] animated:YES];
+		} else {
+			TTNavigator* navigator = [TTNavigator navigator];
+			[navigator removeAllViewControllers];
+			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+		}
 	}
 }
 

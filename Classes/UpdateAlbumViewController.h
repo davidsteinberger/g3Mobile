@@ -11,7 +11,7 @@
 
 @class MyThumbsViewController;
 
-@interface UpdateAlbumViewController : TTTableViewController <UITextFieldDelegate> {
+@interface UpdateAlbumViewController : TTTableViewController <TTModel, UITextFieldDelegate> {
 	NSString* _albumID;
 	NSDictionary* _entity;	
 	UITextField* _albumName;
