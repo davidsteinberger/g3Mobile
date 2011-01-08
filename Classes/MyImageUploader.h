@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MyThumbsViewController.h"
+@class MyUploadViewController;
 
 
 @interface MyImageUploader : NSObject {
 	NSString* _albumID;
-	MyThumbsViewController* _delegate;
+	MyUploadViewController* _delegate;
 	
 	UIAlertView* _progressAlert;
 	UIActivityIndicatorView* _activityView;
@@ -20,11 +20,12 @@
 }
 
 @property (nonatomic, retain) NSString* albumID;
-@property (nonatomic, retain) MyThumbsViewController* delegate;
+@property (nonatomic, retain) MyUploadViewController* delegate;
 
-- (id)initWithAlbumID:(NSString* ) albumID delegate:(MyThumbsViewController* )delegate;
-- (void)uploadImage:(UIImage* ) image;
-- (void)uploadImageData:(NSData* ) data;
+- (id)initWithAlbumID:(NSString* ) albumID delegate:(MyUploadViewController*)delegate;
+- (void)uploadImage;
+- (void)uploadImage:(UIImage* )image withDescription:(NSString*)description;
+- (void)uploadImageData:(NSData* )data withDescription:(NSString*)description;
 - (void) createProgressionAlertWithMessage:(NSString *)message withActivity:(BOOL)activity;
 
 @end

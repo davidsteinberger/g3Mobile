@@ -9,11 +9,15 @@
 #import "AddAlbumViewController.h"
 #import "UpdateAlbumViewController.h"
 
+#import "UIImage+cropping.h"
+#import "MyUploadViewController.h"
+
 @implementation MyThumbsViewController
 
 @synthesize albumID = _albumID;
 
 - (void)dealloc {
+	self.albumID = nil;
 	TT_RELEASE_SAFELY(self->_toolbar);
 	TT_RELEASE_SAFELY(self->_clickActionItem);
 	TT_RELEASE_SAFELY(self->_pickerController);
@@ -22,7 +26,6 @@
 }
 
 - (void)setSettings {
-	//NSLog(@"setSettings called");
 	TTNavigator* navigator = [TTNavigator navigator];
 	[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://login"] applyAnimated:YES]];
 }
@@ -92,7 +95,6 @@
 	} else {
 		_pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
 	}
-	
 }
 
 - (void) clickActionItem {
@@ -121,6 +123,7 @@
 	
 	if (buttonIndex == 0) {
 		[self presentModalViewController:_pickerController animated:YES];		
+		
 	}	
 	if (buttonIndex == 1) {
 		[self addAlbum];
@@ -161,21 +164,38 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	MockPhotoSource* ps;
-	
 	ps = (MockPhotoSource* ) self.photoSource;
 	
-	UIImage* picture = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+	// get high-resolution picture (used for upload)
+	UIImage* image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+
+	// get screenshot (used for confirmation-dialog)
+	UIWindow *theScreen = [[UIApplication sharedApplication].windows objectAtIndex:0];
+	UIGraphicsBeginImageContext(theScreen.frame.size);
+	[[theScreen layer] renderInContext:UIGraphicsGetCurrentContext()];
+	UIImage *screenshot = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
 	
-	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:[[[NSString alloc] initWithString:ps.albumID] autorelease] delegate:self];
-	[uploader uploadImage:picture];
-	TT_RELEASE_SAFELY(uploader);
+	screenshot = [UIImage imageByCropping:screenshot
+								toRect:CGRectMake(0, 0, 320, 426)];
 	
-	[self dismissModalViewControllerAnimated:YES];
+	// prepare params
+	NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
+							self, @"delegate",
+							image, @"image",
+							screenshot, @"screenShot",
+							ps.albumID, @"albumID",
+							nil];
+	
+	[[TTNavigator navigator] openURLAction:[[[TTURLAction actionWithURLPath:@"tt://nib/MyUploadViewController"]
+											applyQuery:params] applyAnimated:YES]];
 }
 
+
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-	[self dismissModalViewControllerAnimated:YES];
+	[picker dismissModalViewControllerAnimated:YES];
 }
+
 
 #pragma mark UINavigationController Methods
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {

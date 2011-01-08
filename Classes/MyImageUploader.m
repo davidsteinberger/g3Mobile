@@ -12,6 +12,11 @@
 
 #import "MySettings.h"
 #import "MyAlbum.h"
+#import "extThree20JSON/NSObject+YAJL.h"
+
+#import "MyUploadViewController.h"
+#import "UIImage+cropping.h"
+#import "UIImage+resizing.h"
 
 static int counter = 0;
 
@@ -20,7 +25,7 @@ static int counter = 0;
 @synthesize albumID = _albumID;
 @synthesize delegate = _delegate;
 
-- (id)initWithAlbumID:(NSString* ) albumID delegate:(MyThumbsViewController* )delegate {
+- (id)initWithAlbumID:(NSString* ) albumID delegate:(MyUploadViewController*)delegate {
 
 	[self createProgressionAlertWithMessage:@"Image upload" withActivity:NO];
 	
@@ -39,21 +44,21 @@ static int counter = 0;
 
 
 - (void)uploadImage {
-	[self uploadImage:nil];
+	[self uploadImage:nil withDescription:nil];
 }
 
-- (void)uploadImage:(UIImage* ) image {
+- (void)uploadImage:(UIImage* )image withDescription:(NSString*)description {
 	
 	if (image == nil) {
-		image = TTIMAGE(@"bundle://empty.png");
+		image = [TTIMAGE(@"bundle://empty.png") scaleToSize:CGSizeMake(320, 480)];		
 	}
 
 	NSData *imageData = UIImageJPEGRepresentation(image, GlobalSettings.imageQuality ? GlobalSettings.imageQuality : 0.5);
 	
-	[self uploadImageData:imageData];
+	[self uploadImageData:imageData withDescription:description];
 }
 
-- (void)uploadImageData:(NSData* ) data {
+- (void)uploadImageData:(NSData* )data withDescription:(NSString*)description {
 	
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	
@@ -61,8 +66,18 @@ static int counter = 0;
 	
 	NSString* imageName = [@"Mobile_Upload_" stringByAppendingString: [NSString stringWithFormat:@"%d", counter++]];
 	
-	NSString* requestString = [[@"{\"name\":\"" stringByAppendingString: imageName] stringByAppendingString:@".jpg\",\"type\":\"photo\"}"];
-	//NSString* requestString = @"{\"name\":\"Voeux2010.jpg\",\"type\":\"photo\"}";
+	NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:    
+							[imageName stringByAppendingString:@".jpg"], @"name",
+							(description == nil) ? @"": description, @"description",
+							@"photo", @"type",
+							nil];  
+	
+	//json-encode & urlencode parameters
+	NSString* requestString = [params yajl_JSONString];
+	//requestString = [@"" stringByAppendingString:[self urlEncodeValue:requestString]];
+	NSLog(@"%@", requestString);
+	//NSString* requestString = [[@"{\"name\":\"" stringByAppendingString: imageName] stringByAppendingString:@".jpg\",\"description\":\"Test\ Description\",\"type\":\"photo\"}"];
+	
 	NSData* metaData = [NSData dataWithBytes: [requestString UTF8String] length: [requestString length]];
 	
 	// setting up the URL to post to
@@ -89,7 +104,7 @@ static int counter = 0;
 	[body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
 	[body appendData:[[NSString stringWithString:@"Content-Disposition: form-data; name=\"entity\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];	
 	[body appendData:[[NSString stringWithString:@"Content-Type: text/plain; charset=UTF-8\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];	
-	[body appendData:[[NSString stringWithString:@"Content-Transfer-Encoding: 8bit\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];			
+	[body appendData:[[NSString stringWithString:@"Content-Transfer-Encoding: base64\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];			
 	[body appendData:metaData];
 	[body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
 	[body appendData:[[NSString stringWithString:@"Content-Disposition: form-data; name=\"file\"; filename=\"ipodfile.jpg\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -107,20 +122,14 @@ static int counter = 0;
 	[MyAlbum updateFinishedWithItemURL:[[appDelegate.baseURL stringByAppendingString:@"/rest/tree/"] stringByAppendingString:self.albumID]];
 }
 
-- (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
- {
-	/*NSLog(@"totalBytesWritten: %i", totalBytesWritten);
-	NSLog(@"totalBytesExpectedToWrite: %i", totalBytesExpectedToWrite);
-	 NSLog(@"set: %f", (CGFloat)totalBytesWritten / (CGFloat)totalBytesExpectedToWrite);
-	NSLog(@"\n\n");*/
-	 
+- (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 	_progressView.progress = (CGFloat)totalBytesWritten / (CGFloat)totalBytesExpectedToWrite;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 	[_progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-	//NSLog(@"albumID: %@", self.albumID);
-	[self.delegate loadAlbum:[NSString stringWithString:self.albumID]];
+	
+	[self.delegate uploaderDidUpload:(id)self];
 	
 	TTNavigator* navigator = [TTNavigator navigator];
 	[navigator reload];
@@ -147,5 +156,11 @@ static int counter = 0;
 	}
 	[_progressAlert show];
 }
+
+- (NSString *)urlEncodeValue:(NSString *)str {
+	NSString *result = (NSString *) CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)str, NULL, CFSTR("?=&+"), kCFStringEncodingUTF8);
+	return [result autorelease];
+}
+
 
 @end

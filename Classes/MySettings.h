@@ -12,7 +12,7 @@
 ((MySettings *)[MySettings sharedMySettings])
 
 @interface MySettings : NSObject {
-	NSString* _user;
+	NSString* _username;
 	NSString* _password;
 	NSString* _challenge;
 	NSString* _baseURL;
@@ -26,8 +26,8 @@
 
 + (MySettings *)sharedMySettings;
 - (void)save:(NSString*)baseURL 
-	 withUser:(NSString*)user 
- withPassword:(NSString*)password
+withUsername:(NSString*)username 
+withPassword:(NSString*)password
 withChallenge:(NSString*)challenge 
 withImageQuality:(float) imageQuality;
 - (float)imageQuality;
