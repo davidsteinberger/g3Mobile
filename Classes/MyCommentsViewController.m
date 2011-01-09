@@ -9,6 +9,8 @@
 #import "MockPhotoSource.h"
 #import "AppDelegate.h"
 
+static CGFloat kMargin  = 1;
+static CGFloat kPadding = 5;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,16 +23,19 @@
 	self = [super init];
 	self.itemID = itemID;
 	self.variableHeightRows = YES;
+
 	return self;
-	//[self initWithNibName:nil bundle:nil];
 }
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+	
 }
 
 - (void)dealloc {
 	self.itemID = nil;
+	TT_RELEASE_SAFELY(_textBar);
+	TT_RELEASE_SAFELY(_textEditor);
 	TT_RELEASE_SAFELY(_clickComposeItem);
 	TT_RELEASE_SAFELY(_clickActionItem);
 	TT_RELEASE_SAFELY(_toolbar);
@@ -79,22 +84,29 @@
 	_clickComposeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose//TTIMAGE(@"UIBarButtonReply.png")
 																	  target:self action:@selector(clickComposeItem)];
 	
-	UIBarItem* space = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:
-						 UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-
-	_toolbar = [[UIToolbar alloc] initWithFrame:
-				CGRectMake(0, self.view.height - TT_ROW_HEIGHT,
-						   self.view.width, TT_ROW_HEIGHT)];
-	if (self.navigationBarStyle == UIBarStyleDefault) {
-		_toolbar.tintColor = TTSTYLEVAR(toolbarTintColor);
-	}
 	
-	_toolbar.barStyle = self.navigationBarStyle;
-	_toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
-	_toolbar.items = [NSArray arrayWithObjects:
-					  space, space, _clickComposeItem, nil];
+	// write a comment section
+	CGRect viewFrame = CGRectMake(0, self.view.height - TT_ROW_HEIGHT,
+								  self.view.width, TT_ROW_HEIGHT);
+	CGSize screenSize = TTScreenBounds().size;
 	
-	[self.view addSubview:_toolbar];
+	_textBar = [[TTView alloc] init];
+	_textBar.frame = viewFrame;
+	_textBar.style = TTSTYLE(textBar);
+	[self.view addSubview:_textBar];
+	
+	_textEditor = [[TTTextEditor alloc] init];
+	[_textBar addSubview:_textEditor];
+	
+	_textEditor.text = @"Write a Comment ...";
+    _textEditor.delegate = self;
+    _textEditor.style = TTSTYLE(textBarTextField);
+    _textEditor.backgroundColor = [UIColor clearColor];
+    _textEditor.autoresizesToText = NO;
+    _textEditor.font = [UIFont systemFontOfSize:16];
+	_textEditor.textColor = [UIColor lightGrayColor];
+	_textEditor.frame = CGRectMake(kPadding, kMargin,screenSize.width - kPadding, 0);
+	[_textEditor sizeToFit];
 }
 
 - (void)clickComposeItem {
@@ -105,6 +117,50 @@
 	[postController showInView:self.view animated:YES];
 	[postController release]; 
 }
+
+
+#pragma mark -
+#pragma mark TTTextEditorDelegate
+
+- (BOOL)textEditorShouldBeginEditing:(TTTextEditor*)textEditor {
+	//[_textEditor resignFirstResponder];
+	[self textEditorDidEndEditing:textEditor];
+	[self clickComposeItem];
+	return NO;
+}
+
+- (BOOL)textEditorShouldEndEditing:(TTTextEditor*)textEditor {
+	return YES;
+}
+
+- (void)textEditorDidBeginEditing:(TTTextEditor*)textEditor {
+	
+}
+
+- (void)textEditorDidEndEditing:(TTTextEditor*)textEditor {
+	
+}
+
+- (BOOL) textEditor: (TTTextEditor*)textEditor
+    shouldChangeTextInRange: (NSRange)range
+            replacementText: (NSString*)replacementText {
+	return NO;
+}
+
+- (void)textEditorDidChange:(TTTextEditor*)textEditor {
+	
+}
+
+- (BOOL)textEditor:(TTTextEditor*)textEditor shouldResizeBy:(CGFloat)height {
+	return NO;
+}
+
+- (BOOL)textEditorShouldReturn:(TTTextEditor*)textEditor {
+	return YES;
+}
+
+#pragma mark -
+#pragma mark TTPostControllerDelegate
 
 - (void)postController:(TTPostController*)postController didPostText:(NSString *)text withResult:(id)result {
 	NSString* itemID = self.itemID;
