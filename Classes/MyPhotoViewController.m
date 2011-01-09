@@ -205,16 +205,25 @@
 - (void)modalView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if ([alertView isKindOfClass:[UIAlertView class]]) {
 		if (buttonIndex == 1) {
-			MockPhoto* p = (MockPhoto *) self.centerPhoto;
-			NSString* photoID = p.photoID;
-			[MyItemDeleter initWithItemID:photoID];	
-
-			[MyAlbum updateFinishedWithItemURL:p.parentURL];
-			TTNavigator* navigator = [TTNavigator navigator];
-			[navigator removeAllViewControllers];
-			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];		
+			// start the indicator ...
+			[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+			[self performSelector:@selector(deleteCurrentItem) withObject:Nil afterDelay:0.05];
 		}
 	}
+}
+
+- (void)deleteCurrentItem {
+	MockPhoto* p = (MockPhoto *) self.centerPhoto;
+	NSString* photoID = p.photoID;
+	[MyItemDeleter initWithItemID:photoID];	
+	
+	[MyAlbum updateFinishedWithItemURL:p.parentURL];
+	TTNavigator* navigator = [TTNavigator navigator];
+	[navigator removeAllViewControllers];
+	[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];	
+	
+	// stop the indicator ...
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 @end

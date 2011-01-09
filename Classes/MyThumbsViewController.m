@@ -136,23 +136,31 @@
 	}
 }
 
-- (void)modalView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
+- (void)modalView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if ([alertView isKindOfClass:[UIAlertView class]]) {
 		if (buttonIndex == 1) {
-			MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
-			[MyItemDeleter initWithItemID:ps.albumID];
-
-			NSString* parentURL = ps.parentURL;
-			NSString* treeParentURL = [parentURL stringByReplacingOccurrencesOfString:@"/rest/item/" withString:@"/rest/tree/"];
-			
-			[[TTURLCache sharedCache] removeURL:[treeParentURL stringByAppendingString:@"?depth=1"] fromDisk:YES];
-			
-			TTNavigator* navigator = [TTNavigator navigator];
-			[navigator removeAllViewControllers];
-			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+			// start the indicator ...
+			[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+			[self performSelector:@selector(deleteCurrentItem) withObject:Nil afterDelay:0.05];
 		}
 	}
+}
+
+- (void)deleteCurrentItem {
+	MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
+	[MyItemDeleter initWithItemID:ps.albumID];
+	
+	NSString* parentURL = ps.parentURL;
+	NSString* treeParentURL = [parentURL stringByReplacingOccurrencesOfString:@"/rest/item/" withString:@"/rest/tree/"];
+	
+	[[TTURLCache sharedCache] removeURL:[treeParentURL stringByAppendingString:@"?depth=1"] fromDisk:YES];
+	
+	TTNavigator* navigator = [TTNavigator navigator];
+	[navigator removeAllViewControllers];
+	[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+	
+	// stop the indicator ...
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 #pragma mark UIImagePickerController Methods
