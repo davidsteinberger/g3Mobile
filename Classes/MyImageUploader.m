@@ -72,7 +72,7 @@ static int counter = 0;
 	//json-encode & urlencode parameters
 	NSString* requestString = [params yajl_JSONString];
 	//requestString = [@"" stringByAppendingString:[self urlEncodeValue:requestString]];
-	NSLog(@"%@", requestString);
+	//NSLog(@"%@", requestString);
 	//NSString* requestString = [[@"{\"name\":\"" stringByAppendingString: imageName] stringByAppendingString:@".jpg\",\"description\":\"Test\ Description\",\"type\":\"photo\"}"];
 	
 	NSData* metaData = [NSData dataWithBytes: [requestString UTF8String] length: [requestString length]];

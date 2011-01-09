@@ -28,4 +28,14 @@
 - (void)updateAlbum;
 - (NSString *)urlEncodeValue:(NSString *)str;
 
+// required by TTModel protocol
+- (NSMutableArray*)delegates;
+- (BOOL)isLoaded;
+- (BOOL)isLoading;
+- (BOOL)isLoadingMore;
+- (BOOL)isOutdated;
+- (void)load:(TTURLRequestCachePolicy)cachePolicy more:(BOOL)more;
+- (void)cancel;
+- (void)invalidate:(BOOL)erase;
+
 @end

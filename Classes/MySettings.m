@@ -47,7 +47,7 @@ withImageQuality:(float) imageQuality {
 - (NSString*)baseURL {
 	NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
 	NSString* baseURL = [prefs stringForKey:@"baseURL"];
-	NSLog(@"%@", baseURL);
+
 	if (!baseURL || [baseURL isEqual:@""]) {
 		baseURL = [[MyDatabase readSettingsFromDatabase] objectForKey:@"baseURL"];
 		//baseURL = @"http://david-steinberger.at/test/index.php";
