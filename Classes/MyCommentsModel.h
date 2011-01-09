@@ -20,7 +20,7 @@
 	BOOL loading;
 }
 
-@property (nonatomic, copy)     NSString* searchQuery;
+@property (nonatomic, retain)	NSString* searchQuery;
 @property (nonatomic, retain)   NSString* itemID;
 @property (nonatomic, retain)	NSMutableArray*  comments;
 @property (nonatomic, retain)	NSDictionary*  userDetails;

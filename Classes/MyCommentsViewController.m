@@ -30,6 +30,7 @@
 }
 
 - (void)dealloc {
+	self.itemID = nil;
 	TT_RELEASE_SAFELY(_clickComposeItem);
 	TT_RELEASE_SAFELY(_clickActionItem);
 	TT_RELEASE_SAFELY(_toolbar);

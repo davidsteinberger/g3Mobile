@@ -41,8 +41,11 @@ NSString *md5 (NSString *str) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) dealloc {
-  TT_RELEASE_SAFELY(_searchQuery);
-  TT_RELEASE_SAFELY(_comments);
+	self.searchQuery = nil;
+	self.itemID = nil;
+	self.comments = nil;
+	self.userDetails = nil;
+	
   [super dealloc];
 }
 
