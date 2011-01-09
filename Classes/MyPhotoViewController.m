@@ -138,10 +138,11 @@
 	
 	[actionSheet addButtonWithTitle:@"Comments"];
 	[actionSheet addButtonWithTitle:@"Make Cover"];
+	[actionSheet addButtonWithTitle:@"Save to iPhone"];
 	[actionSheet addButtonWithTitle:@"Delete"];
 	[actionSheet addButtonWithTitle:@"Cancel"];
-	actionSheet.cancelButtonIndex = 3;
-	actionSheet.destructiveButtonIndex = 2; 
+	actionSheet.cancelButtonIndex = 4;
+	actionSheet.destructiveButtonIndex = 3; 
 	
     [actionSheet showInView:self.view];
 }
@@ -182,6 +183,16 @@
 		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];		
 	}
 	if (buttonIndex == 2) {
+		//NSLog(@"photo: %@", [_centerPhoto URLForVersion:TTPhotoVersionLarge]);		
+		NSURL    *aUrl  = [NSURL URLWithString:[_centerPhoto URLForVersion:TTPhotoVersionLarge]];		
+		NSData   *data = [NSData dataWithContentsOfURL:aUrl];		
+		UIImage  *img  = [[UIImage alloc] initWithData:data];		
+		//NSLog(@"photo:class %@", [img class]);
+		
+		UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil);
+		TT_RELEASE_SAFELY(img);
+	}
+	if (buttonIndex == 3) {
 		UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
 		[dialog setDelegate:self];
 		[dialog setTitle:@"Confirm Deletion"];
