@@ -179,7 +179,10 @@
 		_description.placeholder = @"Description";
 		_description.delegate = self;
 		_description.returnKeyType = UIReturnKeyGo;
-		_description.text = [self.entity objectForKey:@"description"];
+		
+		NSString *description = [self.entity objectForKey:@"description"];
+		description = ((NSNull*)description == [NSNull null]) ? @"" : description;
+		_description.text = description;
 		
 		TTTableControlItem* cAlbumDescription = [TTTableControlItem itemWithCaption:@"Description"
 																	  control:_description];
