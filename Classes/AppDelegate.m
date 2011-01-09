@@ -177,14 +177,24 @@
 }
 
 - (void) updateInterfaceWithReachability: (Reachability*) curReach {
-	BOOL connectionRequired= [curReach connectionRequired];
-	if (connectionRequired) {
-		UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
-		[dialog setDelegate:self];
-		[dialog setTitle:@"Network Lost"];
-		dialog.message = @"Internet connection required \nto browse new content!";
-		[dialog addButtonWithTitle:@"OK"];
-		[dialog show];
+	NetworkStatus netStatus = [curReach currentReachabilityStatus];
+	switch (netStatus)
+	{
+		case NotReachable:
+		{
+			UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
+			[dialog setDelegate:self];
+			[dialog setTitle:@"Network Lost"];
+			dialog.message = @"Internet connection required \nto browse new content!";
+			[dialog addButtonWithTitle:@"OK"];
+			[dialog show];
+			break;
+		}
+		case ReachableViaWiFi:
+		case ReachableViaWWAN:
+		{
+			break;
+		}
 	}
 }
 
