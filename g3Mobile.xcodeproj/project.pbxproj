@@ -63,7 +63,9 @@
 		63B257AE1299D51800BA9323 /* MySettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B257AD1299D51800BA9323 /* MySettingsController.m */; };
 		63BB542212CE434600764C23 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BB542112CE434600764C23 /* Reachability.m */; };
 		63BB544612CE43AB00764C23 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63BB544512CE43AB00764C23 /* SystemConfiguration.framework */; };
+		63C10CC012DB89C3009AF260 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C10CBF12DB89C3009AF260 /* Default.png */; };
 		63E13C7F12BED4C6003248F4 /* AddAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */; };
+		63F1561512DA6F5E00D85532 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 63F1561412DA6F5E00D85532 /* iTunesArtwork */; };
 		63F4602212C8161C00116221 /* UpdateAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F4602112C8161C00116221 /* UpdateAlbumViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -494,6 +496,7 @@
 		632A448A12D25F0B0055F67B /* MyUploadViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyUploadViewController.xib; sourceTree = "<group>"; };
 		632A448E12D261390055F67B /* MyUploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyUploadViewController.h; sourceTree = "<group>"; };
 		632A448F12D261390055F67B /* MyUploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyUploadViewController.m; sourceTree = "<group>"; };
+		63454A4012DA51850070DB81 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		6358A4B912C880EB0043D18A /* MySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySettings.h; sourceTree = "<group>"; };
 		6358A4BA12C880EB0043D18A /* MySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySettings.m; sourceTree = "<group>"; };
 		6358A4C412C8810C0043D18A /* SynthesizeSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthesizeSingleton.h; sourceTree = "<group>"; };
@@ -576,8 +579,10 @@
 		63BB542012CE434600764C23 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		63BB542112CE434600764C23 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		63BB544512CE43AB00764C23 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		63C10CBF12DB89C3009AF260 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		63E13C7D12BED4C6003248F4 /* AddAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAlbumViewController.h; sourceTree = "<group>"; };
 		63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddAlbumViewController.m; sourceTree = "<group>"; };
+		63F1561412DA6F5E00D85532 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		63F4602012C8161C00116221 /* UpdateAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateAlbumViewController.h; sourceTree = "<group>"; };
 		63F4602112C8161C00116221 /* UpdateAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateAlbumViewController.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* g3Mobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "g3Mobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -643,6 +648,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				63454A4012DA51850070DB81 /* Entitlements.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -659,6 +665,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				63F1561412DA6F5E00D85532 /* iTunesArtwork */,
 				63AF930A12CA9161001092B5 /* G_LOGO.png */,
 				636B811012C0243500ECDCDD /* empty.png */,
 				639788CF12BEBA24000FBD09 /* defaultPerson.png */,
@@ -669,6 +676,7 @@
 				8D1107310486CEB800E47090 /* g3Mobile-Info.plist */,
 				632A448A12D25F0B0055F67B /* MyUploadViewController.xib */,
 				6369534B12D50A4700CA3113 /* MyPostController.xib */,
+				63C10CBF12DB89C3009AF260 /* Default.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1471,6 +1479,8 @@
 				63AF930B12CA9161001092B5 /* G_LOGO.png in Resources */,
 				632A448B12D25F0B0055F67B /* MyUploadViewController.xib in Resources */,
 				6369534C12D50A4700CA3113 /* MyPostController.xib in Resources */,
+				63F1561512DA6F5E00D85532 /* iTunesArtwork in Resources */,
+				63C10CC012DB89C3009AF260 /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1570,6 +1580,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1589,6 +1600,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = g3Mobile_Prefix.pch;
@@ -1602,6 +1614,43 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
+		};
+		63454A3112DA506F0070DB81 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../three20/Build/Products/three20/**";
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				SDKROOT = iphoneos;
+			};
+			name = Distribution;
+		};
+		63454A3212DA506F0070DB81 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = g3Mobile_Prefix.pch;
+				INFOPLIST_FILE = "g3Mobile-Info.plist";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+					"-lsqlite3",
+				);
+				PRODUCT_NAME = g3Mobile;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Distribution;
 		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1642,6 +1691,7 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
+				63454A3212DA506F0070DB81 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1651,6 +1701,7 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+				63454A3112DA506F0070DB81 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
