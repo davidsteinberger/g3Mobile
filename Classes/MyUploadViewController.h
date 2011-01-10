@@ -17,7 +17,7 @@
 	NSDictionary *params;
 
 	UIImageView *imageView;
-	UIButton *caption;
+	UILabel *caption;
 	
 	UIImage *screenShot;
 	UIImage *image;
@@ -25,8 +25,7 @@
 }
 
 @property (nonatomic, retain) IBOutlet UIImageView *imageView;
-@property (nonatomic, retain) IBOutlet UIButton *caption;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem* cancel;
+@property (nonatomic, retain) IBOutlet UILabel *caption;
 
 @property (nonatomic, retain) id params;
 
@@ -38,7 +37,7 @@
 // toolbar buttons
 - (IBAction)Cancel:(id)sender;
 - (IBAction)Upload:(id)sender;
-- (IBAction)Caption:(id)sender;
+-(void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event;
 
 - (void)uploaderDidUpload:(id)sender;
 

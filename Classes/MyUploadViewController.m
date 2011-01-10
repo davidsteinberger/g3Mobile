@@ -12,10 +12,11 @@
 #import "UIImage+resizing.h"
 #import "MyThumbsViewController.h"
 
+static NSString* defaultCaption = @"Write a Caption ...";
 
 @implementation MyUploadViewController
 
-@synthesize imageView, caption, cancel, screenShot, image, albumID, delegate, params;
+@synthesize imageView, caption, screenShot, image, albumID, delegate, params;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 
@@ -41,7 +42,13 @@
 	
 	self.imageView.image = self.screenShot;
 	
-	[self.caption setTitle:@"Add Caption ..." forState:UIControlStateNormal];
+	self.caption.text = defaultCaption;
+	/*
+	[[self.cancel layer] setCornerRadius:4.0f];
+	[[self.cancel layer] setMasksToBounds:YES];
+	[[self.cancel layer] setBorderWidth:1.0f];
+	[[self.cancel layer] setBackgroundColor:[[UIColor lightGrayColor] CGColor]];
+	*/
 }
 
 
@@ -104,30 +111,31 @@
 
 - (IBAction)Upload:(id)sender {
 	MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:self.albumID delegate:self];
-	NSString *imageCaption = ([self.caption.titleLabel.text isEqual:@"Add Caption ..."]) ? @"" : self.caption.titleLabel.text;
+	NSString *imageCaption = ([self.caption.text isEqual:defaultCaption]) ? @"" : self.caption.text;
 	[uploader uploadImage:self.image withDescription:imageCaption];
 	TT_RELEASE_SAFELY(uploader);
 }
 
-- (IBAction)Caption:(id)sender {	
-	// prepare params
-	NSString *textForPostController = ([self.caption.titleLabel.text isEqual:@"Add Caption ..."]) ? @"" : self.caption.titleLabel.text;
-	NSDictionary* paramsArray = [NSDictionary dictionaryWithObjectsAndKeys:
-							self, @"delegate",
-							@"Add Caption", @"titleView",
-							textForPostController, @"text",
-							nil];
-	
-	//[[TTNavigator navigator] openURLAction:[[[TTURLAction actionWithURLPath:@"tt://nib/MyPostController"]
-	//										 applyQuery:paramsArray] applyAnimated:YES]];
-	
-	[[TTNavigator navigator] openURLAction:[[[TTURLAction actionWithURLPath:@"tt://loadFromVC/MyPostController"]
-											 applyQuery:paramsArray] applyAnimated:YES]];
+
+-(void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event {
+	UITouch *touch = [touches anyObject];
+
+	if(touch.view.tag == 777) {
+		NSString *textForPostController = ([self.caption.text isEqual:defaultCaption]) ? @"" : self.caption.text;
+		NSDictionary* paramsArray = [NSDictionary dictionaryWithObjectsAndKeys:
+								self, @"delegate",
+								@"Add Caption", @"titleView",
+								textForPostController, @"text",
+								nil];
+		
+		[[TTNavigator navigator] openURLAction:[[[TTURLAction actionWithURLPath:@"tt://loadFromVC/MyPostController"]
+												 applyQuery:paramsArray] applyAnimated:YES]];
+	}
 }
 
 - (void)postController:(TTPostController*)postController didPostText:(NSString *)text withResult:(id)result {
-	self.caption.titleLabel.text = nil;
-	[self.caption setTitle:text forState:UIControlStateNormal];
+	self.caption.text = nil;
+	self.caption.text = ([text isEqual:@""]) ? defaultCaption : text;
 }
 
 - (void)postControllerDidCancel:(TTPostController*)postController {
