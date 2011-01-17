@@ -226,4 +226,10 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
+-(void) reload {
+	TTNavigator* navigator = [TTNavigator navigator];
+	[navigator removeAllViewControllers];
+	[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://thumbs/1"]];
+}
+
 @end

@@ -334,7 +334,10 @@
 }
 
 -(void) reload {
-	[self updateView];
+	//[self updateView];
+	TTNavigator* navigator = [TTNavigator navigator];
+	[navigator removeAllViewControllers];
+	[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://thumbs/1"]];
 }
 
 @end
