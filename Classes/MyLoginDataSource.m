@@ -10,9 +10,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 @implementation MyLoginDataSource
 
-
 @synthesize baseURL = _baseURL;
 @synthesize usernameField = _usernameField;
+@synthesize viewOnly = _viewOnly;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -22,8 +22,46 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)init {
     if (self = [super init]) {
-		_myLoginModel = [[MyLoginModel alloc] init];
-        self.model = _myLoginModel;
+        self.model = [[[MyLoginModel alloc] init] autorelease];
+		
+		// view-only switch
+		_viewOnly = [[UISwitch alloc] init];
+		
+		// url for website
+		_baseURL = [[UITextField alloc] init];
+		_baseURL.placeholder = @"http://example.com";
+		_baseURL.keyboardType = UIKeyboardTypeURL;
+		_baseURL.returnKeyType = UIReturnKeyNext;
+		_baseURL.autocorrectionType = UITextAutocorrectionTypeNo;
+		_baseURL.autocapitalizationType = UITextAutocapitalizationTypeNone;
+		_baseURL.clearButtonMode = UITextFieldViewModeWhileEditing;
+		_baseURL.clearsOnBeginEditing = NO;
+		_baseURL.delegate = self;
+		
+		_baseURL.text = GlobalSettings.baseURL;
+		
+		// username field
+		_usernameField = [[UITextField alloc] init];
+		_usernameField.placeholder = @"*****";
+		_usernameField.keyboardType = UIKeyboardTypeDefault;
+		_usernameField.returnKeyType = UIReturnKeyNext;
+		_usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
+		_usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+		_usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
+		_usernameField.clearsOnBeginEditing = NO;
+		_usernameField.delegate = self;
+		
+		// password field
+		_passwordField = [[UITextField alloc] init];
+		_passwordField.placeholder = @"*****";
+		_passwordField.returnKeyType = UIReturnKeyGo;
+		_passwordField.secureTextEntry = YES;
+		_passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
+		_passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+		_passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
+		_passwordField.clearsOnBeginEditing = NO;
+		_passwordField.delegate = self;
+		
     }
     return self;
 }
@@ -31,13 +69,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)dealloc {
-	//_baseURL.text = nil;
-	self.sections = nil;
-	self.items = nil;
+	TT_RELEASE_SAFELY(_viewOnly);
 	TT_RELEASE_SAFELY(_baseURL);
     TT_RELEASE_SAFELY(_usernameField);
     TT_RELEASE_SAFELY(_passwordField);
-	TT_RELEASE_SAFELY(_myLoginModel);
     [super dealloc];
 }
 
@@ -50,7 +85,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {    
-	if (textField == _baseURL) {
+	if (textField == _baseURL && !self.viewOnly.on) {
 		[_usernameField becomeFirstResponder];
 	}
 	else {
@@ -59,7 +94,7 @@
 		}
 		else {
 			[_passwordField resignFirstResponder];
-			
+
 			MyLogin *settings = [[MyLogin alloc] init];
 			settings.baseURL = _baseURL.text;
 			settings.username = _usernameField.text;
@@ -71,6 +106,68 @@
 	}
     return YES;
 }
+
+- (BOOL)isLoaded {
+	return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:
+(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:
+(NSIndexPath *)indexPath {
+	
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		
+		GlobalSettings.viewOnly = YES;
+		
+		NSIndexPath *userPath = [NSIndexPath indexPathForRow:1 inSection:1];
+		NSIndexPath *passwordPath = [NSIndexPath indexPathForRow:2 inSection:1];
+		
+		[[_items objectAtIndex:userPath.section]
+		 removeObjectAtIndex:userPath.row];
+		[[_items objectAtIndex:userPath.section]
+		 removeObjectAtIndex:userPath.row];
+		
+		_baseURL.returnKeyType = UIReturnKeyGo;
+		_usernameField.text = @"";
+		_passwordField.text = @"";
+		
+		[tableView deleteRowsAtIndexPaths:[NSArray
+										   arrayWithObjects:userPath,passwordPath, nil]
+						 withRowAnimation:UITableViewRowAnimationFade];
+		
+		[tableView endUpdates];
+		
+		[_baseURL becomeFirstResponder];
+	}
+	if (editingStyle == UITableViewCellEditingStyleInsert) {
+		
+		GlobalSettings.viewOnly = NO;
+		
+		[tableView beginUpdates];
+		
+		NSIndexPath *userPath = [NSIndexPath indexPathForRow:1 inSection:1];
+		NSIndexPath *passwordPath = [NSIndexPath indexPathForRow:2 inSection:1];
+		
+		TTTableControlItem* cUsernameField = [TTTableControlItem itemWithCaption:@"Username"
+																		 control:_usernameField];
+		TTTableControlItem* cPasswordField = [TTTableControlItem itemWithCaption:@"Password"
+																		 control:_passwordField];
+		
+		[[_items objectAtIndex:userPath.section] insertObject:cUsernameField
+													   atIndex:userPath.row];
+		[[_items objectAtIndex:passwordPath.section] insertObject:cPasswordField
+													  atIndex:passwordPath.row];
+		
+		[tableView insertRowsAtIndexPaths:[NSArray
+										   arrayWithObjects:userPath,passwordPath, nil]
+						 withRowAnimation:UITableViewRowAnimationFade];
+		
+		[tableView endUpdates];
+		
+		[_usernameField becomeFirstResponder];
+	}
+	
+} 
 
 - (void)imageQualityChanged:(UISlider*)control {
 	NSNumber* number = [NSNumber numberWithFloat:control.value];
@@ -93,45 +190,27 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)tableViewDidLoadModel:(UITableView*)tableView {	
 	// create ui-elements
-	// url for website
-	_baseURL = [[UITextField alloc] init];
-	_baseURL.placeholder = @"http://example.com";
-	_baseURL.keyboardType = UIKeyboardTypeURL;
-	_baseURL.returnKeyType = UIReturnKeyNext;
-	_baseURL.autocorrectionType = UITextAutocorrectionTypeNo;
-	_baseURL.autocapitalizationType = UITextAutocapitalizationTypeNone;
-	_baseURL.clearButtonMode = UITextFieldViewModeWhileEditing;
-	_baseURL.clearsOnBeginEditing = NO;
-	_baseURL.delegate = self;
 	
-	_baseURL.text = GlobalSettings.baseURL;
+	if (!GlobalSettings.viewOnly) {
+		_viewOnly.on = NO;
+	} else {
+		_viewOnly.on = YES;
+		_usernameField.text = @"";
+		_passwordField.text = @"";
+	}
+
+    TTTableControlItem* cViewOnly = [TTTableControlItem itemWithCaption:@"View Only" control:_viewOnly];
+	
+	[_viewOnly addTarget:tableView.delegate  action:@selector(toggleViewOnly:) forControlEvents:UIControlEventValueChanged];
+	
+	
 	TTTableControlItem* cBaseURL = [TTTableControlItem itemWithCaption:@"Website"
 															   control:_baseURL];
 	
-	// username field
-	_usernameField = [[UITextField alloc] init];
-	_usernameField.placeholder = @"*****";
-	_usernameField.keyboardType = UIKeyboardTypeDefault;
-	_usernameField.returnKeyType = UIReturnKeyNext;
-	_usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
-	_usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-	_usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
-	_usernameField.clearsOnBeginEditing = NO;
-	_usernameField.delegate = self;
-	
+		
 	TTTableControlItem* cUsernameField = [TTTableControlItem itemWithCaption:@"Username"
 																	 control:_usernameField];
 	
-	// password field
-	_passwordField = [[UITextField alloc] init];
-	_passwordField.placeholder = @"*****";
-	_passwordField.returnKeyType = UIReturnKeyGo;
-	_passwordField.secureTextEntry = YES;
-	_passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
-	_passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-	_passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
-	_passwordField.clearsOnBeginEditing = NO;
-	_passwordField.delegate = self;
 	
 	TTTableControlItem* cPasswordField = [TTTableControlItem itemWithCaption:@"Password"
 																	 control:_passwordField];
@@ -162,16 +241,24 @@
 	// put everything together (for the ttsectioneddatasource)
 	// create sections
 	NSMutableArray *sections = [[NSMutableArray alloc] init];
+	[sections addObject:@""];
 	[sections addObject:@"Global"];
 	[sections addObject:@"Other"];
 	[sections addObject:@"Cache Settings"];
+	
+	NSMutableArray *section0 = [[NSMutableArray alloc] init];
+	[section0 addObject:cViewOnly];
 	
 	// create section items
 	// section 1 will hold items for login details
 	NSMutableArray *section1 = [[NSMutableArray alloc] init];
 	[section1 addObject:cBaseURL];	
-	[section1 addObject:cUsernameField];
-	[section1 addObject:cPasswordField];
+	
+	if (!GlobalSettings.viewOnly) {
+		[section1 addObject:cUsernameField];
+		[section1 addObject:cPasswordField];
+	}
+	
 	// section 2 will hold the image quality slider
 	NSMutableArray *section2 = [[NSMutableArray alloc] init];
 	[section2 addObject:cImageQuality];
@@ -181,9 +268,11 @@
 	
 	// create array for ttsectioneddatasource
 	NSMutableArray *items = [[NSMutableArray alloc] init];
+	[items addObject:section0];
 	[items addObject:section1];
 	[items addObject:section2];
 	[items addObject:section3];
+	TT_RELEASE_SAFELY(section0);
 	TT_RELEASE_SAFELY(section1);
 	TT_RELEASE_SAFELY(section2);
 	TT_RELEASE_SAFELY(section3);

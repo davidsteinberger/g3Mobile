@@ -42,20 +42,24 @@
 		if(sqlite3_prepare_v2(database, sqlStatement, -1, &compiledStatement, NULL) == SQLITE_OK) {
 			while(sqlite3_step(compiledStatement) == SQLITE_ROW) {
 				
-				NSString *var = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 0)];
-				NSString *value = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 1)];
-				
-				if ([var isEqual:@"baseURL"]) {
-					baseURL = value;
-				}
-				else if ([var isEqual:@"username"]){
-					username = value;
-				}
-				else if ([var isEqual:@"password"]){
-					password = value;
-				}
-				else if ([var isEqual:@"challenge"]){
-					challenge = value;
+				@try {
+					NSString *var = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 0)];
+					NSString *value = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 1)];
+					
+					if ([var isEqual:@"baseURL"]) {
+						baseURL = value;
+					}
+					else if ([var isEqual:@"username"]){
+						username = value;
+					}
+					else if ([var isEqual:@"password"]){
+						password = value;
+					}
+					else if ([var isEqual:@"challenge"]){
+						challenge = value;
+					}
+				} @catch (NSException* e) {
+					
 				}
 			}
 		}

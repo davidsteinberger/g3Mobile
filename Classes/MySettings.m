@@ -22,6 +22,7 @@
 
 @implementation MySettings
 
+@synthesize viewOnly = _viewOnly;
 @synthesize username = _username;
 @synthesize password = _password;
 @synthesize challenge = _challenge;
@@ -42,6 +43,21 @@ withImageQuality:(float) imageQuality {
 	self.challenge = challenge;
 	
 	self.imageQuality = imageQuality;
+}
+
+- (BOOL)viewOnly {
+	NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
+	BOOL viewOnly = [prefs boolForKey:@"viewOnly"];
+	self.viewOnly = viewOnly;
+	
+	return viewOnly;
+}
+
+- (void)setViewOnly:(BOOL)viewOnly {
+	NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
+	
+	[prefs setBool:viewOnly forKey:@"viewOnly"];	
+	[prefs synchronize];
 }
 
 - (NSString*)baseURL {
@@ -68,13 +84,14 @@ withImageQuality:(float) imageQuality {
 	NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
 	NSString* challenge = [prefs stringForKey:@"challenge"];
 	
-	if (!challenge || [challenge isEqual:@""] ) {
+	if (!challenge || [challenge isEqual:@""]) {
 		challenge = [[MyDatabase readSettingsFromDatabase] objectForKey:@"challenge"];
 		//challenge = @"6b27e31c164657fea05fd0d28fecb120";
 		self.challenge = challenge;
 	}
 	
 	return (challenge) ? challenge : @"" ;
+	//return @"";
 }
 
 - (void)setChallenge:(NSString*)challenge {

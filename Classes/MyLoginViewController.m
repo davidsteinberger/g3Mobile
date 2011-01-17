@@ -17,6 +17,7 @@
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		self.title = @"Settings";
 		self.variableHeightRows = YES;
+		self.autoresizesForKeyboard = YES;
 		self.tableViewStyle = UITableViewStyleGrouped;
 		
 		[[TTNavigator navigator].URLMap from:@"tt://removeAllCache"
@@ -71,7 +72,22 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)createModel {
-    self.dataSource = [[[MyLoginDataSource alloc] init] autorelease];
+    [self createDataSource];
+}
+
+- (id)createDataSource {
+	self.dataSource = [[[MyLoginDataSource alloc] init] autorelease];
+	return self.dataSource;
+}
+
+- (void)toggleViewOnly:(UISwitch*)control {	
+	NSIndexPath *switchPath = [NSIndexPath indexPathForRow:0 inSection:0];
+	
+	if (control.on) {
+			[self.dataSource tableView:self.tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:switchPath];
+	} else {
+			[self.dataSource tableView:self.tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:switchPath];
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -119,6 +135,5 @@
 	[self showLoading:NO];
 	[super model:model didFailLoadWithError:error];
 }
-
 
 @end

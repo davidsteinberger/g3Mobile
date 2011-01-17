@@ -1,9 +1,7 @@
 #import "Three20/Three20.h"
 
-@class MyLoginModel;
-
 @interface MyLoginDataSource : TTSectionedDataSource <UITextFieldDelegate> {
-	MyLoginModel* _myLoginModel;
+	UISwitch* _viewOnly;
 	UITextField* _baseURL;
     UITextField* _usernameField;
     UITextField* _passwordField;
@@ -12,5 +10,6 @@
 
 @property (nonatomic, readonly) UITextField* baseURL;
 @property (nonatomic, readonly) UITextField* usernameField;
+@property (nonatomic, retain) UISwitch* viewOnly;
 
 @end

@@ -12,6 +12,7 @@
 ((MySettings *)[MySettings sharedMySettings])
 
 @interface MySettings : NSObject {
+	BOOL _viewOnly;
 	NSString* _username;
 	NSString* _password;
 	NSString* _challenge;
@@ -20,6 +21,7 @@
 	float _imageQuality;
 }
 
+@property(nonatomic, assign) BOOL viewOnly;
 @property(nonatomic, readonly, retain) NSString* challenge;
 @property(nonatomic, readonly, retain) NSString* baseURL;
 @property float imageQuality;
