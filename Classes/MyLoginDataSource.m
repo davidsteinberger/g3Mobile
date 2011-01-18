@@ -111,6 +111,10 @@
 	return YES;
 }
 
+- (BOOL) tableView: (UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+	return NO;
+}
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:
 (UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:
 (NSIndexPath *)indexPath {
