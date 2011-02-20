@@ -143,7 +143,7 @@ static NSString* defaultCaption = @"Write a Caption ...";
 }
 
 - (void)uploaderDidUpload:(id)sender {
-	[((MyThumbsViewController*)self.delegate) loadAlbum:self.albumID];	
+	[((MyThumbsViewController*)self.delegate) reload];	
 	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 	[self dismissModalViewControllerAnimated:YES];
 }

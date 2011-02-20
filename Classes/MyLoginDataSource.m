@@ -4,6 +4,7 @@
 #import "MyLogin.h"
 
 #import "MySettings.h"
+#import "AppDelegate.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -242,6 +243,25 @@
 	 forControlEvents:UIControlEventTouchUpInside];
 	button.frame = CGRectMake(20, 20, appFrame.size.width - 40, 50);
 	
+	// a button bar to choose the view-style
+	TTButtonBar* buttonBar = [[TTButtonBar alloc] initWithFrame:appFrame];
+	buttonBar.backgroundColor = [UIColor clearColor];
+	//buttonBar.buttonStyle = @"embossedButton";
+	[buttonBar addButton:@"Album View" target:self action:@selector(chooseViewStyle:)];
+	[buttonBar addButton:@"Thumb View" target:self action:@selector(chooseViewStyle:)];
+	
+	TTView* segmentedControlFrame = [[TTView alloc] initWithFrame:CGRectMake(-1.0f, -1.0f, 302.0f, 46.0f)];
+	segmentedControlFrame.backgroundColor = [UIColor clearColor];
+	UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithFrame:segmentedControlFrame.bounds];
+	[segmentedControl insertSegmentWithTitle:@"Album" atIndex:0 animated:NO];
+	[segmentedControl insertSegmentWithTitle:@"Thumbs" atIndex:1 animated:NO];
+	segmentedControl.selectedSegmentIndex = (GlobalSettings.viewStyle == kAlbumView) ? 0 : 1;
+	[segmentedControl addTarget:(AppDelegate *)[[UIApplication sharedApplication] delegate]
+						 action:@selector(dispatchToRootController:)
+			   forControlEvents:UIControlEventValueChanged];
+	[segmentedControlFrame addSubview:segmentedControl];
+	TT_RELEASE_SAFELY(segmentedControl);	
+	
 	// put everything together (for the ttsectioneddatasource)
 	// create sections
 	NSMutableArray *sections = [[NSMutableArray alloc] init];
@@ -249,6 +269,7 @@
 	[sections addObject:@"Global"];
 	[sections addObject:@"Other"];
 	[sections addObject:@"Cache Settings"];
+	[sections addObject: @"View Settings"];
 	
 	NSMutableArray *section0 = [[NSMutableArray alloc] init];
 	[section0 addObject:cViewOnly];
@@ -269,6 +290,10 @@
 	// section 3 will hold button for clearing the cache
 	NSMutableArray *section3 = [[NSMutableArray alloc] init];
 	[section3 addObject:button];
+	// section 4 will hold button for chossing the view-style
+	NSMutableArray *section4 = [[NSMutableArray alloc] init];
+	[section4 addObject:segmentedControlFrame];
+	TT_RELEASE_SAFELY(segmentedControlFrame);
 	
 	// create array for ttsectioneddatasource
 	NSMutableArray *items = [[NSMutableArray alloc] init];
@@ -276,10 +301,12 @@
 	[items addObject:section1];
 	[items addObject:section2];
 	[items addObject:section3];
+	[items addObject: section4];
 	TT_RELEASE_SAFELY(section0);
 	TT_RELEASE_SAFELY(section1);
 	TT_RELEASE_SAFELY(section2);
 	TT_RELEASE_SAFELY(section3);
+	TT_RELEASE_SAFELY(section4);
 	
 	self.items = items;
 	self.sections = sections;

@@ -26,6 +26,8 @@ typedef enum {
 
 - (id)initWithType:(MockPhotoSourceType)type parentURL:(NSString*)parentURL albumID:(NSString*)albumID title:(NSString*)title photos:(NSArray*)photos
 		   photos2:(NSArray*)photos2;
++ (MockPhotoSource*)createPhotoSource:(NSString*)albumID;
+
 @end
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

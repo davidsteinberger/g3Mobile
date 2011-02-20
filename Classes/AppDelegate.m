@@ -23,6 +23,10 @@
 
 #import "MySettings.h"
 
+#import "MyRestTest.h"
+#import "MyRestResource.h"
+#import "MyThumbsViewController2.h"
+#import "MyPhotoViewController.h"
 
 @implementation AppDelegate
 
@@ -46,7 +50,8 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication*)application {
 	// set stylesheet
-	//[TTStyleSheet setGlobalStyleSheet:[[[StyleSheet alloc] init] autorelease]];
+	[TTStyleSheet setGlobalStyleSheet:[[[StyleSheet alloc] init] autorelease]];
+	[[TTURLRequestQueue mainQueue] setMaxContentLength:0];
 	 
 	// observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
     // method "reachabilityChanged" will be called. 
@@ -61,9 +66,18 @@
 
 	// !!! IMPORTANT: create urlmaps !!!
 	TTURLMap* map = navigator.URLMap;
+	// dispatcher: will choose either album- or thumb-view
+	[map from:@"tt://root/(rootController:)" toViewController:self
+     transition:UIViewAnimationTransitionFlipFromLeft];
+	// album-view
+	[map from:@"tt://album/(initWithItemID:)" toViewController:[MyThumbsViewController2 class]];
 	// thumbnails-view
 	[map from:@"tt://thumbs/(initWithAlbumID:)" toViewController:[MyThumbsViewController class]];
-	// comments-view
+	// photo-view
+	[map from:@"tt://photo/(initWithItemID:)" toViewController:[MyPhotoViewController class]];
+	[map from:@"tt://photo/(initWithItemID:)/(atIndex:)" toViewController:[MyPhotoViewController class]];
+	[map from:@"tt://photo" toSharedViewController:[MyPhotoViewController class]];
+    // comments-view
 	[map from:@"tt://comments/(initWithItemID:)" toViewController:[MyCommentsViewController class]
 	transition:UIViewAnimationTransitionFlipFromLeft];
 	// login-view
@@ -91,9 +105,8 @@
 			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://login"] applyAnimated:YES]];
 		}
 		else {			
-			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://root/1"] applyAnimated:YES]];
 		}
-
 	}
 }
 
@@ -106,7 +119,7 @@
 	
 	TTNavigator* navigator = [TTNavigator navigator];
 	[navigator removeAllViewControllers];
-	[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://thumbs/1"]];
+	[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://root/1"]];
 }
 
 /*
@@ -160,6 +173,31 @@
 - (BOOL)application:(UIApplication*)application handleOpenURL:(NSURL*)URL {
 	[[TTNavigator navigator] openURLAction:[TTURLAction actionWithURLPath:URL.absoluteString]];
 	return YES;
+}
+
+- (void)rootController:(NSNull*)null {
+	TTNavigator* navigator = [TTNavigator navigator];
+	[navigator.rootViewController.navigationController popToViewController:navigator.rootViewController animated:YES];
+	
+	if ( GlobalSettings.viewStyle == kAlbumView) {
+		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://album/1"] applyAnimated:YES]];
+	} 
+	if ( GlobalSettings.viewStyle == kThumbView) {
+		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+	}
+}
+
+// Dispatcher
+- (void)dispatchToRootController:(id)sender {
+	UISegmentedControl* segmentedControl = (UISegmentedControl*)sender;
+	
+	if ( segmentedControl.selectedSegmentIndex == 0) {
+		GlobalSettings.viewStyle = kAlbumView;
+	} 
+	if ( segmentedControl.selectedSegmentIndex == 1) {
+		GlobalSettings.viewStyle = kThumbView;
+	}
+	return [self rootController:nil];
 }
 
 

@@ -11,6 +11,11 @@
 #define GlobalSettings \
 ((MySettings *)[MySettings sharedMySettings])
 
+typedef enum {
+	kAlbumView,
+	kThumbView
+} MyViewStyle;
+
 @interface MySettings : NSObject {
 	BOOL _viewOnly;
 	NSString* _username;
@@ -19,12 +24,16 @@
 	NSString* _baseURL;
 	
 	float _imageQuality;
+	
+	//UI settings
+	MyViewStyle _viewStyle;
 }
 
 @property(nonatomic, assign) BOOL viewOnly;
 @property(nonatomic, readonly, retain) NSString* challenge;
 @property(nonatomic, readonly, retain) NSString* baseURL;
 @property float imageQuality;
+@property MyViewStyle viewStyle;
 
 + (MySettings *)sharedMySettings;
 - (void)save:(NSString*)baseURL 

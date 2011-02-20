@@ -18,33 +18,24 @@
 
 @implementation MyPhotoViewController
 
-@synthesize parentController = _parentController;
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-		/*self.navigationItem.backBarButtonItem =
-		[[[UIBarButtonItem alloc]
-		  initWithTitle:
-		  TTLocalizedString(@"Photo",
-							@"Title for back button that returns to photo browser")
-		  style: UIBarButtonItemStylePlain
-		  target: nil
-		  action: nil] autorelease];
-		*/
-		self.statusBarStyle = UIStatusBarStyleBlackTranslucent;
-		self.navigationBarStyle = UIBarStyleBlackTranslucent;
-		self.navigationBarTintColor = nil;
-		self.wantsFullScreenLayout = YES;
-		self.hidesBottomBarWhenPushed = YES;
-		
-		self.navigationItem.rightBarButtonItem
-		= [[[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered
-										   target:self action:@selector(setSettings)] autorelease];	  
-		
-		self.defaultImage = TTIMAGE(@"bundle://Three20.bundle/images/photoDefault.png");
+
 	}
 	
 	return self;
+}
+
+- (id)initWithItemID:(NSString*)itemID {
+	//TTDERROR(@"itemID: %@", itemID);
+	self.photoSource = [MockPhotoSource createPhotoSource:itemID];
+	return [self initWithNibName:nil bundle:nil];;
+}
+
+- (id)initWithItemID:(NSString*)itemID atIndex:(NSInteger)photoIndex {
+	id instance = [self initWithItemID:itemID];
+	[self moveToPhotoAtIndex:photoIndex withDelay:NO];
+	return instance;
 }
 
 - (void) dealloc {
@@ -52,14 +43,11 @@
 }
 
 - (void)viewDidAppear {
-	//self.navigationController.navigationBar.bar = UIBarStyleDefault;
-	self.navigationItem.rightBarButtonItem
-    = [[[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered
-									   target:self action:@selector(setSettings)] autorelease];		
+	[super viewDidAppear];
 }
 
 - (void)loadView {
-	//[self uploadImage];
+	[super loadView];
 	
 	CGRect screenFrame = [UIScreen mainScreen].bounds;
 	self.view = [[[UIView alloc] initWithFrame:screenFrame] autorelease];
@@ -115,7 +103,7 @@
 }
 
 - (void)viewDidLoad {
-
+	[super viewDidLoad];
 }
 
 - (void)clickComposeItem {
@@ -126,8 +114,6 @@
 }
 
 - (void)clickActionItem {
-	//NSLog(@"clickActionItem clicked (%@)", albumID);
-	
 	UIActionSheet *actionSheet = [[[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
                                                     cancelButtonTitle:nil

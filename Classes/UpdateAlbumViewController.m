@@ -210,7 +210,16 @@
 		[MyAlbum updateFinishedWithItemURL:[[GlobalSettings.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.albumID]];	
 		[MyAlbum updateFinishedWithItemURL:[self.entity valueForKey:@"parent"]];
 		
-		[self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:[[self.navigationController viewControllers] count] - 3] animated:YES];
+		//[self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:[[self.navigationController viewControllers] count] - 3] animated:YES];
+		int index = [[self.navigationController viewControllers] count] - 3;
+		if (index >= 0) {
+			[self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:index] animated:YES];
+		}
+		else {
+			TTNavigator *navigator = [TTNavigator navigator];
+			[navigator removeAllViewControllers];
+			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://root/1"] applyAnimated:YES]];
+		}
 	}
 
 }

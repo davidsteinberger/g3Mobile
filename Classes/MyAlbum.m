@@ -18,6 +18,7 @@
 @synthesize albumID = _albumID;
 @synthesize array = _array;
 @synthesize albumEntity = _albumEntity;
+@synthesize arraySorted = _arraySorted;
 
 -(id)init {
 	[self initWithUrl:nil];
@@ -41,6 +42,7 @@
 	self.albumID = nil;
 	TT_RELEASE_SAFELY(_array);	
 	TT_RELEASE_SAFELY(_albumEntity);
+	TT_RELEASE_SAFELY(_arraySorted);
 	
 	[super dealloc];
 }
@@ -78,14 +80,23 @@
 	[feed removeObjectAtIndex:0];	
 	
 	NSMutableDictionary* elements = [[NSMutableDictionary alloc] initWithCapacity:[feed count]];
-
-	for (NSDictionary* member in feed) {			
+	//NSMutableDictionary* element2 = [[NSMutableDictionary alloc] initWithCapacity:[feed count]];
+	_arraySorted = [[NSMutableArray alloc] initWithCapacity:[feed count]];
+	
+	NSUInteger i, count = [feed count];
+	for (i = 0; i < count; i++) {
+		NSDictionary* member = (NSDictionary*)[feed objectAtIndex:i];
+	
+	//for (NSDictionary* member in feed) {			
 		//NSLog(@"member: %@", member);
 		NSDictionary* entity = [member objectForKey:@"entity"];
 		NSDictionary* url = [member objectForKey:@"url"];
-
+		
 		NSMutableDictionary* element = [NSMutableDictionary dictionaryWithObject:entity forKey:@"entity"];
 		[elements setObject:element forKey:url];
+		
+		NSDictionary* orderedElement = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:i], @"sortKey", entity, @"entity", nil];
+		[self.arraySorted addObject:orderedElement];
 	}
 	_array = elements;
 }

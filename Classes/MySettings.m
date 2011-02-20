@@ -28,6 +28,7 @@
 @synthesize challenge = _challenge;
 @synthesize baseURL = _baseURL;
 @synthesize imageQuality = _imageQuality;
+@synthesize viewStyle = _viewStyle;
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(MySettings);
 
@@ -142,6 +143,18 @@ withImageQuality:(float) imageQuality {
 - (float)imageQuality {
 	NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
 	return [prefs floatForKey:@"imageQuality"];
+}
+
+- (void)setViewStyle:(MyViewStyle)viewStyle {
+	NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
+	
+	[prefs setInteger:viewStyle forKey:@"viewStyle"];	
+	[prefs synchronize];
+}
+
+- (MyViewStyle)viewStyle {
+	NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
+	return [prefs integerForKey:@"viewStyle"];
 }
 
 @end

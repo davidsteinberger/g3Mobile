@@ -11,14 +11,9 @@
 #import <Three20/Three20.h>
 
 #import "MyThumbsViewController.h";
+#import "MockPhotoSource.h"
 
 @interface MyPhotoViewController : TTPhotoViewController<UITableViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate> {
-	MyThumbsViewController* _parentController;
-	
-	//UIBarButtonItem* _clickComposeItem;
-	//UIBarButtonItem* _clickActionItem;
 }
-
-@property(nonatomic, copy) MyThumbsViewController* parentController;
 
 @end

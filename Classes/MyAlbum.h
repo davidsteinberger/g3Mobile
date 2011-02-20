@@ -15,11 +15,13 @@
 	NSString* _albumID;
 	NSMutableDictionary* _array;
 	NSMutableDictionary* _albumEntity;
+	NSMutableArray* _arraySorted;
 }
 
 @property(nonatomic, retain) NSString* albumID;
 @property(nonatomic, retain) NSMutableDictionary* array;
 @property(nonatomic, retain) NSMutableDictionary* albumEntity;
+@property(nonatomic, retain) NSMutableArray* arraySorted;
 
 - (id)init;
 - (id)initWithID:(NSString* )albumId;

@@ -231,11 +231,24 @@
 - (void)loadAlbum:(NSString* ) albumID {
 
 	NSMutableArray* album = [[NSMutableArray alloc] init];
-	MyAlbum* g3Album = [[MyAlbum alloc] initWithID:albumID];
+	MyAlbum* g3Album = [[MyAlbum alloc] initWithID:albumID];	
 	
-	NSArray *keyArray = [g3Album.array allKeys];
-	for (int i=0; i < [keyArray count]; i++) {
-		NSDictionary* obj = [g3Album.array objectForKey:[ keyArray objectAtIndex:i]];
+	//NSArray* sortedKeys = [[g3Album.arraySorted allKeys] keysSortedByValueUsingSelector:@selector(compare:)];
+	
+	NSSortDescriptor * frequencyDescriptor =
+    [[[NSSortDescriptor alloc] initWithKey:@"sortKey"
+                                 ascending:YES] autorelease];
+	NSArray * descriptors =
+    [NSArray arrayWithObjects:frequencyDescriptor, nil];
+	
+	
+	NSArray * sortedArray =
+    [g3Album.arraySorted sortedArrayUsingDescriptors:descriptors];
+	
+	NSEnumerator * enumerator = [sortedArray objectEnumerator];
+	id obj;
+	while ((obj = [enumerator nextObject])) {
+		
 		NSDictionary* entity = [obj objectForKey:@"entity"];
 
 		NSString* thumb_url = [entity objectForKey:@"thumb_url_public"];
