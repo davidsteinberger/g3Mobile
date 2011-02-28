@@ -39,18 +39,23 @@
 - (void)tableViewDidLoadModel:(UITableView*)tableView {
 	NSMutableArray* items = [[NSMutableArray alloc] init];
 
+	
+	int i = 0;
+	self.hasOnlyPhotos = NO;
 	/*
-	NSUInteger i = 0;
-	self.hasOnlyPhotos = YES;
-	for (NSDictionary* item in _thumbsViewModel.restResource) {
+	 for (NSDictionary* item in _thumbsViewModel.restResource) {
 		if (i++ == 0) continue;
 		NSDictionary* fields = [item objectForKey:@"entity"];
-		self.hasOnlyPhotos = ([[fields objectForKey:@"type"] isEqualToString:@"album"]) ? NO : self.hasOnlyPhotos;		
+		if ([[fields objectForKey:@"type"] isEqualToString:@"album"]) {
+			self.hasOnlyPhotos = NO;
+			break;
+		}
+		//self.hasOnlyPhotos = ([[fields objectForKey:@"type"] isEqualToString:@"album"]) ? NO : self.hasOnlyPhotos;		
 	}
-	//NSLog(@"self.hasOnlyPhotos: %i", self.hasOnlyPhotos);
+	NSLog(@"self.hasOnlyPhotos: %i", self.hasOnlyPhotos);
 	*/
 	
-	int i = 1;
+	i = 1;
 	NSUInteger count = [_thumbsViewModel.restResource count];
 	NSString* parentID = [((NSDictionary*)[_thumbsViewModel.restResource objectAtIndex:0]) valueForKeyPath:@"entity.id"];
 	
@@ -61,15 +66,19 @@
 		NSDictionary * item = ((NSDictionary*)[_thumbsViewModel.restResource objectAtIndex:i]);
 
 		NSString* aURL = @"";
+		
 		if ([[item valueForKeyPath:@"entity.type"] isEqualToString:@"album"]) {
-			aURL = [@"tt://album/" stringByAppendingString:[item valueForKeyPath:@"entity.id"]];
+			if (self.hasOnlyPhotos) {
+				aURL = [@"tt://thumbs/" stringByAppendingString:[item valueForKeyPath:@"entity.id"]];
+			} else {
+				aURL = [@"tt://album/" stringByAppendingString:[item valueForKeyPath:@"entity.id"]];
+			}			
 		} else {			
 				aURL = [[[@"tt://photo/" 
 						stringByAppendingString:parentID]
 						stringByAppendingString:@"/"]
 						stringByAppendingString:[NSString stringWithFormat:@"%d",d]];
 				d++;
-				//NSLog(@"aURL: %@", aURL);
 		}
 
 		

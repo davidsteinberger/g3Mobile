@@ -52,6 +52,7 @@
 }
 
 - (void)viewDidLoad {
+	[super viewDidLoad];
 		
 	MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
 	

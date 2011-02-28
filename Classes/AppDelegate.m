@@ -72,11 +72,15 @@
 	// album-view
 	[map from:@"tt://album/(initWithItemID:)" toViewController:[MyThumbsViewController2 class]];
 	// thumbnails-view
-	[map from:@"tt://thumbs/(initWithAlbumID:)" toViewController:[MyThumbsViewController class]];
+	[map from:@"tt://thumbs/(initWithAlbumID:)" toViewController:[MyThumbsViewController class]
+     transition:UIViewAnimationTransitionCurlDown];
 	// photo-view
-	[map from:@"tt://photo/(initWithItemID:)" toViewController:[MyPhotoViewController class]];
-	[map from:@"tt://photo/(initWithItemID:)/(atIndex:)" toViewController:[MyPhotoViewController class]];
-	[map from:@"tt://photo" toSharedViewController:[MyPhotoViewController class]];
+	[map from:@"tt://photo/(initWithItemID:)" toViewController:[MyPhotoViewController class]
+	 transition:UIViewAnimationTransitionCurlUp];
+	[map from:@"tt://photo/(initWithItemID:)/(atIndex:)" toViewController:[MyPhotoViewController class]
+	 transition:UIViewAnimationTransitionCurlUp];
+	[map from:@"tt://photo" toViewController:[MyPhotoViewController class]
+	 transition:UIViewAnimationTransitionCurlUp];
     // comments-view
 	[map from:@"tt://comments/(initWithItemID:)" toViewController:[MyCommentsViewController class]
 	transition:UIViewAnimationTransitionFlipFromLeft];

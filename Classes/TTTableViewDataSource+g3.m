@@ -8,6 +8,8 @@
 
 #import "TTTableViewDataSource+g3.h"
 #import "MyThumbsViewController2.h"
+#import "MyAlbumItemCell.h"
+#import "MyMetaDataItemCell.h"
 #import <objc/runtime.h>
 
 @implementation TTTableViewDataSource (xib)
@@ -35,13 +37,15 @@
 		cell = [[[cellClass alloc] initWithStyle:UITableViewCellStyleDefault
 								 reuseIdentifier:identifier] autorelease];
 	}
-	
-	UILongPressGestureRecognizer *longPressGesture =
-	[[[UILongPressGestureRecognizer alloc]
-	  initWithTarget:((MyThumbsViewController2*)[tableView.delegate controller]) action:@selector(longPress:)] autorelease];
 
+	if ([cell class] == [MyAlbumItemCell class] || [cell class] == [MyMetaDataItemCell class]) {
+		UILongPressGestureRecognizer *longPressGesture =
+		[[[UILongPressGestureRecognizer alloc]
+		  initWithTarget:((MyThumbsViewController2*)[tableView.delegate controller]) action:@selector(longPress:)] autorelease];
+		[cell addGestureRecognizer:longPressGesture];
+	}
+	
 	[cell setTag:indexPath.row];
-	[cell addGestureRecognizer:longPressGesture];
 	
 	/*
 	 UISwipeGestureRecognizer* swipeGesture = [[[UISwipeGestureRecognizer
