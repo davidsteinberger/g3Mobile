@@ -7,6 +7,9 @@
 //
 
 #import "TTTableViewController+g3.h"
+#import "RestKit/Three20/RKRequestTTModel.h"
+#import "RKMResponse.h"
+#import "RKOEntity.h"
 
 
 @implementation TTTableViewController (empty)
@@ -64,7 +67,7 @@
 	button1.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
 	[button1 setBackgroundImage:[UIImage imageNamed:@"uploadIcon.png"] forState:UIControlStateNormal];
 	[button1 addTarget:self action:@selector(uploadImage:) forControlEvents:UIControlEventTouchUpInside];
-	
+		
 	buttonX += xDist;
 	UIButton *button2 = [UIButton buttonWithType:UIButtonTypeCustom];
 	button2.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);

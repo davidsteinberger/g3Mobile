@@ -4,6 +4,7 @@
 
 @implementation MockPhotoSource
 
+@synthesize model = _model;
 @synthesize title = _title;
 @synthesize albumID = _albumID;
 @synthesize parentURL = _parentURL;
@@ -14,23 +15,85 @@
 - (void)fakeLoadReady {
 	_fakeLoadTimer = nil;
 
+	RKMResponse* response = [self.model.objects objectAtIndex:0];
+	RKOEntity* entity = [response.entities objectAtIndex:0];
+	
+	if ([response.entities count] == 0) {
+		_fakeLoadTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self  
+														selector:@selector(fakeLoadReady) userInfo:nil repeats:NO];
+		return;
+	}
+	
+	
 	if (_type & MockPhotoSourceLoadError) {
 		[_delegates perform:@selector(model:didFailLoadWithError:)
 		         withObject:self
 		         withObject:nil];
 	}
 	else {
-		NSMutableArray *newPhotos = [NSMutableArray array];
-
-		for (int i = 0; i < _photos.count; ++i) {
-			id <TTPhoto> photo = [_photos objectAtIndex:i];
-			if ( (NSNull *)photo != [NSNull null] ) {
-				[newPhotos addObject:photo];
+		newPhotos = [[NSMutableArray alloc] init];
+		
+		for (RKOEntity* item in response.entities) {
+			
+			if ([item.id isEqualToString:self.albumID]) {
+				self.title = [NSString stringWithString:(item.title) ? item.title : @""];
+				continue;
 			}
+			
+			NSString* photoID = item.id;
+			if (photoID == nil) {
+				photoID = @"1";
+			}
+			
+			NSString* parent = item.parent;
+			if (parent == nil) {
+				parent = @"1";
+			}
+			
+			BOOL isAlbum;
+			if ([item.type isEqualToString:@"album"]) {
+				isAlbum = YES;
+			} else {
+				isAlbum = NO;
+			}
+			
+			NSString* thumb_url = (item.thumb_url_public != nil) ? item.thumb_url_public : item.thumb_url;
+			if (thumb_url == nil) {
+				thumb_url = @"bundle://empty.png";
+			}
+			
+			NSString* resize_url = (item.resize_url_public != nil) ? item.resize_url_public : item.resize_url;
+			if (resize_url == nil) {
+				resize_url = @"bundle://empty.png";
+			}
+			
+			id iWidth = item.thumb_width;
+			id iHeight = item.thumb_height;
+			short int width = 100;
+			short int height = 100;
+			
+			if ([iWidth isKindOfClass:[NSString class]] && [iHeight isKindOfClass:[NSString class]]) {
+				if ([@"" isEqualToString:iWidth] || [@"" isEqualToString:iHeight] || [@"0" isEqualToString:iWidth] || [@"0" isEqualToString:iHeight]) {
+					width = 100;
+					height = 100;
+				}	
+				else if ([iWidth length] > 0 && [iHeight length] > 0 ) {
+					width = [iWidth longLongValue];
+					height = [iHeight longLongValue];
+				}
+			}
+			
+			MockPhoto* mph = [[[MockPhoto alloc]
+							   initWithURL:[NSString stringWithString: resize_url]
+							   smallURL:[NSString stringWithString: thumb_url]
+							   size:CGSizeMake(width, height)
+							   isAlbum:isAlbum
+							   photoID:[NSString stringWithString: photoID]
+							   parentURL:[NSString stringWithString: parent]] autorelease];
+			
+			[newPhotos addObject:mph];
+			
 		}
-
-		[newPhotos addObjectsFromArray:_tempPhotos];
-		TT_RELEASE_SAFELY(_tempPhotos);
 
 		[_photos release];
 		_photos = [newPhotos retain];
@@ -43,51 +106,47 @@
 			}
 		}
 
-		[_delegates perform:@selector(modelDidFinishLoad:) withObject:self];
+		[_delegates perform:@selector(modelDidFinishLoad:) withObject:self];		
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// NSObject
 
-- (id)initWithType:(MockPhotoSourceType)type parentURL:(NSString *)parentURL albumID:(NSString *)albumID title:(NSString *)title photos:(NSArray *)photos
-       photos2:(NSArray *)photos2 {
-	if (self = [super init]) {
-		_type = type;
-		_parentURL = [parentURL retain];
-		_albumID = [albumID retain];
-		_title = [title retain];
-		_photos = photos2 ? [photos mutableCopy] : [[NSMutableArray alloc] init];
-		_tempPhotos = photos2 ? [photos2 retain] : [photos retain];
-		_fakeLoadTimer = nil;
 
-		for (int i = 0; i < _photos.count; ++i) {
-			id <TTPhoto> photo = [_photos objectAtIndex:i];
-			if ( (NSNull *)photo != [NSNull null] ) {
-				photo.photoSource = self;
-				photo.index = i;
-			}
-		}
+- (id)initWithItemID:(NSString*)itemID
+{
+    if ((self = [super init])) {
+        self.title = @"Photos";
+		self.albumID = itemID;
+        NSString* treeResourcePath = [[[@"" 
+										stringByAppendingString:@"/rest/tree/"] 
+									   stringByAppendingString:itemID]
+									  stringByAppendingString:@"?depth=1"];
+		
+		[RKRequestTTModel setDefaultRefreshRate:3600];
+		RKRequestTTModel* myModel = [[RKRequestTTModel alloc] 
+									 initWithResourcePath:treeResourcePath
+									 params:nil objectClass:[RKMResponse class]];
+		self.model = myModel;
+		[myModel load:TTURLRequestCachePolicyDefault more:NO];
+		
+		TT_RELEASE_SAFELY(myModel);
 
-		if ( !(_type & MockPhotoSourceDelayed || photos2) ) {
-			[self performSelector:@selector(fakeLoadReady)];
-		}
-	}
-	return self;
-}
-
-- (id)init {
-	return [self initWithType:MockPhotoSourceNormal title:nil photos:nil photos2:nil];
+		_fakeLoadTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self  
+														selector:@selector(fakeLoadReady) userInfo:nil repeats:NO];
+    }
+    return self;
 }
 
 - (void)dealloc {
 	[_fakeLoadTimer invalidate];
+	TT_RELEASE_SAFELY(newPhotos);
+	TT_RELEASE_SAFELY(_model);
 	TT_RELEASE_SAFELY(_photos);
 	TT_RELEASE_SAFELY(_tempPhotos);
 	TT_RELEASE_SAFELY(_title);
 
 	TT_RELEASE_SAFELY(_albumID);
-	TT_RELEASE_SAFELY(_parentURL);
+	//TT_RELEASE_SAFELY(_parentURL);
 
 	[super dealloc];
 }
@@ -101,16 +160,6 @@
 
 - (BOOL)isLoaded {
 	return !!_photos;
-}
-
-- (void)load:(TTURLRequestCachePolicy)cachePolicy more:(BOOL)more {
-	if (cachePolicy & TTURLRequestCachePolicyNetwork) {
-		[_delegates perform:@selector(modelDidStartLoad:) withObject:self];
-
-		TT_RELEASE_SAFELY(_photos);
-		_fakeLoadTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self
-		                                                selector:@selector(fakeLoadReady) userInfo:nil repeats:NO];
-	}
 }
 
 - (void)cancel {
@@ -175,15 +224,9 @@ static MockPhotoSource *_samplePhotoSet = nil;
 			                           photoID:@"3"
 			                         parentURL:nil] autorelease];
 
-			/*MockPhoto *levelMeUp = [[[MockPhoto alloc] initWithCaption:@"Level Me Up"
-			                                                                                                              urlLarge:@"http://www.raywenderlich.com/downloads/level_me_up_large.png"
-			                                                                                                              urlSmall:@"bundle://level_me_up_small.png"
-			                                                                                                              urlThumb:@"bundle://level_me_up_thumb.png"
-			                                                                                                                      size:CGSizeMake(1024, 768)] autorelease];
-
-			 */
+			
 			NSArray *photos = [NSArray arrayWithObjects:mathNinja, instantPoetry, rpgCalc /*, levelMeUp*/, nil];
-			//_samplePhotoSet = [[self alloc] initWithTitle:@"My Apps" photos:photos];
+			
 			_samplePhotoSet = [[self alloc] initWithType:MockPhotoSourceNormal parentURL:nil albumID:nil title:@"test" photos:photos
 			                                     photos2:nil];
 		}
@@ -192,74 +235,66 @@ static MockPhotoSource *_samplePhotoSet = nil;
 }
 
 + (MockPhotoSource*)createPhotoSource:(NSString*)albumID {
+	
+	NSString* treeResourcePath = [[[@"" 
+									stringByAppendingString:@"/rest/tree/"] 
+								   stringByAppendingString:albumID]
+								  stringByAppendingString:@"?depth=1"];
+	
+	[RKRequestTTModel setDefaultRefreshRate:3600];
+	RKRequestTTModel* myModel = [[RKRequestTTModel alloc] 
+								 initWithResourcePath:treeResourcePath
+								 params:nil objectClass:[RKMResponse class]];
 
-	NSMutableArray* album = [[NSMutableArray alloc] init];
-	MyAlbum* g3Album = [[MyAlbum alloc] initWithID:albumID];
-	
-	
-	//NSArray* sortedKeys = [[g3Album.arraySorted allKeys] keysSortedByValueUsingSelector:@selector(compare:)];
-	
-	NSSortDescriptor * frequencyDescriptor =
-    [[[NSSortDescriptor alloc] initWithKey:@"sortKey"
-                                 ascending:YES] autorelease];
-	NSArray * descriptors =
-    [NSArray arrayWithObjects:frequencyDescriptor, nil];
+	NSArray* objects = [myModel loadSynchronous:NO];
+	RKMResponse* response = [objects objectAtIndex:0];
 
+	NSMutableArray* newPhotos = [[NSMutableArray alloc] init];
+	NSString* albumTitle;
 	
-	NSArray * sortedArray =
-    [g3Album.arraySorted sortedArrayUsingDescriptors:descriptors];
-
-	NSEnumerator * enumerator = [sortedArray objectEnumerator];
-	id obj;
-	while ((obj = [enumerator nextObject])) {
-		NSDictionary* entity = [obj objectForKey:@"entity"];
+	for (RKOEntity* item in  response.entities) {
 		
-		if (![[entity objectForKey:@"type"] isEqualToString:@"photo"]) continue;
-
-		NSString* thumb_url = [entity objectForKey:@"thumb_url_public"];
-		if (thumb_url == nil) {
-			thumb_url = [entity objectForKey:@"thumb_url"];
-			if (thumb_url == nil) {
-				thumb_url = @"bundle://empty.png";
-			}
+		if ([item.id isEqualToString:albumID]) {
+			albumTitle = [NSString stringWithString:(item.title) ? item.title : @""];
+			continue;
 		}
 		
-		NSString* resize_url = [entity objectForKey:@"resize_url_public"];
-		if (resize_url == nil) {
-			resize_url = [entity objectForKey:@"resize_url"];
-			if (resize_url == nil) {
-				resize_url = thumb_url;
-				if (resize_url == nil) {
-					resize_url = @"bundle://empty.png";
-				}
-			}
+		NSString* photoID = item.id;
+		if (photoID == nil) {
+			photoID = @"1";
+		}
+		
+		NSString* parent = item.parent;
+		if (parent == nil) {
+			parent = @"1";
 		}
 		
 		BOOL isAlbum;
-		if ([(NSString *)[entity objectForKey:@"type"] isEqualToString:@"album"]) {
+		if ([item.type isEqualToString:@"album"]) {
 			isAlbum = YES;
 		} else {
 			isAlbum = NO;
 		}
 		
-		NSString* parent = [entity objectForKey:@"parent"];
-		if (parent == nil) {
-			parent = @"1";
+		if (isAlbum) continue;
+		
+		NSString* thumb_url = (item.thumb_url_public != nil) ? item.thumb_url_public : item.thumb_url;
+		if (thumb_url == nil) {
+			thumb_url = @"bundle://empty.png";
 		}
 		
-		NSString* photoID = [entity objectForKey:@"id"];
-		if (photoID == nil) {
-			photoID = @"1";
+		NSString* resize_url = (item.resize_url_public != nil) ? item.resize_url_public : item.resize_url;
+		if (resize_url == nil) {
+			resize_url = @"bundle://empty.png";
 		}
 		
-		id iWidth = [entity objectForKey:@"resize_width"];
-		id iHeight = [entity objectForKey:@"resize_height"];
-		
+		id iWidth = item.thumb_width;
+		id iHeight = item.thumb_height;
 		short int width = 100;
 		short int height = 100;
 		
 		if ([iWidth isKindOfClass:[NSString class]] && [iHeight isKindOfClass:[NSString class]]) {
-			if ([@"" isEqualToString:iWidth] || [@"" isEqualToString:iHeight]) {
+			if ([@"" isEqualToString:iWidth] || [@"" isEqualToString:iHeight] || [@"0" isEqualToString:iWidth] || [@"0" isEqualToString:iHeight]) {
 				width = 100;
 				height = 100;
 			}	
@@ -269,48 +304,45 @@ static MockPhotoSource *_samplePhotoSet = nil;
 			}
 		}
 		
-		MockPhoto* mph = [[[MockPhoto alloc]
+		MockPhoto* mph = [[MockPhoto alloc]
 						   initWithURL:[NSString stringWithString: resize_url]
 						   smallURL:[NSString stringWithString: thumb_url]
 						   size:CGSizeMake(width, height)
+						  caption:[NSString stringWithString:(item.title) ? item.title : @""]
 						   isAlbum:isAlbum
 						   photoID:[NSString stringWithString: photoID]
-						   parentURL:[NSString stringWithString: parent]] autorelease];
+						   parentURL:[NSString stringWithString: parent]];
 		
-		[album addObject:mph];
+		[newPhotos addObject:mph];
+		TT_RELEASE_SAFELY(mph);
 	}
+	
 	
 	NSString* albumParent = nil;
-	NSString* albumTitle = nil;
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	
-	if ([g3Album.albumEntity count] > 0) {
-		if ([g3Album.albumEntity valueForKey:@"parent"] != nil) {
-			albumParent = [g3Album.albumEntity valueForKey:@"parent"];
-		} else {
-			albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
+	albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
+	//[NSString stringWithString:albumTitle];
+	
+	MockPhotoSource* myPhotoSource = [[MockPhotoSource alloc] init];
+	
+	for (int i = 0; i < newPhotos.count; ++i) {
+		id <TTPhoto> photo = [newPhotos objectAtIndex:i];
+		if ( (NSNull *)photo != [NSNull null] ) {
+			photo.photoSource = myPhotoSource;
+			photo.index = i;
 		}
-		if ([g3Album.albumEntity valueForKey:@"title"] != nil) {
-			albumTitle = [g3Album.albumEntity valueForKey:@"title"];
-		} else {
-			albumTitle = @"";
-		}
-	} else {		
-		albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
 	}
 	
-	MockPhotoSource* photoSource = [[[self alloc]
-						 initWithType:MockPhotoSourceNormal
-						 parentURL:[NSString stringWithString: albumParent]
-						 albumID:[NSString stringWithString: albumID]
-						 title:albumTitle
-						 photos:album
-						 photos2:nil] autorelease];
+	myPhotoSource->_type = MockPhotoSourceNormal;
+	myPhotoSource->_parentURL = [NSString stringWithString: albumParent];
+	myPhotoSource.albumID = [NSString stringWithString: albumID];
+	myPhotoSource.title = albumTitle;
+	myPhotoSource->_photos = [newPhotos retain];
 	
-	TT_RELEASE_SAFELY(album);
-	TT_RELEASE_SAFELY(g3Album);
-	
-	return photoSource;
+	TT_RELEASE_SAFELY(myModel);
+	TT_RELEASE_SAFELY(newPhotos);
+	return myPhotoSource;
 }
 
 @end
@@ -332,7 +364,6 @@ static MockPhotoSource *_samplePhotoSet = nil;
 - (id)initWithURL:(NSString *)URL smallURL:(NSString *)smallURL size:(CGSize)size
        caption:(NSString *)caption isAlbum:(BOOL)isAlbum photoID:(NSString *)photoID parentURL:(NSString *)parentURL {
 	if (self = [super init]) {
-		_photoSource = nil;
 		_URL = [URL copy];
 		_smallURL = [smallURL copy];
 		_thumbURL = [smallURL copy];

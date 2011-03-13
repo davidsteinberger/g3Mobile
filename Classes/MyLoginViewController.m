@@ -90,6 +90,10 @@
 	}
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	return NO;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)showLoading:(BOOL)show {
 	//NSLog(@"here");

@@ -211,6 +211,7 @@
 		[MyAlbum updateFinishedWithItemURL:[self.entity valueForKey:@"parent"]];
 		
 		//[self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:[[self.navigationController viewControllers] count] - 3] animated:YES];
+		/*
 		int index = [[self.navigationController viewControllers] count] - 3;
 		if (index >= 0) {
 			[self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:index] animated:YES];
@@ -219,6 +220,16 @@
 			TTNavigator *navigator = [TTNavigator navigator];
 			[navigator removeAllViewControllers];
 			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://root/1"] applyAnimated:YES]];
+		}*/
+		
+		NSArray* viewControllers = [self.navigationController viewControllers];
+		TTViewController* viewController = nil;
+		if ([viewControllers count] > 1) {
+			viewController = [viewControllers objectAtIndex:[viewControllers count]-2];
+			[self.navigationController popToViewController:viewController animated:YES];
+			[viewController performSelector:@selector(reload) withObject:nil afterDelay:0.3];	
+		} else {
+			[self performSelector:@selector(reload) withObject:nil afterDelay:0.3];		
 		}
 	}
 

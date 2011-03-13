@@ -7,19 +7,13 @@
 //
 
 #import "Three20/Three20.h"
-#import "MyRestResource.h"
-
-@protocol MyAlbumItem
-
-- (MyRestResource*)model;
-
-@end
-
+#import "MyItem.h"
+#import "RKOEntity.h"
 
 //TTTableMessageItem
-@interface MyAlbumItem : TTTableLinkedItem<MyAlbumItem> {
+@interface MyAlbumItem : TTTableLinkedItem<MyItem> {
 	// meta-data
-	MyRestResource* _model;
+	RKOEntity* _model;
 	NSString* _itemID;
 	NSString* _type;
 	
@@ -33,7 +27,7 @@
 	float _height;
 }
 
-@property (nonatomic, retain) MyRestResource* model;
+@property (nonatomic, retain) RKOEntity* model;
 @property (nonatomic, retain) NSString* itemID;
 @property (nonatomic, retain) NSString* type;
 
@@ -45,6 +39,6 @@
 @property (nonatomic, assign) CGFloat width;
 @property (nonatomic, assign) CGFloat height;
 
-+ (id)itemWithItemID:(NSString*)itemID model:(MyRestResource*)model type:(NSString*)type title:(NSString*)title caption:(NSString*)caption description:(NSString*)description text:(NSString*)text
++ (id)itemWithItemID:(NSString*)itemID model:(RKOEntity*)model type:(NSString*)type title:(NSString*)title caption:(NSString*)caption description:(NSString*)description text:(NSString*)text
 		   timestamp:(NSDate*)timestamp imageURL:(NSString*)imageURL width:(CGFloat)width height:(CGFloat)height URL:(NSString*)URL;
 @end

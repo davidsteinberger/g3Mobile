@@ -7,14 +7,11 @@
 //
 
 #import "Three20/Three20.h"
-@class MyThumbsViewModel2;
+@class RKRequestTTModel;
 
 @interface MyThumbsViewDataSource2 : TTListDataSource {
-	MyThumbsViewModel2* _thumbsViewModel;
-	BOOL _hasOnlyPhoto;
-}
 
-@property (nonatomic, assign) BOOL hasOnlyPhotos;
+}
 
 - (id)initWithItemID:(NSString*)itemID;
 

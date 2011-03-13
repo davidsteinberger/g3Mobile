@@ -19,7 +19,7 @@
 @synthesize tags = _tags;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-+ (id)itemWithTitle:(NSString*)title model:(MyRestResource*)model description:(NSString*)description autor:(NSString*)autor timestamp:(NSDate*)timestamp tags:(NSString*)tags {
++ (id)itemWithTitle:(NSString*)title model:(RKOEntity*)model description:(NSString*)description autor:(NSString*)autor timestamp:(NSDate*)timestamp tags:(NSString*)tags {
 	MyMetaDataItem* item = [[[self alloc] init] autorelease];
 	item.model = model;
 	item.title = title;
@@ -56,7 +56,8 @@
 #pragma mark NSCoding
 
 - (id)initWithCoder:(NSCoder*)decoder {
-    if (self = [super initWithCoder:decoder]) {  
+    if (self = [super initWithCoder:decoder]) { 
+		self.model = [decoder decodeObjectForKey:@"model"];
 		self.title = [decoder decodeObjectForKey:@"title"];
 		self.description = [decoder decodeObjectForKey:@"description"];
 		self.autor = [decoder decodeObjectForKey:@"autor"];
@@ -69,6 +70,11 @@
 
 - (void)encodeWithCoder:(NSCoder*)encoder {  
     [super encodeWithCoder:encoder];
+	
+	if (self.model) {
+		[encoder encodeObject:self.model
+					   forKey:@"model"];
+	}
 	
 	if (self.title)
 		[encoder encodeObject:self.title

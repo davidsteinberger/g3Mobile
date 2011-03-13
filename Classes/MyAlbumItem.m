@@ -23,7 +23,7 @@
 @synthesize height = _height;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-+ (id)itemWithItemID:(NSString*)itemID model:(MyRestResource*)model type:(NSString*)type title:(NSString*)title caption:(NSString*)caption description:(NSString*)description text:(NSString*)text
++ (id)itemWithItemID:(NSString*)itemID model:(RKOEntity*)model type:(NSString*)type title:(NSString*)title caption:(NSString*)caption description:(NSString*)description text:(NSString*)text
           timestamp:(NSDate*)timestamp imageURL:(NSString*)imageURL width:(CGFloat)width height:(CGFloat)height URL:(NSString*)URL {
 	MyAlbumItem* item = [[[self alloc] init] autorelease];
 	item.model = model;
@@ -97,7 +97,7 @@
 
 #pragma mark -
 #pragma mark MyAlbumItem Protocol
-- (MyRestResource*)model {
+- (RKOEntity*)model {
 	return self->_model;
 }
 

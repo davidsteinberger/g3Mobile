@@ -28,8 +28,10 @@
 
 - (id)initWithItemID:(NSString*)itemID {
 	//TTDERROR(@"itemID: %@", itemID);
-	self.photoSource = [MockPhotoSource createPhotoSource:itemID];
-	return [self initWithNibName:nil bundle:nil];;
+	MockPhotoSource* photosource = [MockPhotoSource createPhotoSource:itemID];
+	self.photoSource = photosource;
+	TT_RELEASE_SAFELY(photosource);
+	return [self initWithNibName:nil bundle:nil];
 }
 
 - (id)initWithItemID:(NSString*)itemID atIndex:(NSInteger)photoIndex {
@@ -39,11 +41,10 @@
 }
 
 - (void) dealloc {
+	//self.photoSource = nil;
+	//[_photoSource release];
+	//[_photoSource release];
 	[super dealloc];
-}
-
-- (void)viewDidAppear {
-	[super viewDidAppear];
 }
 
 - (void)loadView {
@@ -216,6 +217,12 @@
 	TTNavigator* navigator = [TTNavigator navigator];
 	[navigator removeAllViewControllers];
 	[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://thumbs/1"]];
+}
+
+- (void)moveToPhotoAtIndex:(NSInteger)photoIndex withDelay:(BOOL)withDelay {
+	_centerPhotoIndex = photoIndex == TT_NULL_PHOTO_INDEX ? 0 : photoIndex;
+	[self moveToPhoto:[_photoSource photoAtIndex:_centerPhotoIndex]];
+	_delayLoad = withDelay;
 }
 
 @end

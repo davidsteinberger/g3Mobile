@@ -6,10 +6,12 @@
     UITextField* _usernameField;
     UITextField* _passwordField;
 	UISlider* _imageQualityField;
+	TTView* _segmentedControlFrame;
 }
 
 @property (nonatomic, readonly) UITextField* baseURL;
 @property (nonatomic, readonly) UITextField* usernameField;
 @property (nonatomic, retain) UISwitch* viewOnly;
+@property (nonatomic, retain) TTView* segmentedControlFrame;
 
 @end

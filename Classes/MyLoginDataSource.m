@@ -37,9 +37,7 @@
 		_baseURL.autocapitalizationType = UITextAutocapitalizationTypeNone;
 		_baseURL.clearButtonMode = UITextFieldViewModeWhileEditing;
 		_baseURL.clearsOnBeginEditing = NO;
-		_baseURL.delegate = self;
-		
-		_baseURL.text = GlobalSettings.baseURL;
+		_baseURL.delegate = self;		
 		
 		// username field
 		_usernameField = [[UITextField alloc] init];
@@ -63,6 +61,11 @@
 		_passwordField.clearsOnBeginEditing = NO;
 		_passwordField.delegate = self;
 		
+		// layout switcher
+		_segmentedControlFrame = [[TTView alloc] initWithFrame:CGRectMake(-1.0f, -1.0f, 302.0f, 46.0f)];
+		
+		//_baseURL.text = @"http://192.168.1.89/~David/gallery3/index.php"; //@"http://www.menalto.com/photos"; //GlobalSettings.baseURL;
+		_baseURL.text = GlobalSettings.baseURL;
     }
     return self;
 }
@@ -70,10 +73,12 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)dealloc {
+	TT_RELEASE_SAFELY(_model);
 	TT_RELEASE_SAFELY(_viewOnly);
 	TT_RELEASE_SAFELY(_baseURL);
     TT_RELEASE_SAFELY(_usernameField);
     TT_RELEASE_SAFELY(_passwordField);
+	TT_RELEASE_SAFELY(_segmentedControlFrame);
     [super dealloc];
 }
 
@@ -157,6 +162,9 @@
 																		 control:_usernameField];
 		TTTableControlItem* cPasswordField = [TTTableControlItem itemWithCaption:@"Password"
 																		 control:_passwordField];
+		
+		_usernameField.enabled = YES;
+		_passwordField.enabled = YES;
 		
 		[[_items objectAtIndex:userPath.section] insertObject:cUsernameField
 													   atIndex:userPath.row];
@@ -243,23 +251,15 @@
 	 forControlEvents:UIControlEventTouchUpInside];
 	button.frame = CGRectMake(20, 20, appFrame.size.width - 40, 50);
 	
-	// a button bar to choose the view-style
-	TTButtonBar* buttonBar = [[TTButtonBar alloc] initWithFrame:appFrame];
-	buttonBar.backgroundColor = [UIColor clearColor];
-	//buttonBar.buttonStyle = @"embossedButton";
-	[buttonBar addButton:@"Album View" target:self action:@selector(chooseViewStyle:)];
-	[buttonBar addButton:@"Thumb View" target:self action:@selector(chooseViewStyle:)];
-	
-	TTView* segmentedControlFrame = [[TTView alloc] initWithFrame:CGRectMake(-1.0f, -1.0f, 302.0f, 46.0f)];
-	segmentedControlFrame.backgroundColor = [UIColor clearColor];
-	UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithFrame:segmentedControlFrame.bounds];
+	_segmentedControlFrame.backgroundColor = [UIColor clearColor];
+	UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithFrame:_segmentedControlFrame.bounds];
 	[segmentedControl insertSegmentWithTitle:@"Album" atIndex:0 animated:NO];
 	[segmentedControl insertSegmentWithTitle:@"Thumbs" atIndex:1 animated:NO];
 	segmentedControl.selectedSegmentIndex = (GlobalSettings.viewStyle == kAlbumView) ? 0 : 1;
 	[segmentedControl addTarget:(AppDelegate *)[[UIApplication sharedApplication] delegate]
 						 action:@selector(dispatchToRootController:)
 			   forControlEvents:UIControlEventValueChanged];
-	[segmentedControlFrame addSubview:segmentedControl];
+	[_segmentedControlFrame addSubview:segmentedControl];
 	TT_RELEASE_SAFELY(segmentedControl);	
 	
 	// put everything together (for the ttsectioneddatasource)
@@ -292,8 +292,7 @@
 	[section3 addObject:button];
 	// section 4 will hold button for chossing the view-style
 	NSMutableArray *section4 = [[NSMutableArray alloc] init];
-	[section4 addObject:segmentedControlFrame];
-	TT_RELEASE_SAFELY(segmentedControlFrame);
+	[section4 addObject:_segmentedControlFrame];
 	
 	// create array for ttsectioneddatasource
 	NSMutableArray *items = [[NSMutableArray alloc] init];

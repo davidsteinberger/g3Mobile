@@ -58,8 +58,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setObject:(id)object {
 	if (_item != object) {
-		//[_item release];
-		//_item = [object retain];
+		[_item release];
+		_item = [object retain];
 		[super setObject:object];
 		
 		MyMetaDataItem *item = object;

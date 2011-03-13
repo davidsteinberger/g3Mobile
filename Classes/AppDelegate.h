@@ -18,6 +18,7 @@
 
 - (void) finishedLogin;
 - (void) updateInterfaceWithReachability: (Reachability*) curReach;
+- (void) initRestKit;
 
 @end
 

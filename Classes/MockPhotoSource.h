@@ -1,4 +1,7 @@
 #import <Three20/Three20.h>
+#import <RestKit/RestKit.h>
+#import <RestKit/Three20/RKRequestTTModel.h>
+#import "RKMResponse.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -12,8 +15,11 @@ typedef enum {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 @interface MockPhotoSource : TTURLRequestModel <TTPhotoSource> {
+	BOOL _lock;
+	RKRequestTTModel* _model;
 	MockPhotoSourceType _type;
 	NSString* _title;
+	NSMutableArray* newPhotos;
 	NSMutableArray* _photos;
 	NSArray* _tempPhotos;
 	NSTimer* _fakeLoadTimer;
@@ -21,6 +27,7 @@ typedef enum {
 	NSString* _parentURL;
 }
 
+@property (nonatomic, retain) RKRequestTTModel* model;
 @property (nonatomic, retain) NSString* albumID;
 @property (nonatomic, retain) NSString* parentURL;
 
@@ -33,7 +40,6 @@ typedef enum {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 @interface MockPhoto : NSObject <TTPhoto> {
-  id<TTPhotoSource> _photoSource;
   NSString* _thumbURL;
   NSString* _smallURL;
   NSString* _URL;

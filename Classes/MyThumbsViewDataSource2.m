@@ -7,71 +7,80 @@
 //
 
 #import "MyThumbsViewDataSource2.h"
-#import "MyThumbsViewModel2.h"
 #import "MyAlbumItem.h"
 #import "MyAlbumItemCell.h"
 #import "MyMetaDataItem.h"
 #import "MyMetaDataItemCell.h"
 #import "MyThumbsViewController2.h"
+#import "MySettings.h"
+
+#import <RestKit/RestKit.h>
+#import <RestKit/Three20/RKRequestTTModel.h>
+#import <RestKit/Three20/RKRequestFilterableTTModel.h>
+#import "RKMResponse.h"
 
 @implementation MyThumbsViewDataSource2
 
-@synthesize hasOnlyPhotos = _hasOnlyPhotos;
-
 - (id)initWithItemID:(NSString*)itemID {
 	if (self = [super init]) {
-		_thumbsViewModel = [[MyThumbsViewModel2 alloc] initWithItemID:itemID];
+		NSString* treeResourcePath = [[[@"" 
+										stringByAppendingString:@"/rest/tree/"] 
+									   stringByAppendingString:itemID]
+									  stringByAppendingString:@"?depth=1"];
+		
+		[RKRequestTTModel setDefaultRefreshRate:3600];
+		RKRequestTTModel* myModel = [[RKRequestTTModel alloc] 
+					   initWithResourcePath:treeResourcePath
+					   params:nil objectClass:[RKMResponse class]];
+		self.model = myModel;
+		TT_RELEASE_SAFELY(myModel);
 	}
 	
 	return self;
 }
 
 - (void)dealloc {
-	TT_RELEASE_SAFELY(_thumbsViewModel);
+	TT_RELEASE_SAFELY(_model);
 	[super dealloc];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (id<TTModel>)model {
-	return _thumbsViewModel;
+	return self->_model;
+}
+
+- (BOOL)hasOnlyPhotos:(NSString*)itemID {
+	return NO;
 }
 
 - (void)tableViewDidLoadModel:(UITableView*)tableView {
-	NSMutableArray* items = [[NSMutableArray alloc] init];
-
 	
+	NSMutableArray* items = [[NSMutableArray alloc] init];
+	
+	RKRequestTTModel* model = (RKRequestTTModel*)self.model;
+	RKMResponse* response = [model.objects objectAtIndex:0];
+	RKOEntity* rootElement = [response.entities objectAtIndex:0];
+
+	BOOL hasOnlyPhotos = NO;
 	int i = 0;
-	self.hasOnlyPhotos = NO;
-	/*
-	 for (NSDictionary* item in _thumbsViewModel.restResource) {
-		if (i++ == 0) continue;
-		NSDictionary* fields = [item objectForKey:@"entity"];
-		if ([[fields objectForKey:@"type"] isEqualToString:@"album"]) {
-			self.hasOnlyPhotos = NO;
-			break;
-		}
-		//self.hasOnlyPhotos = ([[fields objectForKey:@"type"] isEqualToString:@"album"]) ? NO : self.hasOnlyPhotos;		
-	}
-	NSLog(@"self.hasOnlyPhotos: %i", self.hasOnlyPhotos);
-	*/
 	
 	i = 1;
-	NSUInteger count = [_thumbsViewModel.restResource count];
-	NSString* parentID = [((NSDictionary*)[_thumbsViewModel.restResource objectAtIndex:0]) valueForKeyPath:@"entity.id"];
+	NSUInteger count = [response.entities count];
+	NSString* parentID = rootElement.id;
 	
 	// photo-index (skips albums)
 	int d = 0;
 	
 	for (i = 1; i < count; i++) {
-		NSDictionary * item = ((NSDictionary*)[_thumbsViewModel.restResource objectAtIndex:i]);
+		RKOEntity * item = ((RKOEntity*)[response.entities objectAtIndex:i]);
 
 		NSString* aURL = @"";
 		
-		if ([[item valueForKeyPath:@"entity.type"] isEqualToString:@"album"]) {
-			if (self.hasOnlyPhotos) {
-				aURL = [@"tt://thumbs/" stringByAppendingString:[item valueForKeyPath:@"entity.id"]];
+		if ([item.type isEqualToString:@"album"]) {
+			if (hasOnlyPhotos) {
+				aURL = [@"tt://thumbs/" stringByAppendingString:item.id];
 			} else {
-				aURL = [@"tt://album/" stringByAppendingString:[item valueForKeyPath:@"entity.id"]];
+				aURL = [@"tt://album/" stringByAppendingString:item.id];
 			}			
 		} else {			
 				aURL = [[[@"tt://photo/" 
@@ -82,27 +91,18 @@
 		}
 
 		
-		NSString* thumb_url = [item valueForKeyPath:@"entity.thumb_url_public"];
+		NSString* thumb_url = (item.thumb_url_public != nil) ? item.thumb_url_public : item.thumb_url;
 		if (thumb_url == nil) {
-			thumb_url = [item valueForKeyPath:@"entity.thumb_url"];
-			if (thumb_url == nil) {
-				thumb_url = @"bundle://empty.png";
-			}
+			thumb_url = @"bundle://empty.png";
 		}
 		
-		NSString* resize_url = [item valueForKeyPath:@"entity.resize_url_public"];
+		NSString* resize_url = (item.resize_url_public != nil) ? item.resize_url_public : item.resize_url;
 		if (resize_url == nil) {
-			resize_url = [item valueForKeyPath:@"entity.resize_url"];
-			if (resize_url == nil) {
-				resize_url = thumb_url;
-				if (resize_url == nil) {
-					resize_url = @"bundle://empty.png";
-				}
-			}
+			resize_url = @"bundle://empty.png";
 		}
 		
-		id iWidth = [item valueForKeyPath:@"entity.thumb_width"];
-		id iHeight = [item valueForKeyPath:@"entity.thumb_height"];
+		id iWidth = item.thumb_width;
+		id iHeight = item.thumb_height;
 		short int width = 100;
 		short int height = 100;
 
@@ -117,20 +117,14 @@
 			}
 		}
 		
-		NSDate *date = [NSDate dateWithTimeIntervalSince1970: [[item valueForKeyPath:@"entity.created"] floatValue]];
+		NSDate *date = [NSDate dateWithTimeIntervalSince1970: [item.created floatValue]];
 		
-		NSString* description = [item valueForKeyPath:@"entity.description"];
-		if ((NSNull*)description == [NSNull null]) {
-			description = @"";
-		}
-		
-		MyRestResource* rr = [[MyRestResource alloc] init];
-		rr.entity = item;
+		NSString* description = (item.description != nil) ? item.description : @"";
 
-		[items addObject:[MyAlbumItem itemWithItemID: [item valueForKeyPath:@"entity.id"]					
-											   model: rr
-												type: [item valueForKeyPath:@"entity.type"]					
-											   title:[item valueForKeyPath:@"entity.title"]						  
+		[items addObject:[MyAlbumItem itemWithItemID: item.id					
+											   model: item
+												type: item.type					
+											   title:item.title
 												   caption: @"By: David"
 										description: description
 													  text: nil
@@ -139,12 +133,12 @@
 											  width: width
 											 height: height
 													   URL: aURL]];
-		TT_RELEASE_SAFELY(rr);
 	}
 	
 	self.items = items;
-	
+
 	TT_RELEASE_SAFELY(items);
+	return;
 }
 
 - (Class)tableView:(UITableView*)tableView cellClassForObject:(id) object {

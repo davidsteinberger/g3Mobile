@@ -10,4 +10,6 @@
 
 @interface TTTableViewController (empty)
 
+- (TTView*)buildOverlayMenu;
+
 @end

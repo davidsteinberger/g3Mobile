@@ -8,17 +8,25 @@
 
 #import "Three20/Three20.h"
 #import "MyAlbumItem.h"
+#import "MyTagHelper.h"
 
-@interface MyThumbsViewController2 : TTTableViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
+@class MyTagHelper;
+
+@interface MyThumbsViewController2 : TTTableViewController<MyTagHelperDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
+	MyTagHelper* _tagHelper;
 	NSString* _itemID;
-	id<MyAlbumItem> _selectedAlbumItem;
+	id<MyItem> _selectedAlbumItem;
+	int _cntTags;
+	NSString* _tags;
 	BOOL _showDetails;
 	
 	UIImagePickerController* _pickerController;
 }
 
+@property (nonatomic, retain) MyTagHelper* tagHelper;
 @property (nonatomic, retain) NSString* itemID;
-@property (nonatomic, retain) id<MyAlbumItem> selectedAlbumItem;
+@property (nonatomic, assign) id<MyItem> selectedAlbumItem;
+@property (nonatomic, retain) NSString* tags;
 @property (nonatomic, assign) BOOL showDetails;
 
 @property (nonatomic, retain) UIView* backViewOld;

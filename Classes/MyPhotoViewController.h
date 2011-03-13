@@ -16,4 +16,6 @@
 @interface MyPhotoViewController : TTPhotoViewController<UITableViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate> {
 }
 
+- (void)moveToPhotoAtIndex:(NSInteger)photoIndex withDelay:(BOOL)withDelay;
+
 @end

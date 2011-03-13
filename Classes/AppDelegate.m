@@ -23,10 +23,13 @@
 
 #import "MySettings.h"
 
-#import "MyRestTest.h"
-#import "MyRestResource.h"
 #import "MyThumbsViewController2.h"
 #import "MyPhotoViewController.h"
+
+#import <RestKit/RestKit.h>
+#import "RKOEntity.h"
+#import "RKOItem.h"
+#import "DBManagedObjectCache.h"
 
 @implementation AppDelegate
 
@@ -105,10 +108,11 @@
 	
 	// restore view-controllers otherwise login
 	if (![navigator restoreViewControllers]) {
-		if (GlobalSettings.baseURL == nil || GlobalSettings.challenge == nil) {
+		if ([GlobalSettings.baseURL isEqual:@""] || GlobalSettings.baseURL == nil || GlobalSettings.challenge == nil) {
 			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://login"] applyAnimated:YES]];
 		}
 		else {			
+			[self initRestKit];
 			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://root/1"] applyAnimated:YES]];
 		}
 	}
@@ -120,6 +124,8 @@
 	self.challenge = nil;
 	self.baseURL = GlobalSettings.baseURL;
 	self.challenge = GlobalSettings.challenge;
+	
+	[self initRestKit];
 	
 	TTNavigator* navigator = [TTNavigator navigator];
 	[navigator removeAllViewControllers];
@@ -181,12 +187,14 @@
 
 - (void)rootController:(NSNull*)null {
 	TTNavigator* navigator = [TTNavigator navigator];
+
 	[navigator.rootViewController.navigationController popToViewController:navigator.rootViewController animated:YES];
 	
 	if ( GlobalSettings.viewStyle == kAlbumView) {
 		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://album/1"] applyAnimated:YES]];
 	} 
 	if ( GlobalSettings.viewStyle == kThumbView) {
+		[navigator removeAllViewControllers];
 		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
 	}
 }
@@ -238,6 +246,25 @@
 			break;
 		}
 	}
+}
+
+- (void)initRestKit {
+	// RestKit setup
+	// Initialize RestKit
+	
+	RKObjectManager* objectManager = [RKObjectManager objectManagerWithBaseURL:GlobalSettings.baseURL];
+	RKObjectMapper* mapper = objectManager.mapper;
+	
+	// Initialize object store
+	objectManager.objectStore = [[[RKManagedObjectStore alloc] initWithStoreFilename:@"g3CoreData.sqlite"] autorelease];
+	objectManager.objectStore.managedObjectCache = [[DBManagedObjectCache new] autorelease];
+	
+	// Set nil for any attributes we expect to appear in the payload, but do not
+	objectManager.mapper.missingElementMappingPolicy = RKSetNilForMissingElementMappingPolicy;
+	
+	// Add our element to object mappings
+	[mapper registerClass:[RKOEntity class] forElementNamed:@"entity"]; 	
+	[mapper registerClass:[RKOTags class] forElementNamed:@"tags"];
 }
 
 @end

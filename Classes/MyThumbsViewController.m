@@ -18,11 +18,27 @@
 
 - (void)dealloc {
 	self.albumID = nil;
+	TT_RELEASE_SAFELY(_photoSource);
 	TT_RELEASE_SAFELY(self->_toolbar);
 	TT_RELEASE_SAFELY(self->_clickActionItem);
 	TT_RELEASE_SAFELY(self->_pickerController);
 
 	[super dealloc];
+}
+
+- (id)initWithAlbumID:(NSString *)albumID {
+	if (self = [super init]) {
+		self.albumID = albumID;
+		MockPhotoSource* photosource = [[MockPhotoSource alloc] initWithItemID:albumID];
+		self.photoSource = photosource;
+		TT_RELEASE_SAFELY(photosource);
+	}
+	return self;
+}
+
+- (void)modelDidFinishLoad:(id <TTModel>)model {
+	self.title = self.photoSource.title;
+	[super modelDidFinishLoad:model];
 }
 
 - (void)setSettings {
@@ -219,133 +235,6 @@
 {
 	[super viewWillDisappear: animated];
 } 
-
-- (id)initWithAlbumID:(NSString*)albumID {
-	if( self = [super init] )
-	{
-		self.albumID = albumID;
-		[self loadAlbum:albumID];
-	}
-	return self;
-}
-
-- (void)loadAlbum:(NSString* ) albumID {
-
-	NSMutableArray* album = [[NSMutableArray alloc] init];
-	MyAlbum* g3Album = [[MyAlbum alloc] initWithID:albumID];	
-	
-	//NSArray* sortedKeys = [[g3Album.arraySorted allKeys] keysSortedByValueUsingSelector:@selector(compare:)];
-	
-	NSSortDescriptor * frequencyDescriptor =
-    [[[NSSortDescriptor alloc] initWithKey:@"sortKey"
-                                 ascending:YES] autorelease];
-	NSArray * descriptors =
-    [NSArray arrayWithObjects:frequencyDescriptor, nil];
-	
-	
-	NSArray * sortedArray =
-    [g3Album.arraySorted sortedArrayUsingDescriptors:descriptors];
-	
-	NSEnumerator * enumerator = [sortedArray objectEnumerator];
-	id obj;
-	while ((obj = [enumerator nextObject])) {
-		
-		NSDictionary* entity = [obj objectForKey:@"entity"];
-
-		NSString* thumb_url = [entity objectForKey:@"thumb_url_public"];
-		if (thumb_url == nil) {
-			thumb_url = [entity objectForKey:@"thumb_url"];
-			if (thumb_url == nil) {
-				thumb_url = @"bundle://empty.png";
-			}
-		}
-		
-		NSString* resize_url = [entity objectForKey:@"resize_url_public"];
-		if (resize_url == nil) {
-			resize_url = [entity objectForKey:@"resize_url"];
-			if (resize_url == nil) {
-				resize_url = thumb_url;
-				if (resize_url == nil) {
-					resize_url = @"bundle://empty.png";
-				}
-			}
-		}
-		
-		BOOL isAlbum;
-		if ([(NSString *)[entity objectForKey:@"type"] isEqualToString:@"album"]) {
-			isAlbum = YES;
-		} else {
-			isAlbum = NO;
-		}
-		
-		NSString* parent = [entity objectForKey:@"parent"];
-		if (parent == nil) {
-			parent = @"1";
-		}
-		
-		NSString* photoID = [entity objectForKey:@"id"];
-		if (photoID == nil) {
-			photoID = @"1";
-		}
-		
-		id iWidth = [entity objectForKey:@"resize_width"];
-		id iHeight = [entity objectForKey:@"resize_height"];
-		
-		short int width = 100;
-		short int height = 100;
-		
-		if ([iWidth isKindOfClass:[NSString class]] && [iHeight isKindOfClass:[NSString class]]) {
-			if ([@"" isEqualToString:iWidth] || [@"" isEqualToString:iHeight]) {
-				width = 100;
-				height = 100;
-			}	
-			else if ([iWidth length] > 0 && [iHeight length] > 0 ) {
-				width = [iWidth longLongValue];
-				height = [iHeight longLongValue];
-			}
-		}
-				
-		MockPhoto* mph = [[[MockPhoto alloc]
-						   initWithURL:[NSString stringWithString: resize_url]
-						   smallURL:[NSString stringWithString: thumb_url]
-						   size:CGSizeMake(width, height)
-						   isAlbum:isAlbum
-						   photoID:[NSString stringWithString: photoID]
-						   parentURL:[NSString stringWithString: parent]] autorelease];
-		
-		[album addObject:mph];
-	}
-	
-	NSString* albumParent = nil;
-	NSString* albumTitle = nil;
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	
-	if ([g3Album.albumEntity count] > 0) {
-		if ([g3Album.albumEntity valueForKey:@"parent"] != nil) {
-			albumParent = [g3Album.albumEntity valueForKey:@"parent"];
-		} else {
-			albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
-		}
-		if ([g3Album.albumEntity valueForKey:@"title"] != nil) {
-			albumTitle = [g3Album.albumEntity valueForKey:@"title"];
-		} else {
-			albumTitle = @"";
-		}
-	} else {		
-		albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
-	}
-	
-	self.photoSource = [[[MockPhotoSource alloc]
-						 initWithType:MockPhotoSourceNormal
-						 parentURL:[NSString stringWithString: albumParent]
-						 albumID:[NSString stringWithString: albumID]
-						 title:albumTitle
-						 photos:album
-						 photos2:nil] autorelease];
-
-	TT_RELEASE_SAFELY(album);
-	TT_RELEASE_SAFELY(g3Album);
-}
 
 -(void) reload {
 	//[self updateView];

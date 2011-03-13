@@ -242,25 +242,17 @@
 
 - (void)requestDidFinishLoad:(TTURLRequest*)request {
 	if ([request.userInfo isEqual:@"addAlbum"]) {
-		TTURLJSONResponse* response = request.response;
-		NSString* url = [response.rootObject objectForKey:@"url"];
-
-		NSArray* chunks = [url componentsSeparatedByString: @"/"];
-		NSString* newAlbumID = [chunks objectAtIndex:[chunks count] - 1 ];
-		
-		MyImageUploader* uploader = [[MyImageUploader alloc] initWithAlbumID:newAlbumID delegate:nil];
-		[uploader uploadImage:nil withDescription:@"to_be_deleted"];
-		TT_RELEASE_SAFELY(uploader);
-		
+				
 		[MyAlbum updateFinishedWithItemURL:[[GlobalSettings.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:self.parentAlbumID] ];
 		
-		int index = [[self.navigationController viewControllers] count] - 3;
-		if (index >= 0) {
-			[self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:index] animated:YES];
+		NSArray* viewControllers = [self.navigationController viewControllers];
+		TTViewController* viewController = nil;
+		if ([viewControllers count] > 1) {
+			viewController = [viewControllers objectAtIndex:[viewControllers count]-2];
+			[self.navigationController popToViewController:viewController animated:YES];
+			[viewController performSelector:@selector(reload) withObject:nil afterDelay:1];	
 		} else {
-			TTNavigator* navigator = [TTNavigator navigator];
-			[navigator removeAllViewControllers];
-			[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+			[self performSelector:@selector(reload) withObject:nil afterDelay:1];		
 		}
 	}
 }
