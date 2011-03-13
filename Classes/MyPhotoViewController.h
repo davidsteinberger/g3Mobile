@@ -11,7 +11,7 @@
 #import <Three20/Three20.h>
 
 #import "MyThumbsViewController.h";
-#import "MockPhotoSource.h"
+#import "PhotoSource.h"
 
 @interface MyPhotoViewController : TTPhotoViewController<UITableViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate> {
 }

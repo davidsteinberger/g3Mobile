@@ -1,8 +1,8 @@
-#import "MockPhotoSource.h"
+#import "PhotoSource.h"
 #import "MyAlbum.h"
 #import "AppDelegate.h"
 
-@implementation MockPhotoSource
+@implementation PhotoSource
 
 @synthesize model = _model;
 @synthesize title = _title;
@@ -15,7 +15,7 @@
 - (void)fakeLoadReady {
 	_fakeLoadTimer = nil;
 
-	RKMResponse* response = [self.model.objects objectAtIndex:0];
+	RKMTree* response = [self.model.objects objectAtIndex:0];
 	RKOEntity* entity = [response.entities objectAtIndex:0];
 	
 	if ([response.entities count] == 0) {
@@ -83,7 +83,7 @@
 				}
 			}
 			
-			MockPhoto* mph = [[[MockPhoto alloc]
+			Photo* mph = [[[Photo alloc]
 							   initWithURL:[NSString stringWithString: resize_url]
 							   smallURL:[NSString stringWithString: thumb_url]
 							   size:CGSizeMake(width, height)
@@ -125,7 +125,7 @@
 		[RKRequestTTModel setDefaultRefreshRate:3600];
 		RKRequestTTModel* myModel = [[RKRequestTTModel alloc] 
 									 initWithResourcePath:treeResourcePath
-									 params:nil objectClass:[RKMResponse class]];
+									 params:nil objectClass:[RKMTree class]];
 		self.model = myModel;
 		[myModel load:TTURLRequestCachePolicyDefault more:NO];
 		
@@ -146,7 +146,6 @@
 	TT_RELEASE_SAFELY(_title);
 
 	TT_RELEASE_SAFELY(_albumID);
-	//TT_RELEASE_SAFELY(_parentURL);
 
 	[super dealloc];
 }
@@ -198,43 +197,7 @@
 	}
 }
 
-static MockPhotoSource *_samplePhotoSet = nil;
-+ (MockPhotoSource *)samplePhotoSet {
-	@synchronized(self) {
-		if (_samplePhotoSet == nil) {
-			MockPhoto *mathNinja = [[[MockPhoto alloc]
-			                         initWithURL:@"http://www.raywenderlich.com/downloads/math_ninja_large.png"
-			                            smallURL:@"bundle://math_ninja_small.png"
-			                                size:CGSizeMake(100, 75)
-			                             isAlbum:NO
-			                             photoID:@"1"
-			                           parentURL:nil] autorelease];
-			MockPhoto *instantPoetry = [[[MockPhoto alloc]
-			                             initWithURL:@"http://www.raywenderlich.com/downloads/instant_poetry_large.png"
-			                                smallURL:@"bundle://instant_poetry_small.png"
-			                                    size:CGSizeMake(100, 75)
-			                                 isAlbum:NO
-			                                 photoID:@"2"
-			                               parentURL:nil] autorelease];
-			MockPhoto *rpgCalc = [[[MockPhoto alloc]
-			                       initWithURL:@"http://www.raywenderlich.com/downloads/rpg_calc_large.png"
-			                          smallURL:@"bundle://rpg_calc_small.png"
-			                              size:CGSizeMake(100, 75)
-			                           isAlbum:NO
-			                           photoID:@"3"
-			                         parentURL:nil] autorelease];
-
-			
-			NSArray *photos = [NSArray arrayWithObjects:mathNinja, instantPoetry, rpgCalc /*, levelMeUp*/, nil];
-			
-			_samplePhotoSet = [[self alloc] initWithType:MockPhotoSourceNormal parentURL:nil albumID:nil title:@"test" photos:photos
-			                                     photos2:nil];
-		}
-	}
-	return _samplePhotoSet;
-}
-
-+ (MockPhotoSource*)createPhotoSource:(NSString*)albumID {
++ (PhotoSource*)createPhotoSource:(NSString*)albumID {
 	
 	NSString* treeResourcePath = [[[@"" 
 									stringByAppendingString:@"/rest/tree/"] 
@@ -244,10 +207,10 @@ static MockPhotoSource *_samplePhotoSet = nil;
 	[RKRequestTTModel setDefaultRefreshRate:3600];
 	RKRequestTTModel* myModel = [[RKRequestTTModel alloc] 
 								 initWithResourcePath:treeResourcePath
-								 params:nil objectClass:[RKMResponse class]];
+								 params:nil objectClass:[RKMTree class]];
 
 	NSArray* objects = [myModel loadSynchronous:NO];
-	RKMResponse* response = [objects objectAtIndex:0];
+	RKMTree* response = [objects objectAtIndex:0];
 
 	NSMutableArray* newPhotos = [[NSMutableArray alloc] init];
 	NSString* albumTitle;
@@ -304,7 +267,7 @@ static MockPhotoSource *_samplePhotoSet = nil;
 			}
 		}
 		
-		MockPhoto* mph = [[MockPhoto alloc]
+		Photo* mph = [[Photo alloc]
 						   initWithURL:[NSString stringWithString: resize_url]
 						   smallURL:[NSString stringWithString: thumb_url]
 						   size:CGSizeMake(width, height)
@@ -324,7 +287,7 @@ static MockPhotoSource *_samplePhotoSet = nil;
 	albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
 	//[NSString stringWithString:albumTitle];
 	
-	MockPhotoSource* myPhotoSource = [[MockPhotoSource alloc] init];
+	PhotoSource* myPhotoSource = [[PhotoSource alloc] init];
 	
 	for (int i = 0; i < newPhotos.count; ++i) {
 		id <TTPhoto> photo = [newPhotos objectAtIndex:i];
@@ -349,7 +312,7 @@ static MockPhotoSource *_samplePhotoSet = nil;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-@implementation MockPhoto
+@implementation Photo
 
 @synthesize photoSource = _photoSource, size = _size, index = _index, caption = _caption,
             isAlbum = _isAlbum, photoID = _photoID, parentURL = _parentURL;

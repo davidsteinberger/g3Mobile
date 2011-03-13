@@ -7,7 +7,7 @@
 //
 
 #import "TTURLImageResponse+g3.h"
-#import "NSDataAdditions.h"
+#import "NSData+base64.h"
 
 @implementation TTURLImageResponse(my)
 

@@ -9,7 +9,7 @@
 #import "UIImage+resizing.h"
 
 
-@implementation UIImage (Resizing)
+@implementation UIImage (resizing)
 
 - (UIImage*)scaleToSize:(CGSize)size {
 	

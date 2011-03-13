@@ -44,13 +44,14 @@
 		6380E70E1329A47D00A99EDB /* G3CoreData.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */; };
 		6380E7111329A4A200A99EDB /* RKOItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6380E7101329A4A200A99EDB /* RKOItem.m */; };
 		6389A68C12D652C2002B59AB /* MyDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6389A68B12D652C2002B59AB /* MyDatabase.m */; };
+		638C2909132D6ACD009CFE41 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 638C2908132D6ACD009CFE41 /* Default.png */; };
 		639788D012BEBA24000FBD09 /* defaultPerson.png in Resources */ = {isa = PBXBuildFile; fileRef = 639788CF12BEBA24000FBD09 /* defaultPerson.png */; };
 		639EACAC131C6EE300FBAEF4 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 639EACAB131C6EE300FBAEF4 /* CFNetwork.framework */; };
 		639EACAE131C6EE300FBAEF4 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 639EACAD131C6EE300FBAEF4 /* CoreData.framework */; };
 		639EACB0131C6EE300FBAEF4 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 639EACAF131C6EE300FBAEF4 /* MobileCoreServices.framework */; };
 		639EACC6131C702F00FBAEF4 /* DBManagedObjectCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 639EACBF131C702F00FBAEF4 /* DBManagedObjectCache.m */; };
 		639EACC7131C702F00FBAEF4 /* RKOEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 639EACC1131C702F00FBAEF4 /* RKOEntity.m */; };
-		639EACC8131C702F00FBAEF4 /* RKMResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 639EACC3131C702F00FBAEF4 /* RKMResponse.m */; };
+		639EACC8131C702F00FBAEF4 /* RKMTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 639EACC3131C702F00FBAEF4 /* RKMTree.m */; };
 		639EACC9131C702F00FBAEF4 /* ArrayToDataTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 639EACC5131C702F00FBAEF4 /* ArrayToDataTransformer.m */; };
 		63A3B51C129C3BDE00E04981 /* MyLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B514129C3BDE00E04981 /* MyLogin.m */; };
 		63A3B51D129C3BDE00E04981 /* MyLoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B516129C3BDE00E04981 /* MyLoginModel.m */; };
@@ -66,10 +67,8 @@
 		63B2541B1299BD3100BA9323 /* MyComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253F21299BD3100BA9323 /* MyComment.m */; };
 		63B2541C1299BD3100BA9323 /* MyCommentsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253F41299BD3100BA9323 /* MyCommentsModel.m */; };
 		63B2541D1299BD3100BA9323 /* MyCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253F61299BD3100BA9323 /* MyCommentsViewController.m */; };
-		63B2541E1299BD3100BA9323 /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253F91299BD3100BA9323 /* NSDataAdditions.m */; };
-		63B2541F1299BD3100BA9323 /* FlipsideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253FC1299BD3100BA9323 /* FlipsideView.m */; };
-		63B254201299BD3100BA9323 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253FE1299BD3100BA9323 /* FlipsideViewController.m */; };
-		63B254211299BD3100BA9323 /* MockPhotoSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254011299BD3100BA9323 /* MockPhotoSource.m */; };
+		63B2541E1299BD3100BA9323 /* NSData+base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253F91299BD3100BA9323 /* NSData+base64.m */; };
+		63B254211299BD3100BA9323 /* PhotoSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254011299BD3100BA9323 /* PhotoSource.m */; };
 		63B254231299BD3100BA9323 /* TTButtonContent+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254071299BD3100BA9323 /* TTButtonContent+g3.m */; };
 		63B254241299BD3100BA9323 /* TTURLImageResponse+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254091299BD3100BA9323 /* TTURLImageResponse+g3.m */; };
 		63B254251299BD3100BA9323 /* TTImageView+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B2540B1299BD3100BA9323 /* TTImageView+g3.m */; };
@@ -79,10 +78,7 @@
 		63B254291299BD3100BA9323 /* MyThumbsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254141299BD3100BA9323 /* MyThumbsViewController.m */; };
 		63B2542A1299BD3100BA9323 /* MyImageUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254171299BD3100BA9323 /* MyImageUploader.m */; };
 		63B255ED1299C60900BA9323 /* g3DB.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EB1299C60900BA9323 /* g3DB.sqlite */; };
-		63B255EE1299C60900BA9323 /* FlipsideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EC1299C60900BA9323 /* FlipsideView.xib */; };
 		63B255F01299C63300BA9323 /* Three20.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EF1299C63300BA9323 /* Three20.bundle */; };
-		63B257AE1299D51800BA9323 /* MySettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B257AD1299D51800BA9323 /* MySettingsController.m */; };
-		63B6D1E7130DC9F600436953 /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = 63B6D1E6130DC9F600436953 /* white.png */; };
 		63BB542212CE434600764C23 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BB542112CE434600764C23 /* Reachability.m */; };
 		63BB544612CE43AB00764C23 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63BB544512CE43AB00764C23 /* SystemConfiguration.framework */; };
 		63BD7617130B4885001FC9AF /* MyAlbumItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63BD7616130B4885001FC9AF /* MyAlbumItemCell.xib */; };
@@ -90,7 +86,6 @@
 		63BD7682130B5157001FC9AF /* MyMetaDataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BD7681130B5157001FC9AF /* MyMetaDataItem.m */; };
 		63BD76C2130C5A31001FC9AF /* TTTableViewDataSource+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BD76C1130C5A31001FC9AF /* TTTableViewDataSource+g3.m */; };
 		63BD778C130C6648001FC9AF /* MyMetaDataItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BD778B130C6648001FC9AF /* MyMetaDataItemCell.m */; };
-		63C10CC012DB89C3009AF260 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C10CBF12DB89C3009AF260 /* Default.png */; };
 		63CE2310132420D800D65CBD /* RKRequestTTModel+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CE230F132420D800D65CBD /* RKRequestTTModel+g3.m */; };
 		63E0C2E0132039A100BDD139 /* MyTagHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E0C2DF132039A100BDD139 /* MyTagHelper.m */; };
 		63E13C7F12BED4C6003248F4 /* AddAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */; };
@@ -398,6 +393,7 @@
 		6380E7101329A4A200A99EDB /* RKOItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKOItem.m; sourceTree = "<group>"; };
 		6389A68A12D652C2002B59AB /* MyDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDatabase.h; sourceTree = "<group>"; };
 		6389A68B12D652C2002B59AB /* MyDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDatabase.m; sourceTree = "<group>"; };
+		638C2908132D6ACD009CFE41 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		639788CF12BEBA24000FBD09 /* defaultPerson.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultPerson.png; sourceTree = "<group>"; };
 		639EACAB131C6EE300FBAEF4 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		639EACAD131C6EE300FBAEF4 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -406,8 +402,8 @@
 		639EACBF131C702F00FBAEF4 /* DBManagedObjectCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBManagedObjectCache.m; path = Classes/DBManagedObjectCache.m; sourceTree = SOURCE_ROOT; };
 		639EACC0131C702F00FBAEF4 /* RKOEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RKOEntity.h; path = Classes/RKOEntity.h; sourceTree = SOURCE_ROOT; };
 		639EACC1131C702F00FBAEF4 /* RKOEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RKOEntity.m; path = Classes/RKOEntity.m; sourceTree = SOURCE_ROOT; };
-		639EACC2131C702F00FBAEF4 /* RKMResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RKMResponse.h; path = Classes/RKMResponse.h; sourceTree = SOURCE_ROOT; };
-		639EACC3131C702F00FBAEF4 /* RKMResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RKMResponse.m; path = Classes/RKMResponse.m; sourceTree = SOURCE_ROOT; };
+		639EACC2131C702F00FBAEF4 /* RKMTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKMTree.h; sourceTree = "<group>"; };
+		639EACC3131C702F00FBAEF4 /* RKMTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKMTree.m; sourceTree = "<group>"; };
 		639EACC4131C702F00FBAEF4 /* ArrayToDataTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayToDataTransformer.h; path = Classes/ArrayToDataTransformer.h; sourceTree = SOURCE_ROOT; };
 		639EACC5131C702F00FBAEF4 /* ArrayToDataTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayToDataTransformer.m; path = Classes/ArrayToDataTransformer.m; sourceTree = SOURCE_ROOT; };
 		63A3B513129C3BDE00E04981 /* MyLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLogin.h; sourceTree = "<group>"; };
@@ -440,14 +436,10 @@
 		63B253F41299BD3100BA9323 /* MyCommentsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCommentsModel.m; sourceTree = "<group>"; };
 		63B253F51299BD3100BA9323 /* MyCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCommentsViewController.h; sourceTree = "<group>"; };
 		63B253F61299BD3100BA9323 /* MyCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCommentsViewController.m; sourceTree = "<group>"; };
-		63B253F81299BD3100BA9323 /* NSDataAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataAdditions.h; sourceTree = "<group>"; };
-		63B253F91299BD3100BA9323 /* NSDataAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataAdditions.m; sourceTree = "<group>"; };
-		63B253FB1299BD3100BA9323 /* FlipsideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlipsideView.h; sourceTree = "<group>"; };
-		63B253FC1299BD3100BA9323 /* FlipsideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlipsideView.m; sourceTree = "<group>"; };
-		63B253FD1299BD3100BA9323 /* FlipsideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlipsideViewController.h; sourceTree = "<group>"; };
-		63B253FE1299BD3100BA9323 /* FlipsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlipsideViewController.m; sourceTree = "<group>"; };
-		63B254001299BD3100BA9323 /* MockPhotoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockPhotoSource.h; sourceTree = "<group>"; };
-		63B254011299BD3100BA9323 /* MockPhotoSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockPhotoSource.m; sourceTree = "<group>"; };
+		63B253F81299BD3100BA9323 /* NSData+base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+base64.h"; path = "TTCatalog/NSData+base64.h"; sourceTree = "<group>"; };
+		63B253F91299BD3100BA9323 /* NSData+base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+base64.m"; path = "TTCatalog/NSData+base64.m"; sourceTree = "<group>"; };
+		63B254001299BD3100BA9323 /* PhotoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoSource.h; sourceTree = "<group>"; };
+		63B254011299BD3100BA9323 /* PhotoSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoSource.m; sourceTree = "<group>"; };
 		63B254061299BD3100BA9323 /* TTButtonContent+g3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTButtonContent+g3.h"; sourceTree = "<group>"; };
 		63B254071299BD3100BA9323 /* TTButtonContent+g3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TTButtonContent+g3.m"; sourceTree = "<group>"; };
 		63B254081299BD3100BA9323 /* TTURLImageResponse+g3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTURLImageResponse+g3.h"; sourceTree = "<group>"; };
@@ -465,11 +457,7 @@
 		63B254161299BD3100BA9323 /* MyImageUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyImageUploader.h; sourceTree = "<group>"; };
 		63B254171299BD3100BA9323 /* MyImageUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyImageUploader.m; sourceTree = "<group>"; };
 		63B255EB1299C60900BA9323 /* g3DB.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = g3DB.sqlite; sourceTree = "<group>"; };
-		63B255EC1299C60900BA9323 /* FlipsideView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FlipsideView.xib; sourceTree = "<group>"; };
 		63B255EF1299C63300BA9323 /* Three20.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Three20.bundle; path = ../three20/src/Three20.bundle; sourceTree = SOURCE_ROOT; };
-		63B257AC1299D51800BA9323 /* MySettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySettingsController.h; sourceTree = "<group>"; };
-		63B257AD1299D51800BA9323 /* MySettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySettingsController.m; sourceTree = "<group>"; };
-		63B6D1E6130DC9F600436953 /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white.png; sourceTree = "<group>"; };
 		63BB542012CE434600764C23 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		63BB542112CE434600764C23 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		63BB544512CE43AB00764C23 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -481,7 +469,6 @@
 		63BD76C1130C5A31001FC9AF /* TTTableViewDataSource+g3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TTTableViewDataSource+g3.m"; sourceTree = "<group>"; };
 		63BD778A130C6648001FC9AF /* MyMetaDataItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyMetaDataItemCell.h; sourceTree = "<group>"; };
 		63BD778B130C6648001FC9AF /* MyMetaDataItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyMetaDataItemCell.m; sourceTree = "<group>"; };
-		63C10CBF12DB89C3009AF260 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		63CE230E132420D800D65CBD /* RKRequestTTModel+g3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RKRequestTTModel+g3.h"; sourceTree = "<group>"; };
 		63CE230F132420D800D65CBD /* RKRequestTTModel+g3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RKRequestTTModel+g3.m"; sourceTree = "<group>"; };
 		63E0C2DE132039A100BDD139 /* MyTagHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyTagHelper.h; sourceTree = "<group>"; };
@@ -534,20 +521,21 @@
 			children = (
 				63B253E71299BD3100BA9323 /* AppDelegate.h */,
 				63B253E81299BD3100BA9323 /* AppDelegate.m */,
+				63A3B510129C3BDE00E04981 /* Login */,
+				630FBE4C12FD78C500B4629A /* AlbumView */,
+				63B2540E1299BD3100BA9323 /* ThumbView */,
+				63B253FF1299BD3100BA9323 /* PhotoView */,
+				638C288F132D6664009CFE41 /* UploadView */,
+				638C2890132D667B009CFE41 /* AddAlbumView */,
+				638C2891132D6687009CFE41 /* UpdateAlbumView */,
+				638C2892132D66A2009CFE41 /* OtherViews */,
+				63B253EB1299BD3100BA9323 /* Comments */,
+				639EACBD131C700D00FBAEF4 /* RestKit */,
+				63B254151299BD3100BA9323 /* Rest Helpers */,
 				6348605713101B6A00385A46 /* Additions */,
 				636954B112D52A1600CA3113 /* Helpers */,
 				6374560312D3EFB2005FD8C6 /* Style Sheets */,
-				63A3B510129C3BDE00E04981 /* Login */,
-				639EACBD131C700D00FBAEF4 /* RestKit */,
-				630FBE4C12FD78C500B4629A /* Album2 */,
-				63B2540E1299BD3100BA9323 /* Album */,
-				63B253FF1299BD3100BA9323 /* Photos */,
-				63B253EB1299BD3100BA9323 /* Comments */,
-				63B254151299BD3100BA9323 /* Rest Helpers */,
-				63B253F71299BD3100BA9323 /* Base64 */,
 				63B2520C1299BB6800BA9323 /* Dependencies */,
-				63B257801299D4E500BA9323 /* Settings (depr) */,
-				63B253FA1299BD3100BA9323 /* Flipside View (depr) */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -564,9 +552,9 @@
 			isa = PBXGroup;
 			children = (
 				080E96DDFE201D6D7F000001 /* Classes */,
-				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				63454A4012DA51850070DB81 /* Entitlements.plist */,
 				639EACAB131C6EE300FBAEF4 /* CFNetwork.framework */,
@@ -588,30 +576,12 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				63707ACE1324103700A3198A /* makeCoverIcon.png */,
-				63707AC313240FBB00A3198A /* trashIcon.png */,
-				63707AAB13240EF800A3198A /* addIcon.png */,
-				6370795E1323D13100A3198A /* editIcon.png */,
-				6370795C1323D0AE00A3198A /* saveIcon.png */,
-				637079581323CFD200A3198A /* commentIcon.png */,
-				637078E71323AC9300A3198A /* uploadIcon.png */,
-				63EE22A6130EF51200E2D407 /* createIcon.png */,
-				63F1561412DA6F5E00D85532 /* iTunesArtwork */,
-				63AF930A12CA9161001092B5 /* G_LOGO.png */,
-				63B6D1E6130DC9F600436953 /* white.png */,
-				636B811012C0243500ECDCDD /* empty.png */,
-				639788CF12BEBA24000FBD09 /* defaultPerson.png */,
+				638C28F2132D68E9009CFE41 /* Artwork */,
+				638C290C132D6BC5009CFE41 /* Data */,
+				638C28EF132D68B2009CFE41 /* Icons */,
+				638C28F3132D68FE009CFE41 /* Xibs */,
 				63B255EF1299C63300BA9323 /* Three20.bundle */,
-				63B255EB1299C60900BA9323 /* g3DB.sqlite */,
-				63B255EC1299C60900BA9323 /* FlipsideView.xib */,
-				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* g3Mobile-Info.plist */,
-				632A448A12D25F0B0055F67B /* MyUploadViewController.xib */,
-				6369534B12D50A4700CA3113 /* MyPostController.xib */,
-				63C10CBF12DB89C3009AF260 /* Default.png */,
-				63BD7616130B4885001FC9AF /* MyAlbumItemCell.xib */,
-				63BD767E130B5127001FC9AF /* MyMetaDataItemCell.xib */,
-				6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -628,7 +598,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		630FBE4C12FD78C500B4629A /* Album2 */ = {
+		630FBE4C12FD78C500B4629A /* AlbumView */ = {
 			isa = PBXGroup;
 			children = (
 				630FBE7812FD794500B4629A /* MyThumbsViewController2.h */,
@@ -645,7 +615,7 @@
 				63BD778A130C6648001FC9AF /* MyMetaDataItemCell.h */,
 				63BD778B130C6648001FC9AF /* MyMetaDataItemCell.m */,
 			);
-			name = Album2;
+			name = AlbumView;
 			sourceTree = "<group>";
 		};
 		63351B9512D25375000D0950 /* Products */ = {
@@ -705,10 +675,28 @@
 		6348605713101B6A00385A46 /* Additions */ = {
 			isa = PBXGroup;
 			children = (
-				63BD76C0130C5A31001FC9AF /* TTTableViewDataSource+g3.h */,
-				63BD76C1130C5A31001FC9AF /* TTTableViewDataSource+g3.m */,
+				63B253F81299BD3100BA9323 /* NSData+base64.h */,
+				63B253F91299BD3100BA9323 /* NSData+base64.m */,
+				63CE230E132420D800D65CBD /* RKRequestTTModel+g3.h */,
+				63CE230F132420D800D65CBD /* RKRequestTTModel+g3.m */,
+				63B254061299BD3100BA9323 /* TTButtonContent+g3.h */,
+				63B254071299BD3100BA9323 /* TTButtonContent+g3.m */,
+				63B2540A1299BD3100BA9323 /* TTImageView+g3.h */,
+				63B2540B1299BD3100BA9323 /* TTImageView+g3.m */,
 				631A7B39130F49B0004A6110 /* TTTableViewController+g3.h */,
 				631A7B3A130F49B0004A6110 /* TTTableViewController+g3.m */,
+				63BD76C0130C5A31001FC9AF /* TTTableViewDataSource+g3.h */,
+				63BD76C1130C5A31001FC9AF /* TTTableViewDataSource+g3.m */,
+				63B254111299BD3100BA9323 /* TTThumbsViewController+g3.h */,
+				63B254121299BD3100BA9323 /* TTThumbsViewController+g3.m */,
+				63B254081299BD3100BA9323 /* TTURLImageResponse+g3.h */,
+				63B254091299BD3100BA9323 /* TTURLImageResponse+g3.m */,
+				636954B212D52ACD00CA3113 /* UIImage+cropping.h */,
+				636954B312D52ACD00CA3113 /* UIImage+cropping.m */,
+				637452D312D3A162005FD8C6 /* UIImage+resizing.h */,
+				637452D412D3A162005FD8C6 /* UIImage+resizing.m */,
+				636952D612D4FC5400CA3113 /* UIViewController+params.h */,
+				636952D712D4FC5400CA3113 /* UIViewController+params.m */,
 			);
 			name = Additions;
 			sourceTree = "<group>";
@@ -716,17 +704,13 @@
 		636954B112D52A1600CA3113 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				63B254001299BD3100BA9323 /* PhotoSource.h */,
+				63B254011299BD3100BA9323 /* PhotoSource.m */,
 				6358A4C412C8810C0043D18A /* SynthesizeSingleton.h */,
 				6358A4B912C880EB0043D18A /* MySettings.h */,
 				6358A4BA12C880EB0043D18A /* MySettings.m */,
 				63BB542012CE434600764C23 /* Reachability.h */,
 				63BB542112CE434600764C23 /* Reachability.m */,
-				637452D312D3A162005FD8C6 /* UIImage+resizing.h */,
-				637452D412D3A162005FD8C6 /* UIImage+resizing.m */,
-				636952D612D4FC5400CA3113 /* UIViewController+params.h */,
-				636952D712D4FC5400CA3113 /* UIViewController+params.m */,
-				636954B212D52ACD00CA3113 /* UIImage+cropping.h */,
-				636954B312D52ACD00CA3113 /* UIImage+cropping.m */,
 				6389A68A12D652C2002B59AB /* MyDatabase.h */,
 				6389A68B12D652C2002B59AB /* MyDatabase.m */,
 			);
@@ -742,17 +726,108 @@
 			name = "Style Sheets";
 			sourceTree = "<group>";
 		};
+		638C2883132D64E2009CFE41 /* deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				63B2540F1299BD3100BA9323 /* MyAlbum.h */,
+				63B254101299BD3100BA9323 /* MyAlbum.m */,
+			);
+			name = deprecated;
+			sourceTree = "<group>";
+		};
+		638C288F132D6664009CFE41 /* UploadView */ = {
+			isa = PBXGroup;
+			children = (
+				632A448E12D261390055F67B /* MyUploadViewController.h */,
+				632A448F12D261390055F67B /* MyUploadViewController.m */,
+			);
+			name = UploadView;
+			sourceTree = "<group>";
+		};
+		638C2890132D667B009CFE41 /* AddAlbumView */ = {
+			isa = PBXGroup;
+			children = (
+				63E13C7D12BED4C6003248F4 /* AddAlbumViewController.h */,
+				63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */,
+			);
+			name = AddAlbumView;
+			sourceTree = "<group>";
+		};
+		638C2891132D6687009CFE41 /* UpdateAlbumView */ = {
+			isa = PBXGroup;
+			children = (
+				63F4602012C8161C00116221 /* UpdateAlbumViewController.h */,
+				63F4602112C8161C00116221 /* UpdateAlbumViewController.m */,
+			);
+			name = UpdateAlbumView;
+			sourceTree = "<group>";
+		};
+		638C2892132D66A2009CFE41 /* OtherViews */ = {
+			isa = PBXGroup;
+			children = (
+				6369534712D50A1200CA3113 /* MyPostController.h */,
+				6369534812D50A1200CA3113 /* MyPostController.m */,
+			);
+			name = OtherViews;
+			sourceTree = "<group>";
+		};
+		638C28EF132D68B2009CFE41 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				63707ACE1324103700A3198A /* makeCoverIcon.png */,
+				63707AC313240FBB00A3198A /* trashIcon.png */,
+				63707AAB13240EF800A3198A /* addIcon.png */,
+				6370795E1323D13100A3198A /* editIcon.png */,
+				6370795C1323D0AE00A3198A /* saveIcon.png */,
+				637079581323CFD200A3198A /* commentIcon.png */,
+				637078E71323AC9300A3198A /* uploadIcon.png */,
+				63EE22A6130EF51200E2D407 /* createIcon.png */,
+				636B811012C0243500ECDCDD /* empty.png */,
+				639788CF12BEBA24000FBD09 /* defaultPerson.png */,
+			);
+			name = Icons;
+			sourceTree = "<group>";
+		};
+		638C28F2132D68E9009CFE41 /* Artwork */ = {
+			isa = PBXGroup;
+			children = (
+				63F1561412DA6F5E00D85532 /* iTunesArtwork */,
+				63AF930A12CA9161001092B5 /* G_LOGO.png */,
+				638C2908132D6ACD009CFE41 /* Default.png */,
+			);
+			name = Artwork;
+			sourceTree = "<group>";
+		};
+		638C28F3132D68FE009CFE41 /* Xibs */ = {
+			isa = PBXGroup;
+			children = (
+				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				632A448A12D25F0B0055F67B /* MyUploadViewController.xib */,
+				63BD7616130B4885001FC9AF /* MyAlbumItemCell.xib */,
+				63BD767E130B5127001FC9AF /* MyMetaDataItemCell.xib */,
+				6369534B12D50A4700CA3113 /* MyPostController.xib */,
+			);
+			name = Xibs;
+			sourceTree = "<group>";
+		};
+		638C290C132D6BC5009CFE41 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				63B255EB1299C60900BA9323 /* g3DB.sqlite */,
+				6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
 		639EACBD131C700D00FBAEF4 /* RestKit */ = {
 			isa = PBXGroup;
 			children = (
 				639EACBE131C702F00FBAEF4 /* DBManagedObjectCache.h */,
 				639EACBF131C702F00FBAEF4 /* DBManagedObjectCache.m */,
-				63CE230E132420D800D65CBD /* RKRequestTTModel+g3.h */,
-				63CE230F132420D800D65CBD /* RKRequestTTModel+g3.m */,
 				639EACC4131C702F00FBAEF4 /* ArrayToDataTransformer.h */,
 				639EACC5131C702F00FBAEF4 /* ArrayToDataTransformer.m */,
-				639EACC2131C702F00FBAEF4 /* RKMResponse.h */,
-				639EACC3131C702F00FBAEF4 /* RKMResponse.m */,
+				639EACC2131C702F00FBAEF4 /* RKMTree.h */,
+				639EACC3131C702F00FBAEF4 /* RKMTree.m */,
 				639EACC0131C702F00FBAEF4 /* RKOEntity.h */,
 				639EACC1131C702F00FBAEF4 /* RKOEntity.m */,
 				6380E70F1329A4A200A99EDB /* RKOItem.h */,
@@ -768,38 +843,14 @@
 			children = (
 				63A3B51A129C3BDE00E04981 /* MyLoginViewController.h */,
 				63A3B51B129C3BDE00E04981 /* MyLoginViewController.m */,
-				63A3B517129C3BDE00E04981 /* Data Source */,
-				63A3B511129C3BDE00E04981 /* Models */,
-			);
-			name = Login;
-			sourceTree = "<group>";
-		};
-		63A3B511129C3BDE00E04981 /* Models */ = {
-			isa = PBXGroup;
-			children = (
+				63A3B518129C3BDE00E04981 /* MyLoginDataSource.h */,
+				63A3B519129C3BDE00E04981 /* MyLoginDataSource.m */,
 				63A3B515129C3BDE00E04981 /* MyLoginModel.h */,
 				63A3B516129C3BDE00E04981 /* MyLoginModel.m */,
-				63A3B512129C3BDE00E04981 /* Objects */,
-			);
-			name = Models;
-			sourceTree = "<group>";
-		};
-		63A3B512129C3BDE00E04981 /* Objects */ = {
-			isa = PBXGroup;
-			children = (
 				63A3B513129C3BDE00E04981 /* MyLogin.h */,
 				63A3B514129C3BDE00E04981 /* MyLogin.m */,
 			);
-			name = Objects;
-			sourceTree = "<group>";
-		};
-		63A3B517129C3BDE00E04981 /* Data Source */ = {
-			isa = PBXGroup;
-			children = (
-				63A3B518129C3BDE00E04981 /* MyLoginDataSource.h */,
-				63A3B519129C3BDE00E04981 /* MyLoginDataSource.m */,
-			);
-			name = "Data Source";
+			name = Login;
 			sourceTree = "<group>";
 		};
 		63B2520C1299BB6800BA9323 /* Dependencies */ = {
@@ -884,93 +935,36 @@
 			name = Objects;
 			sourceTree = "<group>";
 		};
-		63B253F71299BD3100BA9323 /* Base64 */ = {
+		63B253FF1299BD3100BA9323 /* PhotoView */ = {
 			isa = PBXGroup;
 			children = (
-				63B253F81299BD3100BA9323 /* NSDataAdditions.h */,
-				63B253F91299BD3100BA9323 /* NSDataAdditions.m */,
-			);
-			name = Base64;
-			path = TTCatalog;
-			sourceTree = "<group>";
-		};
-		63B253FA1299BD3100BA9323 /* Flipside View (depr) */ = {
-			isa = PBXGroup;
-			children = (
-				63B253FB1299BD3100BA9323 /* FlipsideView.h */,
-				63B253FC1299BD3100BA9323 /* FlipsideView.m */,
-				63B253FD1299BD3100BA9323 /* FlipsideViewController.h */,
-				63B253FE1299BD3100BA9323 /* FlipsideViewController.m */,
-			);
-			name = "Flipside View (depr)";
-			sourceTree = "<group>";
-		};
-		63B253FF1299BD3100BA9323 /* Photos */ = {
-			isa = PBXGroup;
-			children = (
-				63B254051299BD3100BA9323 /* Photo Thumbnails */,
-				63B254001299BD3100BA9323 /* MockPhotoSource.h */,
-				63B254011299BD3100BA9323 /* MockPhotoSource.m */,
-			);
-			name = Photos;
-			sourceTree = "<group>";
-		};
-		63B254051299BD3100BA9323 /* Photo Thumbnails */ = {
-			isa = PBXGroup;
-			children = (
-				63B254061299BD3100BA9323 /* TTButtonContent+g3.h */,
-				63B254071299BD3100BA9323 /* TTButtonContent+g3.m */,
-				63B254081299BD3100BA9323 /* TTURLImageResponse+g3.h */,
-				63B254091299BD3100BA9323 /* TTURLImageResponse+g3.m */,
-				63B2540A1299BD3100BA9323 /* TTImageView+g3.h */,
-				63B2540B1299BD3100BA9323 /* TTImageView+g3.m */,
 				63B2540C1299BD3100BA9323 /* MyPhotoViewController.h */,
 				63B2540D1299BD3100BA9323 /* MyPhotoViewController.m */,
 			);
-			name = "Photo Thumbnails";
+			name = PhotoView;
 			sourceTree = "<group>";
 		};
-		63B2540E1299BD3100BA9323 /* Album */ = {
+		63B2540E1299BD3100BA9323 /* ThumbView */ = {
 			isa = PBXGroup;
 			children = (
-				63B254111299BD3100BA9323 /* TTThumbsViewController+g3.h */,
-				63B254121299BD3100BA9323 /* TTThumbsViewController+g3.m */,
 				63B254131299BD3100BA9323 /* MyThumbsViewController.h */,
 				63B254141299BD3100BA9323 /* MyThumbsViewController.m */,
-				632A448E12D261390055F67B /* MyUploadViewController.h */,
-				632A448F12D261390055F67B /* MyUploadViewController.m */,
-				6369534712D50A1200CA3113 /* MyPostController.h */,
-				6369534812D50A1200CA3113 /* MyPostController.m */,
-				63E13C7D12BED4C6003248F4 /* AddAlbumViewController.h */,
-				63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */,
-				63F4602012C8161C00116221 /* UpdateAlbumViewController.h */,
-				63F4602112C8161C00116221 /* UpdateAlbumViewController.m */,
 			);
-			name = Album;
+			name = ThumbView;
 			sourceTree = "<group>";
 		};
 		63B254151299BD3100BA9323 /* Rest Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				63B2540F1299BD3100BA9323 /* MyAlbum.h */,
-				63B254101299BD3100BA9323 /* MyAlbum.m */,
-				63B254161299BD3100BA9323 /* MyImageUploader.h */,
-				63B254171299BD3100BA9323 /* MyImageUploader.m */,
 				63A3B71A129C5EA200E04981 /* MyItemDeleter.h */,
 				63A3B71B129C5EA200E04981 /* MyItemDeleter.m */,
 				636B7F1712BFE98D00ECDCDD /* MyAlbumUpdater.h */,
 				636B7F1812BFE98D00ECDCDD /* MyAlbumUpdater.m */,
+				63B254161299BD3100BA9323 /* MyImageUploader.h */,
+				63B254171299BD3100BA9323 /* MyImageUploader.m */,
+				638C2883132D64E2009CFE41 /* deprecated */,
 			);
 			name = "Rest Helpers";
-			sourceTree = "<group>";
-		};
-		63B257801299D4E500BA9323 /* Settings (depr) */ = {
-			isa = PBXGroup;
-			children = (
-				63B257AC1299D51800BA9323 /* MySettingsController.h */,
-				63B257AD1299D51800BA9323 /* MySettingsController.m */,
-			);
-			name = "Settings (depr)";
 			sourceTree = "<group>";
 		};
 		63F12070132BE62A00FC162B /* Products */ = {
@@ -1264,7 +1258,6 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				63B255ED1299C60900BA9323 /* g3DB.sqlite in Resources */,
-				63B255EE1299C60900BA9323 /* FlipsideView.xib in Resources */,
 				63B255F01299C63300BA9323 /* Three20.bundle in Resources */,
 				639788D012BEBA24000FBD09 /* defaultPerson.png in Resources */,
 				636B811112C0243500ECDCDD /* empty.png in Resources */,
@@ -1272,10 +1265,8 @@
 				632A448B12D25F0B0055F67B /* MyUploadViewController.xib in Resources */,
 				6369534C12D50A4700CA3113 /* MyPostController.xib in Resources */,
 				63F1561512DA6F5E00D85532 /* iTunesArtwork in Resources */,
-				63C10CC012DB89C3009AF260 /* Default.png in Resources */,
 				63BD7617130B4885001FC9AF /* MyAlbumItemCell.xib in Resources */,
 				63BD767F130B5127001FC9AF /* MyMetaDataItemCell.xib in Resources */,
-				63B6D1E7130DC9F600436953 /* white.png in Resources */,
 				63EE22A7130EF51200E2D407 /* createIcon.png in Resources */,
 				637078E81323AC9300A3198A /* uploadIcon.png in Resources */,
 				637079591323CFD200A3198A /* commentIcon.png in Resources */,
@@ -1284,6 +1275,7 @@
 				63707AAC13240EF800A3198A /* addIcon.png in Resources */,
 				63707AC413240FBB00A3198A /* trashIcon.png in Resources */,
 				63707ACF1324103700A3198A /* makeCoverIcon.png in Resources */,
+				638C2909132D6ACD009CFE41 /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1300,10 +1292,8 @@
 				63B2541B1299BD3100BA9323 /* MyComment.m in Sources */,
 				63B2541C1299BD3100BA9323 /* MyCommentsModel.m in Sources */,
 				63B2541D1299BD3100BA9323 /* MyCommentsViewController.m in Sources */,
-				63B2541E1299BD3100BA9323 /* NSDataAdditions.m in Sources */,
-				63B2541F1299BD3100BA9323 /* FlipsideView.m in Sources */,
-				63B254201299BD3100BA9323 /* FlipsideViewController.m in Sources */,
-				63B254211299BD3100BA9323 /* MockPhotoSource.m in Sources */,
+				63B2541E1299BD3100BA9323 /* NSData+base64.m in Sources */,
+				63B254211299BD3100BA9323 /* PhotoSource.m in Sources */,
 				63B254231299BD3100BA9323 /* TTButtonContent+g3.m in Sources */,
 				63B254241299BD3100BA9323 /* TTURLImageResponse+g3.m in Sources */,
 				63B254251299BD3100BA9323 /* TTImageView+g3.m in Sources */,
@@ -1312,7 +1302,6 @@
 				63B254281299BD3100BA9323 /* TTThumbsViewController+g3.m in Sources */,
 				63B254291299BD3100BA9323 /* MyThumbsViewController.m in Sources */,
 				63B2542A1299BD3100BA9323 /* MyImageUploader.m in Sources */,
-				63B257AE1299D51800BA9323 /* MySettingsController.m in Sources */,
 				63A3B51C129C3BDE00E04981 /* MyLogin.m in Sources */,
 				63A3B51D129C3BDE00E04981 /* MyLoginModel.m in Sources */,
 				63A3B51E129C3BDE00E04981 /* MyLoginDataSource.m in Sources */,
@@ -1340,7 +1329,7 @@
 				631A7B3B130F49B0004A6110 /* TTTableViewController+g3.m in Sources */,
 				639EACC6131C702F00FBAEF4 /* DBManagedObjectCache.m in Sources */,
 				639EACC7131C702F00FBAEF4 /* RKOEntity.m in Sources */,
-				639EACC8131C702F00FBAEF4 /* RKMResponse.m in Sources */,
+				639EACC8131C702F00FBAEF4 /* RKMTree.m in Sources */,
 				639EACC9131C702F00FBAEF4 /* ArrayToDataTransformer.m in Sources */,
 				63E0C2E0132039A100BDD139 /* MyTagHelper.m in Sources */,
 				63CE2310132420D800D65CBD /* RKRequestTTModel+g3.m in Sources */,

@@ -8,7 +8,7 @@
 
 #import "TTThumbsViewController+g3.h"
 #import "MyPhotoViewController.h"
-#import "MockPhotoSource.h"
+#import "PhotoSource.h"
 
 @implementation TTThumbsViewController(album)
 
@@ -17,7 +17,7 @@
 }
 	
 - (void)thumbsTableViewCell:(TTThumbsTableViewCell*)cell didSelectPhoto:(id<TTPhoto>)photo {
-	MockPhoto* p = (MockPhoto *) photo;
+	Photo* p = (Photo *) photo;
 	BOOL isAlbum = p.isAlbum;
 	NSString* itemID = p.photoID;
 	//p.parentURL

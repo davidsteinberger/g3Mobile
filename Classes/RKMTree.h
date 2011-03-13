@@ -9,7 +9,7 @@
 #import <RestKit/RestKit.h>
 #import "RKOEntity.h"
 
-@interface RKMResponse : RKManagedObject {
+@interface RKMTree : RKManagedObject {
 }
 
 @property (nonatomic, retain) NSString* url;

@@ -8,7 +8,7 @@
 
 #import "DBManagedObjectCache.h"
 #import "AppDelegate.h"
-#import "RKMResponse.h"
+#import "RKMTree.h"
 #import "RKOEntity.h"
 #import "MySettings.h"
 #import "RKOItem.h"
@@ -25,7 +25,7 @@
 	//NSLog(@"%@", restResource);
 	
 	if ([restResource isEqual:@"tree"]) {
-		NSFetchRequest* request = [RKMResponse fetchRequest];
+		NSFetchRequest* request = [RKMTree fetchRequest];
 		NSPredicate* predicate = [NSPredicate predicateWithFormat:@"url = %@", predicateString, nil];
 		[request setPredicate:predicate];
 		NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"url" ascending:YES];

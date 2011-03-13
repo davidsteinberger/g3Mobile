@@ -24,7 +24,7 @@
 #import <RestKit/RestKit.h>
 #import "RestKit/Three20/RKRequestTTModel.h"
 #import "MyItem.h"
-#import "RKMResponse.h"
+#import "RKMTree.h"
 #import "RKOItem.h"
 #import "MyTagHelper.h"
 #import "UIImage+cropping.h"
@@ -83,7 +83,7 @@
 }
 
 - (void)modelDidFinishLoad:(id <TTModel>)model {
-	RKMResponse* response = [((RKRequestTTModel*)self.model).objects objectAtIndex:0];
+	RKMTree* response = [((RKRequestTTModel*)self.model).objects objectAtIndex:0];
 	RKOEntity* entity = [response.entities objectAtIndex:0];
 	
 	self.title = entity.title;
@@ -194,7 +194,7 @@
 	if (self.showDetails) {
 		self.navigationItem.rightBarButtonItem.title = @"Hide Details";
 		RKRequestTTModel* model2 = (RKRequestTTModel*)[self.dataSource model];
-		RKMResponse* response = (RKMResponse*)[model2.objects objectAtIndex:0];
+		RKMTree* response = (RKMTree*)[model2.objects objectAtIndex:0];
 		RKOEntity* entity = (RKOEntity*)[response.entities objectAtIndex:0];
 		
 		MyMetaDataItem* mdItem = [MyMetaDataItem 
@@ -424,7 +424,7 @@
 
 - (void)makeCover:(id)sender {
 	RKRequestTTModel* model = (RKRequestTTModel*)[self.dataSource model];
-	RKMResponse* response = (RKMResponse*)[model.objects objectAtIndex:0];
+	RKMTree* response = (RKMTree*)[model.objects objectAtIndex:0];
 	RKOEntity* entity = (RKOEntity*)[response.entities objectAtIndex:0];
 	NSString* albumID = entity.id;
 	
@@ -508,7 +508,7 @@
 		return item.model.id;
 	} else {
 		RKRequestTTModel* model = (RKRequestTTModel*)[self.dataSource model];
-		RKMResponse* response = (RKMResponse*)[model.objects objectAtIndex:0];
+		RKMTree* response = (RKMTree*)[model.objects objectAtIndex:0];
 		RKOEntity* entity = (RKOEntity*)[response.entities objectAtIndex:0];
 		return entity.id;
 	}
@@ -523,7 +523,7 @@
 		return item.model;
 	} else {
 		RKRequestTTModel* model = (RKRequestTTModel*)[self.dataSource model];
-		RKMResponse* response = (RKMResponse*)[model.objects objectAtIndex:0];
+		RKMTree* response = (RKMTree*)[model.objects objectAtIndex:0];
 		RKOEntity* entity = (RKOEntity*)[response.entities objectAtIndex:0];
 		return entity;
 	}

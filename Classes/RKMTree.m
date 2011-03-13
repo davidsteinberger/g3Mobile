@@ -6,11 +6,11 @@
 //  Copyright 2011 -. All rights reserved.
 //
 
-#import "RKMResponse.h"
+#import "RKMTree.h"
 #import "ArrayToDataTransformer.h"
 
 
-@implementation RKMResponse
+@implementation RKMTree
 
 @dynamic url;
 @dynamic entities;

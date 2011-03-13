@@ -8,7 +8,7 @@
 
 #import "TTImageView+g3.h"
 #import "AppDelegate.h"
-#import "NSDataAdditions.h"
+#import "NSData+base64.h"
 
 @implementation TTImageView(g3)
 

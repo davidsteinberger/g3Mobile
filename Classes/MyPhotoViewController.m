@@ -9,7 +9,7 @@
 #import "MyPhotoViewController.h"
 
 #import "AppDelegate.h"
-#import "MockPhotoSource.h"
+#import "PhotoSource.h"
 #import "MyItemDeleter.h"
 #import "MyAlbumUpdater.h"
 #import "MyAlbum.h"
@@ -28,7 +28,7 @@
 
 - (id)initWithItemID:(NSString*)itemID {
 	//TTDERROR(@"itemID: %@", itemID);
-	MockPhotoSource* photosource = [MockPhotoSource createPhotoSource:itemID];
+	PhotoSource* photosource = [PhotoSource createPhotoSource:itemID];
 	self.photoSource = photosource;
 	TT_RELEASE_SAFELY(photosource);
 	return [self initWithNibName:nil bundle:nil];
@@ -108,7 +108,7 @@
 }
 
 - (void)clickComposeItem {
-	MockPhoto* p = (MockPhoto *) self.centerPhoto;
+	Photo* p = (Photo *) self.centerPhoto;
 	NSString* itemID = p.photoID;
 	TTNavigator* navigator = [TTNavigator navigator];
 	[navigator openURLAction:[[TTURLAction actionWithURLPath:[@"tt://comments/" stringByAppendingString:itemID]] applyAnimated:YES]];
@@ -141,7 +141,7 @@
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	MockPhoto* p = (MockPhoto *) self.centerPhoto;
+	Photo* p = (Photo *) self.centerPhoto;
 	NSString* itemID = p.photoID;
 	
 	//NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
@@ -151,7 +151,7 @@
 	}
 	if (buttonIndex == 1) {
 		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		MockPhoto* p = (MockPhoto *) self.centerPhoto;
+		Photo* p = (Photo *) self.centerPhoto;
 		NSString* url = p.parentURL;
 		NSArray* chunks = [url componentsSeparatedByString: @"/"];
 		NSString* albumID = [chunks objectAtIndex:[chunks count] - 1 ];
@@ -200,7 +200,7 @@
 }
 
 - (void)deleteCurrentItem {
-	MockPhoto* p = (MockPhoto *) self.centerPhoto;
+	Photo* p = (Photo *) self.centerPhoto;
 	NSString* photoID = p.photoID;
 	[MyItemDeleter initWithItemID:photoID];	
 	

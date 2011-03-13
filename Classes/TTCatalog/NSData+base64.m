@@ -6,7 +6,7 @@
 //  Copyright 2010 r3apps.com. All rights reserved.
 //
 
-#import "NSDataAdditions.h"
+#import "NSData+base64.h"
 
 static char encodingTable[64] = {
 	'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
@@ -14,7 +14,7 @@ static char encodingTable[64] = {
 	'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
 	'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/' };
 
-@implementation NSData (NSDataAdditions)
+@implementation NSData (base64)
 + (NSData *) dataWithBase64EncodedString:(NSString *) string {
 	return [[[NSData allocWithZone:nil] initWithBase64EncodedString:string] autorelease];
 }

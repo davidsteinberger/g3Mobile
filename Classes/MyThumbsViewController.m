@@ -1,9 +1,9 @@
 
 #import "AppDelegate.h"
 #import "MyThumbsViewController.h"
-#import "MockPhotoSource.h"
+#import "PhotoSource.h"
 #import "MyAlbum.h"
-#import "FlipsideViewController.h"
+
 #import "MyImageUploader.h"
 #import "MyItemDeleter.h"
 #import "AddAlbumViewController.h"
@@ -29,7 +29,7 @@
 - (id)initWithAlbumID:(NSString *)albumID {
 	if (self = [super init]) {
 		self.albumID = albumID;
-		MockPhotoSource* photosource = [[MockPhotoSource alloc] initWithItemID:albumID];
+		PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:albumID];
 		self.photoSource = photosource;
 		TT_RELEASE_SAFELY(photosource);
 	}
@@ -59,7 +59,7 @@
 }
 
 - (void)updateAlbum {
-	MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
+	PhotoSource* ps = (PhotoSource* ) self.photoSource;
 	if (![ps.albumID isEqualToString: @"1"]) {
 		UpdateAlbumViewController* updateAlbum = [[UpdateAlbumViewController alloc] initWithAlbumID: self.albumID];
 		[self.navigationController pushViewController:updateAlbum animated:YES];	
@@ -70,7 +70,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 		
-	MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
+	PhotoSource* ps = (PhotoSource* ) self.photoSource;
 	
 	//show logout only when on root-album
 	if ([ps.albumID isEqualToString: @"1"]) {
@@ -164,7 +164,7 @@
 }
 
 - (void)deleteCurrentItem {
-	MockPhotoSource* ps = (MockPhotoSource* ) self.photoSource;
+	PhotoSource* ps = (PhotoSource* ) self.photoSource;
 	[MyItemDeleter initWithItemID:ps.albumID];
 	
 	NSString* parentURL = ps.parentURL;
@@ -183,8 +183,8 @@
 #pragma mark UIImagePickerController Methods
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-	MockPhotoSource* ps;
-	ps = (MockPhotoSource* ) self.photoSource;
+	PhotoSource* ps;
+	ps = (PhotoSource* ) self.photoSource;
 	
 	// get high-resolution picture (used for upload)
 	UIImage* image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];

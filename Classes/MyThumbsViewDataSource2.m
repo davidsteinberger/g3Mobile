@@ -17,7 +17,7 @@
 #import <RestKit/RestKit.h>
 #import <RestKit/Three20/RKRequestTTModel.h>
 #import <RestKit/Three20/RKRequestFilterableTTModel.h>
-#import "RKMResponse.h"
+#import "RKMTree.h"
 
 @implementation MyThumbsViewDataSource2
 
@@ -31,7 +31,7 @@
 		[RKRequestTTModel setDefaultRefreshRate:3600];
 		RKRequestTTModel* myModel = [[RKRequestTTModel alloc] 
 					   initWithResourcePath:treeResourcePath
-					   params:nil objectClass:[RKMResponse class]];
+					   params:nil objectClass:[RKMTree class]];
 		self.model = myModel;
 		TT_RELEASE_SAFELY(myModel);
 	}
@@ -58,7 +58,7 @@
 	NSMutableArray* items = [[NSMutableArray alloc] init];
 	
 	RKRequestTTModel* model = (RKRequestTTModel*)self.model;
-	RKMResponse* response = [model.objects objectAtIndex:0];
+	RKMTree* response = [model.objects objectAtIndex:0];
 	RKOEntity* rootElement = [response.entities objectAtIndex:0];
 
 	BOOL hasOnlyPhotos = NO;

@@ -4,7 +4,7 @@
 
 #import "MyThumbsViewController.h"
 #import "MyCommentsViewController.h"
-#import "MySettingsController.h"
+
 #import "MyLoginViewController.h"
 #import "AddAlbumViewController.h"
 
