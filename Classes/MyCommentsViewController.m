@@ -6,7 +6,7 @@
 
 #import "MyCommentsDataSource.h"
 
-#import "MockPhotoSource.h"
+#import "PhotoSource.h"
 #import "AppDelegate.h"
 
 static CGFloat kMargin  = 1;

@@ -14,7 +14,7 @@
 @class RKORelationships;
 @class RKOComments;
 
-@interface RKOItem : RKManagedObject {
+@interface RKMItem : RKManagedObject {
 }
 
 @property (nonatomic, retain) NSString* url;

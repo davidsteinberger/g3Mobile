@@ -6,9 +6,9 @@
 //  Copyright 2011 -. All rights reserved.
 //
 
-#import "RKOItem.h"
+#import "RKMItem.h"
 
-@implementation RKOItem
+@implementation RKMItem
 
 @dynamic url;
 @dynamic entity;

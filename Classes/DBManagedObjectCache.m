@@ -11,7 +11,7 @@
 #import "RKMTree.h"
 #import "RKOEntity.h"
 #import "MySettings.h"
-#import "RKOItem.h"
+#import "RKMItem.h"
 
 @implementation DBManagedObjectCache
 
@@ -34,7 +34,7 @@
 	}
 	
 	if ([restResource isEqual:@"item"]) {
-		NSFetchRequest* request = [RKOItem fetchRequest];
+		NSFetchRequest* request = [RKMItem fetchRequest];
 		NSPredicate* predicate = [NSPredicate predicateWithFormat:@"url = %@", predicateString, nil];
 		[request setPredicate:predicate];
 		NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"url" ascending:YES];

@@ -42,7 +42,7 @@
 		637452D512D3A162005FD8C6 /* UIImage+resizing.m in Sources */ = {isa = PBXBuildFile; fileRef = 637452D412D3A162005FD8C6 /* UIImage+resizing.m */; };
 		6374560612D3EFB2005FD8C6 /* StyleSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6374560512D3EFB2005FD8C6 /* StyleSheet.m */; };
 		6380E70E1329A47D00A99EDB /* G3CoreData.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */; };
-		6380E7111329A4A200A99EDB /* RKOItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6380E7101329A4A200A99EDB /* RKOItem.m */; };
+		6380E7111329A4A200A99EDB /* RKMItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6380E7101329A4A200A99EDB /* RKMItem.m */; };
 		6389A68C12D652C2002B59AB /* MyDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6389A68B12D652C2002B59AB /* MyDatabase.m */; };
 		638C2909132D6ACD009CFE41 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 638C2908132D6ACD009CFE41 /* Default.png */; };
 		639788D012BEBA24000FBD09 /* defaultPerson.png in Resources */ = {isa = PBXBuildFile; fileRef = 639788CF12BEBA24000FBD09 /* defaultPerson.png */; };
@@ -389,11 +389,12 @@
 		6374560412D3EFB2005FD8C6 /* StyleSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyleSheet.h; sourceTree = "<group>"; };
 		6374560512D3EFB2005FD8C6 /* StyleSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StyleSheet.m; sourceTree = "<group>"; };
 		6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = G3CoreData.xcdatamodel; sourceTree = "<group>"; };
-		6380E70F1329A4A200A99EDB /* RKOItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKOItem.h; sourceTree = "<group>"; };
-		6380E7101329A4A200A99EDB /* RKOItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKOItem.m; sourceTree = "<group>"; };
+		6380E70F1329A4A200A99EDB /* RKMItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKMItem.h; sourceTree = "<group>"; };
+		6380E7101329A4A200A99EDB /* RKMItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKMItem.m; sourceTree = "<group>"; };
 		6389A68A12D652C2002B59AB /* MyDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDatabase.h; sourceTree = "<group>"; };
 		6389A68B12D652C2002B59AB /* MyDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDatabase.m; sourceTree = "<group>"; };
 		638C2908132D6ACD009CFE41 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		638C2A30132D7D51009CFE41 /* MyLoginDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLoginDelegate.h; sourceTree = "<group>"; };
 		639788CF12BEBA24000FBD09 /* defaultPerson.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultPerson.png; sourceTree = "<group>"; };
 		639EACAB131C6EE300FBAEF4 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		639EACAD131C6EE300FBAEF4 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -830,8 +831,8 @@
 				639EACC3131C702F00FBAEF4 /* RKMTree.m */,
 				639EACC0131C702F00FBAEF4 /* RKOEntity.h */,
 				639EACC1131C702F00FBAEF4 /* RKOEntity.m */,
-				6380E70F1329A4A200A99EDB /* RKOItem.h */,
-				6380E7101329A4A200A99EDB /* RKOItem.m */,
+				6380E70F1329A4A200A99EDB /* RKMItem.h */,
+				6380E7101329A4A200A99EDB /* RKMItem.m */,
 				63E0C2DE132039A100BDD139 /* MyTagHelper.h */,
 				63E0C2DF132039A100BDD139 /* MyTagHelper.m */,
 			);
@@ -841,6 +842,7 @@
 		63A3B510129C3BDE00E04981 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				638C2A30132D7D51009CFE41 /* MyLoginDelegate.h */,
 				63A3B51A129C3BDE00E04981 /* MyLoginViewController.h */,
 				63A3B51B129C3BDE00E04981 /* MyLoginViewController.m */,
 				63A3B518129C3BDE00E04981 /* MyLoginDataSource.h */,
@@ -1334,7 +1336,7 @@
 				63E0C2E0132039A100BDD139 /* MyTagHelper.m in Sources */,
 				63CE2310132420D800D65CBD /* RKRequestTTModel+g3.m in Sources */,
 				6380E70E1329A47D00A99EDB /* G3CoreData.xcdatamodel in Sources */,
-				6380E7111329A4A200A99EDB /* RKOItem.m in Sources */,
+				6380E7111329A4A200A99EDB /* RKMItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

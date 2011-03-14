@@ -7,7 +7,7 @@
 //
 
 #import "MyTagHelper.h"
-#import "RKOItem.h"
+#import "RKMItem.h"
 #import "MySettings.h"
 #import "Three20/Three20.h"
 
@@ -36,7 +36,7 @@ static int cntTags = 0;
 	self.delegate = delegate;
 	self.objects = [NSMutableArray array];
 	cntTags = 0;
-	[self load:resourcePath class:[RKOItem class]];
+	[self load:resourcePath class:[RKMItem class]];
 	return self;
 }
 
@@ -59,13 +59,13 @@ static int cntTags = 0;
 		}
 
 	} else {
-		[objectManager loadObjectsAtResourcePath:resourcePath objectClass:[RKOItem class] delegate:self];
+		[objectManager loadObjectsAtResourcePath:resourcePath objectClass:[RKMItem class] delegate:self];
 	}	
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {	
-	if ([[objects objectAtIndex:0] class] == [RKOItem class]) {
-		RKOItem* item = (RKOItem*)[objects objectAtIndex:0];
+	if ([[objects objectAtIndex:0] class] == [RKMItem class]) {
+		RKMItem* item = (RKMItem*)[objects objectAtIndex:0];
 		
 		int i = [GlobalSettings.baseURL length];
 		cntTags = [item.tags.members count];

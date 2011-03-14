@@ -25,7 +25,7 @@
 #import "RestKit/Three20/RKRequestTTModel.h"
 #import "MyItem.h"
 #import "RKMTree.h"
-#import "RKOItem.h"
+#import "RKMItem.h"
 #import "MyTagHelper.h"
 #import "UIImage+cropping.h"
 
