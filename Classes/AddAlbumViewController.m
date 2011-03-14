@@ -20,7 +20,6 @@
 @implementation AddAlbumViewController
 
 @synthesize parentAlbumID = _parentAlbumID;
-@synthesize delegate = _delegate;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // NSObject
@@ -37,9 +36,8 @@
 	return self;
 }
 
-- (id)initWithParentAlbumID: (NSString* )albumID delegate: (MyThumbsViewController *)delegate {
+- (id)initWithParentAlbumID: (NSString* )albumID {
 	self.parentAlbumID = albumID;	
-	self.delegate = delegate;
 
 	return [self initWithNibName:nil bundle: nil];
 }
@@ -101,7 +99,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSMutableArray*)delegates {
 	NSMutableArray* delegates = [[NSMutableArray alloc] init];
-	[delegates addObject: _delegate];
 	return [delegates autorelease];
 }
 

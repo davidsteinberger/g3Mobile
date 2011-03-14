@@ -12,6 +12,15 @@
 #import "UIImage+cropping.h"
 #import "MyUploadViewController.h"
 
+@interface MyThumbsViewController ()
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
+
+@end
+
 @implementation MyThumbsViewController
 
 @synthesize albumID = _albumID;
@@ -53,7 +62,7 @@
 }
 
 - (void)addAlbum {	
-	AddAlbumViewController* addAlbum = [[AddAlbumViewController alloc] initWithParentAlbumID: self.albumID delegate: self];
+	AddAlbumViewController* addAlbum = [[AddAlbumViewController alloc] initWithParentAlbumID: self.albumID];
 	[self.navigationController pushViewController:addAlbum animated:YES];
 	TT_RELEASE_SAFELY(addAlbum);
 }
@@ -167,11 +176,6 @@
 	PhotoSource* ps = (PhotoSource* ) self.photoSource;
 	[MyItemDeleter initWithItemID:ps.albumID];
 	
-	NSString* parentURL = ps.parentURL;
-	NSString* treeParentURL = [parentURL stringByReplacingOccurrencesOfString:@"/rest/item/" withString:@"/rest/tree/"];
-	
-	[[TTURLCache sharedCache] removeURL:[treeParentURL stringByAppendingString:@"?depth=1"] fromDisk:YES];
-	
 	TTNavigator* navigator = [TTNavigator navigator];
 	[navigator removeAllViewControllers];
 	[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
@@ -181,6 +185,10 @@
 }
 
 #pragma mark UIImagePickerController Methods
+
+- (void)uploadImage:(id)sender {
+	[self presentModalViewController:_pickerController animated:YES];
+}
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	PhotoSource* ps;

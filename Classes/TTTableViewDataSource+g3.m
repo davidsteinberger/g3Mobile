@@ -10,6 +10,8 @@
 #import "MyThumbsViewController2.h"
 #import "MyAlbumItemCell.h"
 #import "MyMetaDataItemCell.h"
+#import "Three20/Three20.h"
+#import "Three20UI/UITableViewAdditions.h"
 #import <objc/runtime.h>
 
 @implementation TTTableViewDataSource (xib)
@@ -41,7 +43,7 @@
 	if ([cell class] == [MyAlbumItemCell class] || [cell class] == [MyMetaDataItemCell class]) {
 		UILongPressGestureRecognizer *longPressGesture =
 		[[[UILongPressGestureRecognizer alloc]
-		  initWithTarget:((MyThumbsViewController2*)[tableView.delegate controller]) action:@selector(longPress:)] autorelease];
+		  initWithTarget:((MyThumbsViewController2*)[((TTTableViewDelegate*)tableView.delegate) controller]) action:@selector(longPress:)] autorelease];
 		[cell addGestureRecognizer:longPressGesture];
 	}
 	

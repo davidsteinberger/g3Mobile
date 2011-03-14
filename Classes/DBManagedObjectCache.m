@@ -60,7 +60,7 @@
 		return [NSArray arrayWithObject:request];
 	}
 	
-	//return nil;
+	return nil;
 }
 
 @end

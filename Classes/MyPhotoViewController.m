@@ -14,7 +14,11 @@
 #import "MyAlbumUpdater.h"
 #import "MyAlbum.h"
 
-#import "extThree20JSON/extThree20JSON.h"
+@interface MyPhotoViewController ()
+
+- (void)moveToPhoto:(id<TTPhoto>)photo;
+
+@end
 
 @implementation MyPhotoViewController
 
@@ -223,6 +227,12 @@
 	_centerPhotoIndex = photoIndex == TT_NULL_PHOTO_INDEX ? 0 : photoIndex;
 	[self moveToPhoto:[_photoSource photoAtIndex:_centerPhotoIndex]];
 	_delayLoad = withDelay;
+}
+
+- (void)moveToPhoto:(id<TTPhoto>)photo {
+	id<TTPhoto> previousPhoto = [_centerPhoto autorelease];
+	_centerPhoto = [photo retain];
+	[self didMoveToPhoto:_centerPhoto fromPhoto:previousPhoto];
 }
 
 @end

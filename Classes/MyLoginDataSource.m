@@ -6,14 +6,26 @@
 #import "MySettings.h"
 #import "AppDelegate.h"
 
+@interface MyLoginDataSource ()
+
+@property (nonatomic, retain) UISwitch* viewOnly;
+@property (nonatomic, retain) UITextField* passwordField;
+@property (nonatomic, retain) UISlider* imageQualityField;
+@property (nonatomic, retain) TTView* segmentedControlFrame;
+
+@end
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 @implementation MyLoginDataSource
 
-@synthesize baseURL = _baseURL;
-@synthesize usernameField = _usernameField;
 @synthesize viewOnly = _viewOnly;
+@synthesize baseURL = _baseURL;
+@synthesize passwordField = _passwordField;
+@synthesize usernameField = _usernameField;
+@synthesize imageQualityField = _imageQualityField;
+@synthesize segmentedControlFrame = _segmentedControlFrame;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -16,7 +16,7 @@
 
 - (void)load:(TTURLRequestCachePolicy)cachePolicy more:(BOOL)more;
 - (void)load:(BOOL)forceReload;
-//- (void)modelsDidLoad:(NSArray*)cachedObjects;
+- (void)modelsDidLoad:(NSArray*)models;
 
 @end
 
@@ -29,6 +29,17 @@
 	} else {
 		[self load:NO];
 	}
+}
+
+- (void)modelsDidLoad:(NSArray*)models {
+	[models retain];
+	[_objects release];
+	_objects = nil;
+	
+	_objects = models;
+	_isLoaded = YES;
+	
+	[self didFinishLoad];
 }
 
 // for now a category on load to add the correct request-key!
@@ -87,10 +98,9 @@
 											  GlobalSettings.challenge, @"X-Gallery-Request-Key",
 											  @"application/x-www-form-urlencoded", @"Content-Type",												  
 											  nil];
-		return [objectLoader sendSynchronously];
-		//[objectLoader release];
-		
+		return [objectLoader sendSynchronously];		
 	}
+	return nil;
 }
 
 

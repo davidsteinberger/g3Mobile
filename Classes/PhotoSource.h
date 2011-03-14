@@ -15,24 +15,20 @@ typedef enum {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 @interface PhotoSource : TTURLRequestModel <TTPhotoSource> {
-	BOOL _lock;
-	RKRequestTTModel* _model;
 	MockPhotoSourceType _type;
-	NSString* _title;
-	NSMutableArray* newPhotos;
+	NSMutableArray* _newPhotos;
 	NSMutableArray* _photos;
-	NSArray* _tempPhotos;
 	NSTimer* _fakeLoadTimer;
+	RKRequestTTModel* _model;
 	NSString* _albumID;
-	NSString* _parentURL;
+	NSString* _title;
 }
 
 @property (nonatomic, retain) RKRequestTTModel* model;
 @property (nonatomic, retain) NSString* albumID;
-@property (nonatomic, retain) NSString* parentURL;
+@property (nonatomic, copy) NSString* title;
 
-- (id)initWithType:(MockPhotoSourceType)type parentURL:(NSString*)parentURL albumID:(NSString*)albumID title:(NSString*)title photos:(NSArray*)photos
-		   photos2:(NSArray*)photos2;
+- (id)initWithItemID:(NSString*)itemID;
 + (PhotoSource*)createPhotoSource:(NSString*)albumID;
 
 @end
@@ -56,6 +52,7 @@ typedef enum {
 @property(nonatomic, retain) NSString* photoID;
 @property (nonatomic, retain) NSString* parentURL;
 
-- (id)initWithURL:(NSString*)URL smallURL:(NSString*)smallURL size:(CGSize)size isAlbum:(BOOL)isAlbum photoID:(NSString*)photoID parentURL:(NSString*)parentURL;
+- (id)initWithURL:(NSString *)URL smallURL:(NSString *)smallURL size:(CGSize)size
+		  caption:(NSString *)caption isAlbum:(BOOL)isAlbum photoID:(NSString *)photoID parentURL:(NSString *)parentURL;
 
 @end

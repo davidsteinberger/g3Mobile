@@ -11,7 +11,5 @@
 
 @property (nonatomic, readonly) UITextField* baseURL;
 @property (nonatomic, readonly) UITextField* usernameField;
-@property (nonatomic, retain) UISwitch* viewOnly;
-@property (nonatomic, retain) TTView* segmentedControlFrame;
 
 @end

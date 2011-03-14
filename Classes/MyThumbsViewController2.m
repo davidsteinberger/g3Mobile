@@ -400,7 +400,7 @@
 
 - (void)createAlbum:(id)sender {	
 	NSString* itemID = [self getItemID];
-	AddAlbumViewController* addAlbum = [[AddAlbumViewController alloc] initWithParentAlbumID: itemID delegate: self];
+	AddAlbumViewController* addAlbum = [[AddAlbumViewController alloc] initWithParentAlbumID: itemID];
 	[self.navigationController pushViewController:addAlbum animated:YES];
 	TT_RELEASE_SAFELY(addAlbum);
 }
