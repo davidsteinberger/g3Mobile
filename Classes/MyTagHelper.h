@@ -7,12 +7,7 @@
 //
 
 #import <RestKit/RestKit.h>
-
-@protocol MyTagHelperDelegate
-
-- (void)tagsDidLoad:(NSArray*)objects;
-
-@end
+#import "MyTagHelperDelegate.h"
 
 
 @interface MyTagHelper : NSObject <RKObjectLoaderDelegate> {

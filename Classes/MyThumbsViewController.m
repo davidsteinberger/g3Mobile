@@ -50,6 +50,7 @@
 	[super modelDidFinishLoad:model];
 }
 
+// Shows the Login page with all the settings
 - (void)setSettings {
 	TTNavigator* navigator = [TTNavigator navigator];
 	[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://login"] applyAnimated:YES]];

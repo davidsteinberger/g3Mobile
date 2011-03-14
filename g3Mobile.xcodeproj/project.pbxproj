@@ -472,6 +472,8 @@
 		63BD778B130C6648001FC9AF /* MyMetaDataItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyMetaDataItemCell.m; sourceTree = "<group>"; };
 		63CE230E132420D800D65CBD /* RKRequestTTModel+g3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RKRequestTTModel+g3.h"; sourceTree = "<group>"; };
 		63CE230F132420D800D65CBD /* RKRequestTTModel+g3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RKRequestTTModel+g3.m"; sourceTree = "<group>"; };
+		63D972A6132ED321008F6095 /* MyLongPressGestureDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLongPressGestureDelegate.h; sourceTree = "<group>"; };
+		63D972A7132ED3AD008F6095 /* MyTagHelperDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyTagHelperDelegate.h; sourceTree = "<group>"; };
 		63E0C2DE132039A100BDD139 /* MyTagHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyTagHelper.h; sourceTree = "<group>"; };
 		63E0C2DF132039A100BDD139 /* MyTagHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyTagHelper.m; sourceTree = "<group>"; };
 		63E13C7D12BED4C6003248F4 /* AddAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAlbumViewController.h; sourceTree = "<group>"; };
@@ -676,6 +678,7 @@
 		6348605713101B6A00385A46 /* Additions */ = {
 			isa = PBXGroup;
 			children = (
+				63D972A6132ED321008F6095 /* MyLongPressGestureDelegate.h */,
 				63B253F81299BD3100BA9323 /* NSData+base64.h */,
 				63B253F91299BD3100BA9323 /* NSData+base64.m */,
 				63CE230E132420D800D65CBD /* RKRequestTTModel+g3.h */,
@@ -835,6 +838,7 @@
 				6380E7101329A4A200A99EDB /* RKMItem.m */,
 				63E0C2DE132039A100BDD139 /* MyTagHelper.h */,
 				63E0C2DF132039A100BDD139 /* MyTagHelper.m */,
+				63D972A7132ED3AD008F6095 /* MyTagHelperDelegate.h */,
 			);
 			name = RestKit;
 			sourceTree = "<group>";
