@@ -62,12 +62,9 @@
 		 
 		 _isLoading = YES;
 		 [self didStartLoad];
-		 objectLoader.additionalHTTPHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
-											   GlobalSettings.challenge, @"X-Gallery-Request-Key",
-											   @"application/x-www-form-urlencoded", @"Content-Type",												  
-											   nil];
+
 		 [objectLoader send];
-		 //[objectLoader release];
+
 	 } else if (cacheFetchRequests && !_cacheLoaded) {
 		 _cacheLoaded = YES;
 		 [self modelsDidLoad:cachedObjects];
@@ -94,10 +91,7 @@
 		
 		_isLoading = YES;
 		[self didStartLoad];
-		objectLoader.additionalHTTPHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
-											  GlobalSettings.challenge, @"X-Gallery-Request-Key",
-											  @"application/x-www-form-urlencoded", @"Content-Type",												  
-											  nil];
+		
 		return [objectLoader sendSynchronously];		
 	}
 	return nil;

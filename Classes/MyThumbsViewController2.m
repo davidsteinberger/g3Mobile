@@ -93,7 +93,6 @@
 - (void)dealloc {
 	TT_RELEASE_SAFELY(_tagHelper);
 	TT_RELEASE_SAFELY(_itemID);
-	//TT_RELEASE_SAFELY(_selectedAlbumItem);
 	TT_RELEASE_SAFELY(_tags);
 	TT_RELEASE_SAFELY(backViewOld);
 	TT_RELEASE_SAFELY(selectedCell);

@@ -294,7 +294,9 @@
 	        [[[RKManagedObjectStore alloc] initWithStoreFilename:@ "g3CoreData.sqlite"]
 	         autorelease];
 	objectManager.objectStore.managedObjectCache = [[DBManagedObjectCache new] autorelease];
-
+	[[objectManager client] setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+	[[objectManager client] setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+	
 	// Set nil for any attributes we expect to appear in the payload, but do not
 	objectManager.mapper.missingElementMappingPolicy = RKSetNilForMissingElementMappingPolicy;
 
