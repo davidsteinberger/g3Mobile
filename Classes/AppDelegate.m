@@ -178,6 +178,10 @@
 	self.baseURL = GlobalSettings.baseURL;
 	self.challenge = GlobalSettings.challenge;
 
+	if (![GlobalSettings.baseURL isEqual:@ ""]) {
+		[self initRestKit];
+	}
+	
 	// restore view-controllers otherwise login
 	if (![navigator restoreViewControllers]) {
 		if ([GlobalSettings.baseURL isEqual:@ ""] || GlobalSettings.baseURL == nil ||

@@ -20,8 +20,7 @@
 	Photo* p = (Photo *) photo;
 	BOOL isAlbum = p.isAlbum;
 	NSString* itemID = p.photoID;
-	//p.parentURL
-	//NSLog(@"albumID: %@", albumID);
+
 	[_delegate thumbsViewController:self didSelectPhoto:photo];
 
 	BOOL shouldNavigate = YES;
@@ -34,24 +33,9 @@
 			TTNavigator* navigator = [TTNavigator navigator];
 			[navigator openURLAction:[[TTURLAction actionWithURLPath:[@"tt://thumbs/" stringByAppendingString:itemID]] applyAnimated:YES]];
 		} else {
-			NSString* url = p.parentURL;
-			NSArray* chunks = [url componentsSeparatedByString: @"/"];
-			NSString* albumID = [chunks objectAtIndex:[chunks count] - 1 ];
-			
-			NSString* aURL = [[[@"tt://photo/" 
-			   stringByAppendingString:albumID]
-			  stringByAppendingString:@"/"]
-			 stringByAppendingString:[NSString stringWithFormat:@"%d",1]];
-			NSLog(@"aURL: %@", aURL);
-			TTNavigator* navigator = [TTNavigator navigator];
-			[navigator openURLAction:[[TTURLAction actionWithURLPath:aURL] applyAnimated:YES]];
-			
-			/*
-				TTPhotoViewController* controller = [self createPhotoViewController];
-				//controller.parentViewController
-				controller.centerPhoto = photo;
-				[self.navigationController pushViewController:controller animated:YES];
-			 */
+			TTPhotoViewController* controller = [self createPhotoViewController];
+			controller.centerPhoto = photo;
+			[self.navigationController pushViewController:controller animated:YES];
 		}
 	}
 }

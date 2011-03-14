@@ -55,11 +55,25 @@ static int cntTags = 0;
 			id object = [cachedObjects objectAtIndex:0];
 			[self objectLoader:nil didLoadObjects:[NSArray arrayWithObjects:object,nil]];
 		} else {
-			[objectManager loadObjectsAtResourcePath:resourcePath objectClass:class delegate:self];
+			RKObjectLoader* objectLoader = [objectManager objectLoaderWithResourcePath:resourcePath delegate:self];
+			objectLoader.objectClass = class;
+			objectLoader.additionalHTTPHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
+												  GlobalSettings.challenge, @"X-Gallery-Request-Key",
+												  @"application/x-www-form-urlencoded", @"Content-Type",												  
+												  nil];
+			[objectLoader send];
+			//[objectManager loadObjectsAtResourcePath:resourcePath objectClass:class delegate:self];
 		}
 
 	} else {
-		[objectManager loadObjectsAtResourcePath:resourcePath objectClass:[RKMItem class] delegate:self];
+		RKObjectLoader* objectLoader = [objectManager objectLoaderWithResourcePath:resourcePath delegate:self];
+		objectLoader.objectClass = class;
+		objectLoader.additionalHTTPHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
+											  GlobalSettings.challenge, @"X-Gallery-Request-Key",
+											  @"application/x-www-form-urlencoded", @"Content-Type",												  
+											  nil];
+		[objectLoader send];
+		//[objectManager loadObjectsAtResourcePath:resourcePath objectClass:[RKMItem class] delegate:self];
 	}	
 }
 

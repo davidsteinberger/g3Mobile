@@ -66,6 +66,7 @@
 		
 		//_baseURL.text = @"http://192.168.1.89/~David/gallery3/index.php"; //@"http://www.menalto.com/photos"; //GlobalSettings.baseURL;
 		_baseURL.text = GlobalSettings.baseURL;
+		//[_viewOnly setOn:YES animated:YES];
     }
     return self;
 }

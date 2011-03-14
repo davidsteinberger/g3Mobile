@@ -87,10 +87,11 @@
 							   initWithURL:[NSString stringWithString: resize_url]
 							   smallURL:[NSString stringWithString: thumb_url]
 							   size:CGSizeMake(width, height)
+						   caption:[NSString stringWithString:(item.title) ? item.title : @""]
 							   isAlbum:isAlbum
 							   photoID:[NSString stringWithString: photoID]
 							   parentURL:[NSString stringWithString: parent]] autorelease];
-			
+						
 			[newPhotos addObject:mph];
 			
 		}
@@ -271,7 +272,7 @@
 						   initWithURL:[NSString stringWithString: resize_url]
 						   smallURL:[NSString stringWithString: thumb_url]
 						   size:CGSizeMake(width, height)
-						  caption:[NSString stringWithString:(item.title) ? item.title : @""]
+						   caption:[NSString stringWithString:(item.title) ? item.title : @""]
 						   isAlbum:isAlbum
 						   photoID:[NSString stringWithString: photoID]
 						   parentURL:[NSString stringWithString: parent]];
