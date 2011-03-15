@@ -67,7 +67,6 @@
 		63B2541B1299BD3100BA9323 /* MyComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253F21299BD3100BA9323 /* MyComment.m */; };
 		63B2541C1299BD3100BA9323 /* MyCommentsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253F41299BD3100BA9323 /* MyCommentsModel.m */; };
 		63B2541D1299BD3100BA9323 /* MyCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253F61299BD3100BA9323 /* MyCommentsViewController.m */; };
-		63B2541E1299BD3100BA9323 /* NSData+base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B253F91299BD3100BA9323 /* NSData+base64.m */; };
 		63B254211299BD3100BA9323 /* PhotoSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254011299BD3100BA9323 /* PhotoSource.m */; };
 		63B254231299BD3100BA9323 /* TTButtonContent+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254071299BD3100BA9323 /* TTButtonContent+g3.m */; };
 		63B254241299BD3100BA9323 /* TTURLImageResponse+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254091299BD3100BA9323 /* TTURLImageResponse+g3.m */; };
@@ -86,6 +85,7 @@
 		63BD7682130B5157001FC9AF /* MyMetaDataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BD7681130B5157001FC9AF /* MyMetaDataItem.m */; };
 		63BD76C2130C5A31001FC9AF /* TTTableViewDataSource+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BD76C1130C5A31001FC9AF /* TTTableViewDataSource+g3.m */; };
 		63BD778C130C6648001FC9AF /* MyMetaDataItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BD778B130C6648001FC9AF /* MyMetaDataItemCell.m */; };
+		63C266FD132EEAA10086729D /* NSData+base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C266FC132EEAA10086729D /* NSData+base64.m */; };
 		63CE2310132420D800D65CBD /* RKRequestTTModel+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CE230F132420D800D65CBD /* RKRequestTTModel+g3.m */; };
 		63E0C2E0132039A100BDD139 /* MyTagHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E0C2DF132039A100BDD139 /* MyTagHelper.m */; };
 		63E13C7F12BED4C6003248F4 /* AddAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */; };
@@ -437,8 +437,6 @@
 		63B253F41299BD3100BA9323 /* MyCommentsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCommentsModel.m; sourceTree = "<group>"; };
 		63B253F51299BD3100BA9323 /* MyCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCommentsViewController.h; sourceTree = "<group>"; };
 		63B253F61299BD3100BA9323 /* MyCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCommentsViewController.m; sourceTree = "<group>"; };
-		63B253F81299BD3100BA9323 /* NSData+base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+base64.h"; path = "TTCatalog/NSData+base64.h"; sourceTree = "<group>"; };
-		63B253F91299BD3100BA9323 /* NSData+base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+base64.m"; path = "TTCatalog/NSData+base64.m"; sourceTree = "<group>"; };
 		63B254001299BD3100BA9323 /* PhotoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoSource.h; sourceTree = "<group>"; };
 		63B254011299BD3100BA9323 /* PhotoSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoSource.m; sourceTree = "<group>"; };
 		63B254061299BD3100BA9323 /* TTButtonContent+g3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTButtonContent+g3.h"; sourceTree = "<group>"; };
@@ -470,6 +468,8 @@
 		63BD76C1130C5A31001FC9AF /* TTTableViewDataSource+g3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TTTableViewDataSource+g3.m"; sourceTree = "<group>"; };
 		63BD778A130C6648001FC9AF /* MyMetaDataItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyMetaDataItemCell.h; sourceTree = "<group>"; };
 		63BD778B130C6648001FC9AF /* MyMetaDataItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyMetaDataItemCell.m; sourceTree = "<group>"; };
+		63C266FB132EEAA10086729D /* NSData+base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+base64.h"; sourceTree = "<group>"; };
+		63C266FC132EEAA10086729D /* NSData+base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+base64.m"; sourceTree = "<group>"; };
 		63CE230E132420D800D65CBD /* RKRequestTTModel+g3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RKRequestTTModel+g3.h"; sourceTree = "<group>"; };
 		63CE230F132420D800D65CBD /* RKRequestTTModel+g3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RKRequestTTModel+g3.m"; sourceTree = "<group>"; };
 		63D972A6132ED321008F6095 /* MyLongPressGestureDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLongPressGestureDelegate.h; sourceTree = "<group>"; };
@@ -679,8 +679,8 @@
 			isa = PBXGroup;
 			children = (
 				63D972A6132ED321008F6095 /* MyLongPressGestureDelegate.h */,
-				63B253F81299BD3100BA9323 /* NSData+base64.h */,
-				63B253F91299BD3100BA9323 /* NSData+base64.m */,
+				63C266FB132EEAA10086729D /* NSData+base64.h */,
+				63C266FC132EEAA10086729D /* NSData+base64.m */,
 				63CE230E132420D800D65CBD /* RKRequestTTModel+g3.h */,
 				63CE230F132420D800D65CBD /* RKRequestTTModel+g3.m */,
 				63B254061299BD3100BA9323 /* TTButtonContent+g3.h */,
@@ -1298,7 +1298,6 @@
 				63B2541B1299BD3100BA9323 /* MyComment.m in Sources */,
 				63B2541C1299BD3100BA9323 /* MyCommentsModel.m in Sources */,
 				63B2541D1299BD3100BA9323 /* MyCommentsViewController.m in Sources */,
-				63B2541E1299BD3100BA9323 /* NSData+base64.m in Sources */,
 				63B254211299BD3100BA9323 /* PhotoSource.m in Sources */,
 				63B254231299BD3100BA9323 /* TTButtonContent+g3.m in Sources */,
 				63B254241299BD3100BA9323 /* TTURLImageResponse+g3.m in Sources */,
@@ -1341,6 +1340,7 @@
 				63CE2310132420D800D65CBD /* RKRequestTTModel+g3.m in Sources */,
 				6380E70E1329A47D00A99EDB /* G3CoreData.xcdatamodel in Sources */,
 				6380E7111329A4A200A99EDB /* RKMItem.m in Sources */,
+				63C266FD132EEAA10086729D /* NSData+base64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1427,7 +1427,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = ../RestKit/Libraries/RestKit/Build;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = g3Mobile_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
@@ -1468,7 +1468,7 @@
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = ../RestKit/Libraries/RestKit/Build;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = g3Mobile_Prefix.pch;
 				HEADER_SEARCH_PATHS = (

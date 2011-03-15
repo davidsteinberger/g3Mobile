@@ -17,11 +17,16 @@ The Development-Environment:
 
 The Code:
 4) get the latest three20 library:
-   git clone git://github.com/facebook/three20.git
-5) get the latest g3Mobile code:
+     git clone git://github.com/facebook/three20.git
+   checkout tag 1.0.4: git checkout 1.0.4
+5  get the latest RestKit library:
+     git clone git://github.com/twotoasters/RestKit.git
+   checkout branch 0.9: git checkout 0.9
+6) get the latest g3Mobile code:
    git clone git://github.com/dave8401/g3Mobile.git
 
-!!!NOTE: the three20- AND(!) the g3Mobile-folder MUST(!) be in the same parent folder!!!
+!!!NOTE: the three20- AND(!) the RestKit- And(!) the g3Mobile-folder MUST(!) 
+be in the same parent directory!!!
 
 Run it:
 6) fire up 'g3Mobile.xcodeproj' and hit the 'Build and Debug'-button

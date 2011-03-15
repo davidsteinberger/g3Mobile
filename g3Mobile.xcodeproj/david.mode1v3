@@ -216,10 +216,10 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>63D9731D132EDE60008F6095</string>
+						<string>63C26705132EEC000086729D</string>
 						<key>history</key>
 						<array>
-							<string>63D97293132ECE3D008F6095</string>
+							<string>63C26643132EEA080086729D</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -270,6 +270,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -307,23 +309,18 @@
 							<array>
 								<string>29B97314FDCFA39411CA2CEA</string>
 								<string>080E96DDFE201D6D7F000001</string>
-								<string>639EACBD131C700D00FBAEF4</string>
-								<string>63B254151299BD3100BA9323</string>
-								<string>6348605713101B6A00385A46</string>
-								<string>636954B112D52A1600CA3113</string>
-								<string>1C37FAAC04509CD000000102</string>
 								<string>1C77FABC04509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>5</integer>
+									<integer>3</integer>
 									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 22}, {333, 660}}</string>
+							<string>{{0, 0}, {333, 660}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -358,7 +355,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>MyThumbsViewController2.m</string>
+								<string>AppDelegate.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -366,11 +363,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>MyThumbsViewController2.m</string>
+										<string>AppDelegate.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>63D9731C132EDE60008F6095</string>
+										<string>63C26704132EEC000086729D</string>
 										<key>history</key>
 										<array>
 											<string>630B6F0212B54B070063DEDC</string>
@@ -610,7 +607,6 @@
 											<string>638C28C6132D679D009CFE41</string>
 											<string>638C28C7132D679D009CFE41</string>
 											<string>638C28C8132D679D009CFE41</string>
-											<string>638C28CA132D679D009CFE41</string>
 											<string>638C28CB132D679D009CFE41</string>
 											<string>638C28CD132D679D009CFE41</string>
 											<string>638C28CE132D679D009CFE41</string>
@@ -630,7 +626,6 @@
 											<string>638C2A81132D89F2009CFE41</string>
 											<string>638C2A84132D89F2009CFE41</string>
 											<string>638C2A85132D89F2009CFE41</string>
-											<string>638C2A86132D89F2009CFE41</string>
 											<string>638C2A87132D89F2009CFE41</string>
 											<string>638C2A88132D89F2009CFE41</string>
 											<string>638C2AAF132D8B7F009CFE41</string>
@@ -644,7 +639,6 @@
 											<string>6361BBFA132DEBE3004266F6</string>
 											<string>63D96F1F132E9A23008F6095</string>
 											<string>63D96F20132E9A23008F6095</string>
-											<string>63D96F21132E9A23008F6095</string>
 											<string>63D96FF5132E9EC9008F6095</string>
 											<string>63D970F2132EB290008F6095</string>
 											<string>63D970F4132EB290008F6095</string>
@@ -654,7 +648,6 @@
 											<string>63D9720C132EBF52008F6095</string>
 											<string>63D9720F132EBF94008F6095</string>
 											<string>63D97281132ECBBC008F6095</string>
-											<string>63D97284132ECBBC008F6095</string>
 											<string>63D97285132ECBBC008F6095</string>
 											<string>63D97286132ECBBC008F6095</string>
 											<string>63D97298132ED137008F6095</string>
@@ -667,8 +660,10 @@
 											<string>63D972CB132ED705008F6095</string>
 											<string>63D972CC132ED705008F6095</string>
 											<string>63D97316132EDE58008F6095</string>
-											<string>63D97318132EDE58008F6095</string>
-											<string>63D97319132EDE58008F6095</string>
+											<string>63C26633132EE99B0086729D</string>
+											<string>63C26634132EE99B0086729D</string>
+											<string>63C26640132EEA080086729D</string>
+											<string>63C266FE132EEAB40086729D</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -680,18 +675,16 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {925, 449}}</string>
+								<string>{{0, 0}, {925, 428}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 59 1280 719 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>449pt</string>
+							<string>428pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -702,14 +695,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 454}, {925, 224}}</string>
+								<string>{{0, 433}, {925, 245}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 59 1280 719 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>224pt</string>
+							<string>245pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -728,9 +721,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>63D9728A132ECBBC008F6095</string>
+				<string>63C26700132EEAB40086729D</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>63D9728B132ECBBC008F6095</string>
+				<string>63C26701132EEAB40086729D</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -868,11 +861,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>63D972D9132ED71B008F6095</string>
-		<string>63D972D2132ED705008F6095</string>
-		<string>1C78EAAD065D492600B07095</string>
-		<string>1C530D57069F1CE1000CFCEE</string>
-		<string>1CD10A99069EF8BA00B06720</string>
 		<string>63B252001299BB3900BA9323</string>
 		<string>63D9729D132ED137008F6095</string>
 		<string>/Users/david/Diverses/iPhone/g3Mobile/g3Mobile.xcodeproj</string>
@@ -894,14 +882,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>MyThumbsViewController2.m</string>
+								<string></string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -957,7 +943,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>63B252001299BB3900BA9323</string>
-				<string>63D97267132EC397008F6095</string>
+				<string>63C26703132EEAB40086729D</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -1079,13 +1065,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>63D97268132EC397008F6095</string>
+				<string>63C2663A132EE99B0086729D</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>63D97269132EC397008F6095</string>
-				<string>63D9726A132EC397008F6095</string>
-				<string>63D9726B132EC397008F6095</string>
-				<string>63D9726C132EC397008F6095</string>
-				<string>63D9726D132EC397008F6095</string>
+				<string>63C2663B132EE99B0086729D</string>
+				<string>63C2663C132EE99B0086729D</string>
+				<string>63C2663D132EE99B0086729D</string>
+				<string>63C2663E132EE99B0086729D</string>
+				<string>63C2663F132EE99B0086729D</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>
