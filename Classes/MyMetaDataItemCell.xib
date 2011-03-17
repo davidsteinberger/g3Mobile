@@ -49,8 +49,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUILabel" id="606813036">
 								<reference key="NSNextResponder" ref="757255334"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 20}, {155, 24}}</string>
+								<int key="NSvFlags">290</int>
+								<string key="NSFrame">{{20, 20}, {223, 24}}</string>
 								<reference key="NSSuperview" ref="757255334"/>
 								<object class="NSColor" key="IBUIBackgroundColor" id="369965432">
 									<int key="NSColorSpace">3</int>
@@ -74,10 +74,11 @@
 								<reference key="IBUIHighlightedColor" ref="805955029"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
+								<int key="IBUINumberOfLines">0</int>
 							</object>
 							<object class="IBUILabel" id="1007435645">
 								<reference key="NSNextResponder" ref="757255334"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{20, 52}, {280, 15}}</string>
 								<reference key="NSSuperview" ref="757255334"/>
 								<reference key="IBUIBackgroundColor" ref="369965432"/>
@@ -96,10 +97,11 @@
 								<reference key="IBUIHighlightedColor" ref="805955029"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
+								<int key="IBUINumberOfLines">0</int>
 							</object>
 							<object class="IBUILabel" id="377395072">
 								<reference key="NSNextResponder" ref="757255334"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{20, 70}, {280, 15}}</string>
 								<reference key="NSSuperview" ref="757255334"/>
 								<reference key="IBUIBackgroundColor" ref="369965432"/>
@@ -118,6 +120,7 @@
 								<reference key="IBUIHighlightedColor" ref="805955029"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
+								<int key="IBUINumberOfLines">0</int>
 							</object>
 							<object class="IBUILabel" id="390435983">
 								<reference key="NSNextResponder" ref="757255334"/>
@@ -140,6 +143,7 @@
 								<reference key="IBUIHighlightedColor" ref="805955029"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
+								<int key="IBUITextAlignment">2</int>
 							</object>
 							<object class="IBUILabel" id="56008543">
 								<reference key="NSNextResponder" ref="757255334"/>
@@ -158,6 +162,7 @@
 								<reference key="IBUIHighlightedColor" ref="805955029"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
+								<int key="IBUITextAlignment">2</int>
 							</object>
 						</object>
 						<string key="NSFrameSize">{320, 105}</string>
@@ -10197,7 +10202,7 @@ AAEAAQABA</bytes>
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
 					<string key="className">MyMetaDataItem</string>
-					<string key="superclassName">TTTableItem</string>
+					<string key="superclassName">TTTableLinkedItem</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/MyMetaDataItem.h</string>
@@ -10205,7 +10210,7 @@ AAEAAQABA</bytes>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">MyMetaDataItemCell</string>
-					<string key="superclassName">TTTableViewCell</string>
+					<string key="superclassName">TTTableLinkedItemCell</string>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
@@ -10215,7 +10220,6 @@ AAEAAQABA</bytes>
 							<string>description</string>
 							<string>tags</string>
 							<string>title</string>
-							<string>view</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -10224,7 +10228,6 @@ AAEAAQABA</bytes>
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
-							<string>MyMetaDataItemCell</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -10236,7 +10239,6 @@ AAEAAQABA</bytes>
 							<string>description</string>
 							<string>tags</string>
 							<string>title</string>
-							<string>view</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -10259,10 +10261,6 @@ AAEAAQABA</bytes>
 							<object class="IBToOneOutletInfo">
 								<string key="name">title</string>
 								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">view</string>
-								<string key="candidateClassName">MyMetaDataItemCell</string>
 							</object>
 						</object>
 					</object>

@@ -26,6 +26,8 @@ static int cntTags = 0;
 @synthesize objects = _objects;
 
 - (void)dealloc {
+	[[RKRequestQueue sharedQueue] cancelAllRequests];
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	TT_RELEASE_SAFELY(_resourcePath);
 	TT_RELEASE_SAFELY(_objects);
 	[super dealloc];
@@ -57,23 +59,13 @@ static int cntTags = 0;
 		} else {
 			RKObjectLoader* objectLoader = [objectManager objectLoaderWithResourcePath:resourcePath delegate:self];
 			objectLoader.objectClass = class;
-			objectLoader.additionalHTTPHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
-												  GlobalSettings.challenge, @"X-Gallery-Request-Key",
-												  @"application/x-www-form-urlencoded", @"Content-Type",												  
-												  nil];
-			[objectLoader send];
-			//[objectManager loadObjectsAtResourcePath:resourcePath objectClass:class delegate:self];
+			[objectLoader send];			
 		}
 
 	} else {
 		RKObjectLoader* objectLoader = [objectManager objectLoaderWithResourcePath:resourcePath delegate:self];
 		objectLoader.objectClass = class;
-		objectLoader.additionalHTTPHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
-											  GlobalSettings.challenge, @"X-Gallery-Request-Key",
-											  @"application/x-www-form-urlencoded", @"Content-Type",												  
-											  nil];
 		[objectLoader send];
-		//[objectManager loadObjectsAtResourcePath:resourcePath objectClass:[RKMItem class] delegate:self];
 	}	
 }
 
@@ -85,7 +77,7 @@ static int cntTags = 0;
 		cntTags = [item.tags.members count];
 		
 		if (cntTags == 0) {
-			[self->_delegate tagsDidLoad: [NSArray arrayWithArray:nil]];
+			[self.delegate tagsDidLoad: [NSArray arrayWithArray:nil]];
 			return;
 		}
 		
@@ -109,9 +101,9 @@ static int cntTags = 0;
 		
 		cntTags--;
 		
-		if (cntTags == 0) {
+		if (cntTags == 0) {			
 			[self.objects addObject:tagItem];
-			[self->_delegate tagsDidLoad:[NSArray arrayWithArray:self.objects]];
+			[self.delegate tagsDidLoad:[NSArray arrayWithArray:self.objects]];
 			return;
 		} else {
 			[self.objects addObject:tagItem];
@@ -121,7 +113,7 @@ static int cntTags = 0;
 }
 
 - (void)objectLoader:(RKObjectLoader*)objectLoader didFailWithError:(NSError*)error {
-	[self->_delegate tagsDidLoad: [NSArray arrayWithArray:nil]];
+	[self.delegate tagsDidLoad: [NSArray arrayWithArray:nil]];
 }
 
 @end

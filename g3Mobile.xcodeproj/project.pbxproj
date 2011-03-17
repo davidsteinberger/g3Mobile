@@ -80,7 +80,6 @@
 		63B255F01299C63300BA9323 /* Three20.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EF1299C63300BA9323 /* Three20.bundle */; };
 		63BB542212CE434600764C23 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BB542112CE434600764C23 /* Reachability.m */; };
 		63BB544612CE43AB00764C23 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63BB544512CE43AB00764C23 /* SystemConfiguration.framework */; };
-		63BD7617130B4885001FC9AF /* MyAlbumItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63BD7616130B4885001FC9AF /* MyAlbumItemCell.xib */; };
 		63BD767F130B5127001FC9AF /* MyMetaDataItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63BD767E130B5127001FC9AF /* MyMetaDataItemCell.xib */; };
 		63BD7682130B5157001FC9AF /* MyMetaDataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BD7681130B5157001FC9AF /* MyMetaDataItem.m */; };
 		63BD76C2130C5A31001FC9AF /* TTTableViewDataSource+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BD76C1130C5A31001FC9AF /* TTTableViewDataSource+g3.m */; };
@@ -460,7 +459,6 @@
 		63BB542012CE434600764C23 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		63BB542112CE434600764C23 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		63BB544512CE43AB00764C23 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		63BD7616130B4885001FC9AF /* MyAlbumItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyAlbumItemCell.xib; sourceTree = "<group>"; };
 		63BD767E130B5127001FC9AF /* MyMetaDataItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MyMetaDataItemCell.xib; path = Classes/MyMetaDataItemCell.xib; sourceTree = "<group>"; };
 		63BD7680130B5157001FC9AF /* MyMetaDataItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyMetaDataItem.h; sourceTree = "<group>"; };
 		63BD7681130B5157001FC9AF /* MyMetaDataItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyMetaDataItem.m; sourceTree = "<group>"; };
@@ -807,7 +805,6 @@
 			children = (
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				632A448A12D25F0B0055F67B /* MyUploadViewController.xib */,
-				63BD7616130B4885001FC9AF /* MyAlbumItemCell.xib */,
 				63BD767E130B5127001FC9AF /* MyMetaDataItemCell.xib */,
 				6369534B12D50A4700CA3113 /* MyPostController.xib */,
 			);
@@ -1271,7 +1268,6 @@
 				632A448B12D25F0B0055F67B /* MyUploadViewController.xib in Resources */,
 				6369534C12D50A4700CA3113 /* MyPostController.xib in Resources */,
 				63F1561512DA6F5E00D85532 /* iTunesArtwork in Resources */,
-				63BD7617130B4885001FC9AF /* MyAlbumItemCell.xib in Resources */,
 				63BD767F130B5127001FC9AF /* MyMetaDataItemCell.xib in Resources */,
 				63EE22A7130EF51200E2D407 /* createIcon.png in Resources */,
 				637078E81323AC9300A3198A /* uploadIcon.png in Resources */,
@@ -1406,7 +1402,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = g3Mobile_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				HEADER_SEARCH_PATHS = (
 					"../RestKit/Build/**",
 					"../three20/Build/Products/three20/**",
@@ -1430,6 +1426,7 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = g3Mobile_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				HEADER_SEARCH_PATHS = (
 					"../RestKit/Build/**",
 					"../three20/Build/Products/three20/**",
@@ -1451,6 +1448,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "../three20/Build/Products/three20/**";
@@ -1471,6 +1469,7 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = g3Mobile_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				HEADER_SEARCH_PATHS = (
 					"../RestKit/Build/**",
 					"../three20/Build/Products/three20/**",
@@ -1493,7 +1492,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "../three20/Build/Products/three20/**";
@@ -1509,6 +1508,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "../three20/Build/Products/three20/**";

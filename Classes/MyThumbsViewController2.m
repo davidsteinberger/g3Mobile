@@ -247,96 +247,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
-#pragma mark private
-
-// loads the tags via the MyTagHelper
-- (void)loadTags {
-	NSString *itemResourcePath = [[@""
-	                               stringByAppendingString:@"/rest/item/"]
-	                              stringByAppendingString:self.itemID];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	MyTagHelper *tagHelper =
-	        [[MyTagHelper alloc] initWithResourcePath:itemResourcePath delegate:self];
-	self.tagHelper = tagHelper;
-	TT_RELEASE_SAFELY(tagHelper);
-}
-
-
-// MyTagHelperDelegate
-- (void)tagsDidLoad:(NSArray *)objects {
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	NSString *tags = @"";
-
-	for (RKOTag *tag in objects) {
-		tags = [[[[tags stringByAppendingString:tag.name]
-		          stringByAppendingString:@" ("]
-		         stringByAppendingString:tag.count]
-		        stringByAppendingString:@"), "];
-	}
-
-	self.tags = tags;
-	[self toggleMetaData];
-}
-
-
-// Show/hide details of album above the first album
-- (void)showDetails:(id)sender {
-	self.showDetails = !self.showDetails;
-
-	if (self.showDetails) {
-		self.tags = ( (NSNull *)self.tags == [NSNull null] ) ? @"No Tags ..." : self.tags;
-		[self loadTags];
-	}
-	else {
-		self.tags = @"";
-		[self toggleMetaData];
-	}
-}
-
-
-// toggles overlay-menu
-- (void)toggleMetaData {
-	MyThumbsViewDataSource2 *ds = (MyThumbsViewDataSource2 *)self.dataSource;
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-	NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
-
-	if (self.showDetails) {
-		self.navigationItem.rightBarButtonItem.title = @"Hide Details";
-		RKRequestTTModel *model2 = (RKRequestTTModel *)[self.dataSource model];
-		RKMTree *response = (RKMTree *)[model2.objects objectAtIndex:0];
-		RKOEntity *entity = (RKOEntity *)[response.entities objectAtIndex:0];
-
-		MyMetaDataItem *mdItem = [MyMetaDataItem
-		                          itemWithTitle:entity.title
-		                                  model:entity
-		                            description:entity.description
-		                                  autor:@"autor"
-		                              timestamp:[NSDate dateWithTimeIntervalSince1970:[
-		                                             entity.created floatValue]]
-		                                   tags:self.tags];
-
-		[ds.items insertObject:mdItem atIndex:0];
-		[self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:
-		 UITableViewRowAnimationFade];
-		[mdItem release];
-
-		NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-		[self.tableView    scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:
-		 UITableViewScrollPositionBottom animated:YES];
-	}
-	else {
-		self.navigationItem.rightBarButtonItem.title = @"Show Details";
-		[ds.items removeObjectAtIndex:0];
-		[self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:
-		 UITableViewRowAnimationFade];
-	}
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark -
 #pragma mark MyLongPressGestureDelegate
 
 // MyLongPressGestureDelegate that handles long tabs on cell
@@ -403,9 +313,115 @@
 }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark private
 
+// loads the tags via the MyTagHelper
+- (void)loadTags {
+	NSString *itemResourcePath = [[@""
+	                               stringByAppendingString:@"/rest/item/"]
+	                              stringByAppendingString:self.itemID];
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	MyTagHelper *tagHelper =
+	[[MyTagHelper alloc] initWithResourcePath:itemResourcePath delegate:self];
+	self.tagHelper = tagHelper;
+	TT_RELEASE_SAFELY(tagHelper);
+}
+
+
+// MyTagHelperDelegate
+- (void)tagsDidLoad:(NSArray *)objects {
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	NSString *tags = @"";
+	
+	for (RKOTag *tag in objects) {
+		tags = [[[[tags stringByAppendingString:tag.name]
+		          stringByAppendingString:@" ("]
+		         stringByAppendingString:tag.count]
+		        stringByAppendingString:@"), "];
+	}
+	
+	if (![tags isEqualToString:@""]) {
+		tags = [tags substringToIndex:[tags length] - 2];
+	} else {
+		tags = @"(No Tags)";
+	}
+
+	self.tags = tags;
+	[self toggleMetaData];
+}
+
+
+// Show/hide details of album above the first album
+- (void)showDetails:(id)sender {
+	self.showDetails = !self.showDetails;
+	
+	if (self.showDetails) {		
+		[self loadTags];
+	}
+	else {
+		self.tags = @"";
+		[self toggleMetaData];
+	}
+}
+
+
+// toggles overlay-menu
+- (void)toggleMetaData {
+	MyThumbsViewDataSource2 *ds = (MyThumbsViewDataSource2 *)self.dataSource;
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+	NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
+	
+	int entities = [((RKMTree*)[((RKRequestTTModel*)self.model).objects objectAtIndex:0]).entities count];
+	int items = [((MyThumbsViewDataSource2*)self.dataSource).items count];
+	
+	/*
+	 * RKMTree contains all entities from the tree resource: 1 x parent + XYZ x children
+	 * Usually only children get displayed:
+	 * --> count of row in the table < count of entities in the model
+	 *
+	 * This circumstance is used to toggle the cell for the meta-data!
+	 */
+	if (!(entities == items) && entities > 0 && items > 0) {
+		self.navigationItem.rightBarButtonItem.title = @"Hide Details";
+		RKRequestTTModel *model2 = (RKRequestTTModel *)[self.dataSource model];
+		RKMTree *response = (RKMTree *)[model2.objects objectAtIndex:0];
+		RKOEntity *entity = (RKOEntity *)[response.entities objectAtIndex:0];
+		
+		MyMetaDataItem *mdItem = [MyMetaDataItem
+		                          itemWithTitle:entity.title
+								  model:entity
+								  description:entity.description
+								  autor:@"autor"
+								  timestamp:[NSDate dateWithTimeIntervalSince1970:[
+																				   entity.created floatValue]]
+								  tags:self.tags];
+		
+		[ds.items insertObject:mdItem atIndex:0];
+		[self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:
+		 UITableViewRowAnimationFade];
+		//[mdItem release];
+		
+		NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+		[self.tableView    scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:
+		 UITableViewScrollPositionBottom animated:YES];
+	}
+	else if (entities > 0 && items > 0) {
+		self.navigationItem.rightBarButtonItem.title = @"Show Details";
+		[ds.items removeObjectAtIndex:0];
+		[self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:
+		 UITableViewRowAnimationFade];
+	}
+}
+
+
+/*
+ * Build overlay menu within given Frame
+ * Via the type parameter we can choose between a menu for an album or a photo
+ */
 - (TTView *)buildOverlayMenuWithFrame:(CGRect)frame type:(BOOL)album {
 	// create overlay-view
 	TTView *backView = [[TTView alloc]

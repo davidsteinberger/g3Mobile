@@ -288,6 +288,9 @@
 	RKObjectManager *objectManager =
 	        [RKObjectManager objectManagerWithBaseURL:GlobalSettings.baseURL];
 	RKObjectMapper *mapper = objectManager.mapper;
+	
+	[[RKRequestQueue sharedQueue] cancelAllRequests];
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// Initialize object store
 	objectManager.objectStore =

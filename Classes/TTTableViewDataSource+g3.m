@@ -31,8 +31,8 @@
 	UITableViewCell* cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:identifier];
 	
 	// customization: loads xib if it exists!
-	if (cell == nil) {
-		cell = [self createNewCellWithClass:cellClass identifier:identifier];
+	if (cell == nil) {		
+		cell = [[self createNewCellWithClass:cellClass identifier:identifier] autorelease];
 	}
 	
 	if (cell == nil) {
@@ -49,14 +49,6 @@
 	
 	[cell setTag:indexPath.row];
 	
-	/*
-	 UISwipeGestureRecognizer* swipeGesture = [[[UISwipeGestureRecognizer
-											 alloc] initWithTarget:((MyThumbsViewController2*)[tableView.delegate controller]) action:@selector(handleSwipeFrom:)] autorelease];
-	[swipeGesture setDirection:(UISwipeGestureRecognizerDirectionRight |
-							  UISwipeGestureRecognizerDirectionLeft)];
-	[cell addGestureRecognizer:swipeGesture]; 
-	*/
-	
 	[identifier release];
 	
 	if ([cell isKindOfClass:[TTTableViewCell class]]) {
@@ -70,12 +62,11 @@
 
 - (UITableViewCell*)createNewCellWithClass:(Class)klaz
 								identifier:(NSString*)identifier {
-	if([[NSBundle mainBundle] pathForResource:identifier ofType:@"nib"] != nil) {
-		//NSLog(@"Trying to load %@ from nib", identifier);
+	//TTDASSERT([[NSBundle mainBundle] pathForResource:identifier ofType:@"nib"] == nil);
+	if ([[NSBundle mainBundle] pathForResource:identifier ofType:@"nib"]) {
 		NSArray *tab = [[NSBundle mainBundle] loadNibNamed:identifier owner:nil options:nil];
-		return [tab objectAtIndex:0];
+		return [[tab objectAtIndex:0] retain];
 	} else {
-		//NSLog(@"xib-name not found");
 		return nil;
 	}
 }
