@@ -1,6 +1,6 @@
-#import <Three20/Three20.h>
 #import <RestKit/RestKit.h>
 #import <RestKit/Three20/RKRequestTTModel.h>
+#import "Three20/Three20.h"
 #import "RKMTree.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

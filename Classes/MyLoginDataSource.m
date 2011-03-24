@@ -76,8 +76,8 @@
 		// layout switcher
 		_segmentedControlFrame = [[TTView alloc] initWithFrame:CGRectMake(-1.0f, -1.0f, 302.0f, 46.0f)];
 		
-		//_baseURL.text = @"http://192.168.1.89/~David/gallery3/index.php"; //@"http://www.menalto.com/photos"; //GlobalSettings.baseURL;
-		_baseURL.text = GlobalSettings.baseURL;		
+		//_baseURL.text = @"http://192.168.1.89/~David/gallery3/index.php"; //@"http://www.menalto.com/photos";
+		_baseURL.text = GlobalSettings.baseURL;
     }
     return self;
 }

@@ -6,8 +6,11 @@
 //  Copyright 2011 -. All rights reserved.
 //
 
-@interface RKRequestTTModel (g3)
+#import <RestKit/RestKit.h>
+#import <RestKit/Three20/RKRequestTTModel.h>
 
+@interface RKRequestTTModel (sync)
+    
 - (id)loadSynchronous:(BOOL)forceReload;
 
 @end

@@ -147,13 +147,17 @@
 #pragma mark -
 #pragma mark TTModelDelegate
 
+
 // The model has finished loading the data -> set the title of the view
 - (void)modelDidFinishLoad:(id <TTModel>)model {
-	RKMTree *response = [( (RKRequestTTModel *)self.model ).objects objectAtIndex:0];
-	RKOEntity *entity = [response.entities objectAtIndex:0];
+    if ([( (RKRequestTTModel *)self.model ).objects count] > 0) {
+    
+        RKMTree *response = [( (RKRequestTTModel *)self.model ).objects objectAtIndex:0];
+        RKOEntity *entity = [response.entities objectAtIndex:0];
 
-	self.title = entity.title;
-	[super modelDidFinishLoad:model];
+        self.title = entity.title;
+        [super modelDidFinishLoad:model];
+    }
 }
 
 
