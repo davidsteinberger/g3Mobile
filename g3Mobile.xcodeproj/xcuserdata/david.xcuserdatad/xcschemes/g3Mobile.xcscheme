@@ -50,37 +50,37 @@
          <EnvironmentVariable
             key = "NSZombieEnabled"
             value = "YES"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "NSDeallocateZombies"
             value = "YES"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "MallocBadFreeAbort"
             value = "YES"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "MallocScribble"
             value = "YES"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "MallocStackLogging"
             value = "YES"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "NSDebugEnabled"
             value = "YES"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "MallocPreScribble"
             value = "YES"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = ""
@@ -95,7 +95,7 @@
       displayScaleIsEnabled = "NO"
       displayScale = "1.00"
       shouldUseLaunchSchemeArgsEnv = "YES"
-      savedToolIdentifier = ""
+      savedToolIdentifier = "/Developer/Applications/Instruments.app/Contents/Resources/templates/Leaks.tracetemplate"
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release">
       <BuildableProductRunnable>

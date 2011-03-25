@@ -141,7 +141,6 @@
 	[super reload];
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
@@ -150,7 +149,7 @@
 
 // The model has finished loading the data -> set the title of the view
 - (void)modelDidFinishLoad:(id <TTModel>)model {
-    if ([( (RKRequestTTModel *)self.model ).objects count] > 0) {
+    if ([( (RKRequestTTModel *)self.model).objects count] > 0) {
     
         RKMTree *response = [( (RKRequestTTModel *)self.model ).objects objectAtIndex:0];
         RKOEntity *entity = [response.entities objectAtIndex:0];
@@ -169,6 +168,44 @@
 // Support drag-to-refresh functionality (yeah that's cool!)
 - (id <UITableViewDelegate>)createDelegate {
 	return [[[TTTableViewDragRefreshDelegate alloc] initWithController:self] autorelease];
+}
+
+
+// Handle the event that the album is empty
+- (void)showEmpty:(BOOL)show {
+	
+    RKRequestTTModel *model = (RKRequestTTModel *)self.model;
+    NSArray* objects = model.objects;
+    
+    /*
+     * We expect a tree-resource
+     * Should the resource have only 1 object the load was complete and  no children found
+     * --> empty album
+     */
+    if ([objects count] == 1) {        
+		NSString* title = [_dataSource titleForEmpty];
+		NSString* subtitle = [_dataSource subtitleForEmpty];
+		UIImage* image = [_dataSource imageForEmpty];
+        
+		if (title.length || subtitle.length || image) {
+			TTErrorView* errorView = [[[TTErrorView alloc] initWithTitle:title
+																subtitle:subtitle
+																   image:nil] autorelease];
+			errorView.backgroundColor = _tableView.backgroundColor;
+			
+			TTView* buttonMenu = [self buildOverlayMenu];
+			[errorView addSubview:buttonMenu];
+			[errorView bringSubviewToFront:buttonMenu];
+            
+			self.emptyView = errorView;
+		} else {
+			self.emptyView = nil;
+		}
+		_tableView.dataSource = nil;
+		[_tableView reloadData];
+	} else {
+		self.emptyView = nil;
+	}
 }
 
 
@@ -778,6 +815,5 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
 	[picker dismissModalViewControllerAnimated:YES];
 }
-
 
 @end

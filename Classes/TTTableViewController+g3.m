@@ -14,33 +14,6 @@
 
 @implementation TTTableViewController (empty)
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)showEmpty:(BOOL)show {
-	if (show) {
-		NSString* title = [_dataSource titleForEmpty];
-		NSString* subtitle = [_dataSource subtitleForEmpty];
-		UIImage* image = [_dataSource imageForEmpty];
-		if (title.length || subtitle.length || image) {
-			TTErrorView* errorView = [[[TTErrorView alloc] initWithTitle:title
-																subtitle:subtitle
-																   image:nil] autorelease];
-			errorView.backgroundColor = _tableView.backgroundColor;
-			
-			TTView* buttonMenu = [self buildOverlayMenu];
-			[errorView addSubview:buttonMenu];
-			[errorView bringSubviewToFront:buttonMenu];
-
-			self.emptyView = errorView;
-		} else {
-			self.emptyView = nil;
-		}
-		_tableView.dataSource = nil;
-		[_tableView reloadData];
-	} else {
-		self.emptyView = nil;
-	}
-}
-
 - (TTView*)buildOverlayMenu {
 	// create buttons
 	TTView* backView = [[TTView alloc]
