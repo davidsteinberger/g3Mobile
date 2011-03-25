@@ -24,11 +24,20 @@
 
 - (void)fakeLoadReady {
 	_fakeLoadTimer = nil;
+    
+    // don't like this, but if the model is not ready we need to keep waiting ...
+    // hopefully I can rework later!
+    if ([self.model.objects count] == 0) {
+        [self.model load];
+        _fakeLoadTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self  
+														selector:@selector(fakeLoadReady) userInfo:nil repeats:NO];
+		return;
+    }
 
 	RKMTree* response = [self.model.objects objectAtIndex:0];
 	
 	if ([response.entities count] == 0) {
-		_fakeLoadTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self  
+		_fakeLoadTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self  
 														selector:@selector(fakeLoadReady) userInfo:nil repeats:NO];
 		return;
 	}
@@ -276,7 +285,7 @@
 
 - (id)initWithURL:(NSString *)URL smallURL:(NSString *)smallURL size:(CGSize)size
        caption:(NSString *)caption isAlbum:(BOOL)isAlbum photoID:(NSString *)photoID parentURL:(NSString *)parentURL {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		_URL = [URL copy];
 		_smallURL = [smallURL copy];
 		_thumbURL = [smallURL copy];
