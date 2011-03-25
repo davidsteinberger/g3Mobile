@@ -11,6 +11,6 @@
 #import <Three20/Three20.h>
 
 @interface TTThumbsViewController(album)
-	-(void)createPhotoViewController;
+	-(TTPhotoViewController*)createPhotoViewController;
 
 @end

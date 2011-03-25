@@ -66,7 +66,7 @@
 #pragma mark NSObject
 
 - (id)init {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 	}
 	return self;
 }
@@ -78,7 +78,7 @@
 #pragma mark NSCoding
 
 - (id)initWithCoder:(NSCoder *)decoder {
-	if (self = [super initWithCoder:decoder]) {
+	if ((self = [super initWithCoder:decoder])) {
 		self.model = [decoder decodeObjectForKey:@"model"];
 		self.title = [decoder decodeObjectForKey:@"title"];
 		self.description = [decoder decodeObjectForKey:@"description"];

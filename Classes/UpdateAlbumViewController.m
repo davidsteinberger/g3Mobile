@@ -25,7 +25,7 @@
 // NSObject
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+	if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
 		self.title = @"Update Album";
 		self.navigationItem.backBarButtonItem =
 		[[[UIBarButtonItem alloc] initWithTitle:@"Album" style:UIBarButtonItemStyleBordered

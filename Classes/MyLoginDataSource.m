@@ -34,7 +34,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)init {
-    if (self = [super init]) {
+    if ((self = [super init])) {
         self.model = [[[MyLoginModel alloc] init] autorelease];
 		
 		// view-only switch

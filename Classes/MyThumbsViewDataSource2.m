@@ -45,7 +45,7 @@
 
 // Initializes Datasource with a given item-id (album-id)
 - (id)initWithItemID:(NSString *)itemID {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		NSString *treeResourcePath = [[[@""
 		                                stringByAppendingString:@"/rest/tree/"]
 		                               stringByAppendingString:itemID]

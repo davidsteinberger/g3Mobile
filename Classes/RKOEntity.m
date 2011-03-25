@@ -80,7 +80,7 @@
 {
     //self = [[RKOEntity alloc] init];
     //if (self != nil)
-	if (self = [super init])
+	if ((self = [super init]))
     {
         self.id = [coder decodeObjectForKey:@"id"];
 		self.parent = [coder decodeObjectForKey:@"parent"];

@@ -80,7 +80,7 @@
 #pragma mark NSObject
 
 - (id)init {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		_width = 34;
 		_height = 34;
 		_description = @"";
@@ -96,7 +96,7 @@
 #pragma mark NSCoding
 
 - (id)initWithCoder:(NSCoder *)decoder {
-	if (self = [super initWithCoder:decoder]) {
+	if ((self = [super initWithCoder:decoder])) {
 		self.width = [decoder decodeFloatForKey:@"width"];
 		self.height = [decoder decodeFloatForKey:@"height"];
 		self.description = [decoder decodeObjectForKey:@"description"];

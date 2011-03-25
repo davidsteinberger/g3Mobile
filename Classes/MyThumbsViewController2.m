@@ -216,7 +216,7 @@
 
 // UIViewController standard init
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+	if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
 		self.title = @"Album View";
 		self.variableHeightRows = YES;
 
@@ -413,6 +413,15 @@
 // toggles overlay-menu
 - (void)toggleMetaData {
 	MyThumbsViewDataSource2 *ds = (MyThumbsViewDataSource2 *)self.dataSource;
+    
+    /* 
+     * This method might be called before the model is loaded
+     * In this event we do nothing
+     */
+    if ([((RKRequestTTModel*)self.model).objects count] == 0) {
+        return;
+    }
+    
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 	NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
 	

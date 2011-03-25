@@ -30,7 +30,7 @@ NSString *md5 (NSString *str) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)initWithSearchQuery:(NSString*)searchQuery {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		self.searchQuery = searchQuery;
 		self.comments = [NSMutableArray array];
 		self->_count = 0;		

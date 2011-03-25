@@ -36,7 +36,7 @@
 }
 
 - (id)initWithAlbumID:(NSString *)albumID {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		self.albumID = albumID;
 		PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:albumID];
 		self.photoSource = photosource;
