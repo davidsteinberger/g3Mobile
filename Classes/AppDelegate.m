@@ -286,7 +286,10 @@
 // Initializes RestKit
 - (void)initRestKit {
 	RKObjectManager *objectManager =
-	        [RKObjectManager objectManagerWithBaseURL:GlobalSettings.baseURL];
+	[[[RKObjectManager alloc] initWithBaseURL:GlobalSettings.baseURL] autorelease];      
+
+    [RKObjectManager setSharedManager:objectManager];
+    
 	RKObjectMapper *mapper = objectManager.mapper;
 	
 	[[RKRequestQueue sharedQueue] cancelAllRequests];
@@ -297,6 +300,8 @@
 	        [[[RKManagedObjectStore alloc] initWithStoreFilename:@ "g3CoreData.sqlite"]
 	         autorelease];
 	objectManager.objectStore.managedObjectCache = [[DBManagedObjectCache new] autorelease];
+    
+    // Set Gallery3 specific HTTP headers
 	[[objectManager client] setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
 	[[objectManager client] setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
 	
