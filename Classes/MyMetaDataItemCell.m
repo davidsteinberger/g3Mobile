@@ -24,7 +24,7 @@
 #import "MyMetaDataItemCell.h"
 
 // Three20
-#import "NSDateAdditions.h"
+#import "Three20Core/NSDateAdditions.h"
 
 // Custom cells (three20)
 #import "MyMetaDataItem.h"

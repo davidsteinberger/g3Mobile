@@ -28,7 +28,7 @@
     // don't like this, but if the model is not ready we need to keep waiting ...
     // hopefully I can rework later!
     if ([self.model.objects count] == 0) {
-        [self.model load];
+        [self.model load:TTURLRequestCachePolicyDefault more:NO];
         _fakeLoadTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self  
 														selector:@selector(fakeLoadReady) userInfo:nil repeats:NO];
 		return;

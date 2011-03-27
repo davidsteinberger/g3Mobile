@@ -2,7 +2,7 @@
 #import "MyCommentsViewController.h"
 
 #import "Three20UICommon/UIViewControllerAdditions.h"
-#import "NSObject+YAJL.h"
+#import "extThree20JSON/NSObject+YAJL.h"
 
 #import "MyCommentsDataSource.h"
 

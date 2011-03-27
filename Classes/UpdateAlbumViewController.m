@@ -7,7 +7,7 @@
 //
 
 #import "extThree20JSON/extThree20JSON.h"
-#import "NSObject+YAJL.h"
+#import "extThree20JSON/NSObject+YAJL.h"
 #import "MySettings.h"
 
 #import "AppDelegate.h"

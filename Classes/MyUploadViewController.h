@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Three20/Three20.h"
 
-#import "TTPostControllerDelegate.h"
+//#import "TTPostControllerDelegate.h"
 
 
 @interface MyUploadViewController : TTBaseViewController {
