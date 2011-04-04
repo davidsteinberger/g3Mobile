@@ -52,6 +52,7 @@
 #import "MySettings.h"
 
 // Others
+#import "TTTableViewController+g3.h"
 #import "UIImage+cropping.h"
 
 @interface MyThumbsViewController2 ()
@@ -193,7 +194,7 @@
 																   image:nil] autorelease];
 			errorView.backgroundColor = _tableView.backgroundColor;
 			
-			TTView* buttonMenu = [self buildOverlayMenu];
+			TTView* buttonMenu = [((TTTableViewController*)self) buildOverlayMenu];
 			[errorView addSubview:buttonMenu];
 			[errorView bringSubviewToFront:buttonMenu];
             

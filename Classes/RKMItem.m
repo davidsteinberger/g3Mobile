@@ -1,10 +1,27 @@
-//
-//  RKORelationShips.m
-//  G3RestKitTest
-//
-//  Created by David Steinberger on 3/3/11.
-//  Copyright 2011 -. All rights reserved.
-//
+/*
+ * RKMItem.m
+ * g3Mobile - an iPhone client for gallery3
+ *
+ * Created by David Steinberger on 4/4/2011.
+ *
+ * Copyright (c) 2011 David Steinberger
+ * All rights reserved.
+ *
+ * This file is part of g3Mobile.
+ *
+ * g3Mobile is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * g3Mobile is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with g3Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #import "RKMItem.h"
 
@@ -14,54 +31,89 @@
 @dynamic entity;
 @dynamic tags;
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark LifeCycle
+
 - (void)dealloc {
 	[super dealloc];
 }
 
-+ (NSDictionary*)elementToPropertyMappings {
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark RKObjectMappable
+
++ (NSDictionary *)elementToPropertyMappings {
 	return [NSDictionary dictionaryWithKeysAndObjects:
-			@"url", @"url",
-			nil];
+	        @"url", @"url",
+	        nil];
 }
 
-+ (NSDictionary*)elementToRelationshipMappings {
+
++ (NSDictionary *)elementToRelationshipMappings {
 	return [NSDictionary dictionaryWithKeysAndObjects:
-			@"entity", @"entity",			
-			@"relationships.tags", @"tags",
-			nil];
+	        @"entity", @"entity",
+	        @"relationships.tags", @"tags",
+	        nil];
 }
 
-+ (NSString*)primaryKeyProperty {
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark RKManagedObject
+
++ (NSString *)primaryKeyProperty {
 	return @"url";
 }
 
-@end
 
+@end
 
 @implementation RKOTags
 
 @dynamic url;
 @dynamic members;
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark LifeCycle
+
 - (void)dealloc {
 	[super dealloc];
 }
 
-+ (NSDictionary*)elementToPropertyMappings {
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark RKObjectMappable
+
++ (NSDictionary *)elementToPropertyMappings {
 	return [NSDictionary dictionaryWithKeysAndObjects:
-			@"url", @"url",
-			@"members", @"members",			
-			nil];
+	        @"url", @"url",
+	        @"members", @"members",
+	        nil];
 }
 
-+ (NSDictionary*)elementToRelationshipMappings {
+
++ (NSDictionary *)elementToRelationshipMappings {
 	return [NSDictionary dictionaryWithKeysAndObjects:
-			nil];
+	        nil];
 }
 
-+ (NSString*)primaryKeyProperty {
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark RKManagedObject
+
++ (NSString *)primaryKeyProperty {
 	return @"url";
 }
+
 
 @end
 
@@ -70,25 +122,40 @@
 @dynamic url;
 @dynamic tag;
 
-+ (NSDictionary*)elementToPropertyMappings {
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark LifeCycle
+
++ (NSDictionary *)elementToPropertyMappings {
 	return [NSDictionary dictionaryWithKeysAndObjects:
-			@"url", @"url",
-			@"entity.tag", @"tag",
-			nil];
+	        @"url", @"url",
+	        @"entity.tag", @"tag",
+	        nil];
 }
 
-+ (NSDictionary*)elementToRelationshipMappings {
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark RKObjectMappable
+
++ (NSDictionary *)elementToRelationshipMappings {
 	return [NSDictionary dictionaryWithKeysAndObjects:
-			nil];
+	        nil];
 }
 
-+ (NSString*)primaryKeyProperty {
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark RKManagedObject
+
++ (NSString *)primaryKeyProperty {
 	return @"url";
 }
 
+
 @end
-
-
 
 @implementation RKOTag
 
@@ -96,42 +163,66 @@
 @dynamic name;
 @dynamic count;
 
-+ (NSDictionary*)elementToPropertyMappings {
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark LifeCycle
+
++ (NSDictionary *)elementToPropertyMappings {
 	return [NSDictionary dictionaryWithKeysAndObjects:
-			@"url", @"url",
-			@"entity.name", @"name",
-			@"entity.count", @"count",
-			nil];
+	        @"url", @"url",
+	        @"entity.name", @"name",
+	        @"entity.count", @"count",
+	        nil];
 }
 
-+ (NSString*)primaryKeyProperty {
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark RKManagedObject
+
++ (NSString *)primaryKeyProperty {
 	return @"url";
 }
 
+
 @end
-
-
-
-
 
 @implementation RKOComments
 
 @synthesize url = _url;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark LifeCycle
 
 - (void)dealloc {
 	[_url release];
 	[super dealloc];
 }
 
-+ (NSDictionary*)elementToPropertyMappings {
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark RKObjectMappable
+
++ (NSDictionary *)elementToPropertyMappings {
 	return [NSDictionary dictionaryWithKeysAndObjects:
-			@"url", @"url",
-			nil];
+	        @"url", @"url",
+	        nil];
 }
 
-+ (NSDictionary*)elementToRelationshipMappings {
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark RKObjectMappable
+
++ (NSDictionary *)elementToRelationshipMappings {
 	return [NSDictionary dictionaryWithKeysAndObjects:
-			nil];
+	        nil];
 }
+
 
 @end
