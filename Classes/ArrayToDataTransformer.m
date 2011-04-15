@@ -24,6 +24,7 @@
  */
 
 #import "ArrayToDataTransformer.h"
+#import "RKOEntity.h"
 
 @implementation ArrayToDataTransformer
 
@@ -35,20 +36,46 @@
 	return YES;
 }
 
+
 + (Class)transformedValueClass {
-	return [NSData class ];
+	return [NSData class];
 }
+
 
 - (id)transformedValue:(id)value {
 	//Take an NSArray archive to NSData
+    
+    /*
+    if ([value isKindOfClass:[NSArray class]]) {
+        for (RKOEntity* entity in value) {
+            if ([entity isKindOfClass:[RKOEntity class]]) {
+                NSLog(@"album get stored: %@", entity.title);
+            }
+        }
+    }
+    */
+    
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:value];
 	return data;
 }
 
+
 - (id)reverseTransformedValue:(id)value {
 	//Take NSData unarchive to NSArray
-	NSArray *array = (NSArray *)[NSKeyedUnarchiver unarchiveObjectWithData : value];
+	NSArray *array = (NSArray *)[NSKeyedUnarchiver unarchiveObjectWithData:value];
+    
+    /*
+    if ([array isKindOfClass:[NSArray class]]) {
+        for (RKOEntity* entity in array) {
+            if ([entity isKindOfClass:[RKOEntity class]]) {
+                NSLog(@"album retrieved: %@", entity.title);
+            }
+        }
+    }
+    */
+    
 	return array;
 }
+
 
 @end

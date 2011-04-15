@@ -59,6 +59,7 @@
 	int _cntTags;
 	NSString *_tags;
 	UIImagePickerController *_pickerController;
+    BOOL _goBack;
 }
 
 @property (nonatomic, retain) NSString *itemID;

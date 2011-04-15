@@ -103,6 +103,7 @@
 
 		NSString *thumb_url =
 		        (item.thumb_url_public != nil) ? item.thumb_url_public : item.thumb_url;
+        //NSLog(@"item.thumb_url_public: %@", item.thumb_url_public);
 		if (thumb_url == nil) {
 			thumb_url = @"bundle://empty.png";
 		}

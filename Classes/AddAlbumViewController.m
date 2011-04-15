@@ -244,12 +244,13 @@
 		
 		NSArray* viewControllers = [self.navigationController viewControllers];
 		TTViewController* viewController = nil;
-		if ([viewControllers count] > 1) {
+		        
+        if ([viewControllers count] > 1) {
 			viewController = [viewControllers objectAtIndex:[viewControllers count]-2];
 			[self.navigationController popToViewController:viewController animated:YES];
-			[viewController performSelector:@selector(reload) withObject:nil afterDelay:1];	
+			[viewController reloadViewController:NO];
 		} else {
-			[self performSelector:@selector(reload) withObject:nil afterDelay:1];		
+			//[self performSelector:@selector(reloadViewController:) withObject:nil afterDelay:1];		
 		}
 	}
 }

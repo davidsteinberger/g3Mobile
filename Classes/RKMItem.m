@@ -25,6 +25,9 @@
 
 #import "RKMItem.h"
 
+// NSValueTransformer
+#import "ArrayToDataTransformer.h"
+
 @implementation RKMItem
 
 @dynamic url;
@@ -93,15 +96,15 @@
 
 + (NSDictionary *)elementToPropertyMappings {
 	return [NSDictionary dictionaryWithKeysAndObjects:
-	        @"url", @"url",
-	        @"members", @"members",
+	        @"url", @"url",	       
+            @"members", @"members",
 	        nil];
 }
 
 
 + (NSDictionary *)elementToRelationshipMappings {
 	return [NSDictionary dictionaryWithKeysAndObjects:
-	        nil];
+	         nil];
 }
 
 

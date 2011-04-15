@@ -13,6 +13,8 @@
 	UIAlertView* _progressAlert;
 	UIActivityIndicatorView* _activityView;
 	UIProgressView* _progressView;
+    
+    BOOL _goBack;
 }
 
 @property(nonatomic, copy) NSString* albumID;

@@ -11,6 +11,7 @@
 #import "MyImageUploader.h"
 #import "UIImage+resizing.h"
 #import "MyThumbsViewController.h"
+#import "MyViewController.h"
 
 static NSString* defaultCaption = @"Write a Caption ...";
 
@@ -143,7 +144,8 @@ static NSString* defaultCaption = @"Write a Caption ...";
 }
 
 - (void)uploaderDidUpload:(id)sender {
-	[((MyThumbsViewController*)self.delegate) reload];	
+	//[((MyThumbsViewController*)self.delegate) reload];	
+    [((id<MyViewController>)self.delegate) reloadViewController:NO];
 	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 	[self dismissModalViewControllerAnimated:YES];
 }

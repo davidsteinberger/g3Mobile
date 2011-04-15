@@ -50,7 +50,7 @@
 }
 
 @property (nonatomic, retain) NSString *url;
-@property (nonatomic, retain) NSSet *members;
+@property (nonatomic, retain) NSArray *members;
 
 @end
 

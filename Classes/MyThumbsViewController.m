@@ -11,6 +11,9 @@
 
 #import "UIImage+cropping.h"
 #import "MyUploadViewController.h"
+#import "Three20UI/TTPhotoSource.h"
+#import "MyViewController.h"
+#import "Three20UICommon/UIViewControllerAdditions.h"
 
 @interface MyThumbsViewController ()
 
@@ -26,6 +29,7 @@
 @synthesize albumID = _albumID;
 
 - (void)dealloc {
+    [[RKRequestQueue sharedQueue] cancelAllRequests];
 	self.albumID = nil;
 	TT_RELEASE_SAFELY(_photoSource);
 	TT_RELEASE_SAFELY(self->_toolbar);
@@ -47,7 +51,13 @@
 
 - (void)modelDidFinishLoad:(id <TTModel>)model {
 	self.title = self.photoSource.title;
+
+    self.photoSource = ((id<TTPhotoSource>)model);
 	[super modelDidFinishLoad:model];
+    
+    [self invalidateView];
+    [self refresh];
+    [self reloadIfNeeded];
 }
 
 // Shows the Login page with all the settings
@@ -177,12 +187,14 @@
 	PhotoSource* ps = (PhotoSource* ) self.photoSource;
 	[MyItemDeleter initWithItemID:ps.albumID];
 	
-	TTNavigator* navigator = [TTNavigator navigator];
-	[navigator removeAllViewControllers];
-	[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+	//TTNavigator* navigator = [TTNavigator navigator];
+	//[navigator removeAllViewControllers];
+	//[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
 	
 	// stop the indicator ...
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+    [((id<MyViewController>)self) reloadViewController:YES];
 }
 
 #pragma mark UIImagePickerController Methods
@@ -235,21 +247,39 @@
 	
 }
 
-- (void) viewWillAppear: (BOOL) animated
-{
-	[super viewWillAppear: animated];
+// Reloads the data -> resets the detail-view
+- (void)reload {
+	[super reload];
 }
 
-- (void) viewWillDisappear: (BOOL) animated
-{
-	[super viewWillDisappear: animated];
-} 
-
--(void) reload {
-	//[self updateView];
-	TTNavigator* navigator = [TTNavigator navigator];
-	[navigator removeAllViewControllers];
-	[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://thumbs/1"]];
+// Reloads after an action was taken
+- (void)reloadViewController:(BOOL)goBack {
+    self->_goBack = goBack;
+    
+    [((PhotoSource*)self.photoSource) load:TTURLRequestCachePolicyDefault more:NO];
+    //[((PhotoSource*)self.photoSource) invalidate:YES];
+    
+    [NSTimer scheduledTimerWithTimeInterval:2 target:self  
+                                   selector:@selector(finishUp) userInfo:nil repeats:NO];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
+
+- (void)finishUp {
+    PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:self.albumID];
+    self.photoSource = photosource;
+    TT_RELEASE_SAFELY(photosource);
+    [self reload];
+    [((MyThumbsViewController*)self.ttPreviousViewController) invalidateView];
+    
+    NSArray *viewControllers = [self.navigationController viewControllers];
+    TTViewController* viewController;
+    if ([viewControllers count] > 1 && self->_goBack) {
+        viewController = [viewControllers objectAtIndex:[viewControllers count] - 2];
+        [self.navigationController popToViewController:viewController animated:YES];
+        [(TTNavigator*)[TTNavigator navigator] performSelector:@selector(reload) withObject:nil afterDelay:1];
+	}
+}
+
 
 @end

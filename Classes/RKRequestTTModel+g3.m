@@ -28,7 +28,7 @@
 	RKManagedObjectStore* store = [RKObjectManager sharedManager].objectStore;
 	NSArray* cacheFetchRequests = nil;
 	NSArray* cachedObjects = nil;
-	if (store.managedObjectCache) {
+	if (store.managedObjectCache && !forceReload) {
 		cacheFetchRequests = [store.managedObjectCache fetchRequestsForResourcePath:_resourcePath];
 		cachedObjects = [RKManagedObject objectsWithFetchRequests:cacheFetchRequests];
 		return cachedObjects;
@@ -41,11 +41,10 @@
 		objectLoader.objectClass = _objectClass;
 		objectLoader.keyPath = _keyPath;
 		objectLoader.params = self.params;
-		
+        
 		_isLoading = YES;
 		[self didStartLoad];
-		
-		return [objectLoader sendSynchronously];		
+		[objectLoader send];		
 	}
 	return nil;
 }

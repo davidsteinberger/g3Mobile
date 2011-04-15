@@ -272,7 +272,8 @@
 	[navigator.rootViewController.navigationController popToViewController:navigator.
 	 rootViewController                                           animated:YES];
 	if (GlobalSettings.viewStyle == kAlbumView) {
-		[navigator openURLAction:[[TTURLAction actionWithURLPath:@ "tt://album/1"]
+		[navigator removeAllViewControllers];
+        [navigator openURLAction:[[TTURLAction actionWithURLPath:@ "tt://album/1"]
 		                          applyAnimated:YES]];
 	}
 	if (GlobalSettings.viewStyle == kThumbView) {

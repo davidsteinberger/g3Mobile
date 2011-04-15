@@ -33,6 +33,7 @@
 #import "RKMTree.h"
 
 // Datasource and custom cells (three20)
+#import "MyViewController.h"
 #import "MyThumbsViewDataSource2.h"
 #import "MyAlbumItem.h"
 #import "MyAlbumItemCell.h"
@@ -52,8 +53,10 @@
 #import "MySettings.h"
 
 // Others
+#import "Three20UICommon/UIViewControllerAdditions.h"
 #import "TTTableViewController+g3.h"
 #import "UIImage+cropping.h"
+#import "Three20UINavigator/private/TTBaseNavigatorInternal.h"
 
 @interface MyThumbsViewController2 ()
 
@@ -83,9 +86,6 @@
 
 // toggles overlay-menu
 - (void)toggleMetaData;
-
-// Reloads after an action was taken
-- (void)controllerDidFinishAction:(BOOL)success;
 
 @end
 
@@ -138,9 +138,40 @@
 
 // Reloads the data -> resets the detail-view
 - (void)reload {
+    [super reload];
 	self.showDetails = YES;
-	[super reload];
 }
+
+
+// Reloads after an action was taken
+- (void)reloadViewController:(BOOL)goBack {
+	self->_goBack = goBack;
+    
+    //[self.model invalidate:YES];
+    [self.model load:TTURLRequestCachePolicyDefault more:NO];
+    
+    [NSTimer scheduledTimerWithTimeInterval:2 target:self  
+                                   selector:@selector(finishUp) userInfo:nil repeats:NO];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
+
+- (void)finishUp {
+    self.dataSource = [[[MyThumbsViewDataSource2 alloc]
+	                    initWithItemID:self.itemID] autorelease];
+    [self reload];
+    [((MyThumbsViewController*)self.ttPreviousViewController) invalidateView];
+    
+    NSArray *viewControllers = [self.navigationController viewControllers];
+    TTViewController* viewController;
+    if ([viewControllers count] > 1 && self->_goBack) {
+        viewController = [viewControllers objectAtIndex:[viewControllers count] - 2];
+        [self.navigationController popToViewController:viewController animated:YES];
+        [(TTNavigator*)[TTNavigator navigator] performSelector:@selector(reload) withObject:nil afterDelay:1];
+	}
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,6 +187,7 @@
         RKOEntity *entity = [response.entities objectAtIndex:0];
 
         self.title = entity.title;
+
         [super modelDidFinishLoad:model];
     }
 }
@@ -674,7 +706,7 @@
 	[updater update];
 	TT_RELEASE_SAFELY(updater);
 
-	[self controllerDidFinishAction:YES];
+	[((id<MyViewController>)self) reloadViewController:YES]; 
 }
 
 
@@ -708,8 +740,7 @@
 
 	[MyItemDeleter initWithItemID:itemID];
 
-	[self controllerDidFinishAction:YES];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [((id<MyViewController>)self) reloadViewController:YES];
 }
 
 
@@ -727,25 +758,6 @@
 			[self performSelector:@selector(deleteCurrentItem) withObject:Nil
 			           afterDelay:0.05];
 		}
-	}
-}
-
-
-// Reloads after an action was taken
-- (void)controllerDidFinishAction:(BOOL)success {
-	NSArray *viewControllers = [self.navigationController viewControllers];
-	TTViewController *viewController = nil;
-	if ([viewControllers count] > 1) {
-		viewController = [viewControllers objectAtIndex:[viewControllers count] - 2];
-		[self.navigationController popToViewController:viewController animated:YES];
-		[self performSelector:@selector(reload) withObject:nil afterDelay:0];
-		[viewController performSelector:@selector(reload) withObject:nil afterDelay:1];
-	}
-	else {
-		TTNavigator *navigator = [TTNavigator navigator];
-		[navigator removeAllViewControllers];
-		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://album/1"]
-		                          applyAnimated:YES]];
 	}
 }
 

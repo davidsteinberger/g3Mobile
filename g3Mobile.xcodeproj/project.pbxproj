@@ -213,6 +213,13 @@
 			remoteGlobalIDString = BEF31F3A0F352DF5000DE5D2;
 			remoteInfo = Three20UI;
 		};
+		6385AF5C13525D9E00314D68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63B53B0B133FDECA00460020 /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25BD43BD1340315800DBACDD;
+			remoteInfo = "RestKitXMLParser+Libxml";
+		};
 		63B53B18133FDECB00460020 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 63B53B0B133FDECA00460020 /* RestKit.xcodeproj */;
@@ -484,6 +491,7 @@
 		63BD778B130C6648001FC9AF /* MyMetaDataItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyMetaDataItemCell.m; sourceTree = "<group>"; };
 		63C266FB132EEAA10086729D /* NSData+base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+base64.h"; sourceTree = "<group>"; };
 		63C266FC132EEAA10086729D /* NSData+base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+base64.m"; sourceTree = "<group>"; };
+		63C5E14313537BE80053ED0A /* MyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyViewController.h; sourceTree = "<group>"; };
 		63CE230E132420D800D65CBD /* RKRequestTTModel+g3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RKRequestTTModel+g3.h"; sourceTree = "<group>"; };
 		63CE230F132420D800D65CBD /* RKRequestTTModel+g3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RKRequestTTModel+g3.m"; sourceTree = "<group>"; };
 		63D972A6132ED321008F6095 /* MyLongPressGestureDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLongPressGestureDelegate.h; sourceTree = "<group>"; };
@@ -711,6 +719,7 @@
 				630FBE7F12FD7A3400B4629A /* MyThumbsViewDataSource2.h */,
 				630FBE8012FD7A3400B4629A /* MyThumbsViewDataSource2.m */,
 				637079681323D27C00A3198A /* MyItem.h */,
+				63C5E14313537BE80053ED0A /* MyViewController.h */,
 				630FC46912FF3F4400B4629A /* MyAlbumItem.h */,
 				630FC46A12FF3F4400B4629A /* MyAlbumItem.m */,
 				630FC45312FF3CCA00B4629A /* MyAlbumItemCell.h */,
@@ -986,6 +995,7 @@
 				63B53B1F133FDECB00460020 /* libRestKitJSONParserYAJL.a */,
 				63B53B21133FDECB00460020 /* libRestKitJSONParserSBJSON.a */,
 				63B53B23133FDECB00460020 /* libRestKitJSONParserJSONKit.a */,
+				6385AF5D13525D9E00314D68 /* libRestKitXMLParserLibxml.a */,
 				63B53B25133FDECB00460020 /* libRestKitCoreData.a */,
 				63B53B27133FDECB00460020 /* libRestKitThree20.a */,
 				63B53B29133FDECB00460020 /* UISpec.app */,
@@ -1139,6 +1149,13 @@
 			fileType = archive.ar;
 			path = libThree20UI.a;
 			remoteRef = 320F2C48872C2E2C4DF86206 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6385AF5D13525D9E00314D68 /* libRestKitXMLParserLibxml.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRestKitXMLParserLibxml.a;
+			remoteRef = 6385AF5C13525D9E00314D68 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		63B53B19133FDECB00460020 /* libRestKitNetwork.a */ = {
@@ -1435,6 +1452,7 @@
 					"-lsqlite3",
 				);
 				PRODUCT_NAME = g3Mobile;
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 			};
 			name = Debug;
@@ -1466,6 +1484,7 @@
 					"-lsqlite3",
 				);
 				PRODUCT_NAME = g3Mobile;
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1524,6 +1543,7 @@
 				);
 				PRODUCT_NAME = g3Mobile;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				VALIDATE_PRODUCT = YES;
 			};

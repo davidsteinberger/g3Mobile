@@ -7,8 +7,10 @@
 //
 
 #import "MyPhotoViewController.h"
+#import "Three20UICommon/UIViewControllerAdditions.h"
 
 #import "AppDelegate.h"
+#import "MyViewController.h"
 #import "PhotoSource.h"
 #import "MyItemDeleter.h"
 #import "MyAlbumUpdater.h"
@@ -165,13 +167,7 @@
 		[updater update];
 		TT_RELEASE_SAFELY(updater);
 		
-		MyAlbum* g3Album = [[MyAlbum alloc] initWithID:albumID];
-		[MyAlbum updateFinishedWithItemURL:[g3Album.albumEntity valueForKey:@"parent"]];
-		TT_RELEASE_SAFELY(g3Album);
-		
-		TTNavigator* navigator = [TTNavigator navigator];
-		[navigator removeAllViewControllers];
-		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];		
+        [((id<MyViewController>)self.ttPreviousViewController) reloadViewController:YES];
 	}
 	if (buttonIndex == 2) {
 		//NSLog(@"photo: %@", [_centerPhoto URLForVersion:TTPhotoVersionLarge]);		
@@ -209,12 +205,11 @@
 	[MyItemDeleter initWithItemID:photoID];	
 	
 	[MyAlbum updateFinishedWithItemURL:p.parentURL];
-	TTNavigator* navigator = [TTNavigator navigator];
-	[navigator removeAllViewControllers];
-	[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];	
 	
 	// stop the indicator ...
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    [((id<MyViewController>)self.ttPreviousViewController) reloadViewController:YES];
 }
 
 -(void) reload {
