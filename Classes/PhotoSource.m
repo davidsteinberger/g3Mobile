@@ -15,113 +15,103 @@
 
 @implementation PhotoSource
 
-@synthesize model = _model;
 @synthesize title = _title;
 @synthesize albumID = _albumID;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // private
 
-- (void)fakeLoadReady {
-	_fakeLoadTimer = nil;
-    
-    // don't like this, but if the model is not ready we need to keep waiting ...
-    // hopefully I can rework later!
-    if ([self.model.objects count] == 0) {
-        [self.model load:TTURLRequestCachePolicyDefault more:NO];
-        _fakeLoadTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self  
-														selector:@selector(fakeLoadReady) userInfo:nil repeats:NO];
-		return;
+- (NSMutableArray*)delegates {
+    if (nil == _delegates) {
+        _delegates = TTCreateNonRetainingArray();
     }
-
-	RKMTree* response = [self.model.objects objectAtIndex:0];
-	
-	if ([response.entities count] == 0) {
-		_fakeLoadTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self  
-														selector:@selector(fakeLoadReady) userInfo:nil repeats:NO];
-		return;
-	}
-	
-	
-	if (_type & MockPhotoSourceLoadError) {
-		[_delegates perform:@selector(model:didFailLoadWithError:)
-		         withObject:self
-		         withObject:nil];
-	}
-	
-	else {
-		
-		NSArray* newPhotos = [self buildArrayOfPhotos:self.model.objects forAlbum:self.albumID photosOnly:NO];
-
-		self.title = [self getAlbumTitle:self.model.objects];
-		[_photos release];
-		_photos = [newPhotos retain];
-
-		for (int i = 0; i < _photos.count; ++i) {
-			id <TTPhoto> photo = [_photos objectAtIndex:i];
-			if ( (NSNull *)photo != [NSNull null] ) {
-				photo.photoSource = self;
-				photo.index = i;
-			}
-		}
-
-		[_delegates perform:@selector(modelDidFinishLoad:) withObject:self];		
-	}
+    return _delegates;
 }
 
+- (void)modelDidFinishLoad:(id)object {
+    if ([self.objects count] == 0) {
+        return;
+    }
+    
+    NSArray* newPhotos = [self buildArrayOfPhotos:self.objects forAlbum:self.albumID photosOnly:NO];
+    
+    self.title = [self getAlbumTitle:self.objects];
+    [_photos release];
+    _photos = [newPhotos retain];
+    
+    for (int i = 0; i < _photos.count; ++i) {
+        id <TTPhoto> photo = [_photos objectAtIndex:i];
+        if ( (NSNull *)photo != [NSNull null] ) {
+            photo.photoSource = self;
+            photo.index = i;
+        }
+    }    
+    
+    [_delegates perform:@selector(modelDidFinishLoad:) withObject:self];
+}
 
+- (void)modelsDidLoad:(NSArray*)models {
+	[models retain];
+	[_objects release];
+	_objects = nil;
+    
+	_objects = models;
+	_isLoaded = YES;
+    
+	[self didFinishLoad];
+    
+    if ([self.objects count] == 0) {
+        return;
+    }
+    
+    NSArray* newPhotos = [self buildArrayOfPhotos:self.objects forAlbum:self.albumID photosOnly:NO];
+    
+    self.title = [self getAlbumTitle:self.objects];
+    [_photos release];
+    _photos = [newPhotos retain];
+    
+    for (int i = 0; i < _photos.count; ++i) {
+        id <TTPhoto> photo = [_photos objectAtIndex:i];
+        if ( (NSNull *)photo != [NSNull null] ) {
+            photo.photoSource = self;
+            photo.index = i;
+        }
+    }
+    
+    [_delegates perform:@selector(modelDidFinishLoad:) withObject:self];	
+}
 
 - (id)initWithItemID:(NSString*)itemID
 {
-    if ((self = [super init])) {
+    NSString* treeResourcePath = [[[@"" 
+                                    stringByAppendingString:@"/rest/tree/"] 
+                                   stringByAppendingString:itemID]
+                                  stringByAppendingString:@"?depth=1"];
+    
+    if ((self = [self initWithResourcePath:treeResourcePath
+                                    params:nil objectClass:[RKMTree class]])) {
         self.title = @"Photos";
 		self.albumID = itemID;
-        NSString* treeResourcePath = [[[@"" 
-										stringByAppendingString:@"/rest/tree/"] 
-									   stringByAppendingString:itemID]
-									  stringByAppendingString:@"?depth=1"];
 		
-		[RKRequestTTModel setDefaultRefreshRate:3600];
-		RKRequestTTModel* myModel = [[RKRequestTTModel alloc] 
-									 initWithResourcePath:treeResourcePath
-									 params:nil objectClass:[RKMTree class]];
-		self.model = myModel;
-		[myModel load:TTURLRequestCachePolicyDefault more:NO];
-		
-		TT_RELEASE_SAFELY(myModel);
-
-		_fakeLoadTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self  
-														selector:@selector(fakeLoadReady) userInfo:nil repeats:NO];
+        [self load:TTURLRequestCachePolicyDefault more:NO];
     }
     return self;
 }
 
+// TTModel
+- (BOOL)isLoaded {
+    return !!_photos;
+}
+
 - (void)dealloc {
-	[_fakeLoadTimer invalidate];
+    [[RKRequestQueue sharedQueue] cancelAllRequests];
 	TT_RELEASE_SAFELY(_newPhotos);
-	TT_RELEASE_SAFELY(_model);
 	TT_RELEASE_SAFELY(_photos);
 	TT_RELEASE_SAFELY(_title);
 
 	TT_RELEASE_SAFELY(_albumID);
 
 	[super dealloc];
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// TTModel
-
-- (BOOL)isLoading {
-	return !!_fakeLoadTimer;
-}
-
-- (BOOL)isLoaded {
-	return !!_photos;
-}
-
-- (void)cancel {
-	[_fakeLoadTimer invalidate];
-	_fakeLoadTimer = nil;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,7 +126,7 @@
 }
 
 - (id <TTPhoto>)photoAtIndex:(NSInteger)photoIndex {
-	if (photoIndex < _photos.count) {
+    if (photoIndex < _photos.count) {
 		id photo = [_photos objectAtIndex:photoIndex];
 		if (photo == [NSNull null]) {
 			return nil;
@@ -239,18 +229,11 @@
 								   stringByAppendingString:albumID]
 								  stringByAppendingString:@"?depth=1"];
 	
-	[RKRequestTTModel setDefaultRefreshRate:3600];
-	RKRequestTTModel* myModel = [[RKRequestTTModel alloc] 
-								 initWithResourcePath:treeResourcePath
-								 params:nil objectClass:[RKMTree class]];
-
-	NSArray* objects = [myModel loadSynchronous:NO];
-	
-	NSString* albumParent = nil;
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	albumParent = [appDelegate.baseURL stringByAppendingString:@"/rest/item/1"];
-	
-	PhotoSource* myPhotoSource = [[PhotoSource alloc] init];
+    PhotoSource* myPhotoSource;
+    
+	myPhotoSource = [[PhotoSource alloc] initWithResourcePath:treeResourcePath
+                                                 params:nil objectClass:[RKMTree class]];
+    NSArray* objects = [myPhotoSource loadSynchronous:NO];
 	
 	NSArray* newPhotos = [myPhotoSource buildArrayOfPhotos:objects forAlbum:albumID photosOnly:YES];
 	for (int i = 0; i < newPhotos.count; ++i) {
@@ -267,7 +250,7 @@
 	myPhotoSource.title = [myPhotoSource getAlbumTitle:objects];
 	myPhotoSource->_photos = [newPhotos retain];
 	
-	TT_RELEASE_SAFELY(myModel);
+	//TT_RELEASE_SAFELY(myModel);
 	return myPhotoSource;
 }
 

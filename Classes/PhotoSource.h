@@ -14,17 +14,14 @@ typedef enum {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-@interface PhotoSource : TTURLRequestModel <TTPhotoSource> {
+@interface PhotoSource : RKRequestTTModel <TTPhotoSource> {
 	MockPhotoSourceType _type;
 	NSMutableArray* _newPhotos;
 	NSMutableArray* _photos;
-	NSTimer* _fakeLoadTimer;
-	RKRequestTTModel* _model;
 	NSString* _albumID;
 	NSString* _title;
 }
 
-@property (nonatomic, retain) RKRequestTTModel* model;
 @property (nonatomic, retain) NSString* albumID;
 @property (nonatomic, copy) NSString* title;
 
