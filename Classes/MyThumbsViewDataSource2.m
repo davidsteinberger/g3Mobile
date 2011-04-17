@@ -51,7 +51,7 @@
 		                               stringByAppendingString:itemID]
 		                              stringByAppendingString:@"?depth=1"];
 
-		[RKRequestTTModel setDefaultRefreshRate:3600];
+		//[RKRequestTTModel setDefaultRefreshRate:3600];
 		RKRequestTTModel *myModel = [[RKRequestTTModel alloc]
 		                             initWithResourcePath:treeResourcePath
 		                                           params:nil objectClass:[RKMTree class]];

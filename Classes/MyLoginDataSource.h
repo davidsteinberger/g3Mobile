@@ -7,6 +7,8 @@
     UITextField* _passwordField;
 	UISlider* _imageQualityField;
 	TTView* _segmentedControlFrame;
+    UITextField* _buildDateField;
+    UITextField* _buildVersionField;
 }
 
 @property (nonatomic, readonly) UITextField* baseURL;

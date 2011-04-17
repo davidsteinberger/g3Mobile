@@ -87,12 +87,10 @@ withImageQuality:(float) imageQuality {
 	
 	if (!challenge || [challenge isEqual:@""]) {
 		challenge = [[MyDatabase readSettingsFromDatabase] objectForKey:@"challenge"];
-		//challenge = @"6b27e31c164657fea05fd0d28fecb120";
 		self.challenge = challenge;
 	}
 	
 	return (challenge) ? challenge : @"" ;
-	//return @"";
 }
 
 - (void)setChallenge:(NSString*)challenge {

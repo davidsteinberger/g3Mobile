@@ -146,9 +146,21 @@
 // Reloads after an action was taken
 - (void)reloadViewController:(BOOL)goBack {
 	self->_goBack = goBack;
+    MyThumbsViewController2* parent = ((MyThumbsViewController2*)self.ttPreviousViewController);
     
-    //[self.model invalidate:YES];
-    [self.model load:TTURLRequestCachePolicyDefault more:NO];
+    RKRequestTTModel *model = (RKRequestTTModel *)[self.dataSource model];
+    RKMTree *response = (RKMTree *)[model.objects objectAtIndex:0];
+    RKOEntity *entity = (RKOEntity *)[response.entities objectAtIndex:0];
+    
+    if (![entity.thumb_url_public isEqualToString:@""] && entity.thumb_url_public != nil) {
+        [[TTURLCache sharedCache] removeURL:entity.thumb_url_public fromDisk:YES];
+    }
+    if (![entity.thumb_url isEqualToString:@""] && entity.thumb_url != nil) {
+        [[TTURLCache sharedCache] removeURL:entity.thumb_url fromDisk:YES];
+    }
+    
+    [self reload];
+    [parent.model load:TTURLRequestCachePolicyDefault more:NO];
     
     [NSTimer scheduledTimerWithTimeInterval:2 target:self  
                                    selector:@selector(finishUp) userInfo:nil repeats:NO];
@@ -158,9 +170,6 @@
 
 
 - (void)finishUp {
-    self.dataSource = [[[MyThumbsViewDataSource2 alloc]
-	                    initWithItemID:self.itemID] autorelease];
-    [self reload];
     [((MyThumbsViewController*)self.ttPreviousViewController) invalidateView];
     
     NSArray *viewControllers = [self.navigationController viewControllers];

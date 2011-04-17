@@ -14,6 +14,7 @@
 #import "Three20UI/TTPhotoSource.h"
 #import "MyViewController.h"
 #import "Three20UICommon/UIViewControllerAdditions.h"
+#import "MySettings.h"
 
 @interface MyThumbsViewController ()
 
@@ -256,8 +257,21 @@
 - (void)reloadViewController:(BOOL)goBack {
     self->_goBack = goBack;
     
+    MyThumbsViewController* parent = ((MyThumbsViewController*)self.ttPreviousViewController);
+    
+    RKRequestTTModel *model = (RKRequestTTModel *)self.photoSource;
+    RKMTree *response = (RKMTree *)[model.objects objectAtIndex:0];
+    RKOEntity *entity = (RKOEntity *)[response.entities objectAtIndex:0];
+    
+    if (![entity.thumb_url_public isEqualToString:@""] && entity.thumb_url_public != nil) {
+        [[TTURLCache sharedCache] removeURL:entity.thumb_url_public fromDisk:YES];
+    }
+    if (![entity.thumb_url isEqualToString:@""] && entity.thumb_url != nil) {
+        [[TTURLCache sharedCache] removeURL:entity.thumb_url fromDisk:YES];
+    }
+    
     [((PhotoSource*)self.photoSource) load:TTURLRequestCachePolicyDefault more:NO];
-    //[((PhotoSource*)self.photoSource) invalidate:YES];
+    [((PhotoSource*)parent.photoSource) load:TTURLRequestCachePolicyDefault more:NO];
     
     [NSTimer scheduledTimerWithTimeInterval:2 target:self  
                                    selector:@selector(finishUp) userInfo:nil repeats:NO];
@@ -266,9 +280,6 @@
 }
 
 - (void)finishUp {
-    PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:self.albumID];
-    self.photoSource = photosource;
-    TT_RELEASE_SAFELY(photosource);
     [self reload];
     [((MyThumbsViewController*)self.ttPreviousViewController) invalidateView];
     
@@ -281,5 +292,41 @@
 	}
 }
 
+- (void)showEmpty:(BOOL)show {
+    NSLog(@"empty");
+    
+    RKRequestTTModel *model = (RKRequestTTModel *)self.photoSource;
+    NSArray* objects = model.objects;
+    
+    /*
+     * We expect a tree-resource
+     * Should the resource have only 1 object the load was complete and  no children found
+     * --> empty album
+     */
+    if ([objects count] == 1) {        
+		NSString* title = [_dataSource titleForEmpty];
+		NSString* subtitle = [_dataSource subtitleForEmpty];
+		UIImage* image = [_dataSource imageForEmpty];
+        
+		if (title.length || subtitle.length || image) {
+			TTErrorView* errorView = [[[TTErrorView alloc] initWithTitle:title
+																subtitle:subtitle
+																   image:nil] autorelease];
+			errorView.backgroundColor = _tableView.backgroundColor;
+			
+			TTView* buttonMenu = [((TTTableViewController*)self) buildOverlayMenu];
+			[errorView addSubview:buttonMenu];
+			[errorView bringSubviewToFront:buttonMenu];
+            
+			self.emptyView = errorView;
+		} else {
+			self.emptyView = nil;
+		}
+		_tableView.dataSource = nil;
+		[_tableView reloadData];
+	} else {
+		self.emptyView = nil;
+	}
+}
 
 @end

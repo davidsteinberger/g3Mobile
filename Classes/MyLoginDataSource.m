@@ -78,6 +78,16 @@
 		
 		//_baseURL.text = @"http://192.168.1.89/~David/gallery3/index.php"; //@"http://www.menalto.com/photos";
 		_baseURL.text = GlobalSettings.baseURL;
+        
+        _buildDateField = [[UITextField alloc] init];
+        _buildDateField.text = @"";
+        _buildDateField.textAlignment = UITextAlignmentRight;
+        _buildDateField.enabled = NO;
+        
+        _buildVersionField = [[UITextField alloc] init];
+        _buildVersionField.text = @"";
+        _buildVersionField.textAlignment = UITextAlignmentRight;
+        _buildVersionField.enabled = NO;
     }
     return self;
 }
@@ -91,6 +101,8 @@
     TT_RELEASE_SAFELY(_usernameField);
     TT_RELEASE_SAFELY(_passwordField);
 	TT_RELEASE_SAFELY(_segmentedControlFrame);
+    TT_RELEASE_SAFELY(_buildDateField);
+    TT_RELEASE_SAFELY(_buildVersionField);
     [super dealloc];
 }
 
@@ -272,7 +284,11 @@
 						 action:@selector(dispatchToRootController:)
 			   forControlEvents:UIControlEventValueChanged];
 	[_segmentedControlFrame addSubview:segmentedControl];
-	TT_RELEASE_SAFELY(segmentedControl);	
+	TT_RELEASE_SAFELY(segmentedControl);
+    
+    // build version
+    TTTableControlItem* cBuildDate = [TTTableControlItem itemWithCaption:@"Build" control:_buildDateField];
+    TTTableControlItem* cBuildVersion = [TTTableControlItem itemWithCaption:@"Build" control:_buildVersionField];
 	
 	// put everything together (for the ttsectioneddatasource)
 	// create sections
@@ -282,6 +298,7 @@
 	[sections addObject:@"Other"];
 	[sections addObject:@"Cache Settings"];
 	[sections addObject: @"View Settings"];
+    [sections addObject: @"Version Info"];
 	
 	NSMutableArray *section0 = [[NSMutableArray alloc] init];
 	[section0 addObject:cViewOnly];
@@ -305,6 +322,10 @@
 	// section 4 will hold button for chossing the view-style
 	NSMutableArray *section4 = [[NSMutableArray alloc] init];
 	[section4 addObject:_segmentedControlFrame];
+    // section 5 will hold version info
+    NSMutableArray *section5 = [[NSMutableArray alloc] init];
+    [section5 addObject:cBuildDate];
+    [section5 addObject:cBuildVersion];
 	
 	// create array for ttsectioneddatasource
 	NSMutableArray *items = [[NSMutableArray alloc] init];
@@ -312,12 +333,14 @@
 	[items addObject:section1];
 	[items addObject:section2];
 	[items addObject:section3];
-	[items addObject: section4];
+	[items addObject:section4];
+    [items addObject:section5];
 	TT_RELEASE_SAFELY(section0);
 	TT_RELEASE_SAFELY(section1);
 	TT_RELEASE_SAFELY(section2);
 	TT_RELEASE_SAFELY(section3);
 	TT_RELEASE_SAFELY(section4);
+    TT_RELEASE_SAFELY(section5);
 	
 	self.items = items;
 	self.sections = sections;

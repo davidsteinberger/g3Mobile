@@ -7,6 +7,12 @@
 #import "MySettings.h"
 #import "MyAlbum.h"
 
+#import <CoreData/CoreData.h>
+
+// RestKit
+#import <RestKit/RestKit.h>
+#import <RestKit/CoreData/RKManagedObjectStore.h>
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,9 +53,14 @@
 		[MyAlbum updateFinished];
 		TTNavigator *navigator = [TTNavigator navigator];
 		[navigator removeAllViewControllers];
-		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
+		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://album/1"] applyAnimated:YES]];
+        
+        RKObjectManager* objectManager = [RKObjectManager sharedManager];
+        [objectManager.objectStore deletePersistantStore];
 	}	
 }
+
+
 
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
 	
