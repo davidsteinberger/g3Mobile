@@ -287,8 +287,8 @@
 	TT_RELEASE_SAFELY(segmentedControl);
     
     // build version
-    TTTableControlItem* cBuildDate = [TTTableControlItem itemWithCaption:@"Build" control:_buildDateField];
-    TTTableControlItem* cBuildVersion = [TTTableControlItem itemWithCaption:@"Build" control:_buildVersionField];
+    TTTableControlItem* cBuildDate = [TTTableControlItem itemWithCaption:@"Build-Date" control:_buildDateField];
+    TTTableControlItem* cBuildVersion = [TTTableControlItem itemWithCaption:@"Build-Version" control:_buildVersionField];
 	
 	// put everything together (for the ttsectioneddatasource)
 	// create sections

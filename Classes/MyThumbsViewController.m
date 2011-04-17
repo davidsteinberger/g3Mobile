@@ -52,13 +52,7 @@
 
 - (void)modelDidFinishLoad:(id <TTModel>)model {
 	self.title = self.photoSource.title;
-
-    self.photoSource = ((id<TTPhotoSource>)model);
 	[super modelDidFinishLoad:model];
-    
-    [self invalidateView];
-    [self refresh];
-    [self reloadIfNeeded];
 }
 
 // Shows the Login page with all the settings
@@ -184,6 +178,16 @@
 	}
 }
 
+// Confirms via dialog that the current item should be deleted
+- (void)deleteCurrentItem:(id)sender {
+	UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
+	[dialog setDelegate:self];
+	[dialog setTitle:@"Confirm Deletion"];
+	[dialog addButtonWithTitle:@"Cancel"];
+	[dialog addButtonWithTitle:@"OK"];
+	[dialog show];
+}
+
 - (void)deleteCurrentItem {
 	PhotoSource* ps = (PhotoSource* ) self.photoSource;
 	[MyItemDeleter initWithItemID:ps.albumID];
@@ -280,7 +284,11 @@
 }
 
 - (void)finishUp {
+    PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:self.albumID];
+    self.photoSource = photosource;
+    TT_RELEASE_SAFELY(photosource);
     [self reload];
+    
     [((MyThumbsViewController*)self.ttPreviousViewController) invalidateView];
     
     NSArray *viewControllers = [self.navigationController viewControllers];
@@ -292,9 +300,7 @@
 	}
 }
 
-- (void)showEmpty:(BOOL)show {
-    NSLog(@"empty");
-    
+- (void)showEmpty:(BOOL)show {    
     RKRequestTTModel *model = (RKRequestTTModel *)self.photoSource;
     NSArray* objects = model.objects;
     
@@ -303,7 +309,7 @@
      * Should the resource have only 1 object the load was complete and  no children found
      * --> empty album
      */
-    if ([objects count] == 1) {        
+    if ([objects count] == 1 && show) {        
 		NSString* title = [_dataSource titleForEmpty];
 		NSString* subtitle = [_dataSource subtitleForEmpty];
 		UIImage* image = [_dataSource imageForEmpty];
@@ -328,5 +334,6 @@
 		self.emptyView = nil;
 	}
 }
+
 
 @end

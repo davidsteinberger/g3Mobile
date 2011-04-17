@@ -15,7 +15,7 @@
 #import "MyAlbum.h"
 
 #import "AddAlbumViewController.h"
-
+#import "MyViewController.h"
 
 @implementation AddAlbumViewController
 
@@ -248,9 +248,7 @@
         if ([viewControllers count] > 1) {
 			viewController = [viewControllers objectAtIndex:[viewControllers count]-2];
 			[self.navigationController popToViewController:viewController animated:YES];
-			[viewController reloadViewController:NO];
-		} else {
-			//[self performSelector:@selector(reloadViewController:) withObject:nil afterDelay:1];		
+			[((id<MyViewController>)viewController) reloadViewController:NO];
 		}
 	}
 }
