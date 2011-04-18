@@ -92,6 +92,7 @@
 		63BD76C2130C5A31001FC9AF /* TTTableViewDataSource+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BD76C1130C5A31001FC9AF /* TTTableViewDataSource+g3.m */; };
 		63BD778C130C6648001FC9AF /* MyMetaDataItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BD778B130C6648001FC9AF /* MyMetaDataItemCell.m */; };
 		63C266FD132EEAA10086729D /* NSData+base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C266FC132EEAA10086729D /* NSData+base64.m */; };
+		63C8858D135CF34A00BDCE89 /* UIImage+scaleAndRotate.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C8858C135CF34900BDCE89 /* UIImage+scaleAndRotate.m */; };
 		63CE2310132420D800D65CBD /* RKRequestTTModel+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CE230F132420D800D65CBD /* RKRequestTTModel+g3.m */; };
 		63E0C2E0132039A100BDD139 /* MyTagHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E0C2DF132039A100BDD139 /* MyTagHelper.m */; };
 		63E13C7F12BED4C6003248F4 /* AddAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */; };
@@ -492,6 +493,8 @@
 		63C266FB132EEAA10086729D /* NSData+base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+base64.h"; sourceTree = "<group>"; };
 		63C266FC132EEAA10086729D /* NSData+base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+base64.m"; sourceTree = "<group>"; };
 		63C5E14313537BE80053ED0A /* MyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyViewController.h; sourceTree = "<group>"; };
+		63C8858B135CF34800BDCE89 /* UIImage+scaleAndRotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+scaleAndRotate.h"; sourceTree = "<group>"; };
+		63C8858C135CF34900BDCE89 /* UIImage+scaleAndRotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+scaleAndRotate.m"; sourceTree = "<group>"; };
 		63CE230E132420D800D65CBD /* RKRequestTTModel+g3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RKRequestTTModel+g3.h"; sourceTree = "<group>"; };
 		63CE230F132420D800D65CBD /* RKRequestTTModel+g3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RKRequestTTModel+g3.m"; sourceTree = "<group>"; };
 		63D972A6132ED321008F6095 /* MyLongPressGestureDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLongPressGestureDelegate.h; sourceTree = "<group>"; };
@@ -555,6 +558,7 @@
 				638C2891132D6687009CFE41 /* UpdateAlbumView */,
 				638C2892132D66A2009CFE41 /* OtherViews */,
 				63B253EB1299BD3100BA9323 /* Comments */,
+				63C8858E135CFA9200BDCE89 /* Protocols */,
 				639EACBD131C700D00FBAEF4 /* RestKit */,
 				63B254151299BD3100BA9323 /* Rest Helpers */,
 				6348605713101B6A00385A46 /* Additions */,
@@ -718,8 +722,6 @@
 				630FBE7912FD794500B4629A /* MyThumbsViewController2.m */,
 				630FBE7F12FD7A3400B4629A /* MyThumbsViewDataSource2.h */,
 				630FBE8012FD7A3400B4629A /* MyThumbsViewDataSource2.m */,
-				637079681323D27C00A3198A /* MyItem.h */,
-				63C5E14313537BE80053ED0A /* MyViewController.h */,
 				630FC46912FF3F4400B4629A /* MyAlbumItem.h */,
 				630FC46A12FF3F4400B4629A /* MyAlbumItem.m */,
 				630FC45312FF3CCA00B4629A /* MyAlbumItemCell.h */,
@@ -756,6 +758,8 @@
 				636954B312D52ACD00CA3113 /* UIImage+cropping.m */,
 				637452D312D3A162005FD8C6 /* UIImage+resizing.h */,
 				637452D412D3A162005FD8C6 /* UIImage+resizing.m */,
+				63C8858B135CF34800BDCE89 /* UIImage+scaleAndRotate.h */,
+				63C8858C135CF34900BDCE89 /* UIImage+scaleAndRotate.m */,
 				636952D612D4FC5400CA3113 /* UIViewController+params.h */,
 				636952D712D4FC5400CA3113 /* UIViewController+params.m */,
 			);
@@ -1001,6 +1005,15 @@
 				63B53B29133FDECB00460020 /* UISpec.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		63C8858E135CFA9200BDCE89 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				637079681323D27C00A3198A /* MyItem.h */,
+				63C5E14313537BE80053ED0A /* MyViewController.h */,
+			);
+			name = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1369,6 +1382,7 @@
 				6380E70E1329A47D00A99EDB /* G3CoreData.xcdatamodel in Sources */,
 				6380E7111329A4A200A99EDB /* RKMItem.m in Sources */,
 				63C266FD132EEAA10086729D /* NSData+base64.m in Sources */,
+				63C8858D135CF34A00BDCE89 /* UIImage+scaleAndRotate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

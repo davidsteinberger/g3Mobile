@@ -15,6 +15,7 @@
 #import "MyViewController.h"
 #import "Three20UICommon/UIViewControllerAdditions.h"
 #import "MySettings.h"
+#import "UIImage+scaleAndRotate.h"
 
 @interface MyThumbsViewController ()
 
@@ -214,21 +215,15 @@
 	
 	// get high-resolution picture (used for upload)
 	UIImage* image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-
+    UIImage* finalImage = [image scaleAndRotateImageToMaxResolution:1024];
+    
 	// get screenshot (used for confirmation-dialog)
-	UIWindow *theScreen = [[UIApplication sharedApplication].windows objectAtIndex:0];
-	UIGraphicsBeginImageContext(theScreen.frame.size);
-	[[theScreen layer] renderInContext:UIGraphicsGetCurrentContext()];
-	UIImage *screenshot = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	
-	screenshot = [UIImage imageByCropping:screenshot
-								toRect:CGRectMake(0, 0, 320, 426)];
-	
+    UIImage* screenshot = finalImage;
+    
 	// prepare params
 	NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
 							self, @"delegate",
-							image, @"image",
+							finalImage, @"image",
 							screenshot, @"screenShot",
 							ps.albumID, @"albumID",
 							nil];
@@ -254,6 +249,11 @@
 
 // Reloads the data -> resets the detail-view
 - (void)reload {
+    PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:self.albumID];
+    self.photoSource = photosource;
+    TT_RELEASE_SAFELY(photosource);
+    
+    [((PhotoSource*)self.photoSource) load:TTURLRequestCachePolicyDefault more:NO];
 	[super reload];
 }
 
@@ -275,7 +275,6 @@
     }
     
     [((PhotoSource*)self.photoSource) load:TTURLRequestCachePolicyDefault more:NO];
-    [((PhotoSource*)parent.photoSource) load:TTURLRequestCachePolicyDefault more:NO];
     
     [NSTimer scheduledTimerWithTimeInterval:2 target:self  
                                    selector:@selector(finishUp) userInfo:nil repeats:NO];
@@ -287,7 +286,8 @@
     PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:self.albumID];
     self.photoSource = photosource;
     TT_RELEASE_SAFELY(photosource);
-    [self reload];
+    
+    [((PhotoSource*)self.photoSource) load:TTURLRequestCachePolicyDefault more:NO];
     
     [((MyThumbsViewController*)self.ttPreviousViewController) invalidateView];
     

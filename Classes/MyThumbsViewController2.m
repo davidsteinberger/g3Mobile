@@ -48,6 +48,7 @@
 // ViewControllers
 #import "AddAlbumViewController.h"
 #import "UpdateAlbumViewController.h"
+#import "MyViewController.h"
 
 // Settings
 #import "MySettings.h"
@@ -56,6 +57,7 @@
 #import "Three20UICommon/UIViewControllerAdditions.h"
 #import "TTTableViewController+g3.h"
 #import "UIImage+cropping.h"
+#import "UIImage+scaleAndRotate.h"
 #import "Three20UINavigator/private/TTBaseNavigatorInternal.h"
 
 @interface MyThumbsViewController2 ()
@@ -814,33 +816,27 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(
                NSDictionary *)info {
 	NSString *itemID = [self getItemID];
-
+    
 	// get high-resolution picture (used for upload)
-	UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-
+	
+    UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    UIImage* finalImage = [image scaleAndRotateImageToMaxResolution:1024];
+    
 	// get screenshot (used for confirmation-dialog)
-	UIWindow *theScreen = [[UIApplication sharedApplication].windows objectAtIndex:0];
-	UIGraphicsBeginImageContext(theScreen.frame.size);
-	[[theScreen layer] renderInContext:UIGraphicsGetCurrentContext()];
-	UIImage *screenshot = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-
-	screenshot = [UIImage imageByCropping:screenshot
-	                               toRect:CGRectMake(0, 0, 320, 426)];
-
+    UIImage* screenshot = finalImage;
+    
 	// prepare params
 	NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
 	                        self, @"delegate",
-	                        image, @"image",
+	                        finalImage, @"image",
 	                        screenshot, @"screenShot",
 	                        itemID, @"albumID",
 	                        nil];
-
+    
 	[[TTNavigator navigator] openURLAction:[[[TTURLAction actionWithURLPath:
 	                                          @"tt://nib/MyUploadViewController"]
 	                                         applyQuery:params] applyAnimated:YES]];
 }
-
 
 // Handles the cancellation of the picker
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
