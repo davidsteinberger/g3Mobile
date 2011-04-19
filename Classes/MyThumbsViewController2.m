@@ -751,7 +751,7 @@
 
 	[MyItemDeleter initWithItemID:itemID];
 
-    [((id<MyViewController>)self) reloadViewController:YES];
+    [((id<MyViewController>)self) reloadViewController:NO];
 }
 
 

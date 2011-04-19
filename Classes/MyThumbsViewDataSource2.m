@@ -73,6 +73,16 @@
  * that will be displayed.
  */
 - (void)tableViewDidLoadModel:(UITableView *)tableView {
+    [super tableViewDidLoadModel:tableView];
+    
+    // removing all items from the datasource ... as we never know what happened
+    if ([self.items respondsToSelector:@selector(removeAllObjects)]) {
+        [self.items removeAllObjects];
+    } else {
+        self.items = [NSMutableArray array];
+        return;   
+    }
+    
 	NSMutableArray *items = [[NSMutableArray alloc] init];
 
 	RKRequestTTModel *model = (RKRequestTTModel *)self.model;
@@ -103,7 +113,6 @@
 
 		NSString *thumb_url =
 		        (item.thumb_url_public != nil) ? item.thumb_url_public : item.thumb_url;
-        //NSLog(@"item.thumb_url_public: %@", item.thumb_url_public);
 		if (thumb_url == nil) {
 			thumb_url = @"bundle://empty.png";
 		}

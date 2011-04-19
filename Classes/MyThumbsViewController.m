@@ -200,7 +200,7 @@
 	// stop the indicator ...
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-    [((id<MyViewController>)self) reloadViewController:YES];
+    [((id<MyViewController>)self) reloadViewController:NO];
 }
 
 #pragma mark UIImagePickerController Methods
@@ -253,7 +253,7 @@
     self.photoSource = photosource;
     TT_RELEASE_SAFELY(photosource);
     
-    [((PhotoSource*)self.photoSource) load:TTURLRequestCachePolicyDefault more:NO];
+    //[((PhotoSource*)self.photoSource) load:TTURLRequestCachePolicyDefault more:NO];
 	[super reload];
 }
 
@@ -287,7 +287,7 @@
     self.photoSource = photosource;
     TT_RELEASE_SAFELY(photosource);
     
-    [((PhotoSource*)self.photoSource) load:TTURLRequestCachePolicyDefault more:NO];
+    //[((PhotoSource*)self.photoSource) load:TTURLRequestCachePolicyDefault more:NO];
     
     [((MyThumbsViewController*)self.ttPreviousViewController) invalidateView];
     
