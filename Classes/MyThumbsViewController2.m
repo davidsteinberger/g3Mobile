@@ -489,7 +489,7 @@
 		                          itemWithTitle:entity.title
 								  model:entity
 								  description:entity.description
-								  autor:@"autor"
+								  autor:@""
 								  timestamp:[NSDate dateWithTimeIntervalSince1970:[
 																				   entity.created floatValue]]
 								  tags:self.tags];
