@@ -267,7 +267,7 @@
 // Removes all viewcontrollers and redirects to album- or thumb-view
 - (void)rootController:(NSNull *)null {
 	// setup RestKit
-	//[self initRestKit];
+	[self initRestKit];
 	TTNavigator *navigator = [TTNavigator navigator];
 	[navigator.rootViewController.navigationController popToViewController:navigator.
 	 rootViewController                                           animated:YES];
