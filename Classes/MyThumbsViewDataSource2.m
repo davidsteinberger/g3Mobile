@@ -78,9 +78,6 @@
     // removing all items from the datasource ... as we never know what happened
     if ([self.items respondsToSelector:@selector(removeAllObjects)]) {
         [self.items removeAllObjects];
-    } else {
-        self.items = [NSMutableArray array];
-        return;   
     }
     
 	NSMutableArray *items = [[NSMutableArray alloc] init];

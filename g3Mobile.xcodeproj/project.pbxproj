@@ -1453,12 +1453,13 @@
 					"$(BUILT_PRODUCTS_DIR)/../three20",
 					"$(BUILT_PRODUCTS_DIR)/../../three20",
 					../three20/Build/Products/three20,
-					../RestKit/build,
+					"\"$(SOURCE_ROOT)/../RestKit/Build\"",
 				);
 				INFOPLIST_FILE = "g3Mobile-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SOURCE_ROOT)/../RestKit/Build/$(BUILD_STYLE)-$(PLATFORM_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -1485,12 +1486,13 @@
 					"$(BUILT_PRODUCTS_DIR)/../three20",
 					"$(BUILT_PRODUCTS_DIR)/../../three20",
 					../three20/Build/Products/three20,
-					../RestKit/build,
+					"\"$(SOURCE_ROOT)/../RestKit/Build\"",
 				);
 				INFOPLIST_FILE = "g3Mobile-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SOURCE_ROOT)/../RestKit/Build/$(BUILD_STYLE)-$(PLATFORM_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -1543,12 +1545,13 @@
 					"$(BUILT_PRODUCTS_DIR)/../three20",
 					"$(BUILT_PRODUCTS_DIR)/../../three20",
 					../three20/Build/Products/three20,
-					../RestKit/build,
+					"\"$(SOURCE_ROOT)/../RestKit/Build\"",
 				);
 				INFOPLIST_FILE = "g3Mobile-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SOURCE_ROOT)/../RestKit/Build/$(BUILD_STYLE)-$(PLATFORM_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-all_load",

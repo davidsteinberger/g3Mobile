@@ -39,6 +39,7 @@
 @public
 	NSString* _challenge;
 	NSString* _baseURL;
+    BOOL _isRestKitLoad;
 }
 
 @property(nonatomic, retain) NSString* challenge;

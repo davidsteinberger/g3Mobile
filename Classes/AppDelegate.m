@@ -215,7 +215,10 @@
 	self.challenge = nil;
 	self.baseURL = GlobalSettings.baseURL;
 	self.challenge = GlobalSettings.challenge;
-	TTNavigator *navigator = [TTNavigator navigator];
+    
+    [self initRestKit];
+    
+    TTNavigator *navigator = [TTNavigator navigator];
 	[navigator removeAllViewControllers];
 	[navigator openURLAction:[TTURLAction actionWithURLPath:@ "tt://root/1"]];
 }
@@ -266,18 +269,13 @@
 
 // Removes all viewcontrollers and redirects to album- or thumb-view
 - (void)rootController:(NSNull *)null {
-	// setup RestKit
-	[self initRestKit];
 	TTNavigator *navigator = [TTNavigator navigator];
-	[navigator.rootViewController.navigationController popToViewController:navigator.
-	 rootViewController                                           animated:YES];
+    [navigator removeAllViewControllers];
 	if (GlobalSettings.viewStyle == kAlbumView) {
-		[navigator removeAllViewControllers];
         [navigator openURLAction:[[TTURLAction actionWithURLPath:@ "tt://album/1"]
 		                          applyAnimated:YES]];
 	}
 	if (GlobalSettings.viewStyle == kThumbView) {
-		[navigator removeAllViewControllers];
 		[navigator openURLAction:[[TTURLAction actionWithURLPath:@ "tt://thumbs/1"]
 		                          applyAnimated:YES]];
 	}
@@ -286,32 +284,47 @@
 
 // Initializes RestKit
 - (void)initRestKit {
-	RKObjectManager *objectManager =
-	[[[RKObjectManager alloc] initWithBaseURL:GlobalSettings.baseURL] autorelease];      
-
-    [RKObjectManager setSharedManager:objectManager];
     
-	RKObjectMapper *mapper = objectManager.mapper;
-	
-	[[RKRequestQueue sharedQueue] cancelAllRequests];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    /*
+     * If RestKit hasn't been loaded before 
+     *   -> full init of the library
+     * Else:
+     *   -> Only update the BaseURL and the new HTTP-Headers
+     *      (because those might have changed with the login)
+     *      see: http://groups.google.com/group/restkit/browse_thread/thread/0566b4a670b5355b/79cc36f28c4d63ea#79cc36f28c4d63ea
+     */
+    if (!_isRestKitLoad) {
+        _isRestKitLoad = YES;
+        
+        RKObjectManager* objectManager = [RKObjectManager objectManagerWithBaseURL:GlobalSettings.baseURL];
+        
+        RKObjectMapper *mapper = objectManager.mapper;
+        
+        //[[RKRequestQueue sharedQueue] cancelAllRequests];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// Initialize object store
-	objectManager.objectStore =
-	        [[[RKManagedObjectStore alloc] initWithStoreFilename:@ "g3CoreData.sqlite"]
-	         autorelease];
-	objectManager.objectStore.managedObjectCache = [[DBManagedObjectCache new] autorelease];
-    
-    // Set Gallery3 specific HTTP headers
-	[[objectManager client] setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
-	[[objectManager client] setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-	
-	// Set nil for any attributes we expect to appear in the payload, but do not
-	objectManager.mapper.missingElementMappingPolicy = RKSetNilForMissingElementMappingPolicy;
+        // Initialize object store
+        objectManager.objectStore =
+                [[[RKManagedObjectStore alloc] initWithStoreFilename:@ "g3CoreData.sqlite"]
+                 autorelease];
+        objectManager.objectStore.managedObjectCache = [[DBManagedObjectCache new] autorelease];
+        
+        // Set Gallery3 specific HTTP headers
+        [[objectManager client] setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+        [[objectManager client] setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        
+        // Set nil for any attributes we expect to appear in the payload, but do not
+        objectManager.mapper.missingElementMappingPolicy = RKSetNilForMissingElementMappingPolicy;
 
-	// Add our element to object mappings
-	[mapper registerClass:[RKOEntity class] forElementNamed:@ "entity"];
-	[mapper registerClass:[RKOTags class] forElementNamed:@ "tags"];
+        // Add our element to object mappings
+        [mapper registerClass:[RKOEntity class] forElementNamed:@ "entity"];
+        [mapper registerClass:[RKOTags class] forElementNamed:@ "tags"];
+    } else if (_isRestKitLoad) {
+        [RKObjectManager sharedManager].client.baseURL = GlobalSettings.baseURL;
+        [[RKObjectManager sharedManager].client.HTTPHeaders removeAllObjects];
+        [[RKObjectManager sharedManager].client setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+        [[RKObjectManager sharedManager].client setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    }
 }
 
 

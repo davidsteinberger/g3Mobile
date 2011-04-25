@@ -253,15 +253,12 @@
     self.photoSource = photosource;
     TT_RELEASE_SAFELY(photosource);
     
-    //[((PhotoSource*)self.photoSource) load:TTURLRequestCachePolicyDefault more:NO];
 	[super reload];
 }
 
 // Reloads after an action was taken
 - (void)reloadViewController:(BOOL)goBack {
     self->_goBack = goBack;
-    
-    MyThumbsViewController* parent = ((MyThumbsViewController*)self.ttPreviousViewController);
     
     RKRequestTTModel *model = (RKRequestTTModel *)self.photoSource;
     RKMTree *response = (RKMTree *)[model.objects objectAtIndex:0];
@@ -286,8 +283,6 @@
     PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:self.albumID];
     self.photoSource = photosource;
     TT_RELEASE_SAFELY(photosource);
-    
-    //[((PhotoSource*)self.photoSource) load:TTURLRequestCachePolicyDefault more:NO];
     
     [((MyThumbsViewController*)self.ttPreviousViewController) invalidateView];
     
