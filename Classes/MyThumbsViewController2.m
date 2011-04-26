@@ -121,8 +121,15 @@
 
 // Initializes view for given itemID (must be an album id)
 - (id)initWithItemID:(NSString *)itemID {
-	self.itemID = itemID;
-	return [self initWithNibName:nil bundle:nil];
+    
+    if ((self = [self initWithNibName:nil bundle:nil])) {
+        self.itemID = itemID;
+        
+        // start a reload in the background ... as the album might have changed
+        [self reload];
+    }
+    
+	return self;
 }
 
 
@@ -166,8 +173,6 @@
     
     [NSTimer scheduledTimerWithTimeInterval:2 target:self  
                                    selector:@selector(finishUp) userInfo:nil repeats:NO];
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 
@@ -180,6 +185,15 @@
         viewController = [viewControllers objectAtIndex:[viewControllers count] - 2];
         [self.navigationController popToViewController:viewController animated:YES];
         [(TTNavigator*)[TTNavigator navigator] performSelector:@selector(reload) withObject:nil afterDelay:1];
+	}
+    
+    // Hide the network spinner ... might be activitated by a helper
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    // Remove any existing overlay
+	if (self.backViewOld) {
+		[self.backViewOld removeFromSuperview];
+        self.selectedCell = nil;
 	}
 }
 
@@ -568,6 +582,8 @@
 		button5.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
 		[button5 setBackgroundImage:[UIImage imageNamed:@"makeCoverIcon.png"]
 		                   forState:UIControlStateNormal];
+        [button5 setBackgroundImage:[UIImage imageNamed:@"makeCoverIcon_selected.png"] 
+                           forState:UIControlStateSelected];
 		[button5 addTarget:self action:@selector(makeCover:)
 		  forControlEvents:UIControlEventTouchUpInside];
 
@@ -602,6 +618,8 @@
 		button2.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
 		[button2 setBackgroundImage:[UIImage imageNamed:@"makeCoverIcon.png"]
 		                   forState:UIControlStateNormal];
+        [button2 setBackgroundImage:[UIImage imageNamed:@"makeCoverIcon_selected.png"] 
+                           forState:UIControlStateSelected];
 		[button2 addTarget:self action:@selector(makeCover:)
 		  forControlEvents:UIControlEventTouchUpInside];
 
@@ -706,7 +724,15 @@
 
 // Makes the current item the cover
 - (void)makeCover:(id)sender {
-	RKRequestTTModel *model = (RKRequestTTModel *)[self.dataSource model];
+    
+    // ((UIButton*)sender).enabled = YES;
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
+        
+	// Immediately show the network spinner as this can be lengthy ...
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    RKRequestTTModel *model = (RKRequestTTModel *)[self.dataSource model];
 	RKMTree *response = (RKMTree *)[model.objects objectAtIndex:0];
 	RKOEntity *entity = (RKOEntity *)[response.entities objectAtIndex:0];
 	NSString *albumID = entity.id;
@@ -717,7 +743,7 @@
 	[updater update];
 	TT_RELEASE_SAFELY(updater);
 
-	[((id<MyViewController>)self) reloadViewController:YES]; 
+	[((id<MyViewController>)self) reloadViewController:YES];
 }
 
 
