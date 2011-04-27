@@ -89,6 +89,9 @@
 // toggles overlay-menu
 - (void)toggleMetaData;
 
+// Removes any existing menu
+- (void)removeContextMenu;
+
 @end
 
 @implementation MyThumbsViewController2
@@ -190,13 +193,8 @@
     // Hide the network spinner ... might be activitated by a helper
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    // Remove any existing overlay
-	if (self.backViewOld) {
-		[self.backViewOld removeFromSuperview];
-        self.selectedCell = nil;
-	}
+    [self removeContextMenu];
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -558,6 +556,9 @@
 		button1.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
 		[button1 setBackgroundImage:[UIImage imageNamed:@"uploadIcon.png"]
 		                   forState:UIControlStateNormal];
+        [button1 setBackgroundImage:[UIImage imageNamed:@"uploadIcon_selected.png"]
+		                   forState:UIControlStateSelected];
+        [button1 setShowsTouchWhenHighlighted:YES];
 		[button1 addTarget:self action:@selector(uploadImage:)
 		  forControlEvents:UIControlEventTouchUpInside];
 
@@ -566,6 +567,9 @@
 		button2.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
 		[button2 setBackgroundImage:[UIImage imageNamed:@"addIcon.png"]
 		                   forState:UIControlStateNormal];
+        [button2 setBackgroundImage:[UIImage imageNamed:@"addIcon_selected.png"]
+		                   forState:UIControlStateSelected];
+        [button2 setShowsTouchWhenHighlighted:YES];
 		[button2 addTarget:self action:@selector(createAlbum:)
 		  forControlEvents:UIControlEventTouchUpInside];
 
@@ -574,6 +578,9 @@
 		button3.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
 		[button3 setBackgroundImage:[UIImage imageNamed:@"editIcon.png"]
 		                   forState:UIControlStateNormal];
+        [button3 setBackgroundImage:[UIImage imageNamed:@"editIcon_selected.png"]
+		                   forState:UIControlStateSelected];
+        [button3 setShowsTouchWhenHighlighted:YES];
 		[button3 addTarget:self action:@selector(editAlbum:)
 		  forControlEvents:UIControlEventTouchUpInside];
 
@@ -584,6 +591,7 @@
 		                   forState:UIControlStateNormal];
         [button5 setBackgroundImage:[UIImage imageNamed:@"makeCoverIcon_selected.png"] 
                            forState:UIControlStateSelected];
+        [button5 setShowsTouchWhenHighlighted:YES];
 		[button5 addTarget:self action:@selector(makeCover:)
 		  forControlEvents:UIControlEventTouchUpInside];
 
@@ -592,6 +600,9 @@
 		button4.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
 		[button4 setBackgroundImage:[UIImage imageNamed:@"trashIcon.png"]
 		                   forState:UIControlStateNormal];
+        [button4 setBackgroundImage:[UIImage imageNamed:@"trashIcon_selected.png"]
+		                   forState:UIControlStateSelected];
+        [button4 setShowsTouchWhenHighlighted:YES];
 		[button4 addTarget:self action:@selector(deleteCurrentItem:)
 		  forControlEvents:UIControlEventTouchUpInside];
 
@@ -610,6 +621,9 @@
 		button1.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
 		[button1 setBackgroundImage:[UIImage imageNamed:@"commentIcon.png"]
 		                   forState:UIControlStateNormal];
+        [button1 setBackgroundImage:[UIImage imageNamed:@"commentIcon_selected.png"]
+		                   forState:UIControlStateSelected];
+        [button1 setShowsTouchWhenHighlighted:YES];
 		[button1 addTarget:self action:@selector(comment:)
 		  forControlEvents:UIControlEventTouchUpInside];
 
@@ -620,6 +634,7 @@
 		                   forState:UIControlStateNormal];
         [button2 setBackgroundImage:[UIImage imageNamed:@"makeCoverIcon_selected.png"] 
                            forState:UIControlStateSelected];
+        [button2 setShowsTouchWhenHighlighted:YES];
 		[button2 addTarget:self action:@selector(makeCover:)
 		  forControlEvents:UIControlEventTouchUpInside];
 
@@ -628,6 +643,9 @@
 		button3.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
 		[button3 setBackgroundImage:[UIImage imageNamed:@"saveIcon.png"]
 		                   forState:UIControlStateNormal];
+        [button3 setBackgroundImage:[UIImage imageNamed:@"saveIcon_selected.png"]
+		                   forState:UIControlStateSelected];
+        [button3 setShowsTouchWhenHighlighted:YES];
 		[button3 addTarget:self action:@selector(save:)
 		  forControlEvents:UIControlEventTouchUpInside];
 
@@ -636,6 +654,9 @@
 		button4.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
 		[button4 setBackgroundImage:[UIImage imageNamed:@"trashIcon.png"]
 		                   forState:UIControlStateNormal];
+        [button4 setBackgroundImage:[UIImage imageNamed:@"trashIcon_selected.png"]
+		                   forState:UIControlStateSelected];
+        [button4 setShowsTouchWhenHighlighted:YES];
 		[button4 addTarget:self action:@selector(deleteCurrentItem:)
 		  forControlEvents:UIControlEventTouchUpInside];
 
@@ -676,6 +697,15 @@
 }
 
 
+// Removes any existing menu
+- (void)removeContextMenu {
+    if (self.backViewOld) {
+        [self.backViewOld removeFromSuperview];
+        self.selectedCell = nil;
+    }
+}
+
+
 // Shows the Login page with all the settings
 - (void)setSettings {
 	TTNavigator *navigator = [TTNavigator navigator];
@@ -686,46 +716,67 @@
 
 // Handles initiates the camera/upload
 - (void)uploadImage:(id)sender {
+    // Set button to selected
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
+
 	[self presentModalViewController:_pickerController animated:YES];
 }
 
 
 // Handles the creation of a new album
 - (void)createAlbum:(id)sender {
+    // Set button to selected
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
+    
 	NSString *itemID = [self getItemID];
 	AddAlbumViewController *addAlbum =
 	        [[AddAlbumViewController alloc] initWithParentAlbumID:itemID];
 	[self.navigationController pushViewController:addAlbum animated:YES];
 	TT_RELEASE_SAFELY(addAlbum);
+    
+    [self removeContextMenu];
 }
 
 
 // Handles the modification of an album
 - (void)editAlbum:(id)sender {
+    // Set button to selected
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
+    
 	NSString *itemID = [self getItemID];
 
 	UpdateAlbumViewController *updateAlbum =
 	        [[UpdateAlbumViewController alloc] initWithAlbumID:itemID];
 	[self.navigationController pushViewController:updateAlbum animated:YES];
 	TT_RELEASE_SAFELY(updateAlbum);
+    
+    [self removeContextMenu];
 }
 
 
 // Handles comments for items
 - (void)comment:(id)sender {
+    // Set button to selected
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
+    
 	NSString *itemID = [self getItemID];
 
 	TTNavigator *navigator = [TTNavigator navigator];
 	[navigator openURLAction:[[TTURLAction actionWithURLPath:[@"tt://comments/"
 	                                                          stringByAppendingString:itemID]]
 	                          applyAnimated:YES]];
+    
+    [self removeContextMenu];
 }
 
 
 // Makes the current item the cover
 - (void)makeCover:(id)sender {
-    
-    // ((UIButton*)sender).enabled = YES;
+    // Set button to selected
     UIButton *button = (UIButton *)sender;
     button.selected = !button.selected;
         
@@ -749,6 +800,10 @@
 
 // Saves the current item to the iPhone
 - (void)save:(id)sender {
+    // Set button to selected
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
+    
 	RKOEntity *entity = [self getEntity];
 	NSURL *imageURL = [NSURL URLWithString:entity.resize_url_public];
 
@@ -757,11 +812,17 @@
 
 	UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil);
 	TT_RELEASE_SAFELY(img);
+    
+    [self removeContextMenu];
 }
 
 
 // Confirms via dialog that the current item should be deleted
 - (void)deleteCurrentItem:(id)sender {
+    // Set button to selected
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
+    
 	UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
 	[dialog setDelegate:self];
 	[dialog setTitle:@"Confirm Deletion"];
