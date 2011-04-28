@@ -794,7 +794,7 @@
 	[updater update];
 	TT_RELEASE_SAFELY(updater);
 
-	[((id<MyViewController>)self) reloadViewController:YES];
+	[((id<MyViewController>)self) reloadViewController:NO];
 }
 
 
