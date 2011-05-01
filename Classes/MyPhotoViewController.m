@@ -15,6 +15,7 @@
 #import "MyItemDeleter.h"
 #import "MyAlbumUpdater.h"
 #import "MyAlbum.h"
+#import "MySettings.h"
 
 @interface MyPhotoViewController ()
 
@@ -169,15 +170,25 @@
 		
         [((id<MyViewController>)self.ttPreviousViewController) reloadViewController:YES];
 	}
-	if (buttonIndex == 2) {
-		//NSLog(@"photo: %@", [_centerPhoto URLForVersion:TTPhotoVersionLarge]);		
-		NSURL    *aUrl  = [NSURL URLWithString:[_centerPhoto URLForVersion:TTPhotoVersionLarge]];		
-		NSData   *data = [NSData dataWithContentsOfURL:aUrl];		
-		UIImage  *img  = [[UIImage alloc] initWithData:data];		
-		//NSLog(@"photo:class %@", [img class]);
-		
-		UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil);
-		TT_RELEASE_SAFELY(img);
+	if (buttonIndex == 2) {		
+		NSString* url  = [_centerPhoto URLForVersion:TTPhotoVersionLarge];		
+
+        // fetch the image from the server
+        TTURLRequest *request = [TTURLRequest
+                                 requestWithURL:url
+                                 delegate:self];
+        
+        //set http-headers
+        [request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        
+        request.cachePolicy = TTURLRequestCachePolicyNone;
+        
+        TTURLImageResponse *response = [[TTURLImageResponse alloc] init];
+        request.response = response;
+        TT_RELEASE_SAFELY(response);
+        
+        [request send];
 	}
 	if (buttonIndex == 3) {
 		UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
@@ -228,6 +239,23 @@
 	id<TTPhoto> previousPhoto = [_centerPhoto autorelease];
 	_centerPhoto = [photo retain];
 	[self didMoveToPhoto:_centerPhoto fromPhoto:previousPhoto];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark TTURLRequestDelegate
+
+/*
+ * So far only used to fetch images
+ * -> Save them to the camera roll
+ */
+- (void)requestDidFinishLoad:(TTURLRequest *)request {
+	TTURLImageResponse *response = request.response;
+	UIImageWriteToSavedPhotosAlbum(response.image, nil, nil, nil);
+    
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 @end
