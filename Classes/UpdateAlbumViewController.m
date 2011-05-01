@@ -228,7 +228,7 @@
 		if ([viewControllers count] > 1) {
 			viewController = [viewControllers objectAtIndex:[viewControllers count]-2];
 			[self.navigationController popToViewController:viewController animated:YES];
-            [((id<MyViewController>)viewController) reloadViewController:YES];
+            [((id<MyViewController>)viewController) reloadViewController:NO];
 		}
 	}
 
