@@ -14,5 +14,6 @@
 }
 
 - (id<MyLoginDataSource>)createDataSource;
+- (BOOL)deleteFromCoreData:(NSString*)entityName;
 
 @end

@@ -12,6 +12,8 @@
 #import <RestKit/RestKit.h>
 #import <RestKit/CoreData/RKManagedObjectStore.h>
 
+#import "RKMItem.h"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,16 +50,45 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	//NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
 	
-	if (buttonIndex == 0) {
+	if (buttonIndex == 0) {        
+        
+        [self deleteFromCoreData:@"RKMTree"];
+        [self deleteFromCoreData:@"RKMItem"];
+        
 		TTNavigator *navigator = [TTNavigator navigator];
 		[navigator removeAllViewControllers];
-		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://album/1"] applyAnimated:YES]];
-        
-        RKObjectManager* objectManager = [RKObjectManager sharedManager];
-        [objectManager.objectStore deletePersistantStore];
+        [[TTURLCache sharedCache] removeAll:YES];
+		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://root/1"] applyAnimated:YES]];
 	}	
 }
 
+- (BOOL)deleteFromCoreData:(NSString*)entityName {
+    RKManagedObjectStore* objectStore = [RKObjectManager sharedManager].objectStore;
+    NSManagedObjectContext* context = objectStore.managedObjectContext;
+    NSError* error;
+    
+    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:entityName 
+                                              inManagedObjectContext:context];
+
+    if (entity) {
+        [fetchRequest setEntity:entity];
+            
+        NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+        if ([fetchedObjects count] > 0) {
+            for (RKManagedObject* object in fetchedObjects) {
+                [context deleteObject:object];
+            }
+        }
+    }
+    
+    if (![context save:&error]) {
+        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+        return YES;
+    } else {
+        return NO;
+    }
+}
 
 
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
