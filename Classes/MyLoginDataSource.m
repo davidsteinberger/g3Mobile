@@ -254,8 +254,8 @@
 	
 	// image quality field
 	_imageQualityField = [[[UISlider alloc] init] autorelease];
-	_imageQualityField.minimumValue = 0.2;
-	_imageQualityField.maximumValue = 0.8;
+	_imageQualityField.minimumValue = 0;
+	_imageQualityField.maximumValue = 1;
 	
 	_imageQualityField.value = GlobalSettings.imageQuality ? GlobalSettings.imageQuality : 0.5;
 	
