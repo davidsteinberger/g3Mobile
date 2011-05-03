@@ -2,8 +2,6 @@
 #import "Three20UI/TTView.h"
 #import "Three20UI/UIViewAdditions.h"
 
-#import "MyAlbum.h"
-
 @interface MyThumbsViewController : TTThumbsViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
 	NSString* _albumID;
 	UIToolbar* _toolbar;

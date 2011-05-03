@@ -14,7 +14,6 @@
 #import "PhotoSource.h"
 #import "MyItemDeleter.h"
 #import "MyAlbumUpdater.h"
-#import "MyAlbum.h"
 #import "MySettings.h"
 
 @interface MyPhotoViewController ()
@@ -215,7 +214,6 @@
 	NSString* photoID = p.photoID;
 	[MyItemDeleter initWithItemID:photoID];	
 	
-	[MyAlbum updateFinishedWithItemURL:p.parentURL];
 	
 	// stop the indicator ...
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;

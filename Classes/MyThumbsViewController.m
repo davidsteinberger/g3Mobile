@@ -2,7 +2,6 @@
 #import "AppDelegate.h"
 #import "MyThumbsViewController.h"
 #import "PhotoSource.h"
-#import "MyAlbum.h"
 
 #import "MyImageUploader.h"
 #import "MyItemDeleter.h"

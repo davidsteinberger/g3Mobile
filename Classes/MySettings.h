@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CoreData/CoreData.h"
 
 #define GlobalSettings \
 ((MySettings *)[MySettings sharedMySettings])
@@ -27,6 +28,10 @@ typedef enum {
 	
 	//UI settings
 	MyViewStyle _viewStyle;
+    
+    NSManagedObjectModel *managedObjectModel;
+    NSManagedObjectContext *managedObjectContext;	    
+    NSPersistentStoreCoordinator *persistentStoreCoordinator;
 }
 
 @property(nonatomic, assign) BOOL viewOnly;
@@ -34,6 +39,10 @@ typedef enum {
 @property(nonatomic, readonly, retain) NSString* baseURL;
 @property float imageQuality;
 @property MyViewStyle viewStyle;
+
+@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 + (MySettings *)sharedMySettings;
 - (void)save:(NSString*)baseURL 

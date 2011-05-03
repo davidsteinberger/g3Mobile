@@ -12,7 +12,6 @@
 #import "AppDelegate.h"
 #import "MySettings.h"
 #import "MyImageUploader.h"
-#import "MyAlbum.h"
 
 #import "AddAlbumViewController.h"
 #import "MyViewController.h"
@@ -239,9 +238,6 @@
 
 - (void)requestDidFinishLoad:(TTURLRequest*)request {
 	if ([request.userInfo isEqual:@"addAlbum"]) {
-				
-		[MyAlbum updateFinishedWithItemURL:[[GlobalSettings.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:self.parentAlbumID] ];
-		
 		NSArray* viewControllers = [self.navigationController viewControllers];
 		TTViewController* viewController = nil;
 		        

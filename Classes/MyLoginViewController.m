@@ -5,7 +5,6 @@
 #import "MyLogin.h"
 
 #import "MySettings.h"
-#import "MyAlbum.h"
 
 #import <CoreData/CoreData.h>
 
@@ -50,7 +49,6 @@
 	//NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
 	
 	if (buttonIndex == 0) {
-		[MyAlbum updateFinished];
 		TTNavigator *navigator = [TTNavigator navigator];
 		[navigator removeAllViewControllers];
 		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://album/1"] applyAnimated:YES]];

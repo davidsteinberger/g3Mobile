@@ -1,7 +1,5 @@
 
 #import "MyLoginModel.h"
-#import "MyDatabase.h"
-#import "sqlite3.h"
 
 #import "MyLogin.h"
 
@@ -34,8 +32,6 @@
 		[GlobalSettings save:settings.baseURL withUsername:settings.username withPassword:settings.password withChallenge:settings.challenge withImageQuality:settings.imageQuality];
 		
 		settings.challenge = @"";
-		
-		[self store:settings];
 		
 		// notify the controller that we are done
 		[super didUpdateObject:settings atIndexPath:nil];
@@ -88,69 +84,9 @@
 	
 	// the model stores for all other controllers the credentials in singleton GlobalSettings
 	[GlobalSettings save:login.baseURL withUsername:login.username withPassword:login.password withChallenge:login.challenge withImageQuality:login.imageQuality];
-
-	// the model further saves credentials to the database:
-	// this is for security only! should the app crash, 
-	// then the GlobalSettings class will automatically restore data from the database
-	// the overall datastorage should be switched to core-data with a proper schema later on!
-	[self store:login];
 	
 	// notify the controller that we are done
 	[super didUpdateObject:login atIndexPath:nil];
-}
-
--(void) store:(MyLogin *)login {
-	NSString *filePath = [MyDatabase copyDatabaseToDocuments];
-
-	sqlite3 *database;
-	
-	if(sqlite3_open([filePath UTF8String], &database) == SQLITE_OK) {
-	
-		//delete everything	
-		const char *deleteStatement = "delete from settings";
-		sqlite3_stmt *compiledStatement;
-		//baseURL
-		sqlite3_prepare_v2(database, deleteStatement, -1, &compiledStatement, NULL);
-		if(sqlite3_step(compiledStatement) == SQLITE_DONE) {
-			sqlite3_finalize(compiledStatement);
-		}
-		
-		//insert
-		const char *sqlStatement = "insert into settings (var, value) VALUES (?, ?);";
-		//baseURL
-		if(sqlite3_prepare_v2(database, sqlStatement, -1, &compiledStatement, NULL) == SQLITE_OK) {
-		    sqlite3_bind_text( compiledStatement, 1, [@"baseURL" UTF8String], -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text( compiledStatement, 2, [login.baseURL UTF8String], -1, SQLITE_TRANSIENT);	
-		}
-		if(sqlite3_step(compiledStatement) == SQLITE_DONE) {
-	       	sqlite3_finalize(compiledStatement);
-		}
-		//username
-		if(sqlite3_prepare_v2(database, sqlStatement, -1, &compiledStatement, NULL) == SQLITE_OK) {
-		    sqlite3_bind_text( compiledStatement, 1, [@"username" UTF8String], -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text( compiledStatement, 2, [login.username UTF8String], -1, SQLITE_TRANSIENT);	
-		}
-		if(sqlite3_step(compiledStatement) == SQLITE_DONE) {
-	       	sqlite3_finalize(compiledStatement);
-		}
-		//password
-		if(sqlite3_prepare_v2(database, sqlStatement, -1, &compiledStatement, NULL) == SQLITE_OK) {
-		    sqlite3_bind_text( compiledStatement, 1, [@"password" UTF8String], -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text( compiledStatement, 2, [login.password UTF8String], -1, SQLITE_TRANSIENT);	
-		}
-		if(sqlite3_step(compiledStatement) == SQLITE_DONE) {
-	       	sqlite3_finalize(compiledStatement);
-		}
-		//challenge
-		if(sqlite3_prepare_v2(database, sqlStatement, -1, &compiledStatement, NULL) == SQLITE_OK) {
-		    sqlite3_bind_text( compiledStatement, 1, [@"challenge" UTF8String], -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text( compiledStatement, 2, [login.challenge UTF8String], -1, SQLITE_TRANSIENT);	
-		}
-		if(sqlite3_step(compiledStatement) == SQLITE_DONE) {
-	       	sqlite3_finalize(compiledStatement);
-		}
-	}
-	sqlite3_close(database);
 }
 
 - (void)request:(TTURLRequest *)request didFailLoadWithError:(NSError *)error {

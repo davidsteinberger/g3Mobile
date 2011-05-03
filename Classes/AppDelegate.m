@@ -49,9 +49,6 @@
 // Reachability
 #import "Reachability.h"
 
-// Database
-#import "MyDatabase.h"
-
 // Settings
 #import "MySettings.h"
 
@@ -168,9 +165,6 @@
 	[map
 	       from:@ "tt://nib/(loadFromNib:)" toViewController:self
 	 transition:UIViewAnimationTransitionFlipFromLeft];
-
-	// setup database
-	[MyDatabase copyDatabaseToDocuments];
 
 	// temporary until everything is changed to GlobalSettings approach
 	self.baseURL = nil;

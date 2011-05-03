@@ -11,7 +11,6 @@
 #import "AppDelegate.h"
 
 #import "MySettings.h"
-#import "MyAlbum.h"
 #import "extThree20JSON/NSObject+YAJL.h"
 
 #import "MyUploadViewController.h"
@@ -115,8 +114,6 @@ static int counter = 0;
 	
 	// now lets make the connection to the web
 	[NSURLConnection connectionWithRequest:request delegate:self];
-	
-	[MyAlbum updateFinishedWithItemURL:[[appDelegate.baseURL stringByAppendingString:@"/rest/tree/"] stringByAppendingString:self.albumID]];
 }
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {

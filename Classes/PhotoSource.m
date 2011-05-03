@@ -1,7 +1,6 @@
 #import "PhotoSource.h"
 #import "Three20Core/NSArrayAdditions.h"
 #import "RKRequestTTModel+g3.h"
-#import "MyAlbum.h"
 #import "AppDelegate.h"
 #import "RKMItem.h"
 

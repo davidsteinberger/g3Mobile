@@ -25,7 +25,6 @@
 		630FBE8112FD7A3400B4629A /* MyThumbsViewDataSource2.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FBE8012FD7A3400B4629A /* MyThumbsViewDataSource2.m */; };
 		630FC45512FF3CCA00B4629A /* MyAlbumItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FC45412FF3CCA00B4629A /* MyAlbumItemCell.m */; };
 		630FC46B12FF3F4400B4629A /* MyAlbumItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FC46A12FF3F4400B4629A /* MyAlbumItem.m */; };
-		631266F4136772A100ADC5C5 /* makeCoverIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 631266F3136772A100ADC5C5 /* makeCoverIcon_selected.png */; };
 		6312679E1368C72E00ADC5C5 /* addIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 631267971368C72E00ADC5C5 /* addIcon_selected.png */; };
 		6312679F1368C72E00ADC5C5 /* commentIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 631267981368C72E00ADC5C5 /* commentIcon_selected.png */; };
 		631267A01368C72E00ADC5C5 /* editIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 631267991368C72E00ADC5C5 /* editIcon_selected.png */; };
@@ -33,6 +32,8 @@
 		631267A21368C72E00ADC5C5 /* trashIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 6312679B1368C72E00ADC5C5 /* trashIcon_selected.png */; };
 		631267A31368C72E00ADC5C5 /* uploadIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 6312679C1368C72E00ADC5C5 /* uploadIcon_selected.png */; };
 		631267A41368C72E00ADC5C5 /* makeCoverIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 6312679D1368C72E00ADC5C5 /* makeCoverIcon_selected.png */; };
+		6312D3F2136F2510002091A3 /* Param.m in Sources */ = {isa = PBXBuildFile; fileRef = 6312D3F1136F2510002091A3 /* Param.m */; };
+		6312D3F5136F2510002091A3 /* Vars.m in Sources */ = {isa = PBXBuildFile; fileRef = 6312D3F4136F2510002091A3 /* Vars.m */; };
 		631A7B3B130F49B0004A6110 /* TTTableViewController+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 631A7B3A130F49B0004A6110 /* TTTableViewController+g3.m */; };
 		632A448B12D25F0B0055F67B /* MyUploadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 632A448A12D25F0B0055F67B /* MyUploadViewController.xib */; };
 		632A449112D261390055F67B /* MyUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 632A448F12D261390055F67B /* MyUploadViewController.m */; };
@@ -54,7 +55,6 @@
 		6374560612D3EFB2005FD8C6 /* StyleSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6374560512D3EFB2005FD8C6 /* StyleSheet.m */; };
 		6380E70E1329A47D00A99EDB /* G3CoreData.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */; };
 		6380E7111329A4A200A99EDB /* RKMItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6380E7101329A4A200A99EDB /* RKMItem.m */; };
-		6389A68C12D652C2002B59AB /* MyDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6389A68B12D652C2002B59AB /* MyDatabase.m */; };
 		638C2909132D6ACD009CFE41 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 638C2908132D6ACD009CFE41 /* Default.png */; };
 		639788D012BEBA24000FBD09 /* defaultPerson.png in Resources */ = {isa = PBXBuildFile; fileRef = 639788CF12BEBA24000FBD09 /* defaultPerson.png */; };
 		639EACAC131C6EE300FBAEF4 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 639EACAB131C6EE300FBAEF4 /* CFNetwork.framework */; };
@@ -81,7 +81,6 @@
 		63B254241299BD3100BA9323 /* TTURLImageResponse+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254091299BD3100BA9323 /* TTURLImageResponse+g3.m */; };
 		63B254251299BD3100BA9323 /* TTImageView+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B2540B1299BD3100BA9323 /* TTImageView+g3.m */; };
 		63B254261299BD3100BA9323 /* MyPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B2540D1299BD3100BA9323 /* MyPhotoViewController.m */; };
-		63B254271299BD3100BA9323 /* MyAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254101299BD3100BA9323 /* MyAlbum.m */; };
 		63B254281299BD3100BA9323 /* TTThumbsViewController+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254121299BD3100BA9323 /* TTThumbsViewController+g3.m */; };
 		63B254291299BD3100BA9323 /* MyThumbsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254141299BD3100BA9323 /* MyThumbsViewController.m */; };
 		63B2542A1299BD3100BA9323 /* MyImageUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254171299BD3100BA9323 /* MyImageUploader.m */; };
@@ -389,7 +388,6 @@
 		630FC45412FF3CCA00B4629A /* MyAlbumItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAlbumItemCell.m; sourceTree = "<group>"; };
 		630FC46912FF3F4400B4629A /* MyAlbumItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAlbumItem.h; sourceTree = "<group>"; };
 		630FC46A12FF3F4400B4629A /* MyAlbumItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAlbumItem.m; sourceTree = "<group>"; };
-		631266F3136772A100ADC5C5 /* makeCoverIcon_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = makeCoverIcon_selected.png; sourceTree = "<group>"; };
 		631267971368C72E00ADC5C5 /* addIcon_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addIcon_selected.png; sourceTree = "<group>"; };
 		631267981368C72E00ADC5C5 /* commentIcon_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = commentIcon_selected.png; sourceTree = "<group>"; };
 		631267991368C72E00ADC5C5 /* editIcon_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editIcon_selected.png; sourceTree = "<group>"; };
@@ -397,6 +395,10 @@
 		6312679B1368C72E00ADC5C5 /* trashIcon_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trashIcon_selected.png; sourceTree = "<group>"; };
 		6312679C1368C72E00ADC5C5 /* uploadIcon_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uploadIcon_selected.png; sourceTree = "<group>"; };
 		6312679D1368C72E00ADC5C5 /* makeCoverIcon_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = makeCoverIcon_selected.png; sourceTree = "<group>"; };
+		6312D3F0136F2510002091A3 /* Param.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Param.h; sourceTree = "<group>"; };
+		6312D3F1136F2510002091A3 /* Param.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Param.m; sourceTree = "<group>"; };
+		6312D3F3136F2510002091A3 /* Vars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vars.h; sourceTree = "<group>"; };
+		6312D3F4136F2510002091A3 /* Vars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Vars.m; sourceTree = "<group>"; };
 		631A7B39130F49B0004A6110 /* TTTableViewController+g3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTTableViewController+g3.h"; sourceTree = "<group>"; };
 		631A7B3A130F49B0004A6110 /* TTTableViewController+g3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TTTableViewController+g3.m"; sourceTree = "<group>"; };
 		632A448A12D25F0B0055F67B /* MyUploadViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyUploadViewController.xib; sourceTree = "<group>"; };
@@ -431,8 +433,6 @@
 		6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = G3CoreData.xcdatamodel; sourceTree = "<group>"; };
 		6380E70F1329A4A200A99EDB /* RKMItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKMItem.h; sourceTree = "<group>"; };
 		6380E7101329A4A200A99EDB /* RKMItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKMItem.m; sourceTree = "<group>"; };
-		6389A68A12D652C2002B59AB /* MyDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDatabase.h; sourceTree = "<group>"; };
-		6389A68B12D652C2002B59AB /* MyDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDatabase.m; sourceTree = "<group>"; };
 		638C2908132D6ACD009CFE41 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		638C2A30132D7D51009CFE41 /* MyLoginDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLoginDelegate.h; sourceTree = "<group>"; };
 		639788CF12BEBA24000FBD09 /* defaultPerson.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultPerson.png; sourceTree = "<group>"; };
@@ -479,8 +479,6 @@
 		63B2540B1299BD3100BA9323 /* TTImageView+g3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TTImageView+g3.m"; sourceTree = "<group>"; };
 		63B2540C1299BD3100BA9323 /* MyPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPhotoViewController.h; sourceTree = "<group>"; };
 		63B2540D1299BD3100BA9323 /* MyPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPhotoViewController.m; sourceTree = "<group>"; };
-		63B2540F1299BD3100BA9323 /* MyAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAlbum.h; sourceTree = "<group>"; };
-		63B254101299BD3100BA9323 /* MyAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAlbum.m; sourceTree = "<group>"; };
 		63B254111299BD3100BA9323 /* TTThumbsViewController+g3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTThumbsViewController+g3.h"; sourceTree = "<group>"; };
 		63B254121299BD3100BA9323 /* TTThumbsViewController+g3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TTThumbsViewController+g3.m"; sourceTree = "<group>"; };
 		63B254131299BD3100BA9323 /* MyThumbsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyThumbsViewController.h; sourceTree = "<group>"; };
@@ -792,8 +790,6 @@
 				6358A4BA12C880EB0043D18A /* MySettings.m */,
 				63BB542012CE434600764C23 /* Reachability.h */,
 				63BB542112CE434600764C23 /* Reachability.m */,
-				6389A68A12D652C2002B59AB /* MyDatabase.h */,
-				6389A68B12D652C2002B59AB /* MyDatabase.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -805,15 +801,6 @@
 				6374560512D3EFB2005FD8C6 /* StyleSheet.m */,
 			);
 			name = "Style Sheets";
-			sourceTree = "<group>";
-		};
-		638C2883132D64E2009CFE41 /* deprecated */ = {
-			isa = PBXGroup;
-			children = (
-				63B2540F1299BD3100BA9323 /* MyAlbum.h */,
-				63B254101299BD3100BA9323 /* MyAlbum.m */,
-			);
-			name = deprecated;
 			sourceTree = "<group>";
 		};
 		638C288F132D6664009CFE41 /* UploadView */ = {
@@ -863,7 +850,6 @@
 				6312679C1368C72E00ADC5C5 /* uploadIcon_selected.png */,
 				6312679D1368C72E00ADC5C5 /* makeCoverIcon_selected.png */,
 				63707ACE1324103700A3198A /* makeCoverIcon.png */,
-				631266F3136772A100ADC5C5 /* makeCoverIcon_selected.png */,
 				63707AC313240FBB00A3198A /* trashIcon.png */,
 				63707AAB13240EF800A3198A /* addIcon.png */,
 				6370795E1323D13100A3198A /* editIcon.png */,
@@ -903,6 +889,10 @@
 			children = (
 				63B255EB1299C60900BA9323 /* g3DB.sqlite */,
 				6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */,
+				6312D3F3136F2510002091A3 /* Vars.h */,
+				6312D3F4136F2510002091A3 /* Vars.m */,
+				6312D3F0136F2510002091A3 /* Param.h */,
+				6312D3F1136F2510002091A3 /* Param.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -1009,7 +999,6 @@
 				636B7F1812BFE98D00ECDCDD /* MyAlbumUpdater.m */,
 				63B254161299BD3100BA9323 /* MyImageUploader.h */,
 				63B254171299BD3100BA9323 /* MyImageUploader.m */,
-				638C2883132D64E2009CFE41 /* deprecated */,
 			);
 			name = "Rest Helpers";
 			sourceTree = "<group>";
@@ -1347,7 +1336,6 @@
 				63707AC413240FBB00A3198A /* trashIcon.png in Resources */,
 				63707ACF1324103700A3198A /* makeCoverIcon.png in Resources */,
 				638C2909132D6ACD009CFE41 /* Default.png in Resources */,
-				631266F4136772A100ADC5C5 /* makeCoverIcon_selected.png in Resources */,
 				6312679E1368C72E00ADC5C5 /* addIcon_selected.png in Resources */,
 				6312679F1368C72E00ADC5C5 /* commentIcon_selected.png in Resources */,
 				631267A01368C72E00ADC5C5 /* editIcon_selected.png in Resources */,
@@ -1376,7 +1364,6 @@
 				63B254241299BD3100BA9323 /* TTURLImageResponse+g3.m in Sources */,
 				63B254251299BD3100BA9323 /* TTImageView+g3.m in Sources */,
 				63B254261299BD3100BA9323 /* MyPhotoViewController.m in Sources */,
-				63B254271299BD3100BA9323 /* MyAlbum.m in Sources */,
 				63B254281299BD3100BA9323 /* TTThumbsViewController+g3.m in Sources */,
 				63B254291299BD3100BA9323 /* MyThumbsViewController.m in Sources */,
 				63B2542A1299BD3100BA9323 /* MyImageUploader.m in Sources */,
@@ -1396,7 +1383,6 @@
 				636952D812D4FC5400CA3113 /* UIViewController+params.m in Sources */,
 				6369534912D50A1200CA3113 /* MyPostController.m in Sources */,
 				636954B412D52ACD00CA3113 /* UIImage+cropping.m in Sources */,
-				6389A68C12D652C2002B59AB /* MyDatabase.m in Sources */,
 				630FBE7A12FD794500B4629A /* MyThumbsViewController2.m in Sources */,
 				630FBE8112FD7A3400B4629A /* MyThumbsViewDataSource2.m in Sources */,
 				630FC45512FF3CCA00B4629A /* MyAlbumItemCell.m in Sources */,
@@ -1415,6 +1401,8 @@
 				6380E7111329A4A200A99EDB /* RKMItem.m in Sources */,
 				63C266FD132EEAA10086729D /* NSData+base64.m in Sources */,
 				63C8858D135CF34A00BDCE89 /* UIImage+scaleAndRotate.m in Sources */,
+				6312D3F2136F2510002091A3 /* Param.m in Sources */,
+				6312D3F5136F2510002091A3 /* Vars.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1496,7 +1484,6 @@
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
-					"-lsqlite3",
 				);
 				PRODUCT_NAME = g3Mobile;
 				SDKROOT = iphoneos;
@@ -1529,7 +1516,6 @@
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
-					"-lsqlite3",
 				);
 				PRODUCT_NAME = g3Mobile;
 				SDKROOT = iphoneos;
@@ -1588,7 +1574,6 @@
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
-					"-lsqlite3",
 				);
 				PRODUCT_NAME = g3Mobile;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";

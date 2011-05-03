@@ -21,10 +21,9 @@
 	BOOL loading;
 }
 
-- (void)login:(MyLogin *)settings;
-- (void)store:(MyLogin *)login;
-
 @property (nonatomic, readonly) MyLogin* credentials;
+
+- (void)login:(MyLogin *)settings;
 
 @end
 
