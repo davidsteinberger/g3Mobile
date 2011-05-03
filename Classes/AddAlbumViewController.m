@@ -166,6 +166,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField.returnKeyType == UIReturnKeyGo) {
+        [textField resignFirstResponder];
 		[self addAlbum];
 		return YES;
     }

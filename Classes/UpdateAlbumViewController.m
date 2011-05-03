@@ -122,6 +122,7 @@
 		return NO;
     }
     else {
+        [textField resignFirstResponder];
 		[_albumTitle resignFirstResponder];
 		
 		[self updateAlbum];
