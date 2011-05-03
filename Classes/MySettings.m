@@ -173,7 +173,7 @@ withImageQuality:(float) imageQuality {
 	NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
 	float imageQuality = [prefs floatForKey:@"imageQuality"];
     
-    if (!imageQuality) {
+    if (imageQuality == 0) {
         imageQuality = [[self getValue:@"imageQuality"] floatValue];
     }
     

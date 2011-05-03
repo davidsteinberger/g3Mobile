@@ -158,6 +158,11 @@
 // Reloads after an action was taken
 - (void)reloadViewController:(BOOL)goBack {
 	self->_goBack = goBack;
+    
+    if (_isEmpty) {
+        self->_goBack = YES;
+    }
+    
 	MyThumbsViewController2 *parent =
 	        ( (MyThumbsViewController2 *)self.ttPreviousViewController );
 
@@ -241,9 +246,8 @@
 	if ([objects count] == 1) {
 		NSString *title = [_dataSource titleForEmpty];
 		NSString *subtitle = [_dataSource subtitleForEmpty];
-		UIImage *image = [_dataSource imageForEmpty];
 
-		if (title.length || subtitle.length || image) {
+		if (title.length || subtitle.length) {
 			TTErrorView *errorView = [[[TTErrorView alloc] initWithTitle:title
 			                                                    subtitle:subtitle
 			                                                       image:nil]
@@ -254,16 +258,19 @@
 			[errorView addSubview:buttonMenu];
 			[errorView bringSubviewToFront:buttonMenu];
 
-			self.emptyView = errorView;
+            self.emptyView = errorView;
+            self->_isEmpty = YES;
 		}
 		else {
 			self.emptyView = nil;
+            self->_isEmpty = NO;
 		}
 		_tableView.dataSource = nil;
 		[_tableView reloadData];
 	}
 	else {
 		self.emptyView = nil;
+        self->_isEmpty = NO;
 	}
 }
 
