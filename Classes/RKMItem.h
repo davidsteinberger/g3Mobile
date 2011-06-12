@@ -32,58 +32,24 @@
 #import <RestKit/RestKit.h>
 #import <RestKit/CoreData/CoreData.h>
 
-@class RKOTags;
-@class RKOEntity;
-@class RKORelationships;
-@class RKOComments;
+#import "RKMEntity.h"
 
-@interface RKMItem : RKManagedObject {
+@interface RKMTag_Member : NSManagedObject {
 }
 
-@property (nonatomic, retain) NSString *url;
-@property (nonatomic, retain) RKOEntity *entity;
-@property (nonatomic, retain) RKOTags *tags;
+@property (nonatomic, retain) NSString* url;
+@property (nonatomic, retain) NSString* name;
+@property (nonatomic, retain) NSString* count;
 
 @end
 
-@interface RKOTags : RKManagedObject {
+@interface RKMItem : NSManagedObject {
 }
 
-@property (nonatomic, retain) NSString *url;
-@property (nonatomic, retain) NSArray *members;
+@property (nonatomic, retain) NSString* url;
+@property (nonatomic, retain) RKMEntity* rEntity;
+@property (nonatomic, retain) NSSet* rTags;
 
-@end
-
-@class RKOTag;
-@interface RKOTagItem : RKManagedObject {
-}
-
-@property (nonatomic, retain) NSString *url;
-@property (nonatomic, retain) NSString *tag;
-
-@end
-
-@interface RKOTag : RKManagedObject {
-}
-
-@property (nonatomic, retain) NSString *url;
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSString *count;
-
-@end
-
-@interface RKORelationships : RKManagedObject {
-}
-
-@property (nonatomic, retain) NSString *url;
-@property (nonatomic, retain) RKOTags *tags;
-
-@end
-
-@interface RKOComments : RKObject {
-	NSString *_url;
-}
-
-@property (nonatomic, retain) NSString *url;
+- (NSString*)concatenatedTagInfo;
 
 @end

@@ -33,10 +33,10 @@
 }
 
 - (id)initWithItemID:(NSString*)itemID {
-	//TTDERROR(@"itemID: %@", itemID);
-	PhotoSource* photosource = [PhotoSource createPhotoSource:itemID];
-	self.photoSource = photosource;
+    PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:itemID];
+    self.photoSource = photosource;
 	TT_RELEASE_SAFELY(photosource);
+    
 	return [self initWithNibName:nil bundle:nil];
 }
 
@@ -46,11 +46,8 @@
 	return instance;
 }
 
-- (void) dealloc {
-	//self.photoSource = nil;
-	//[_photoSource release];
-	//[_photoSource release];
-	[super dealloc];
+- (void) dealloc {	
+    [super dealloc];
 }
 
 - (void)loadView {
@@ -227,10 +224,11 @@
 	[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://thumbs/1"]];
 }
 
+// see TTPhotoViewController
 - (void)moveToPhotoAtIndex:(NSInteger)photoIndex withDelay:(BOOL)withDelay {
-	_centerPhotoIndex = photoIndex == TT_NULL_PHOTO_INDEX ? 0 : photoIndex;
-	[self moveToPhoto:[_photoSource photoAtIndex:_centerPhotoIndex]];
-	_delayLoad = withDelay;
+    _centerPhotoIndex = photoIndex == TT_NULL_PHOTO_INDEX ? 0 : photoIndex;
+    [self moveToPhoto:[_photoSource photoAtIndex:_centerPhotoIndex]];
+    _delayLoad = withDelay;
 }
 
 - (void)moveToPhoto:(id<TTPhoto>)photo {

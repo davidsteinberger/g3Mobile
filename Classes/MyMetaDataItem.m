@@ -47,7 +47,7 @@
 }
 
 
-+ (id)itemWithTitle:(NSString *)title model:(RKOEntity *)model description:(NSString *)description
++ (id)itemWithTitle:(NSString *)title model:(RKMEntity *)model description:(NSString *)description
        autor:(NSString *)autor timestamp:(NSDate *)timestamp tags:(NSString *)tags {
 	MyMetaDataItem *item = [[[self alloc] init] autorelease];
 	item.model = model;

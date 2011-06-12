@@ -33,26 +33,15 @@
 
 // RestKit
 #import <RestKit/RestKit.h>
+#import <RestKit/CoreData/CoreData.h>
 
-@interface RKOEntity : RKObject {
-	NSString *_id;
-	NSString *_parent;
-	NSString *_title;
-	NSString *_description;
-	NSString *_type;
-	NSString *_thumb_url_public;
-	NSString *_thumb_url;
-	NSString *_resize_url_public;
-	NSString *_resize_url;
-	NSString *_thumb_width;
-	NSString *_thumb_height;
-	NSString *_created;
+@interface RKMEntity : NSManagedObject {
 }
 
-@property (nonatomic, retain) NSString *id;
+@property (nonatomic, retain) NSString *itemID;
 @property (nonatomic, retain) NSString *parent;
 @property (nonatomic, retain) NSString *title;
-@property (nonatomic, retain) NSString *description;
+@property (nonatomic, retain) NSString *desc;
 @property (nonatomic, retain) NSString *type;
 @property (nonatomic, retain) NSString *thumb_url_public;
 @property (nonatomic, retain) NSString *thumb_url;
@@ -61,5 +50,6 @@
 @property (nonatomic, retain) NSString *thumb_width;
 @property (nonatomic, retain) NSString *thumb_height;
 @property (nonatomic, retain) NSString *created;
+@property (nonatomic, retain) NSNumber* relative_position;
 
 @end

@@ -34,10 +34,12 @@
 
 // RestKit
 #import <RestKit/RestKit.h>
-#import <RestKit/Three20/RKRequestTTModel.h>
+#import <RestKit/Three20/RKObjectLoaderTTModel.h>
 #import "RKMTree.h"
 
 @implementation MyThumbsViewDataSource2
+
+@synthesize itemModel = _itemModel;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,13 +52,21 @@
 		                                stringByAppendingString:@"/rest/tree/"]
 		                               stringByAppendingString:itemID]
 		                              stringByAppendingString:@"?depth=1"];
+        
+        NSString *itemResourcePath = [[[@""
+                                        stringByAppendingString:@"/rest/item/"]
+                                       stringByAppendingString:itemID]
+                                      stringByAppendingString:@"?fields=tag_item.tag"];
 
-		//[RKRequestTTModel setDefaultRefreshRate:3600];
-		RKRequestTTModel *myModel = [[RKRequestTTModel alloc]
-		                             initWithResourcePath:treeResourcePath
-		                                           params:nil objectClass:[RKMTree class]];
-		self.model = myModel;
-		TT_RELEASE_SAFELY(myModel);
+        RKObjectLoader* objectLoader = [[RKObjectManager sharedManager] objectLoaderWithResourcePath:treeResourcePath delegate:nil];
+        objectLoader.objectMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForKeyPath:@"_tree"];
+        self.model = [RKObjectLoaderTTModel modelWithObjectLoader:objectLoader];
+        
+        objectLoader = [[RKObjectManager sharedManager] objectLoaderWithResourcePath:itemResourcePath delegate:nil];
+        objectLoader.objectMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForKeyPath:@"_item"];
+
+        self.itemModel = [RKObjectLoaderTTModel modelWithObjectLoader:objectLoader];
+        [self.itemModel load];
 	}
 
 	return self;
@@ -82,23 +92,20 @@
     
 	NSMutableArray *items = [[NSMutableArray alloc] init];
 
-	RKRequestTTModel *model = (RKRequestTTModel *)self.model;
-	RKMTree *response = [model.objects objectAtIndex:0];
-	RKOEntity *rootElement = [response.entities objectAtIndex:0];
+	RKObjectLoaderTTModel *model = (RKObjectLoaderTTModel *)self.model;
+	RKMTree *tree = [model.objects objectAtIndex:0];
+	RKMEntity *rootElement = [tree root];
 
-	NSUInteger count = [response.entities count];
-	NSString *parentID = rootElement.id;
+	NSString *parentID = rootElement.itemID;
 
 	// photo-index (skips albums)
 	int d = 0;
 
-	for (int i = 1; i < count; i++) {
-		RKOEntity *item = ( (RKOEntity *)[response.entities objectAtIndex:i] );
-
+    for (RKMEntity* item in [tree children]) {
 		NSString *aURL = @"";
 
 		if ([item.type isEqualToString:@"album"]) {
-			aURL = [@"tt://album/" stringByAppendingString:item.id];
+			aURL = [@"tt://album/" stringByAppendingString:item.itemID];
 		}
 		else {
 			aURL = [[[@"tt://photo/"
@@ -140,9 +147,9 @@
 
 		NSDate *date = [NSDate dateWithTimeIntervalSince1970:[item.created floatValue]];
 
-		NSString *description = (item.description != nil) ? item.description : @"";
+		NSString *description = (item.desc != nil) ? item.desc : @"";
 
-		[items addObject:[MyAlbumItem itemWithItemID:item.id
+		[items addObject:[MyAlbumItem itemWithItemID:item.itemID
 		                                       model:item
 		                                        type:item.type
 		                                       title:item.title

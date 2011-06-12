@@ -25,35 +25,46 @@
 
 #import "RKMTree.h"
 
-// NSValueTransformer
-#import "ArrayToDataTransformer.h"
+@interface RKMTree()
+
+- (NSArray*) sortEntitiesByRelativePosition;
+
+@end
 
 @implementation RKMTree
 
 @dynamic url;
-@dynamic entities;
+@dynamic rEntity;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark RKObjectMappable
+#pragma mark - 
+#pragma mark private
 
-+ (NSDictionary *)elementToPropertyMappings {
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-	        @"url", @"url", nil];
+- (NSArray*) sortEntitiesByRelativePosition {
+    NSSortDescriptor* descriptor1 = [NSSortDescriptor sortDescriptorWithKey:@"relative_position" ascending:YES];
+    NSSortDescriptor* descriptor2 = [NSSortDescriptor sortDescriptorWithKey:@"itemID" ascending:YES];
+    NSArray* entities = [[self.rEntity allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor1, descriptor2, nil]];
+    return entities;
 }
 
-
-+ (NSDictionary *)elementToRelationshipMappings {
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-	        @"entities", @"entity.entity",
-	        @"url", @"url",
-	        nil];
+- (RKMEntity*) root {
+    if ([self.rEntity count] > 0) {
+        NSArray* entities = [self sortEntitiesByRelativePosition];
+        RKMEntity* entity = [entities objectAtIndex:0];
+        return entity;
+    } else {
+        return nil;
+    }
 }
 
-
-+ (NSString *)primaryKeyProperty {
-	return @"url";
+- (NSArray*) children {
+    if ([self.rEntity count] > 1) {
+        NSArray* entities = [self sortEntitiesByRelativePosition];
+        NSMutableArray* mc = [NSMutableArray arrayWithArray:entities];
+        [mc removeObjectAtIndex:0];
+        return [NSArray arrayWithArray:mc];
+    } else {
+        return nil;
+    }
 }
-
 
 @end

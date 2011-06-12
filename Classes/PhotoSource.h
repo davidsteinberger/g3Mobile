@@ -1,5 +1,5 @@
 #import <RestKit/RestKit.h>
-#import <RestKit/Three20/RKRequestTTModel.h>
+#import <RestKit/Three20/RKObjectLoaderTTModel.h>
 #import "Three20/Three20.h"
 #import "RKMTree.h"
 
@@ -14,7 +14,7 @@ typedef enum {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-@interface PhotoSource : RKRequestTTModel <TTPhotoSource> {
+@interface PhotoSource : RKObjectLoaderTTModel <TTPhotoSource> {
 	MockPhotoSourceType _type;
 	NSMutableArray* _newPhotos;
 	NSMutableArray* _photos;

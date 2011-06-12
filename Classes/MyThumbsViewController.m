@@ -15,6 +15,7 @@
 #import "Three20UICommon/UIViewControllerAdditions.h"
 #import "MySettings.h"
 #import "UIImage+scaleAndRotate.h"
+#import "TTTableViewController+g3.h"
 
 @interface MyThumbsViewController ()
 
@@ -259,9 +260,9 @@
 - (void)reloadViewController:(BOOL)goBack {
     self->_goBack = goBack;
     
-    RKRequestTTModel *model = (RKRequestTTModel *)self.photoSource;
-    RKMTree *response = (RKMTree *)[model.objects objectAtIndex:0];
-    RKOEntity *entity = (RKOEntity *)[response.entities objectAtIndex:0];
+    RKObjectLoaderTTModel* model = (RKObjectLoaderTTModel *)self.photoSource;
+    RKMTree *tree = (RKMTree *)[model.objects objectAtIndex:0];
+    RKMEntity *entity = [tree root];
     
     if (![entity.thumb_url_public isEqualToString:@""] && entity.thumb_url_public != nil) {
         [[TTURLCache sharedCache] removeURL:entity.thumb_url_public fromDisk:YES];
@@ -295,7 +296,7 @@
 }
 
 - (void)showEmpty:(BOOL)show {    
-    RKRequestTTModel *model = (RKRequestTTModel *)self.photoSource;
+    RKObjectLoaderTTModel *model = (RKObjectLoaderTTModel *)self.photoSource;
     NSArray* objects = model.objects;
     
     /*

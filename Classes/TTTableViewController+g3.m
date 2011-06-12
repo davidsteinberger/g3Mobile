@@ -7,9 +7,9 @@
 //
 
 #import "TTTableViewController+g3.h"
-#import "RestKit/Three20/RKRequestTTModel.h"
+#import "RestKit/Three20/RKObjectLoaderTTModel.h"
 #import "RKMTree.h"
-#import "RKOEntity.h"
+#import "RKMEntity.h"
 
 
 @implementation TTTableViewController (empty)

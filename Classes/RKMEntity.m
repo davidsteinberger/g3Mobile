@@ -1,5 +1,5 @@
 /*
- * MyTagHelper.h
+ * RKOEntity.m
  * g3Mobile - an iPhone client for gallery3
  *
  * Created by David Steinberger on 4/4/2011.
@@ -22,29 +22,23 @@
  * You should have received a copy of the GNU General Public License
  * along with g3Mobile.  If not, see <http://www.gnu.org/licenses/>.
  */
-/*
- * Helper for the various Rest calls to retrieve tags
- *
- * Informs the delegate via the MyTagHelperDelegate protocol that the tags got loaded
- */
 
-// RestKit
-#import <RestKit/RestKit.h>
+#import "RKMEntity.h"
 
-// MyTagHelperDelegate protocol
-#import "MyTagHelperDelegate.h"
+@implementation RKMEntity
 
-@interface MyTagHelper : NSObject <RKObjectLoaderDelegate> {
-	id <MyTagHelperDelegate> _delegate;
-	NSString *_resourcePath;
-	NSMutableArray *_objects;
-	BOOL _lock;
-}
-
-@property (nonatomic, assign) id <MyTagHelperDelegate> delegate;
-@property (nonatomic, retain) NSString *resourcePath;
-@property (nonatomic, retain) NSMutableArray *objects;
-
-- (id)initWithResourcePath:(NSString *)resourcePath delegate:(id <MyTagHelperDelegate>)delegate;
+@dynamic itemID;
+@dynamic parent;
+@dynamic title;
+@dynamic desc;
+@dynamic type;
+@dynamic thumb_url_public;
+@dynamic thumb_url;
+@dynamic resize_url_public;
+@dynamic resize_url;
+@dynamic thumb_width;
+@dynamic thumb_height;
+@dynamic created;
+@dynamic relative_position;
 
 @end

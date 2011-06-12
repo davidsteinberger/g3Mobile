@@ -28,8 +28,10 @@
 
 // RestKit
 #import <RestKit/RestKit.h>
-#import "RKOEntity.h"
+#import <RestKit/CoreData/CoreData.h>
+#import "RKMEntity.h"
 #import "RKMItem.h"
+#import "RKMTree.h"
 
 // SQLite
 #import <sqlite3.h>
@@ -292,8 +294,6 @@
         
         RKObjectManager* objectManager = [RKObjectManager objectManagerWithBaseURL:GlobalSettings.baseURL];
         
-        RKObjectMapper *mapper = objectManager.mapper;
-        
         //[[RKRequestQueue sharedQueue] cancelAllRequests];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -308,11 +308,41 @@
         [[objectManager client] setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         
         // Set nil for any attributes we expect to appear in the payload, but do not
-        objectManager.mapper.missingElementMappingPolicy = RKSetNilForMissingElementMappingPolicy;
+        //objectManager.mapper.missingElementMappingPolicy = RKSetNilForMissingElementMappingPolicy;
 
         // Add our element to object mappings
-        [mapper registerClass:[RKOEntity class] forElementNamed:@ "entity"];
-        [mapper registerClass:[RKOTags class] forElementNamed:@ "tags"];
+        RKObjectMappingProvider* mappingProvider = [[RKObjectMappingProvider new] autorelease];
+        //RKObjectMappingProvider* itemProvider = [[RKObjectMappingProvider new] autorelease];
+        
+        RKManagedObjectMapping* tagMemberMapping = [RKManagedObjectMapping mappingForClass:[RKMTag_Member class]];
+        tagMemberMapping.primaryKeyAttribute = @"url";
+        [tagMemberMapping mapKeyPathsToAttributes:
+         @"entity.tag.url", @"url", 
+         @"entity.tag.entity.name", @"name", 
+         @"entity.tag.entity.count", @"count", 
+         nil];
+        
+        RKManagedObjectMapping* entityMapping = [RKManagedObjectMapping mappingForClass:[RKMEntity class]];
+        entityMapping.primaryKeyAttribute = @"itemID";
+        [entityMapping mapKeyPath:@"id" toAttribute:@"itemID"];
+        [entityMapping mapKeyPath:@"description" toAttribute:@"desc"];
+        [entityMapping mapAttributes:@"title", @"type", @"thumb_url_public", @"thumb_url", @"resize_url_public", @"resize_url", @"thumb_width", @"thumb_height", @"created", @"relative_position", @"parent", nil];
+        
+        RKManagedObjectMapping* itemMapping = [RKManagedObjectMapping mappingForClass:[RKMItem class]];
+        itemMapping.primaryKeyAttribute = @"url";
+        [itemMapping mapKeyPath:@"url" toAttribute:@"url"];
+        [itemMapping mapKeyPath:@"entity" toRelationship:@"rEntity" withObjectMapping:entityMapping];
+        [itemMapping mapKeyPath:@"relationships.tags.members" toRelationship:@"rTags" withObjectMapping:tagMemberMapping];
+        
+        RKManagedObjectMapping* treeMapping = [RKManagedObjectMapping mappingForClass:[RKMTree class]];
+        treeMapping.primaryKeyAttribute = @"url";
+        [treeMapping mapKeyPathsToAttributes:@"url", @"url", nil];
+        [treeMapping mapKeyPath:@"entity.entity" toRelationship:@"rEntity" withObjectMapping:entityMapping];
+        
+        [mappingProvider setMapping:itemMapping forKeyPath:@"_item"];        
+        [mappingProvider setMapping:treeMapping forKeyPath:@"_tree"];
+        
+        objectManager.mappingProvider = mappingProvider;
     } else if (_isRestKitLoad) {
         [RKObjectManager sharedManager].client.baseURL = GlobalSettings.baseURL;
         [[RKObjectManager sharedManager].client.HTTPHeaders removeAllObjects];

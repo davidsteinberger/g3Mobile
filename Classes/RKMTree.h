@@ -25,27 +25,26 @@
 /*
  * Object mapping for tree-resource
  *
- * The RKMTree resource holds an array of RKOEntity classes.
- * Each RKOEntity represents an item from gallery3.
+ * The RKMTree resource holds an unsorted list of RKMEntity classes.
+ * Each RKMEntity represents an item entity from gallery3.
  *
  * Note:
- * By purpose the array of RKOEntity objects gets stored in the database via ArrayToDataTransformer:
- * - It ensures that the order of the item is the same as in the gallery3 web-interface
- *   (This could be a bit tricky with RestKit and the current G3 tree rest resource.)
- * - This app fetches only 1 level of an album at a time. So the number of items and the volume of
- *   data is never that much.
- * See <https://github.com/twotoasters/RestKit/blob/master/Docs/
- * MobileTuts%20Introduction%20to%20RestKit/index.html>
+ * The tree is stored as an unsorted list (NSSet) of entities.
+ * Core data cannot handle sorted lists. To reconstruct the ordering
+ * a 'relative_position' attribute is used.
  */
 
 #import <RestKit/RestKit.h>
 #import <RestKit/CoreData/CoreData.h>
-#import "RKOEntity.h"
+#import "RKMEntity.h"
 
-@interface RKMTree : RKManagedObject {
+@interface RKMTree : NSManagedObject {
 }
 
 @property (nonatomic, retain) NSString *url;
-@property (nonatomic, retain) NSArray *entities;
+@property (nonatomic, retain) NSSet *rEntity;
+
+- (RKMEntity*) root;
+- (NSArray*) children;
 
 @end

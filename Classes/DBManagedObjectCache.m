@@ -27,7 +27,7 @@
 
 // RestKit
 #import "RKMTree.h"
-#import "RKOEntity.h"
+#import "RKMEntity.h"
 #import "MySettings.h"
 #import "RKMItem.h"
 
@@ -62,30 +62,6 @@
 	// If tree-resource requested ...
 	if ([restResource isEqual : @ "item"]) {
 		NSFetchRequest *request = [RKMItem fetchRequest];
-		NSPredicate *predicate =
-		[NSPredicate predicateWithFormat:@ "url = %@", predicateString, nil];
-		[request setPredicate : predicate];
-		NSSortDescriptor *sortDescriptor =
-		[NSSortDescriptor sortDescriptorWithKey:@ "url" ascending:YES];
-		[request setSortDescriptors :[NSArray arrayWithObject : sortDescriptor]];
-		return [NSArray arrayWithObject : request];
-	}
-
-	// If tree-resource requested ...
-	if ([restResource isEqual : @ "tag_item"]) {
-		NSFetchRequest *request = [RKOTagItem fetchRequest];
-		NSPredicate *predicate =
-		[NSPredicate predicateWithFormat:@ "url = %@", predicateString, nil];
-		[request setPredicate : predicate];
-		NSSortDescriptor *sortDescriptor =
-		[NSSortDescriptor sortDescriptorWithKey:@ "url" ascending:YES];
-		[request setSortDescriptors :[NSArray arrayWithObject : sortDescriptor]];
-		return [NSArray arrayWithObject : request];
-	}
-
-	// If tree-resource requested ...
-	if ([restResource isEqual : @ "tag"]) {
-		NSFetchRequest *request = [RKOTag fetchRequest];
 		NSPredicate *predicate =
 		[NSPredicate predicateWithFormat:@ "url = %@", predicateString, nil];
 		[request setPredicate : predicate];

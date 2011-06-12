@@ -25,13 +25,13 @@
 #import "Three20/Three20.h"
 
 // RestKit
-#import "RKOEntity.h"
+#import "RKMEntity.h"
 
 // Others
 #import "MyItem.h"
 
 @interface MyMetaDataItem : TTTableLinkedItem <MyItem> {
-	RKOEntity *_model;
+	RKMEntity *_model;
 	NSString *_title;
 	NSString *_description;
 	NSString *_autor;
@@ -39,14 +39,14 @@
 	NSString *_tags;
 }
 
-@property (nonatomic, retain) RKOEntity *model;
+@property (nonatomic, retain) RKMEntity *model;
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSString *description;
 @property (nonatomic, retain) NSString *autor;
 @property (nonatomic, retain) NSDate *timestamp;
 @property (nonatomic, retain) NSString *tags;
 
-+ (id)itemWithTitle:(NSString *)title model:(RKOEntity *)model description:(NSString *)description
++ (id)itemWithTitle:(NSString *)title model:(RKMEntity *)model description:(NSString *)description
        autor:(NSString *)autor timestamp:(NSDate *)timestamp tags:(NSString *)tags;
 
 @end

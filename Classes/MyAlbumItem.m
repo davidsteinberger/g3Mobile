@@ -54,7 +54,7 @@
 
 
 // Creates the item and returns it
-+ (id)itemWithItemID:(NSString *)itemID model:(RKOEntity *)model type:(NSString *)type
++ (id)itemWithItemID:(NSString *)itemID model:(RKMEntity *)model type:(NSString *)type
        title:(NSString *)title caption:(NSString *)caption description:(NSString *)description
        text:(NSString *)text
        timestamp:(NSDate *)timestamp imageURL:(NSString *)imageURL width:(CGFloat)width
@@ -129,7 +129,7 @@
 #pragma mark -
 #pragma mark MyAlbumItem Protocol
 
-- (RKOEntity *)model {
+- (RKMEntity *)model {
 	return self->_model;
 }
 

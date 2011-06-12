@@ -28,7 +28,7 @@
 - (void)updateAlbum;
 - (NSString *)urlEncodeValue:(NSString *)str;
 
-// required by TTModel protocol
+// required by RKObjectLoaderTTModelel protocol
 - (NSMutableArray*)delegates;
 - (BOOL)isLoaded;
 - (BOOL)isLoading;

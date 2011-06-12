@@ -1,6 +1,5 @@
 #import "PhotoSource.h"
 #import "Three20Core/NSArrayAdditions.h"
-#import "RKRequestTTModel+g3.h"
 #import "AppDelegate.h"
 #import "RKMItem.h"
 
@@ -27,42 +26,16 @@
     return _delegates;
 }
 
-- (void)modelDidFinishLoad:(id)object {
-    if ([self.objects count] == 0) {
-        return;
-    }
-    
-    NSArray* newPhotos = [self buildArrayOfPhotos:self.objects forAlbum:self.albumID photosOnly:NO];
-    
-    self.title = [self getAlbumTitle:self.objects];
-    [_photos release];
-    _photos = [newPhotos retain];
-    
-    for (int i = 0; i < _photos.count; ++i) {
-        id <TTPhoto> photo = [_photos objectAtIndex:i];
-        if ( (NSNull *)photo != [NSNull null] ) {
-            photo.photoSource = self;
-            photo.index = i;
-        }
-    }    
-    
-    [_delegates perform:@selector(modelDidFinishLoad:) withObject:self];
-}
 
+// see RKObjectLoaderTTModel
 - (void)modelsDidLoad:(NSArray*)models {
-	[models retain];
+    [models retain];
 	[_objects release];
 	_objects = nil;
     
 	_objects = models;
 	_isLoaded = YES;
     
-	[self didFinishLoad];
-    
-    if ([self.objects count] == 0) {
-        return;
-    }
-    
     NSArray* newPhotos = [self buildArrayOfPhotos:self.objects forAlbum:self.albumID photosOnly:NO];
     
     self.title = [self getAlbumTitle:self.objects];
@@ -76,8 +49,6 @@
             photo.index = i;
         }
     }
-    
-    [_delegates perform:@selector(modelDidFinishLoad:) withObject:self];	
 }
 
 - (id)initWithItemID:(NSString*)itemID
@@ -87,8 +58,9 @@
                                    stringByAppendingString:itemID]
                                   stringByAppendingString:@"?depth=1"];
     
-    if ((self = [self initWithResourcePath:treeResourcePath
-                                    params:nil objectClass:[RKMTree class]])) {
+    RKObjectLoader* objectLoader = [[RKObjectManager sharedManager] objectLoaderWithResourcePath:treeResourcePath delegate:nil];
+    
+    if ((self = [self initWithObjectLoader:objectLoader])) {
         self.title = @"Photos";
 		self.albumID = itemID;
 		
@@ -97,7 +69,7 @@
     return self;
 }
 
-// TTModel
+// RKObjectLoaderTTModel
 - (BOOL)isLoaded {
     return !!_photos;
 }
@@ -140,24 +112,25 @@
 }
 
 - (NSString*)getAlbumTitle:(NSArray*)objects {
-	RKMTree* response = [objects objectAtIndex:0];
-	RKOEntity* entity = [response.entities objectAtIndex:0];
-	return [NSString stringWithString:(entity.title) ? entity.title : @""];
+    RKMTree* tree = [objects objectAtIndex:0];
+    RKMEntity* root = [tree root];
+    
+	return [NSString stringWithString:(root.title) ? root.title : @""];
 }
 
 - (NSArray*)buildArrayOfPhotos:(NSArray*)objects forAlbum:(NSString*)albumID photosOnly:(BOOL)photosOnly{
-	RKMTree* response = [objects objectAtIndex:0];
+	RKMTree* tree = [objects objectAtIndex:0];
 
 	[_newPhotos release];
 	_newPhotos = [[NSMutableArray alloc] init];
 	
-	for (RKOEntity* item in  response.entities) {
+	for (RKMEntity* item in  [tree children]) {
 		
-		if ([item.id isEqualToString:albumID]) {
+		if ([item.itemID isEqualToString:albumID]) {
 			continue;
 		}
 		
-		NSString* photoID = item.id;
+		NSString* photoID = item.itemID;
 		if (photoID == nil) {
 			photoID = @"1";
 		}
@@ -230,26 +203,9 @@
 	
     PhotoSource* myPhotoSource;
     
-	myPhotoSource = [[PhotoSource alloc] initWithResourcePath:treeResourcePath
-                                                 params:nil objectClass:[RKMTree class]];
-    NSArray* objects = [myPhotoSource loadSynchronous:NO];
-	
-	NSArray* newPhotos = [myPhotoSource buildArrayOfPhotos:objects forAlbum:albumID photosOnly:YES];
-	for (int i = 0; i < newPhotos.count; ++i) {
-		id <TTPhoto> photo = [newPhotos objectAtIndex:i];
-		if ( (NSNull *)photo != [NSNull null] ) {
-			photo.photoSource = myPhotoSource;
-			photo.index = i;
-		}
-	}
-	
-	myPhotoSource->_type = MockPhotoSourceNormal;
-	//myPhotoSource->_parentURL = [NSString stringWithString: albumParent];
-	myPhotoSource.albumID = [NSString stringWithString: albumID];
-	myPhotoSource.title = [myPhotoSource getAlbumTitle:objects];
-	myPhotoSource->_photos = [newPhotos retain];
-	
-	//TT_RELEASE_SAFELY(myModel);
+    RKObjectLoader* objectLoader = [[RKObjectManager sharedManager] objectLoaderWithResourcePath:treeResourcePath delegate:nil];
+    myPhotoSource = [RKObjectLoaderTTModel modelWithObjectLoader:objectLoader];
+    
 	return myPhotoSource;
 }
 

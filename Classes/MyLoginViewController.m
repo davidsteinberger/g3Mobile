@@ -76,7 +76,7 @@
             
         NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
         if ([fetchedObjects count] > 0) {
-            for (RKManagedObject* object in fetchedObjects) {
+            for (NSManagedObject* object in fetchedObjects) {
                 [context deleteObject:object];
             }
         }

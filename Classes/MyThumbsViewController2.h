@@ -25,7 +25,7 @@
  *
  * This controller is based on TTTableViewController of the Three20 library
  * This makes it fairly easy to asynchronously display results from a remote server.
- * The actual fetching of remote data is handled by RKRequestTTModel (a TTModel),
+ * The actual fetching of remote data is handled by RKRequestRKObjectLoaderTTModel (a RKObjectLoaderTTModelel),
  * and the results are presented for display in a table view by MyThumbsViewDataSource2
  * (a TTTableViewDataSource).
  *
@@ -42,22 +42,15 @@
 #import "Three20/Three20.h"
 #import "MyItem.h"
 #import "MyLongPressGestureDelegate.h"
-#import "MyTagHelper.h"
 
-@class MyTagHelper;
-
-@interface MyThumbsViewController2 : TTTableViewController <MyLongPressGestureDelegate,
-	                                                    MyTagHelperDelegate,
+@interface MyThumbsViewController2 : TTTableViewController <MyLongPressGestureDelegate,                    
 	                                                    UINavigationControllerDelegate,
 	                                                    UIImagePickerControllerDelegate> {
 	NSString *_itemID;
 	id <MyItem> _selectedAlbumItem;
 	UIView *_backViewOld;
 	UIView *_selectedCell;
-	BOOL _showDetails;
-	MyTagHelper *_tagHelper;
 	int _cntTags;
-	NSString *_tags;
 	UIImagePickerController *_pickerController;
     BOOL _goBack;
     BOOL _isEmpty;
@@ -67,9 +60,6 @@
 @property (nonatomic, assign) id <MyItem> selectedAlbumItem;
 @property (nonatomic, retain) UIView *backViewOld;
 @property (nonatomic, retain) UIView *selectedCell;
-@property (nonatomic, retain) MyTagHelper *tagHelper;
-@property (nonatomic, retain) NSString *tags;
-@property (nonatomic, assign) BOOL showDetails;
 
 // Initializes view for given itemID (must be an album id)
 - (id)initWithItemID:(NSString *)itemID;

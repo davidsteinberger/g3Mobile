@@ -13,7 +13,7 @@
 #import "MyThumbsViewController.h"
 #import "PhotoSource.h"
 
-@interface MyPhotoViewController : TTPhotoViewController<UITableViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate> {
+@interface MyPhotoViewController : TTPhotoViewController <UITableViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate> {
 }
 
 - (void)moveToPhotoAtIndex:(NSInteger)photoIndex withDelay:(BOOL)withDelay;

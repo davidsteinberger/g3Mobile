@@ -27,9 +27,8 @@
 
 // RestKit
 #import <RestKit/RestKit.h>
-#import "RestKit/Three20/RKRequestTTModel.h"
+#import "RestKit/Three20/RKObjectLoaderTTModel.h"
 #import "RKMItem.h"
-#import "MyTagHelper.h"
 #import "RKMTree.h"
 
 // Datasource and custom cells (three20)
@@ -79,16 +78,7 @@
  * Return the entity of the current selected item. If the album is empty it delivers the entity of
  * the album.
  */
-- (RKOEntity *)getEntity;
-
-// loads the tags via the MyTagHelper
-- (void)loadTags;
-
-// MyTagHelperDelegate
-- (void)tagsDidLoad:(NSArray *)objects;
-
-// toggles overlay-menu
-- (void)toggleMetaData;
+- (RKMEntity *)getEntity;
 
 // Removes any existing menu
 - (void)removeContextMenu;
@@ -97,11 +87,8 @@
 
 @implementation MyThumbsViewController2
 
-@synthesize tagHelper = _tagHelper;
 @synthesize itemID = _itemID;
 @synthesize selectedAlbumItem = _selectedAlbumItem;
-@synthesize tags = _tags;
-@synthesize showDetails = _showDetails;
 
 @synthesize backViewOld = _backViewOld;
 @synthesize selectedCell = _selectedCell;
@@ -114,10 +101,8 @@
 	[[RKRequestQueue sharedQueue] cancelAllRequests];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	TT_RELEASE_SAFELY(_itemID);
-	TT_RELEASE_SAFELY(_tagHelper);
 	TT_RELEASE_SAFELY(_backViewOld);
 	TT_RELEASE_SAFELY(_selectedCell);
-	TT_RELEASE_SAFELY(_tags);
 	TT_RELEASE_SAFELY(_pickerController);
 	[super dealloc];
 }
@@ -127,8 +112,8 @@
 - (id)initWithItemID:(NSString *)itemID {
 	if ( (self = [self initWithNibName:nil bundle:nil]) ) {
 		self.itemID = itemID;
-
-		// start a reload in the background ... as the album might have changed
+        
+        // start a reload in the background ... as the album might have changed
 		[self reload];
 	}
 
@@ -151,7 +136,6 @@
 // Reloads the data -> resets the detail-view
 - (void)reload {
 	[super reload];
-	self.showDetails = YES;
 }
 
 
@@ -166,9 +150,9 @@
 	MyThumbsViewController2 *parent =
 	        ( (MyThumbsViewController2 *)self.ttPreviousViewController );
 
-	RKRequestTTModel *model = (RKRequestTTModel *)[self.dataSource model];
-	RKMTree *response = (RKMTree *)[model.objects objectAtIndex:0];
-	RKOEntity *entity = (RKOEntity *)[response.entities objectAtIndex:0];
+	RKObjectLoaderTTModel *model = (RKObjectLoaderTTModel *)[self.dataSource model];
+	RKMTree *tree = (RKMTree *)[model.objects objectAtIndex:0];
+	RKMEntity *entity = [tree root];
 
 	if (![entity.thumb_url_public isEqualToString:@""] && entity.thumb_url_public != nil) {
 		[[TTURLCache sharedCache] removeURL:entity.thumb_url_public fromDisk:YES];
@@ -211,9 +195,9 @@
 
 // The model has finished loading the data -> set the title of the view
 - (void)modelDidFinishLoad:(id <TTModel>)model {
-	if ([( (RKRequestTTModel *)self.model ).objects count] > 0) {
-		RKMTree *response = [( (RKRequestTTModel *)self.model ).objects objectAtIndex:0];
-		RKOEntity *entity = [response.entities objectAtIndex:0];
+	if ([( (RKObjectLoaderTTModel *)self.model ).objects count] > 0) {
+		RKMTree *tree = [( (RKObjectLoaderTTModel *)self.model ).objects objectAtIndex:0];
+		RKMEntity *entity = [tree root];
 
 		self.title = entity.title;
 
@@ -235,7 +219,7 @@
 
 // Handle the event that the album is empty
 - (void)showEmpty:(BOOL)show {
-	RKRequestTTModel *model = (RKRequestTTModel *)self.model;
+	RKObjectLoaderTTModel *model = (RKObjectLoaderTTModel *)self.model;
 	NSArray *objects = model.objects;
 
 	/*
@@ -302,10 +286,6 @@
 			_pickerController.sourceType =
 			        UIImagePickerControllerSourceTypeSavedPhotosAlbum;
 		}
-
-		self.tags = [[[NSString alloc] init] autorelease];
-
-		self.showDetails = NO;
 	}
 
 	return self;
@@ -425,78 +405,17 @@
 #pragma mark -
 #pragma mark private
 
-// loads the tags via the MyTagHelper
-- (void)loadTags {
-	NSString *itemResourcePath = [[@""
-	                               stringByAppendingString:@"/rest/item/"]
-	                              stringByAppendingString:self.itemID];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	MyTagHelper *tagHelper =
-	        [[MyTagHelper alloc] initWithResourcePath:itemResourcePath delegate:self];
-	self.tagHelper = tagHelper;
-	TT_RELEASE_SAFELY(tagHelper);
-}
-
-
-// MyTagHelperDelegate
-- (void)tagsDidLoad:(NSArray *)objects {
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	NSString *tags = @"";
-
-	for (RKOTag *tag in objects) {
-		tags = [[[[tags stringByAppendingString:tag.name]
-		          stringByAppendingString:@" ("]
-		         stringByAppendingString:tag.count]
-		        stringByAppendingString:@"), "];
-	}
-
-	if (![tags isEqualToString:@""]) {
-		tags = [tags substringToIndex:[tags length] - 2];
-	}
-	else {
-		tags = @"(No Tags)";
-	}
-
-	self.tags = tags;
-	[self toggleMetaData];
-}
-
-
 // Show/hide details of album above the first album
 - (void)showDetails:(id)sender {
-	self.showDetails = !self.showDetails;
-
-	if (self.showDetails) {
-		[self loadTags];
-	}
-	else {
-		self.tags = @"";
-		[self toggleMetaData];
-	}
-}
-
-
-// toggles overlay-menu
-- (void)toggleMetaData {
-	MyThumbsViewDataSource2 *ds = (MyThumbsViewDataSource2 *)self.dataSource;
-
-	/*
-	 * This method might be called before the model is loaded
-	 * In this event we do nothing
-	 */
-	if ([( (RKRequestTTModel *)self.model ).objects count] == 0) {
-		return;
-	}
-
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    MyThumbsViewDataSource2 *ds = (MyThumbsViewDataSource2 *)self.dataSource;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 	NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
 
-	int entities =
-	        [( (RKMTree *)[( (RKRequestTTModel *)self.model ).objects objectAtIndex:0] ).
-	         entities count];
+    int entities =
+    [[((RKMTree*)[((RKObjectLoaderTTModel *)self.model).objects objectAtIndex:0]).rEntity allObjects] count];
+    
 	int items = [( (MyThumbsViewDataSource2 *)self.dataSource ).items count];
-
+    
 	/*
 	 * RKMTree contains all entities from the tree resource: 1 x parent + XYZ x children
 	 * Usually only children get displayed:
@@ -505,31 +424,30 @@
 	 * This circumstance is used to toggle the cell for the meta-data!
 	 */
 	if (!(entities == items) && entities > 0 && items > 0) {
-		self.navigationItem.rightBarButtonItem.title = @"Hide Details";
-		RKRequestTTModel *model2 = (RKRequestTTModel *)[self.dataSource model];
-		RKMTree *response = (RKMTree *)[model2.objects objectAtIndex:0];
-		RKOEntity *entity = (RKOEntity *)[response.entities objectAtIndex:0];
-
+        self.navigationItem.rightBarButtonItem.title = @"Hide Details";
+		RKObjectLoaderTTModel *model2 = ((RKObjectLoaderTTModel *)((MyThumbsViewDataSource2*)self.dataSource).itemModel);
+		RKMItem *item = (RKMItem *)[model2.objects objectAtIndex:0];
+        
 		MyMetaDataItem *mdItem = [MyMetaDataItem
-		                          itemWithTitle:entity.title
-		                                  model:entity
-		                            description:entity.description
-		                                  autor:@""
-		                              timestamp:[NSDate dateWithTimeIntervalSince1970:[
-		                                             entity.created floatValue]]
-		                                   tags:self.tags];
-
+		                          itemWithTitle:item.rEntity.title
+                                  model:item.rEntity
+                                  description:item.rEntity.desc
+                                  autor:@""
+                                  timestamp:[NSDate dateWithTimeIntervalSince1970:[
+                                                                                   item.rEntity.created floatValue]]
+                                  tags:[item concatenatedTagInfo]];
+        
 		[ds.items insertObject:mdItem atIndex:0];
 		[self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:
 		 UITableViewRowAnimationFade];
-
-		//[mdItem release];
-
+        
 		NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 		[self.tableView    scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:
 		 UITableViewScrollPositionBottom animated:YES];
-	}
-	else if (entities > 0 && items > 0) {
+    } else {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
+        MyThumbsViewDataSource2 *ds = (MyThumbsViewDataSource2 *)self.dataSource;
 		self.navigationItem.rightBarButtonItem.title = @"Show Details";
 		[ds.items removeObjectAtIndex:0];
 		[self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:
@@ -797,10 +715,10 @@
 	// Immediately show the network spinner as this can be lengthy ...
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-	RKRequestTTModel *model = (RKRequestTTModel *)[self.dataSource model];
-	RKMTree *response = (RKMTree *)[model.objects objectAtIndex:0];
-	RKOEntity *entity = (RKOEntity *)[response.entities objectAtIndex:0];
-	NSString *albumID = entity.id;
+	RKObjectLoaderTTModel *model = (RKObjectLoaderTTModel *)[self.dataSource model];
+	RKMTree *tree = (RKMTree *)[model.objects objectAtIndex:0];
+	RKMEntity *entity = [tree root];
+	NSString *albumID = entity.itemID;
 
 	MyAlbumUpdater *updater = [[MyAlbumUpdater alloc] initWithItemID:albumID];
 	[updater setValue:[[GlobalSettings.baseURL stringByAppendingString:@"/rest/item/"]
@@ -821,7 +739,7 @@
 	// Immediately show the network spinner as this can be lengthy ...
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-	RKOEntity *entity = [self getEntity];
+	RKMEntity *entity = [self getEntity];
 
 	// fetch the image from the server
 	TTURLRequest *request = [TTURLRequest
@@ -890,19 +808,19 @@
 
 	if ([[cell.object class] conformsToProtocol:@protocol(MyItem)]) {
 		id <MyItem> item = cell.object;
-		return item.model.id;
+		return item.model.itemID;
 	}
 	else {
-		RKRequestTTModel *model = (RKRequestTTModel *)[self.dataSource model];
-		RKMTree *response = (RKMTree *)[model.objects objectAtIndex:0];
-		RKOEntity *entity = (RKOEntity *)[response.entities objectAtIndex:0];
-		return entity.id;
+		RKObjectLoaderTTModel *model = (RKObjectLoaderTTModel *)[self.dataSource model];
+		RKMTree *tree = (RKMTree *)[model.objects objectAtIndex:0];
+		RKMEntity *entity = [tree root];
+		return entity.itemID;
 	}
 	return nil;
 }
 
 
-- (RKOEntity *)getEntity {
+- (RKMEntity *)getEntity {
 	TTTableViewCell *cell = (TTTableViewCell *)self.selectedCell;
 
 	if ([[cell.object class] conformsToProtocol:@protocol(MyItem)]) {
@@ -910,9 +828,9 @@
 		return item.model;
 	}
 	else {
-		RKRequestTTModel *model = (RKRequestTTModel *)[self.dataSource model];
-		RKMTree *response = (RKMTree *)[model.objects objectAtIndex:0];
-		RKOEntity *entity = (RKOEntity *)[response.entities objectAtIndex:0];
+		RKObjectLoaderTTModel *model = (RKObjectLoaderTTModel *)[self.dataSource model];
+		RKMTree *tree = (RKMTree *)[model.objects objectAtIndex:0];
+		RKMEntity *entity = [tree root];
 		return entity;
 	}
 	return nil;

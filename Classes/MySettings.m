@@ -346,8 +346,12 @@ withImageQuality:(float) imageQuality {
     if (persistentStoreCoordinator != nil) {
         return persistentStoreCoordinator;
     }
+    
+    // see RKManagedObjectStore
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
 	
-    NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"G3CoreData.sqlite"]];
+    NSURL *storeUrl = [NSURL fileURLWithPath: [basePath stringByAppendingPathComponent: @"G3CoreData.sqlite"]];
 	
 	NSError *error = nil;
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

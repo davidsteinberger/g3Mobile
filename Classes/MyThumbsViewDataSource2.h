@@ -25,15 +25,19 @@
  *
  * In the Three20 philosophy the datasource builds the rows that
  * go into the tableview. In this implementation we leverage the
- * RKRequestTTModel to do the async load of the collection data
+ * RKRequestRKObjectLoaderTTModel to do the async load of the collection data
  * (the tree resource).
  */
 
 #import "Three20/Three20.h"
 
+@class RKObjectLoaderTTModel;
+
 @interface MyThumbsViewDataSource2 : TTListDataSource {
+    RKObjectLoaderTTModel* _itemModel;
 }
 
+@property (nonatomic, retain) RKObjectLoaderTTModel* itemModel;
 - (id)initWithItemID:(NSString *)itemID;
 
 @end

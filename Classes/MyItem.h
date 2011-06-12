@@ -27,10 +27,10 @@
  * So if required a row in the table-view knows about it's id, name, title, ... .
  */
 
-@class RKOEntity;
+@class RKMEntity;
 
 @protocol MyItem
 
-- (RKOEntity *)model;
+- (RKMEntity *)model;
 
 @end

@@ -25,7 +25,7 @@
 #import "Three20/Three20.h"
 
 // RestKit
-#import "RKOEntity.h"
+#import "RKMEntity.h"
 
 // Others
 #import "MyItem.h"
@@ -33,7 +33,7 @@
 //TTTableMessageItem
 @interface MyAlbumItem : TTTableLinkedItem <MyItem> {
 	// meta-data
-	RKOEntity *_model;
+	RKMEntity *_model;
 	NSString *_itemID;
 	NSString *_type;
 
@@ -47,7 +47,7 @@
 	float _height;
 }
 
-@property (nonatomic, retain) RKOEntity *model;
+@property (nonatomic, retain) RKMEntity *model;
 @property (nonatomic, retain) NSString *itemID;
 @property (nonatomic, retain) NSString *type;
 
@@ -59,7 +59,7 @@
 @property (nonatomic, assign) CGFloat width;
 @property (nonatomic, assign) CGFloat height;
 
-+ (id)itemWithItemID:(NSString *)itemID model:(RKOEntity *)model type:(NSString *)type
++ (id)itemWithItemID:(NSString *)itemID model:(RKMEntity *)model type:(NSString *)type
        title:(NSString *)title caption:(NSString *)caption description:(NSString *)description
        text:(NSString *)text timestamp:(NSDate *)timestamp imageURL:(NSString *)imageURL
        width:(CGFloat)width height:(CGFloat)height URL:(NSString *)URL;
