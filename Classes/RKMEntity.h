@@ -47,6 +47,8 @@
 @property (nonatomic, retain) NSString *thumb_url;
 @property (nonatomic, retain) NSString *resize_url_public;
 @property (nonatomic, retain) NSString *resize_url;
+@property (nonatomic, retain) NSString *file_url;
+@property (nonatomic, retain) NSString *file_url_public;
 @property (nonatomic, retain) NSString *thumb_width;
 @property (nonatomic, retain) NSString *thumb_height;
 @property (nonatomic, retain) NSString *created;

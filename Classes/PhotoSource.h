@@ -49,7 +49,7 @@ typedef enum {
 @property(nonatomic, retain) NSString* photoID;
 @property (nonatomic, retain) NSString* parentURL;
 
-- (id)initWithURL:(NSString *)URL smallURL:(NSString *)smallURL size:(CGSize)size
-		  caption:(NSString *)caption isAlbum:(BOOL)isAlbum photoID:(NSString *)photoID parentURL:(NSString *)parentURL;
+- (id)initWithURL:(NSString *)URL smallURL:(NSString *)smallURL thumbURL:(NSString *)thumbURL size:(CGSize)size
+          caption:(NSString *)caption isAlbum:(BOOL)isAlbum photoID:(NSString *)photoID parentURL:(NSString *)parentURL;
 
 @end

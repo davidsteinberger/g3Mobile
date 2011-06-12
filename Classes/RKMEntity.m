@@ -36,6 +36,8 @@
 @dynamic thumb_url;
 @dynamic resize_url_public;
 @dynamic resize_url;
+@dynamic file_url_public;
+@dynamic file_url;
 @dynamic thumb_width;
 @dynamic thumb_height;
 @dynamic created;

@@ -160,6 +160,11 @@
 		if (resize_url == nil) {
 			resize_url = @"bundle://empty.png";
 		}
+        
+        NSString* url = (item.file_url_public != nil) ? item.file_url_public : item.file_url;
+		if (url == nil) {
+			resize_url = @"bundle://empty.png";
+		}
 		
 		id iWidth = item.thumb_width;
 		id iHeight = item.thumb_height;
@@ -178,8 +183,9 @@
 		}
 		
 		Photo* mph = [[Photo alloc]
-					  initWithURL:[NSString stringWithString: resize_url]
-					  smallURL:[NSString stringWithString: thumb_url]
+					  initWithURL:[NSString stringWithString: url]
+					  smallURL:[NSString stringWithString: resize_url]
+                      thumbURL:[NSString stringWithString: thumb_url]
 					  size:CGSizeMake(width, height)
 					  caption:[NSString stringWithString:(item.title) ? item.title : @""]
 					  isAlbum:isAlbum
@@ -221,12 +227,12 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // NSObject
 
-- (id)initWithURL:(NSString *)URL smallURL:(NSString *)smallURL size:(CGSize)size
+- (id)initWithURL:(NSString *)URL smallURL:(NSString *)smallURL thumbURL:(NSString *)thumbURL size:(CGSize)size
        caption:(NSString *)caption isAlbum:(BOOL)isAlbum photoID:(NSString *)photoID parentURL:(NSString *)parentURL {
 	if ((self = [super init])) {
 		_URL = [URL copy];
 		_smallURL = [smallURL copy];
-		_thumbURL = [smallURL copy];
+		_thumbURL = [thumbURL copy];
 		_size = size;
 		_caption = [caption copy];
 		_index = NSIntegerMax;
@@ -255,7 +261,7 @@
 		return _URL;
 	}
 	else if (version == TTPhotoVersionMedium) {
-		return _URL;
+		return _smallURL;
 	}
 	else if (version == TTPhotoVersionSmall) {
 		return _smallURL;
