@@ -4,8 +4,6 @@
 
 @interface MyThumbsViewController : TTThumbsViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
 	NSString* _albumID;
-	UIToolbar* _toolbar;
-	UIBarButtonItem* _clickActionItem;
 	UIImagePickerController* _pickerController;
 	
 	UIAlertView* _progressAlert;
@@ -13,6 +11,8 @@
 	UIProgressView* _progressView;
     
     BOOL _goBack;
+    BOOL _isEmpty;
+    BOOL _isInEditingState;
 }
 
 @property(nonatomic, copy) NSString* albumID;

@@ -60,13 +60,10 @@
 #import "Three20UINavigator/private/TTBaseNavigatorInternal.h"
 #import "NSData+base64.h"
 
-@interface MyThumbsViewController2 ()
+#import "UIImage+resizing.h"
+#import "Overlay.h"
 
-/*
- * Build overlay menu within given Frame
- * Via the type parameter we can choose between a menu for an album or a photo
- */
-- (TTView *)buildOverlayMenuWithFrame:(CGRect)frame type:(BOOL)album;
+@interface MyThumbsViewController2 ()
 
 /*
  * Return the id of the current selected item. If the album is empty it delivers the id of the
@@ -82,6 +79,18 @@
 
 // Removes any existing menu
 - (void)removeContextMenu;
+
+// Show/Hide the meta data of an album
+- (void)setMetaDataHidden:(BOOL)answer;
+
+// Disable all other buttons on the toolbar
+- (void)disableToolbarItemsExceptButton:(UIButton*)button;
+
+// Enable all buttons on the toolbar
+- (void)enableToolbarItems;
+
+// Sets the default button with default behavior
+- (void)setStandartRightBarButtonItem;
 
 @end
 
@@ -115,9 +124,14 @@
         
         // start a reload in the background ... as the album might have changed
 		[self reload];
-	}
+    }
 
 	return self;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView
+           editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleNone;
 }
 
 
@@ -130,6 +144,7 @@
 - (void)createModel {
 	self.dataSource = [[[MyThumbsViewDataSource2 alloc]
 	                    initWithItemID:self.itemID] autorelease];
+    [super createModel];
 }
 
 
@@ -141,6 +156,11 @@
 
 // Reloads after an action was taken
 - (void)reloadViewController:(BOOL)goBack {
+    _isInEditingState = NO;
+    [self setMetaDataHidden:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];      
+    [self.navigationController setToolbarHidden:YES animated:YES];
+
 	self->_goBack = goBack;
     
     if (_isEmpty) {
@@ -161,7 +181,9 @@
 		[[TTURLCache sharedCache] removeURL:entity.thumb_url fromDisk:YES];
 	}
 
-	[self reload];
+    if (!_isEmpty) {
+        [self reload];
+    }
 	[parent.model load:TTURLRequestCachePolicyDefault more:NO];
 
 	[NSTimer scheduledTimerWithTimeInterval:2 target:self
@@ -198,9 +220,7 @@
 	if ([( (RKObjectLoaderTTModel *)self.model ).objects count] > 0) {
 		RKMTree *tree = [( (RKObjectLoaderTTModel *)self.model ).objects objectAtIndex:0];
 		RKMEntity *entity = [tree root];
-
 		self.title = entity.title;
-
 		[super modelDidFinishLoad:model];
 	}
 }
@@ -243,6 +263,7 @@
 			[errorView bringSubviewToFront:buttonMenu];
 
             self.emptyView = errorView;
+            self.navigationItem.rightBarButtonItem = nil;
             self->_isEmpty = YES;
 		}
 		else {
@@ -275,17 +296,9 @@
 		self.navigationBarTintColor = nil;
 		self.wantsFullScreenLayout = NO;
 		self.hidesBottomBarWhenPushed = NO;
-
+        
 		_pickerController = [[UIImagePickerController alloc] init];
 		_pickerController.delegate = self;
-		if ([UIImagePickerController isCameraDeviceAvailable:
-		     UIImagePickerControllerCameraDeviceFront] == YES) {
-			_pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-		}
-		else {
-			_pickerController.sourceType =
-			        UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-		}
 	}
 
 	return self;
@@ -295,8 +308,7 @@
 // Set row height static to 90
 - (void)loadView {
 	[super loadView];
-
-	self.tableView.rowHeight = 90;
+    self.tableView.rowHeight = 90;
 }
 
 
@@ -310,11 +322,17 @@
 		           ] autorelease];
 	}
 
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoLight];
-	[button addTarget:self action:@selector(showDetails:) forControlEvents:
-	 UIControlEventTouchUpInside];
-	self.navigationItem.rightBarButtonItem
-	        = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
+	[self setStandartRightBarButtonItem];
+    
+    self.navigationController.toolbar.barStyle = self.navigationBarStyle;
+    [self.navigationController.toolbar sizeToFit];
+    
+    NSArray* toolbarItems = [Overlay buildToolbarWithDelegate:self];
+	[self setToolbarItems:toolbarItems animated:YES]; 
+    
+    [self setMetaDataHidden:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];      
+    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 
@@ -376,7 +394,7 @@
 			isAlbum = YES;
 		}
 
-		TTView *backView = [self buildOverlayMenuWithFrame:frame type:isAlbum];
+		TTView *backView = [Overlay buildOverlayMenuWithFrame:frame type:isAlbum withDelegate:self];
 
 		// add overlay to cell (it's hidden at this point of time)
 		[cell insertSubview:backView atIndex:0];
@@ -406,25 +424,36 @@
 #pragma mark private
 
 // Show/hide details of album above the first album
-- (void)showDetails:(id)sender {
+- (void)toggleEditing:(id)sender {
+    _isInEditingState = !_isInEditingState;
+    
+    if (_isInEditingState) {
+        [self setMetaDataHidden:NO];
+        [self.navigationController setNavigationBarHidden:YES animated:YES];      
+        [self.navigationController setToolbarHidden:NO animated:YES];
+    } else {
+        [self setMetaDataHidden:YES];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];      
+        [self.navigationController setToolbarHidden:YES animated:YES];
+    }
+}
+
+
+- (void)setMetaDataHidden:(BOOL)answer {
     MyThumbsViewDataSource2 *ds = (MyThumbsViewDataSource2 *)self.dataSource;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 	NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
-
-    int entities =
+    
+    int childrenCount =
     [[((RKMTree*)[((RKObjectLoaderTTModel *)self.model).objects objectAtIndex:0]).rEntity allObjects] count];
+        
+    if (childrenCount == 0 || [ds.items count] == 0) {
+        return;
+    }
     
-	int items = [( (MyThumbsViewDataSource2 *)self.dataSource ).items count];
-    
-	/*
-	 * RKMTree contains all entities from the tree resource: 1 x parent + XYZ x children
-	 * Usually only children get displayed:
-	 * --> count of row in the table < count of entities in the model
-	 *
-	 * This circumstance is used to toggle the cell for the meta-data!
-	 */
-	if (!(entities == items) && entities > 0 && items > 0) {
-        self.navigationItem.rightBarButtonItem.title = @"Hide Details";
+	if (![[ds.items objectAtIndex:0] isKindOfClass:[MyMetaDataItem class]] && !answer) {
+        _isMetaDataShown = YES;
+        
 		RKObjectLoaderTTModel *model2 = ((RKObjectLoaderTTModel *)((MyThumbsViewDataSource2*)self.dataSource).itemModel);
 		RKMItem *item = (RKMItem *)[model2.objects objectAtIndex:0];
         
@@ -444,161 +473,17 @@
 		NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 		[self.tableView    scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:
 		 UITableViewScrollPositionBottom animated:YES];
-    } else {
+    } else if ([[ds.items objectAtIndex:0] isKindOfClass:[MyMetaDataItem class]]) {
+        _isMetaDataShown = NO;
+        
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
         MyThumbsViewDataSource2 *ds = (MyThumbsViewDataSource2 *)self.dataSource;
-		self.navigationItem.rightBarButtonItem.title = @"Show Details";
+		//self.navigationItem.rightBarButtonItem.title = @"Show Details";
 		[ds.items removeObjectAtIndex:0];
 		[self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:
 		 UITableViewRowAnimationFade];
 	}
-}
-
-
-/*
- * Build overlay menu within given Frame
- * Via the type parameter we can choose between a menu for an album or a photo
- */
-- (TTView *)buildOverlayMenuWithFrame:(CGRect)frame type:(BOOL)album {
-	// create overlay-view
-	TTView *backView = [[TTView alloc]
-	                    initWithFrame:frame];
-
-	// style overlay-view
-	UIColor *black = RGBCOLOR(158, 163, 172);
-	backView.hidden = YES;
-	backView.backgroundColor = [UIColor clearColor];
-	backView.style =
-	        [TTShapeStyle styleWithShape:[TTRoundedRectangleShape shapeWithRadius:10] next:
-	         [TTSolidFillStyle styleWithColor:[UIColor colorWithWhite:0 alpha:0.8] next:
-	          [TTSolidBorderStyle styleWithColor:black width:1 next:nil]]];
-
-	// create buttons
-	int buttonHeight = 50;
-	int buttonWidth = 50;
-	int buttonY = backView.frame.size.height / 2 - (buttonWidth / 2);
-
-	if (album) {
-		int cntButtons = 5;
-		int xDist = backView.frame.size.width / (cntButtons);
-		int buttonX = xDist / 2 - (buttonHeight / 2);
-
-		UIButton *button1 = [UIButton buttonWithType:UIButtonTypeCustom];
-		button1.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
-		[button1 setBackgroundImage:[UIImage imageNamed:@"uploadIcon.png"]
-		                   forState:UIControlStateNormal];
-		[button1 setBackgroundImage:[UIImage imageNamed:@"uploadIcon_selected.png"]
-		                   forState:UIControlStateSelected];
-		[button1 setShowsTouchWhenHighlighted:YES];
-		[button1 addTarget:self action:@selector(uploadImage:)
-		  forControlEvents:UIControlEventTouchUpInside];
-
-		buttonX += xDist;
-		UIButton *button2 = [UIButton buttonWithType:UIButtonTypeCustom];
-		button2.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
-		[button2 setBackgroundImage:[UIImage imageNamed:@"addIcon.png"]
-		                   forState:UIControlStateNormal];
-		[button2 setBackgroundImage:[UIImage imageNamed:@"addIcon_selected.png"]
-		                   forState:UIControlStateSelected];
-		[button2 setShowsTouchWhenHighlighted:YES];
-		[button2 addTarget:self action:@selector(createAlbum:)
-		  forControlEvents:UIControlEventTouchUpInside];
-
-		buttonX += xDist;
-		UIButton *button3 = [UIButton buttonWithType:UIButtonTypeCustom];
-		button3.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
-		[button3 setBackgroundImage:[UIImage imageNamed:@"editIcon.png"]
-		                   forState:UIControlStateNormal];
-		[button3 setBackgroundImage:[UIImage imageNamed:@"editIcon_selected.png"]
-		                   forState:UIControlStateSelected];
-		[button3 setShowsTouchWhenHighlighted:YES];
-		[button3 addTarget:self action:@selector(editAlbum:)
-		  forControlEvents:UIControlEventTouchUpInside];
-
-		buttonX += xDist;
-		UIButton *button5 = [UIButton buttonWithType:UIButtonTypeCustom];
-		button5.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
-		[button5 setBackgroundImage:[UIImage imageNamed:@"makeCoverIcon.png"]
-		                   forState:UIControlStateNormal];
-		[button5 setBackgroundImage:[UIImage imageNamed:@"makeCoverIcon_selected.png"]
-		                   forState:UIControlStateSelected];
-		[button5 setShowsTouchWhenHighlighted:YES];
-		[button5 addTarget:self action:@selector(makeCover:)
-		  forControlEvents:UIControlEventTouchUpInside];
-
-		buttonX += xDist;
-		UIButton *button4 = [UIButton buttonWithType:UIButtonTypeCustom];
-		button4.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
-		[button4 setBackgroundImage:[UIImage imageNamed:@"trashIcon.png"]
-		                   forState:UIControlStateNormal];
-		[button4 setBackgroundImage:[UIImage imageNamed:@"trashIcon_selected.png"]
-		                   forState:UIControlStateSelected];
-		[button4 setShowsTouchWhenHighlighted:YES];
-		[button4 addTarget:self action:@selector(deleteCurrentItem:)
-		  forControlEvents:UIControlEventTouchUpInside];
-
-		[backView addSubview:button1];
-		[backView addSubview:button2];
-		[backView addSubview:button3];
-		[backView addSubview:button4];
-		[backView addSubview:button5];
-	}
-	else {
-		int cntButtons = 4;
-		int xDist = backView.frame.size.width / (cntButtons);
-		int buttonX = xDist / 2 - (buttonHeight / 2);
-
-		UIButton *button1 = [UIButton buttonWithType:UIButtonTypeCustom];
-		button1.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
-		[button1 setBackgroundImage:[UIImage imageNamed:@"commentIcon.png"]
-		                   forState:UIControlStateNormal];
-		[button1 setBackgroundImage:[UIImage imageNamed:@"commentIcon_selected.png"]
-		                   forState:UIControlStateSelected];
-		[button1 setShowsTouchWhenHighlighted:YES];
-		[button1 addTarget:self action:@selector(comment:)
-		  forControlEvents:UIControlEventTouchUpInside];
-
-		buttonX += xDist;
-		UIButton *button2 = [UIButton buttonWithType:UIButtonTypeCustom];
-		button2.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
-		[button2 setBackgroundImage:[UIImage imageNamed:@"makeCoverIcon.png"]
-		                   forState:UIControlStateNormal];
-		[button2 setBackgroundImage:[UIImage imageNamed:@"makeCoverIcon_selected.png"]
-		                   forState:UIControlStateSelected];
-		[button2 setShowsTouchWhenHighlighted:YES];
-		[button2 addTarget:self action:@selector(makeCover:)
-		  forControlEvents:UIControlEventTouchUpInside];
-
-		buttonX += xDist;
-		UIButton *button3 = [UIButton buttonWithType:UIButtonTypeCustom];
-		button3.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
-		[button3 setBackgroundImage:[UIImage imageNamed:@"saveIcon.png"]
-		                   forState:UIControlStateNormal];
-		[button3 setBackgroundImage:[UIImage imageNamed:@"saveIcon_selected.png"]
-		                   forState:UIControlStateSelected];
-		[button3 setShowsTouchWhenHighlighted:YES];
-		[button3 addTarget:self action:@selector(save:)
-		  forControlEvents:UIControlEventTouchUpInside];
-
-		buttonX += xDist;
-		UIButton *button4 = [UIButton buttonWithType:UIButtonTypeCustom];
-		button4.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
-		[button4 setBackgroundImage:[UIImage imageNamed:@"trashIcon.png"]
-		                   forState:UIControlStateNormal];
-		[button4 setBackgroundImage:[UIImage imageNamed:@"trashIcon_selected.png"]
-		                   forState:UIControlStateSelected];
-		[button4 setShowsTouchWhenHighlighted:YES];
-		[button4 addTarget:self action:@selector(deleteCurrentItem:)
-		  forControlEvents:UIControlEventTouchUpInside];
-
-		[backView addSubview:button1];
-		[backView addSubview:button2];
-		[backView addSubview:button3];
-		[backView addSubview:button4];
-	}
-
-	return [backView autorelease];
 }
 
 
@@ -652,7 +537,20 @@
 	UIButton *button = (UIButton *)sender;
 	button.selected = !button.selected;
 
-	[self presentModalViewController:_pickerController animated:YES];
+	UIActionSheet *actionSheet = [[[UIActionSheet alloc] initWithTitle:nil
+                                                              delegate:self
+                                                     cancelButtonTitle:nil
+                                                destructiveButtonTitle:nil
+                                                     otherButtonTitles:nil] autorelease];
+	
+	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+	
+	[actionSheet addButtonWithTitle:@"Camera"];
+	[actionSheet addButtonWithTitle:@"Library"];
+	[actionSheet addButtonWithTitle:@"Cancel"];
+	actionSheet.cancelButtonIndex = 2;
+	
+    [actionSheet showFromToolbar:self.navigationController.toolbar];
 }
 
 
@@ -779,11 +677,60 @@
 - (void)deleteCurrentItem {
 	NSString *itemID = [self getItemID];
 
+    TTTableViewCell *cell = (TTTableViewCell *)self.selectedCell;
+    
 	[MyItemDeleter initWithItemID:itemID];
 
-	[( (id < MyViewController >)self ) reloadViewController:NO];
+    if (cell == nil) {
+        [( (id < MyViewController >)self ) reloadViewController:YES];    
+    } else {
+        [( (id < MyViewController >)self ) reloadViewController:NO];
+    }
 }
 
+// Allows to reorder
+- (void)reorder: (id)sender {
+    [self setMetaDataHidden:YES];
+    [self.navigationController setNavigationBarHidden:NO];      
+    [self.navigationController setToolbarHidden:NO];
+    
+    [self disableToolbarItemsExceptButton:sender];
+    
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:
+                                                                UIBarButtonItemStyleBordered
+                                                                              target:self action:@selector(reorderDone:)
+                                                                ] autorelease]; 
+    
+    [self.tableView setEditing:YES animated:YES];
+}
+
+- (void)reorderDone: (id)sender {
+    [self setMetaDataHidden:NO];
+    [self.navigationController setNavigationBarHidden:YES];      
+    [self.navigationController setToolbarHidden:NO];
+    
+    [self enableToolbarItems];
+    [self setStandartRightBarButtonItem];
+    [self.tableView setEditing:NO animated:YES];
+}
+
+- (void)disableToolbarItemsExceptButton:(UIButton*)button {
+    for (UIBarButtonItem* item in self.toolbarItems) {
+        if (item.customView != button) {
+            item.enabled = NO;   
+        }
+    }
+}
+
+- (void)enableToolbarItems {
+    for (UIBarButtonItem* item in self.toolbarItems) {
+        item.enabled = YES;   
+    }
+}
+
+- (void)setStandartRightBarButtonItem {
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(toggleEditing:)] autorelease];
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -844,7 +791,7 @@
 
 // Handles the add-caption functionality by utilizing MyUploadViewController
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(
-               NSDictionary *)info {
+               NSDictionary *)info {    
 	NSString *itemID = [self getItemID];
 
 	// get high-resolution picture (used for upload)
@@ -872,6 +819,27 @@
 // Handles the cancellation of the picker
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
 	[picker dismissModalViewControllerAnimated:YES];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+  	if (buttonIndex == 0) {
+		if ( [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront] == YES) {
+            _pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        } else {
+            _pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        }
+        [self presentModalViewController:_pickerController animated:YES];
+	}
+    if (buttonIndex == 1) {
+        _pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        [self presentModalViewController:_pickerController animated:YES];
+    }
 }
 
 

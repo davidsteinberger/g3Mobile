@@ -28,6 +28,7 @@
 @interface RKMTree()
 
 - (NSArray*) sortEntitiesByRelativePosition;
+- (NSString*)getItemIDFromURL;
 
 @end
 
@@ -41,15 +42,21 @@
 
 - (NSArray*) sortEntitiesByRelativePosition {
     NSSortDescriptor* descriptor1 = [NSSortDescriptor sortDescriptorWithKey:@"relative_position" ascending:YES];
-    NSSortDescriptor* descriptor2 = [NSSortDescriptor sortDescriptorWithKey:@"itemID" ascending:YES];
-    NSArray* entities = [[self.rEntity allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor1, descriptor2, nil]];
+    NSArray* entities = [[self.rEntity allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor1, nil]];
     return entities;
+}
+
+- (NSString*)getItemIDFromURL {
+    NSArray *urlComponents = [self.url componentsSeparatedByString:@ "/"];
+    NSString *tmp = [urlComponents lastObject];
+    NSString * itemID = [tmp stringByReplacingOccurrencesOfString:@"?depth=1" withString:@""];
+    return itemID;
 }
 
 - (RKMEntity*) root {
     if ([self.rEntity count] > 0) {
-        NSArray* entities = [self sortEntitiesByRelativePosition];
-        RKMEntity* entity = [entities objectAtIndex:0];
+        NSArray *filtered = [[self sortEntitiesByRelativePosition] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(itemID == %@)", [self getItemIDFromURL]]];
+        RKMEntity* entity = [filtered objectAtIndex:0];
         return entity;
     } else {
         return nil;
@@ -58,10 +65,8 @@
 
 - (NSArray*) children {
     if ([self.rEntity count] > 1) {
-        NSArray* entities = [self sortEntitiesByRelativePosition];
-        NSMutableArray* mc = [NSMutableArray arrayWithArray:entities];
-        [mc removeObjectAtIndex:0];
-        return [NSArray arrayWithArray:mc];
+        NSArray *filtered = [[self sortEntitiesByRelativePosition] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(itemID != %@)", [self getItemIDFromURL]]];
+        return filtered;
     } else {
         return nil;
     }

@@ -36,9 +36,52 @@
 #import <RestKit/RestKit.h>
 #import <RestKit/Three20/RKObjectLoaderTTModel.h>
 #import "RKMTree.h"
+#import "RKMItem.h"
+
+@interface NSMutableArray (MoveArray)
+
+- (void)moveObjectFromIndex:(NSUInteger)from toIndex:(NSUInteger)to;
+
+@end
+
+@implementation NSMutableArray (MoveArray)
+
+- (void)moveObjectFromIndex:(NSUInteger)from toIndex:(NSUInteger)to
+{
+    if (to != from) {
+        id obj = [self objectAtIndex:from];
+        [obj retain];
+        [self removeObjectAtIndex:from];
+        if (to >= [self count]) {
+            [self addObject:obj];
+        } else {
+            [self insertObject:obj atIndex:to];
+        }
+        [obj release];
+    }
+}
+@end
+
+@implementation TTTableViewDelegate (my)
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView
+           editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleNone;
+}
+
+- (BOOL)tableView:(UITableView *)tableview shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+    return NO;
+} 
+
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {  
+    return proposedDestinationIndexPath;
+}
+
+@end
 
 @implementation MyThumbsViewDataSource2
 
+@synthesize itemID = _itemID;
 @synthesize itemModel = _itemModel;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,6 +91,7 @@
 // Initializes Datasource with a given item-id (album-id)
 - (id)initWithItemID:(NSString *)itemID {
 	if ((self = [super init])) {
+        self.itemID = itemID;
 		NSString *treeResourcePath = [[[@""
 		                                stringByAppendingString:@"/rest/tree/"]
 		                               stringByAppendingString:itemID]
@@ -60,7 +104,8 @@
 
         RKObjectLoader* objectLoader = [[RKObjectManager sharedManager] objectLoaderWithResourcePath:treeResourcePath delegate:nil];
         objectLoader.objectMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForKeyPath:@"_tree"];
-        self.model = [RKObjectLoaderTTModel modelWithObjectLoader:objectLoader];
+        RKObjectLoaderTTModel* model = [RKObjectLoaderTTModel modelWithObjectLoader:objectLoader];
+        self.model = model;
         
         objectLoader = [[RKObjectManager sharedManager] objectLoaderWithResourcePath:itemResourcePath delegate:nil];
         objectLoader.objectMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForKeyPath:@"_item"];
@@ -70,6 +115,12 @@
 	}
 
 	return self;
+}
+
+- (void)dealloc {
+    TT_RELEASE_SAFELY(_itemID);
+    TT_RELEASE_SAFELY(_itemModel);
+    [super dealloc];
 }
 
 
@@ -230,5 +281,52 @@
 	return NSLocalizedString(@"Sorry, there was an error loading the Gallery3 stream.", @"");
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    id item = [self.items objectAtIndex:indexPath.row];
+    if ([item isKindOfClass:[MyAlbumItem class]]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+
+    NSMutableArray* members = [NSMutableArray array];
+    NSMutableDictionary* entity = [NSMutableDictionary dictionary];
+    
+    [self.items moveObjectFromIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
+    
+    for (MyAlbumItem* albumItem in self.items) {
+        if ([albumItem isKindOfClass:[MyAlbumItem class]]) {
+            NSString* itemID = albumItem.model.itemID;         
+            [members addObject:[[GlobalSettings.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:itemID]];
+        }
+    }
+
+    [entity setValue:@"weight" forKey:@"sort_column"];
+
+    RKClient* client = [RKObjectManager sharedManager].client;
+    [client setValue:@"put" forHTTPHeaderField:@"X-Gallery-Request-Method"];
+    RKParams* params = [RKParams params];
+    
+    NSError* error = nil;
+    id<RKParser> parser = [[RKParserRegistry sharedRegistry] parserForMIMEType:RKMIMETypeJSON];
+    NSString* membersString = [parser stringFromObject:members error:&error];
+    NSString* entityString = [parser stringFromObject:entity error:&error];
+
+    [params setValue:membersString forParam:@"members"];
+    [params setValue:entityString forParam:@"entity"];
+
+    NSString* resourcePath = [@"/rest/item/" stringByAppendingString:self.itemID];
+    [client post:resourcePath params:params delegate:self];
+    
+    [client setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
+}
 
 @end

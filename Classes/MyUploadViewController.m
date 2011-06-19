@@ -24,7 +24,6 @@ static NSString* defaultCaption = @"Write a Caption ...";
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-		
     }
     return self;
 }
@@ -34,8 +33,9 @@ static NSString* defaultCaption = @"Write a Caption ...";
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-	
+    [self.navigationController setNavigationBarHidden:YES];
+	[[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
 	self.delegate = [self.params objectForKey:@"delegate"];
 	self.image = [self.params objectForKey:@"image"];
 	self.screenShot = [self.params objectForKey:@"screenShot"];
@@ -44,23 +44,8 @@ static NSString* defaultCaption = @"Write a Caption ...";
 	self.imageView.image = self.screenShot;
 	
 	self.caption.text = defaultCaption;
-	/*
-	[[self.cancel layer] setCornerRadius:4.0f];
-	[[self.cancel layer] setMasksToBounds:YES];
-	[[self.cancel layer] setBorderWidth:1.0f];
-	[[self.cancel layer] setBackgroundColor:[[UIColor lightGrayColor] CGColor]];
-	*/
 }
 
-
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.

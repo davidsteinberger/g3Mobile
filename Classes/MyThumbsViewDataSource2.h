@@ -34,9 +34,11 @@
 @class RKObjectLoaderTTModel;
 
 @interface MyThumbsViewDataSource2 : TTListDataSource {
+    NSString* _itemID;
     RKObjectLoaderTTModel* _itemModel;
 }
 
+@property (nonatomic, retain) NSString* itemID;
 @property (nonatomic, retain) RKObjectLoaderTTModel* itemModel;
 - (id)initWithItemID:(NSString *)itemID;
 

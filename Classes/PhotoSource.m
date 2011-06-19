@@ -15,6 +15,7 @@
 
 @synthesize title = _title;
 @synthesize albumID = _albumID;
+@synthesize photosOnly = _photosOnly;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // private
@@ -36,7 +37,7 @@
 	_objects = models;
 	_isLoaded = YES;
     
-    NSArray* newPhotos = [self buildArrayOfPhotos:self.objects forAlbum:self.albumID photosOnly:NO];
+    NSArray* newPhotos = [self buildArrayOfPhotos:self.objects forAlbum:self.albumID photosOnly:self.photosOnly];
     
     self.title = [self getAlbumTitle:self.objects];
     [_photos release];
@@ -49,6 +50,7 @@
             photo.index = i;
         }
     }
+    [super didFinishLoad];
 }
 
 - (id)initWithItemID:(NSString*)itemID
@@ -59,12 +61,13 @@
                                   stringByAppendingString:@"?depth=1"];
     
     RKObjectLoader* objectLoader = [[RKObjectManager sharedManager] objectLoaderWithResourcePath:treeResourcePath delegate:nil];
+    objectLoader.objectMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForKeyPath:@"_tree"];
+    [RKObjectLoaderTTModel modelWithObjectLoader:objectLoader];
     
     if ((self = [self initWithObjectLoader:objectLoader])) {
         self.title = @"Photos";
 		self.albumID = itemID;
-		
-        [self load:TTURLRequestCachePolicyDefault more:NO];
+        self.photosOnly = YES;
     }
     return self;
 }
@@ -124,7 +127,7 @@
 	[_newPhotos release];
 	_newPhotos = [[NSMutableArray alloc] init];
 	
-	for (RKMEntity* item in  [tree children]) {
+	for (RKMEntity* item in [tree children]) {
 		
 		if ([item.itemID isEqualToString:albumID]) {
 			continue;
@@ -163,7 +166,7 @@
         
         NSString* url = (item.file_url_public != nil) ? item.file_url_public : item.file_url;
 		if (url == nil) {
-			resize_url = @"bundle://empty.png";
+			url = @"bundle://empty.png";
 		}
 		
 		id iWidth = item.thumb_width;
@@ -198,21 +201,6 @@
 	NSArray* newPhotos = [NSArray arrayWithArray:_newPhotos];
 	TT_RELEASE_SAFELY(_newPhotos);
 	return newPhotos;
-}
-
-+ (PhotoSource*)createPhotoSource:(NSString*)albumID {
-	
-	NSString* treeResourcePath = [[[@"" 
-									stringByAppendingString:@"/rest/tree/"] 
-								   stringByAppendingString:albumID]
-								  stringByAppendingString:@"?depth=1"];
-	
-    PhotoSource* myPhotoSource;
-    
-    RKObjectLoader* objectLoader = [[RKObjectManager sharedManager] objectLoaderWithResourcePath:treeResourcePath delegate:nil];
-    myPhotoSource = [RKObjectLoaderTTModel modelWithObjectLoader:objectLoader];
-    
-	return myPhotoSource;
 }
 
 @end

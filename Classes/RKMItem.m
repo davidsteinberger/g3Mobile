@@ -36,6 +36,7 @@
 @implementation RKMItem
 
 @dynamic url;
+@dynamic members;
 @dynamic rEntity;
 @dynamic rTags;
 

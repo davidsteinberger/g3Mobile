@@ -20,13 +20,14 @@ typedef enum {
 	NSMutableArray* _photos;
 	NSString* _albumID;
 	NSString* _title;
+    BOOL _photosOnly;
 }
 
 @property (nonatomic, retain) NSString* albumID;
 @property (nonatomic, copy) NSString* title;
+@property (nonatomic, assign) BOOL photosOnly;
 
 - (id)initWithItemID:(NSString*)itemID;
-+ (PhotoSource*)createPhotoSource:(NSString*)albumID;
 
 @end
 

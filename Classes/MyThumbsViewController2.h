@@ -45,7 +45,8 @@
 
 @interface MyThumbsViewController2 : TTTableViewController <MyLongPressGestureDelegate,                    
 	                                                    UINavigationControllerDelegate,
-	                                                    UIImagePickerControllerDelegate> {
+	                                                    UIImagePickerControllerDelegate,
+                                                                    UIActionSheetDelegate> {
 	NSString *_itemID;
 	id <MyItem> _selectedAlbumItem;
 	UIView *_backViewOld;
@@ -54,6 +55,10 @@
 	UIImagePickerController *_pickerController;
     BOOL _goBack;
     BOOL _isEmpty;
+    BOOL _isInEditingState;
+    BOOL _isNavigationShown;
+    BOOL _isMetaDataShown;
+    BOOL _isToolBarShown;
 }
 
 @property (nonatomic, retain) NSString *itemID;

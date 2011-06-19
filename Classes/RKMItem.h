@@ -47,6 +47,7 @@
 }
 
 @property (nonatomic, retain) NSString* url;
+@property (nonatomic, retain) NSArray* members;
 @property (nonatomic, retain) RKMEntity* rEntity;
 @property (nonatomic, retain) NSSet* rTags;
 

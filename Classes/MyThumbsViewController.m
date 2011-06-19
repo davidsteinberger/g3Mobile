@@ -16,6 +16,7 @@
 #import "MySettings.h"
 #import "UIImage+scaleAndRotate.h"
 #import "TTTableViewController+g3.h"
+#import "Overlay.h"
 
 @interface MyThumbsViewController ()
 
@@ -23,6 +24,15 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
+
+// Disable all other buttons on the toolbar
+- (void)disableToolbarItemsExceptButton:(UIButton*)button;
+
+// Enable all buttons on the toolbar
+- (void)enableToolbarItems;
+
+// Sets the default button with default behavior
+- (void)setStandartRightBarButtonItem;
 
 @end
 
@@ -34,8 +44,6 @@
     [[RKRequestQueue sharedQueue] cancelAllRequests];
 	self.albumID = nil;
 	TT_RELEASE_SAFELY(_photoSource);
-	TT_RELEASE_SAFELY(self->_toolbar);
-	TT_RELEASE_SAFELY(self->_clickActionItem);
 	TT_RELEASE_SAFELY(self->_pickerController);
 
 	[super dealloc];
@@ -45,11 +53,33 @@
 	if ((self = [super init])) {
 		self.albumID = albumID;
 		PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:albumID];
+        photosource.photosOnly = NO;
 		self.photoSource = photosource;
 		TT_RELEASE_SAFELY(photosource);
+        
+        _pickerController = [[UIImagePickerController alloc] init];
+        _pickerController.delegate = self;
 	}
 	return self;
 }
+
+
+- (void)updateTableLayout { 
+    self.tableView.contentInset = UIEdgeInsetsMake(5, 0, 0, 0);
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(TTBarsHeight(), 0, 0, 0);
+} 
+
+- (void)loadView {
+    [super loadView];
+    
+    self.hidesBottomBarWhenPushed = NO;
+    
+    self.statusBarStyle = UIBarStyleDefault;
+    self.navigationBarStyle = UIBarStyleBlack;
+    self.navigationBarTintColor = nil;
+    [self setWantsFullScreenLayout:YES];
+}
+
 
 - (void)modelDidFinishLoad:(id <TTModel>)model {
 	self.title = self.photoSource.title;
@@ -68,105 +98,64 @@
 	return [result autorelease];
 }
 
-- (void)addAlbum {	
+// Handles the creation of a new album
+- (void)createAlbum:(id)sender {	
 	AddAlbumViewController* addAlbum = [[AddAlbumViewController alloc] initWithParentAlbumID: self.albumID];
 	[self.navigationController pushViewController:addAlbum animated:YES];
 	TT_RELEASE_SAFELY(addAlbum);
 }
 
-- (void)updateAlbum {
-	PhotoSource* ps = (PhotoSource* ) self.photoSource;
-	if (![ps.albumID isEqualToString: @"1"]) {
-		UpdateAlbumViewController* updateAlbum = [[UpdateAlbumViewController alloc] initWithAlbumID: self.albumID];
-		[self.navigationController pushViewController:updateAlbum animated:YES];	
-		TT_RELEASE_SAFELY(updateAlbum);
-	}
+// Handles the modification of an album
+- (void)editAlbum:(id)sender {
+    UpdateAlbumViewController* updateAlbum = [[UpdateAlbumViewController alloc] initWithAlbumID: self.albumID];
+    [self.navigationController pushViewController:updateAlbum animated:YES];	
+    TT_RELEASE_SAFELY(updateAlbum);
 }
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-		
-	PhotoSource* ps = (PhotoSource* ) self.photoSource;
-	
-	//show logout only when on root-album
-	if ([ps.albumID isEqualToString: @"1"]) {
-		self.navigationItem.rightBarButtonItem
-		= [[[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered
-										   target:self action:@selector(setSettings)] autorelease];	
-		
+
+    if ([self.albumID isEqual:@"1"]) {
+		self.navigationItem.leftBarButtonItem
+        = [[[UIBarButtonItem alloc] initWithTitle:@"Settings" style:
+            UIBarButtonItemStyleBordered
+                                           target:self action:@selector(setSettings)
+            ] autorelease];
 	}
-	
-	_clickActionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction//TTIMAGE(@"UIBarButtonReply.png")
-																	 target:self action:@selector(clickActionItem)];
-	_toolbar = [[UIToolbar alloc] initWithFrame:
-				CGRectMake(0, self.view.height - TT_ROW_HEIGHT,
-						   self.view.width, TT_ROW_HEIGHT)];
-	
-	UIBarItem* space = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:
-						 UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-	
-	if (self.navigationBarStyle == UIBarStyleDefault) {
-		_toolbar.tintColor = TTSTYLEVAR(toolbarTintColor);
-	}
-	
-	_toolbar.barStyle = self.navigationBarStyle;
-	_toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
-	_toolbar.items = [NSArray arrayWithObjects:
-					  _clickActionItem, space, nil];
-	
-	[self.view addSubview:_toolbar];
-	
-	_pickerController = [[UIImagePickerController alloc] init];
-	_pickerController.delegate = self;
-	if ( [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront] == YES) {
-		_pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-	} else {
-		_pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-	}
+    
+	[self setStandartRightBarButtonItem];
+    
+    self.navigationController.toolbar.barStyle = self.navigationBarStyle;
+    [self.navigationController.toolbar sizeToFit];
+    
+    NSArray* toolbarItems = [Overlay buildThumbViewToolbarWithDelegate:self];
+	[self setToolbarItems:toolbarItems animated:YES]; 
+    
+    [self.navigationController setNavigationBarHidden:NO animated:YES];      
+    [self.navigationController setToolbarHidden:YES animated:YES];
+    
+    //self.tableView.backgroundColor = [UIColor blackColor];
 }
 
-- (void) clickActionItem {
-	UIActionSheet *actionSheet = [[[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:nil
-											   destructiveButtonTitle:nil
-													otherButtonTitles:nil] autorelease];
-	
-	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-	
-	[actionSheet addButtonWithTitle:@"Upload"];
-	[actionSheet addButtonWithTitle:@"Add Album"];
-	[actionSheet addButtonWithTitle:@"Change Album"];
-	[actionSheet addButtonWithTitle:@"Delete"];
-	[actionSheet addButtonWithTitle:@"Cancel"];
-	actionSheet.cancelButtonIndex = 4;
-	actionSheet.destructiveButtonIndex = 3; 
-	
-    [actionSheet showInView:self.view];
-}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-		
-	//NSLog(@"[actionSheet clickedButtonAtIndex] ... (button: %i)", buttonIndex);
-	
-	if (buttonIndex == 0) {
-		[self presentModalViewController:_pickerController animated:YES];		
-		
-	}	
-	if (buttonIndex == 1) {
-		[self addAlbum];
+  	if (buttonIndex == 0) {
+		if ( [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront] == YES) {
+            _pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        } else {
+            _pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        }
+        [self presentModalViewController:_pickerController animated:YES];
 	}
-	if (buttonIndex == 2) {
-		[self updateAlbum];
-	}
-	if (buttonIndex == 3) {
-		UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
-		[dialog setDelegate:self];
-		[dialog setTitle:@"Confirm Deletion"];
-		[dialog addButtonWithTitle:@"Cancel"];
-		[dialog addButtonWithTitle:@"OK"];
-		[dialog show];		
-	}
+    if (buttonIndex == 1) {
+        _pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        [self presentModalViewController:_pickerController animated:YES];
+    }
 }
 
 - (void)modalView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -177,6 +166,23 @@
 			[self performSelector:@selector(deleteCurrentItem) withObject:Nil afterDelay:0.05];
 		}
 	}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark private
+
+// Show/hide details of album above the first album
+- (void)toggleEditing:(id)sender {
+    _isInEditingState = !_isInEditingState;
+    
+    if (_isInEditingState) {
+        [self.navigationController setToolbarHidden:NO animated:YES];
+    } else {
+        [self.navigationController setToolbarHidden:YES animated:YES];
+    }
 }
 
 // Confirms via dialog that the current item should be deleted
@@ -193,21 +199,53 @@
 	PhotoSource* ps = (PhotoSource* ) self.photoSource;
 	[MyItemDeleter initWithItemID:ps.albumID];
 	
-	//TTNavigator* navigator = [TTNavigator navigator];
-	//[navigator removeAllViewControllers];
-	//[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://thumbs/1"] applyAnimated:YES]];
-	
-	// stop the indicator ...
+    // stop the indicator ...
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
     [((id<MyViewController>)self) reloadViewController:NO];
 }
 
-#pragma mark UIImagePickerController Methods
+- (void)disableToolbarItemsExceptButton:(UIButton*)button {
+    for (UIBarButtonItem* item in self.toolbarItems) {
+        if (item.customView != button) {
+            item.enabled = NO;   
+        }
+    }
+}
+
+- (void)enableToolbarItems {
+    for (UIBarButtonItem* item in self.toolbarItems) {
+        item.enabled = YES;   
+    }
+}
+
+- (void)setStandartRightBarButtonItem {
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(toggleEditing:)] autorelease];
+}
+
 
 - (void)uploadImage:(id)sender {
-	[self presentModalViewController:_pickerController animated:YES];
+	UIActionSheet *actionSheet = [[[UIActionSheet alloc] initWithTitle:nil
+                                                              delegate:self
+                                                     cancelButtonTitle:nil
+                                                destructiveButtonTitle:nil
+                                                     otherButtonTitles:nil] autorelease];
+	
+	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+	
+	[actionSheet addButtonWithTitle:@"Camera"];
+	[actionSheet addButtonWithTitle:@"Library"];
+	[actionSheet addButtonWithTitle:@"Cancel"];
+	actionSheet.cancelButtonIndex = 2;
+	
+    [actionSheet showFromToolbar:self.navigationController.toolbar];
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UIImagePickerController Methods
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	PhotoSource* ps;
@@ -240,25 +278,31 @@
 
 #pragma mark UINavigationController Methods
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-	
 }
 
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-	
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {	
 }
 
 // Reloads the data -> resets the detail-view
 - (void)reload {
     PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:self.albumID];
+    photosource.photosOnly = NO;
     self.photoSource = photosource;
     TT_RELEASE_SAFELY(photosource);
-    
 	[super reload];
 }
 
 // Reloads after an action was taken
 - (void)reloadViewController:(BOOL)goBack {
+    _isInEditingState = NO;
+    [self.navigationController setNavigationBarHidden:NO animated:YES];      
+    [self.navigationController setToolbarHidden:YES animated:YES];
+    
     self->_goBack = goBack;
+    
+    if (_isEmpty) {
+        self->_goBack = YES;
+    }
     
     RKObjectLoaderTTModel* model = (RKObjectLoaderTTModel *)self.photoSource;
     RKMTree *tree = (RKMTree *)[model.objects objectAtIndex:0];
@@ -281,6 +325,7 @@
 
 - (void)finishUp {
     PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:self.albumID];
+    photosource.photosOnly = NO;
     self.photoSource = photosource;
     TT_RELEASE_SAFELY(photosource);
     
@@ -320,8 +365,11 @@
 			[errorView bringSubviewToFront:buttonMenu];
             
 			self.emptyView = errorView;
+            self.navigationItem.rightBarButtonItem = nil;
+            self->_isEmpty = YES;
 		} else {
 			self.emptyView = nil;
+            self->_isEmpty = NO;
 		}
 		_tableView.dataSource = nil;
 		[_tableView reloadData];

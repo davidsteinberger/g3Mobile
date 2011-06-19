@@ -294,27 +294,40 @@
         
         RKObjectManager* objectManager = [RKObjectManager objectManagerWithBaseURL:GlobalSettings.baseURL];
         
-        //[[RKRequestQueue sharedQueue] cancelAllRequests];
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
         // Initialize object store
         objectManager.objectStore =
-                [[[RKManagedObjectStore alloc] initWithStoreFilename:@ "g3CoreData.sqlite"]
-                 autorelease];
+        [[[RKManagedObjectStore alloc] initWithStoreFilename:@ "g3CoreData.sqlite"]
+         autorelease];
         objectManager.objectStore.managedObjectCache = [[DBManagedObjectCache new] autorelease];
+        
+        [RKObjectManager sharedManager].client.cachePolicy = RKRequestCachePolicyNone;
+        
+        [RKRequestQueue sharedQueue].showsNetworkActivityIndicatorWhenBusy = YES;
+        
+        // incorrect mime-type --> just a test
+        Class parserClass = nil;
+        NSSet* JSONParserClassNames = [NSSet setWithObjects:@"RKJSONParserJSONKit",
+                                       @"RKJSONParserYAJL",
+                                       @"RKJSONParserSBJSON", nil];    
+        for (NSString* parserClassName in JSONParserClassNames) {
+            parserClass = NSClassFromString(parserClassName);
+            if (parserClass) {
+                [[RKParserRegistry sharedRegistry] setParserClass:parserClass
+                                                      forMIMEType:@"text/html"];
+                break;
+            }
+        }
         
         // Set Gallery3 specific HTTP headers
         [[objectManager client] setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
         [[objectManager client] setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         
-        // Set nil for any attributes we expect to appear in the payload, but do not
-        //objectManager.mapper.missingElementMappingPolicy = RKSetNilForMissingElementMappingPolicy;
-
-        // Add our element to object mappings
+        // Create the mappings
         RKObjectMappingProvider* mappingProvider = [[RKObjectMappingProvider new] autorelease];
-        //RKObjectMappingProvider* itemProvider = [[RKObjectMappingProvider new] autorelease];
         
         RKManagedObjectMapping* tagMemberMapping = [RKManagedObjectMapping mappingForClass:[RKMTag_Member class]];
+        tagMemberMapping.setNilForMissingAttributes = YES;
+        tagMemberMapping.setNilForMissingRelationships = YES;
         tagMemberMapping.primaryKeyAttribute = @"url";
         [tagMemberMapping mapKeyPathsToAttributes:
          @"entity.tag.url", @"url", 
@@ -323,6 +336,8 @@
          nil];
         
         RKManagedObjectMapping* entityMapping = [RKManagedObjectMapping mappingForClass:[RKMEntity class]];
+        entityMapping.setNilForMissingAttributes = YES;
+        entityMapping.setNilForMissingRelationships = YES;
         entityMapping.primaryKeyAttribute = @"itemID";
         [entityMapping mapKeyPath:@"id" toAttribute:@"itemID"];
         [entityMapping mapKeyPath:@"description" toAttribute:@"desc"];
@@ -330,7 +345,7 @@
         
         RKManagedObjectMapping* itemMapping = [RKManagedObjectMapping mappingForClass:[RKMItem class]];
         itemMapping.primaryKeyAttribute = @"url";
-        [itemMapping mapKeyPath:@"url" toAttribute:@"url"];
+        [itemMapping mapAttributes:@"url", @"members", nil];
         [itemMapping mapKeyPath:@"entity" toRelationship:@"rEntity" withObjectMapping:entityMapping];
         [itemMapping mapKeyPath:@"relationships.tags.members" toRelationship:@"rTags" withObjectMapping:tagMemberMapping];
         
