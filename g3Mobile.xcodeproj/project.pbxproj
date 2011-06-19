@@ -84,7 +84,6 @@
 		63B254281299BD3100BA9323 /* TTThumbsViewController+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254121299BD3100BA9323 /* TTThumbsViewController+g3.m */; };
 		63B254291299BD3100BA9323 /* MyThumbsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254141299BD3100BA9323 /* MyThumbsViewController.m */; };
 		63B2542A1299BD3100BA9323 /* MyImageUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254171299BD3100BA9323 /* MyImageUploader.m */; };
-		63B255ED1299C60900BA9323 /* g3DB.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EB1299C60900BA9323 /* g3DB.sqlite */; };
 		63B255F01299C63300BA9323 /* Three20.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EF1299C63300BA9323 /* Three20.bundle */; };
 		63B53C7B133FE0C500460020 /* libRestKitCoreData.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B53C75133FE0C500460020 /* libRestKitCoreData.a */; };
 		63B53C7C133FE0C500460020 /* libRestKitJSONParserJSONKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B53C76133FE0C500460020 /* libRestKitJSONParserJSONKit.a */; };
@@ -483,7 +482,6 @@
 		63B254141299BD3100BA9323 /* MyThumbsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyThumbsViewController.m; sourceTree = "<group>"; };
 		63B254161299BD3100BA9323 /* MyImageUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyImageUploader.h; sourceTree = "<group>"; };
 		63B254171299BD3100BA9323 /* MyImageUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MyImageUploader.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		63B255EB1299C60900BA9323 /* g3DB.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = g3DB.sqlite; sourceTree = "<group>"; };
 		63B255EF1299C63300BA9323 /* Three20.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Three20.bundle; path = ../three20/src/Three20.bundle; sourceTree = SOURCE_ROOT; };
 		63B53B0B133FDECA00460020 /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = ../RestKit/RestKit.xcodeproj; sourceTree = "<group>"; };
 		63B53C75133FE0C500460020 /* libRestKitCoreData.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRestKitCoreData.a; sourceTree = SOURCE_ROOT; };
@@ -883,7 +881,6 @@
 		638C290C132D6BC5009CFE41 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				63B255EB1299C60900BA9323 /* g3DB.sqlite */,
 				6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */,
 				6312D3F3136F2510002091A3 /* Vars.h */,
 				6312D3F4136F2510002091A3 /* Vars.m */,
@@ -1309,7 +1306,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
-				63B255ED1299C60900BA9323 /* g3DB.sqlite in Resources */,
 				63B255F01299C63300BA9323 /* Three20.bundle in Resources */,
 				639788D012BEBA24000FBD09 /* defaultPerson.png in Resources */,
 				636B811112C0243500ECDCDD /* empty.png in Resources */,

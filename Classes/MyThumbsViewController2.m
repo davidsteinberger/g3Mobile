@@ -218,6 +218,7 @@
 // The model has finished loading the data -> set the title of the view
 - (void)modelDidFinishLoad:(id <TTModel>)model {
 	if ([( (RKObjectLoaderTTModel *)self.model ).objects count] > 0) {
+        [((MyThumbsViewDataSource2*)self.dataSource).itemModel load];
 		RKMTree *tree = [( (RKObjectLoaderTTModel *)self.model ).objects objectAtIndex:0];
 		RKMEntity *entity = [tree root];
 		self.title = entity.title;
