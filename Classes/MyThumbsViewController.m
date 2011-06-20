@@ -3,7 +3,6 @@
 #import "MyThumbsViewController.h"
 #import "PhotoSource.h"
 
-#import "MyImageUploader.h"
 #import "MyItemDeleter.h"
 #import "AddAlbumViewController.h"
 #import "UpdateAlbumViewController.h"
@@ -238,7 +237,11 @@
 	[actionSheet addButtonWithTitle:@"Cancel"];
 	actionSheet.cancelButtonIndex = 2;
 	
-    [actionSheet showFromToolbar:self.navigationController.toolbar];
+    if (_isEmpty) {
+        [actionSheet showInView:self.view];
+    } else {
+        [actionSheet showFromToolbar:self.navigationController.toolbar];   
+    }
 }
 
 

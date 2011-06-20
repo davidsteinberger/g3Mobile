@@ -354,8 +354,8 @@
         [treeMapping mapKeyPathsToAttributes:@"url", @"url", nil];
         [treeMapping mapKeyPath:@"entity.entity" toRelationship:@"rEntity" withObjectMapping:entityMapping];
         
-        [mappingProvider setMapping:itemMapping forKeyPath:@"_item"];        
-        [mappingProvider setMapping:treeMapping forKeyPath:@"_tree"];
+        [mappingProvider addObjectMapping:itemMapping];        
+        [mappingProvider addObjectMapping:treeMapping];
         
         objectManager.mappingProvider = mappingProvider;
     } else if (_isRestKitLoad) {

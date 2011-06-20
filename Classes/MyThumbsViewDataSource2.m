@@ -103,12 +103,12 @@
                                       stringByAppendingString:@"?fields=tag_item.tag"];
 
         RKObjectLoader* objectLoader = [[RKObjectManager sharedManager] objectLoaderWithResourcePath:treeResourcePath delegate:nil];
-        objectLoader.objectMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForKeyPath:@"_tree"];
+        objectLoader.objectMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForClass:[RKMTree class]];
         RKObjectLoaderTTModel* model = [RKObjectLoaderTTModel modelWithObjectLoader:objectLoader];
         self.model = model;
         
         objectLoader = [[RKObjectManager sharedManager] objectLoaderWithResourcePath:itemResourcePath delegate:nil];
-        objectLoader.objectMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForKeyPath:@"_item"];
+        objectLoader.objectMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForClass:[RKMItem class]];
 
         self.itemModel = [RKObjectLoaderTTModel modelWithObjectLoader:objectLoader];
         [self.itemModel load];

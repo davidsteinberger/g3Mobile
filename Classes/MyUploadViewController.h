@@ -1,44 +1,47 @@
-//
-//  MyUploadViewController.h
-//  g3Mobile
-//
-//  Created by David Steinberger on 1/3/11.
-//  Copyright 2011 -. All rights reserved.
-//
+/*
+ * MyUploadViewController.h
+ * #g3Mobile - an iPhone client for gallery3
+ *
+ * Created by David Steinberger on 14/3/2011.
+ * Copyright (c) 2011 David Steinberger
+ *
+ * This file is part of g3Mobile.
+ *
+ * g3Mobile is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * g3Mobile is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with g3Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/*
+ * A basic image uploader for Gallery3
+ *
+ * The uploader takes a UIImage and utilizes the RestKit framework
+ * to upload it with some metadata to the Gallery3 server
+ */
 
-#import <UIKit/UIKit.h>
 #import "Three20/Three20.h"
+#import "MyViewController.h"
 
-//#import "TTPostControllerDelegate.h"
-
-
-@interface MyUploadViewController : TTBaseViewController {
-	id delegate;
-	NSDictionary *params;
-
-	UIImageView *imageView;
-	UILabel *caption;
-	
-	UIImage *screenShot;
-	UIImage *image;
-	NSString *albumID;
+@interface MyUploadViewController : TTBaseViewController <TTPostControllerDelegate> {
+	id <MyViewController> _delegate;
+	NSDictionary *_params;
+	UIImageView *_imageView;
+	UILabel *_caption;
+	UIImage *_screenShot;
+	UIImage *_image;
+	NSString *_albumID;
+	UIAlertView *_progressAlert;
+	UIProgressView *_progressView;
 }
 
-@property (nonatomic, retain) IBOutlet UIImageView *imageView;
-@property (nonatomic, retain) IBOutlet UILabel *caption;
-
-@property (nonatomic, retain) id params;
-
-@property (nonatomic, retain) UIImage *screenShot;
-@property (nonatomic, retain) UIImage *image;
-@property (nonatomic, retain) NSString *albumID;
-@property (assign) id delegate;
-
-// toolbar buttons
-- (IBAction)Cancel:(id)sender;
-- (IBAction)Upload:(id)sender;
--(void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event;
-
-- (void)uploaderDidUpload:(id)sender;
+@property (nonatomic, retain) NSDictionary* params;
 
 @end

@@ -25,7 +25,8 @@ typedef enum {
 	NSString* _baseURL;
 	
 	float _imageQuality;
-	
+	int _uploadCounter;
+    
 	//UI settings
 	MyViewStyle _viewStyle;
     
@@ -34,11 +35,12 @@ typedef enum {
     NSPersistentStoreCoordinator *persistentStoreCoordinator;
 }
 
-@property(nonatomic, assign) BOOL viewOnly;
-@property(nonatomic, readonly, retain) NSString* challenge;
-@property(nonatomic, readonly, retain) NSString* baseURL;
-@property float imageQuality;
-@property MyViewStyle viewStyle;
+@property (nonatomic, assign) BOOL viewOnly;
+@property (nonatomic, readonly, retain) NSString* challenge;
+@property (nonatomic, readonly, retain) NSString* baseURL;
+@property (nonatomic, assign) float imageQuality;
+@property (nonatomic, assign) MyViewStyle viewStyle;
+@property (nonatomic, assign) int uploadCounter;
 
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;

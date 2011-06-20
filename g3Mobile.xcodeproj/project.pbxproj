@@ -83,7 +83,6 @@
 		63B254261299BD3100BA9323 /* MyPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B2540D1299BD3100BA9323 /* MyPhotoViewController.m */; };
 		63B254281299BD3100BA9323 /* TTThumbsViewController+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254121299BD3100BA9323 /* TTThumbsViewController+g3.m */; };
 		63B254291299BD3100BA9323 /* MyThumbsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254141299BD3100BA9323 /* MyThumbsViewController.m */; };
-		63B2542A1299BD3100BA9323 /* MyImageUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254171299BD3100BA9323 /* MyImageUploader.m */; };
 		63B255F01299C63300BA9323 /* Three20.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EF1299C63300BA9323 /* Three20.bundle */; };
 		63B53C7B133FE0C500460020 /* libRestKitCoreData.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B53C75133FE0C500460020 /* libRestKitCoreData.a */; };
 		63B53C7C133FE0C500460020 /* libRestKitJSONParserJSONKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B53C76133FE0C500460020 /* libRestKitJSONParserJSONKit.a */; };
@@ -480,8 +479,6 @@
 		63B254121299BD3100BA9323 /* TTThumbsViewController+g3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TTThumbsViewController+g3.m"; sourceTree = "<group>"; };
 		63B254131299BD3100BA9323 /* MyThumbsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyThumbsViewController.h; sourceTree = "<group>"; };
 		63B254141299BD3100BA9323 /* MyThumbsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyThumbsViewController.m; sourceTree = "<group>"; };
-		63B254161299BD3100BA9323 /* MyImageUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyImageUploader.h; sourceTree = "<group>"; };
-		63B254171299BD3100BA9323 /* MyImageUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MyImageUploader.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		63B255EF1299C63300BA9323 /* Three20.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Three20.bundle; path = ../three20/src/Three20.bundle; sourceTree = SOURCE_ROOT; };
 		63B53B0B133FDECA00460020 /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = ../RestKit/RestKit.xcodeproj; sourceTree = "<group>"; };
 		63B53C75133FE0C500460020 /* libRestKitCoreData.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRestKitCoreData.a; sourceTree = SOURCE_ROOT; };
@@ -985,8 +982,6 @@
 				63A3B71B129C5EA200E04981 /* MyItemDeleter.m */,
 				636B7F1712BFE98D00ECDCDD /* MyAlbumUpdater.h */,
 				636B7F1812BFE98D00ECDCDD /* MyAlbumUpdater.m */,
-				63B254161299BD3100BA9323 /* MyImageUploader.h */,
-				63B254171299BD3100BA9323 /* MyImageUploader.m */,
 			);
 			name = "Rest Helpers";
 			sourceTree = "<group>";
@@ -1354,7 +1349,6 @@
 				63B254261299BD3100BA9323 /* MyPhotoViewController.m in Sources */,
 				63B254281299BD3100BA9323 /* TTThumbsViewController+g3.m in Sources */,
 				63B254291299BD3100BA9323 /* MyThumbsViewController.m in Sources */,
-				63B2542A1299BD3100BA9323 /* MyImageUploader.m in Sources */,
 				63A3B51C129C3BDE00E04981 /* MyLogin.m in Sources */,
 				63A3B51D129C3BDE00E04981 /* MyLoginModel.m in Sources */,
 				63A3B51E129C3BDE00E04981 /* MyLoginDataSource.m in Sources */,

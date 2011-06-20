@@ -11,7 +11,6 @@
 
 #import "AppDelegate.h"
 #import "MySettings.h"
-#import "MyImageUploader.h"
 
 #import "AddAlbumViewController.h"
 #import "MyViewController.h"

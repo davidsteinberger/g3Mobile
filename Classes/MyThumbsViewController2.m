@@ -59,7 +59,6 @@
 #import "UIImage+scaleAndRotate.h"
 #import "Three20UINavigator/private/TTBaseNavigatorInternal.h"
 #import "NSData+base64.h"
-
 #import "UIImage+resizing.h"
 #import "Overlay.h"
 
@@ -551,7 +550,11 @@
 	[actionSheet addButtonWithTitle:@"Cancel"];
 	actionSheet.cancelButtonIndex = 2;
 	
-    [actionSheet showFromToolbar:self.navigationController.toolbar];
+    if (_isEmpty) {
+        [actionSheet showInView:self.view];
+    } else {
+        [actionSheet showFromToolbar:self.navigationController.toolbar];   
+    }
 }
 
 

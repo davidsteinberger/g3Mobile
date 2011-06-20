@@ -41,6 +41,7 @@
 @synthesize baseURL = _baseURL;
 @synthesize imageQuality = _imageQuality;
 @synthesize viewStyle = _viewStyle;
+@synthesize uploadCounter = _uploadCounter;
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(MySettings);
 
@@ -201,6 +202,25 @@ withImageQuality:(float) imageQuality {
     return viewStyle;
 }
 
+- (void)setUploadCounter:(int)uploadCounter {
+    NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
+    
+    [prefs setInteger:uploadCounter forKey:@"uploadCounter"];
+    [self storeName:@"uploadCounter" withValue:[NSString stringWithFormat:@"%i",uploadCounter]];
+    [prefs synchronize];
+}
+
+- (int)uploadCounter {
+    NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
+    int uploadCounter = [prefs integerForKey:@"uploadCounter"];
+    
+    if (!uploadCounter) {
+        uploadCounter = [[self getValue:@"uploadCounter"] intValue];
+    }
+    
+    self->_uploadCounter = uploadCounter;
+    return uploadCounter;
+}
 
 
 - (BOOL)storeName:(NSString*)name withValue:(NSString*)value {
