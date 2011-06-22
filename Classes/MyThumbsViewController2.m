@@ -111,7 +111,6 @@
 	TT_RELEASE_SAFELY(_itemID);
 	TT_RELEASE_SAFELY(_backViewOld);
 	TT_RELEASE_SAFELY(_selectedCell);
-	TT_RELEASE_SAFELY(_pickerController);
 	[super dealloc];
 }
 
@@ -157,13 +156,15 @@
 - (void)reloadViewController:(BOOL)goBack {
     _isInEditingState = NO;
     [self setMetaDataHidden:YES];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [self.navigationController setNavigationBarHidden:NO animated:YES];      
-    [self.navigationController setToolbarHidden:YES animated:YES];
 
 	self->_goBack = goBack;
     
     if (_isEmpty) {
         self->_goBack = YES;
+    } else {
+        [self.navigationController setToolbarHidden:YES animated:YES];
     }
     
 	MyThumbsViewController2 *parent =
@@ -296,10 +297,7 @@
 		self.navigationBarTintColor = nil;
 		self.wantsFullScreenLayout = NO;
 		self.hidesBottomBarWhenPushed = NO;
-        
-		_pickerController = [[UIImagePickerController alloc] init];
-		_pickerController.delegate = self;
-	}
+    }
 
 	return self;
 }
@@ -429,11 +427,9 @@
     
     if (_isInEditingState) {
         [self setMetaDataHidden:NO];
-        [self.navigationController setNavigationBarHidden:YES animated:YES];      
         [self.navigationController setToolbarHidden:NO animated:YES];
     } else {
         [self setMetaDataHidden:YES];
-        [self.navigationController setNavigationBarHidden:NO animated:YES];      
         [self.navigationController setToolbarHidden:YES animated:YES];
     }
 }
@@ -695,7 +691,6 @@
 // Allows to reorder
 - (void)reorder: (id)sender {
     [self setMetaDataHidden:YES];
-    [self.navigationController setNavigationBarHidden:NO];      
     [self.navigationController setToolbarHidden:NO];
     
     [self disableToolbarItemsExceptButton:sender];
@@ -709,8 +704,7 @@
 }
 
 - (void)reorderDone: (id)sender {
-    [self setMetaDataHidden:NO];
-    [self.navigationController setNavigationBarHidden:YES];      
+    [self setMetaDataHidden:NO];  
     [self.navigationController setToolbarHidden:NO];
     
     [self enableToolbarItems];
@@ -791,59 +785,26 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
-#pragma mark UIImagePickerController
-
-// Handles the add-caption functionality by utilizing MyUploadViewController
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(
-               NSDictionary *)info {    
-	NSString *itemID = [self getItemID];
-
-	// get high-resolution picture (used for upload)
-
-	UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-	UIImage *finalImage = [image scaleAndRotateImageToMaxResolution:1024];
-
-	// get screenshot (used for confirmation-dialog)
-	UIImage *screenshot = finalImage;
-
-	// prepare params
-	NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-	                        self, @"delegate",
-	                        finalImage, @"image",
-	                        screenshot, @"screenShot",
-	                        itemID, @"albumID",
-	                        nil];
-
-	[[TTNavigator navigator] openURLAction:[[[TTURLAction actionWithURLPath:
-	                                          @"tt://nib/MyUploadViewController"]
-	                                         applyQuery:params] applyAnimated:YES]];
-}
-
-
-// Handles the cancellation of the picker
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-	[picker dismissModalViewControllerAnimated:YES];
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark -
 #pragma mark UIActionSheetDelegate
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-  	if (buttonIndex == 0) {
-		if ( [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront] == YES) {
-            _pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-        } else {
-            _pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-        }
-        [self presentModalViewController:_pickerController animated:YES];
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {    
+    NSMutableDictionary* query = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+     self, @"delegate",
+     self.itemID, @"albumID",
+     nil] autorelease];
+    
+    if (buttonIndex == 0) {
+        [query setValue:@"UIImagePickerControllerSourceTypeCamera" forKey:@"sourceType"];
 	}
     if (buttonIndex == 1) {
-        _pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-        [self presentModalViewController:_pickerController animated:YES];
+        [query setValue:@"UIImagePickerControllerSourceTypeSavedPhotosAlbum" forKey:@"sourceType"];
     }
+    if (buttonIndex == 2) {
+        return;
+    }
+    [[TTNavigator navigator] openURLAction:[[[TTURLAction actionWithURLPath:
+                                              @"tt://nib/MyUploadViewController"]
+                                             applyQuery:query] applyAnimated:YES]];
 }
 
 

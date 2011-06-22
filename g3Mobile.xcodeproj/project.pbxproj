@@ -40,7 +40,7 @@
 		634D198113ACE74F003165FA /* reorderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 634D197F13ACE74E003165FA /* reorderIcon.png */; };
 		634D198413ACE7C4003165FA /* uploadIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 634D198313ACE7C4003165FA /* uploadIcon.png */; };
 		6358A4BB12C880EB0043D18A /* MySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6358A4BA12C880EB0043D18A /* MySettings.m */; };
-		636952D812D4FC5400CA3113 /* UIViewController+params.m in Sources */ = {isa = PBXBuildFile; fileRef = 636952D712D4FC5400CA3113 /* UIViewController+params.m */; };
+		636952D812D4FC5400CA3113 /* UIViewController+query.m in Sources */ = {isa = PBXBuildFile; fileRef = 636952D712D4FC5400CA3113 /* UIViewController+query.m */; };
 		6369534912D50A1200CA3113 /* MyPostController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6369534812D50A1200CA3113 /* MyPostController.m */; };
 		6369534C12D50A4700CA3113 /* MyPostController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6369534B12D50A4700CA3113 /* MyPostController.xib */; };
 		636954B412D52ACD00CA3113 /* UIImage+cropping.m in Sources */ = {isa = PBXBuildFile; fileRef = 636954B312D52ACD00CA3113 /* UIImage+cropping.m */; };
@@ -407,8 +407,8 @@
 		6358A4B912C880EB0043D18A /* MySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySettings.h; sourceTree = "<group>"; };
 		6358A4BA12C880EB0043D18A /* MySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySettings.m; sourceTree = "<group>"; };
 		6358A4C412C8810C0043D18A /* SynthesizeSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthesizeSingleton.h; sourceTree = "<group>"; };
-		636952D612D4FC5400CA3113 /* UIViewController+params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+params.h"; sourceTree = "<group>"; };
-		636952D712D4FC5400CA3113 /* UIViewController+params.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+params.m"; sourceTree = "<group>"; };
+		636952D612D4FC5400CA3113 /* UIViewController+query.h */ = {isa = PBXFileReference; fileEncoding = 4; path = "UIViewController+query.h"; sourceTree = "<group>"; };
+		636952D712D4FC5400CA3113 /* UIViewController+query.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+query.m"; sourceTree = "<group>"; };
 		6369534712D50A1200CA3113 /* MyPostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPostController.h; sourceTree = "<group>"; };
 		6369534812D50A1200CA3113 /* MyPostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPostController.m; sourceTree = "<group>"; };
 		6369534B12D50A4700CA3113 /* MyPostController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyPostController.xib; sourceTree = "<group>"; };
@@ -762,8 +762,8 @@
 				637452D412D3A162005FD8C6 /* UIImage+resizing.m */,
 				63C8858B135CF34800BDCE89 /* UIImage+scaleAndRotate.h */,
 				63C8858C135CF34900BDCE89 /* UIImage+scaleAndRotate.m */,
-				636952D612D4FC5400CA3113 /* UIViewController+params.h */,
-				636952D712D4FC5400CA3113 /* UIViewController+params.m */,
+				636952D612D4FC5400CA3113 /* UIViewController+query.h */,
+				636952D712D4FC5400CA3113 /* UIViewController+query.m */,
 			);
 			name = Additions;
 			sourceTree = "<group>";
@@ -1362,7 +1362,7 @@
 				632A449112D261390055F67B /* MyUploadViewController.m in Sources */,
 				637452D512D3A162005FD8C6 /* UIImage+resizing.m in Sources */,
 				6374560612D3EFB2005FD8C6 /* StyleSheet.m in Sources */,
-				636952D812D4FC5400CA3113 /* UIViewController+params.m in Sources */,
+				636952D812D4FC5400CA3113 /* UIViewController+query.m in Sources */,
 				6369534912D50A1200CA3113 /* MyPostController.m in Sources */,
 				636954B412D52ACD00CA3113 /* UIImage+cropping.m in Sources */,
 				630FBE7A12FD794500B4629A /* MyThumbsViewController2.m in Sources */,

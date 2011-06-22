@@ -23,20 +23,22 @@
 
 #import "MyUploadViewController.h"
 
-// Settings
-#import "MySettings.h"
-
 // RestKit
 #import "RestKit/RestKit.h"
 
+// Settings
+#import "MySettings.h"
+
 // Others
-#import "UIImage+resizing.h"
+#import "UIImage+scaleAndRotate.h"
 
 static NSString *defaultCaption = @"Write a Caption ...";
 
 @interface MyUploadViewController ()
 
 @property (assign) id delegate;
+@property (nonatomic, retain) UIImagePickerController* pickerController;
+@property (nonatomic, assign) UIImagePickerControllerSourceType sourceType;
 @property (nonatomic, retain) IBOutlet UIImageView *imageView;
 @property (nonatomic, retain) IBOutlet UILabel *caption;
 @property (nonatomic, retain) UIImage *screenShot;
@@ -57,7 +59,9 @@ static NSString *defaultCaption = @"Write a Caption ...";
 @synthesize image = _image;
 @synthesize albumID = _albumID;
 @synthesize delegate = _delegate;
-@synthesize params = _params;
+@synthesize query = _query;
+@synthesize pickerController = _pickerController;
+@synthesize sourceType = _sourceType;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,7 +69,8 @@ static NSString *defaultCaption = @"Write a Caption ...";
 
 - (void)dealloc {
 	self.delegate = nil;
-	TT_RELEASE_SAFELY(_params);
+    TT_RELEASE_SAFELY(_pickerController);
+	TT_RELEASE_SAFELY(_query);
 	TT_RELEASE_SAFELY(_imageView);
 	TT_RELEASE_SAFELY(_caption);
 	TT_RELEASE_SAFELY(_screenShot);
@@ -77,13 +82,8 @@ static NSString *defaultCaption = @"Write a Caption ...";
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark -
-#pragma mark UIViewController
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-	if ( (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) ) {
+    if ( (self = [super initWithNibName:nibNameOrNil bundle:nil]) ) {
 		_progressAlert = [[UIAlertView alloc] initWithTitle:@"Image upload"
 		                                            message:@"Please wait..."
 		                                           delegate:self
@@ -94,25 +94,37 @@ static NSString *defaultCaption = @"Write a Caption ...";
 		                                                         90.0f)];
 		[_progressAlert addSubview:_progressView];
 		[_progressView setProgressViewStyle:UIProgressViewStyleBar];
-	}
+        
+        _pickerController = [[UIImagePickerController alloc] init];
+        _pickerController.delegate = self;
+    }
 	return self;
 }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UIViewController
+
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
-
-	[self.navigationController setNavigationBarHidden:YES];
+    
+    [self.navigationController setNavigationBarHidden:YES];
 	[[UIApplication sharedApplication] setStatusBarHidden:YES];
+    [self.navigationController setToolbarHidden:YES];
 
-	self.delegate = [self.params objectForKey:@"delegate"];
-	self.image = [self.params objectForKey:@"image"];
-	self.screenShot = [self.params objectForKey:@"screenShot"];
-	self.albumID = [self.params objectForKey:@"albumID"];
-
-	self.imageView.image = self.screenShot;
-
+    self.albumID = [self.query objectForKey:@"albumID"];
+    self.delegate = [self.query objectForKey:@"delegate"];
 	self.caption.text = defaultCaption;
+    
+    if ( [[self.query objectForKey:@"sourceType"] isEqualToString: @"UIImagePickerControllerSourceTypeCamera"] && [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront] == YES) {
+        _pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+    } else {
+        _pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    }
+    [self presentModalViewController:_pickerController animated:YES];
 }
 
 
@@ -120,6 +132,37 @@ static NSString *defaultCaption = @"Write a Caption ...";
     [super viewDidUnload];
     [self.navigationController setNavigationBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [self.navigationController setToolbarHidden:NO];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UIImagePickerController
+
+// Handles the add-caption functionality by utilizing MyUploadViewController
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(
+                                                                                               NSDictionary *)info {    
+	// get high-resolution picture (used for upload)
+	UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+	self.image = [image scaleAndRotateImageToMaxResolution:1024];
+    
+	// get screenshot (used for confirmation-dialog)
+	self.screenShot = image;
+    
+    // update the nib
+    self.imageView.image = self.screenShot;
+    
+    [_pickerController dismissModalViewControllerAnimated:YES];
+}
+
+
+// Handles the cancellation of the picker
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [self.delegate reloadViewController:NO];
+    [self dismissModalViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -129,17 +172,12 @@ static NSString *defaultCaption = @"Write a Caption ...";
 #pragma mark Interface Builder
 
 - (IBAction)cancel:(id)sender {
-    [self.navigationController setNavigationBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[self dismissModalViewControllerAnimated:YES];
+    [self.delegate reloadViewController:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
 - (IBAction)upload:(id)sender {
-	if (self.image == nil) {
-		self.image = [TTIMAGE (@"bundle://empty.png") scaleToSize:CGSizeMake(320, 480)];
-	}
-
 	NSData *imageData =
 	        UIImageJPEGRepresentation(
 	                self.image,
@@ -172,6 +210,7 @@ static NSString *defaultCaption = @"Write a Caption ...";
 	[postParams setData:imageData MIMEType:@"application/octet-stream" forParam:@"file"];
 
 	NSString *resourcePath = [@"/rest/item/" stringByAppendingString:self.albumID];
+     
 	[client post:resourcePath params:postParams delegate:self];
 
 	[client setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
@@ -192,21 +231,17 @@ static NSString *defaultCaption = @"Write a Caption ...";
 
 
 - (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
-	[_progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-    [self.navigationController setNavigationBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[self.delegate reloadViewController:NO];
-	[self dismissModalViewControllerAnimated:YES];
+	[_progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
 - (void)request:(RKRequest *)request didFailLoadWithError:(NSError *)error {
 	NSLog(@"didFailLoadWithError");
 	[_progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-    [self.navigationController setNavigationBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[self.delegate reloadViewController:NO];
-	[self dismissModalViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -46,7 +46,7 @@
 #import "MyThumbsViewController2.h"
 #import "MyUploadViewController.h"
 
-#import "UIViewController+params.h"
+#import "UIViewController+query.h"
 
 // Reachability
 #import "Reachability.h"
@@ -242,9 +242,8 @@
        query {
 	UIViewController *newController = [[NSClassFromString (className)alloc]
 	                                   initWithNibName:nibName bundle:nil];
-	[newController autorelease];
-	[newController setParams:query];
-	return newController;
+    [newController setQuery:query];
+	return [newController autorelease];
 }
 
 
@@ -258,7 +257,7 @@
 - (UIViewController *)loadFromVC:(NSString *)className query:(NSDictionary *)query {
 	UIViewController *newController = [[NSClassFromString (className)alloc] init];
 	[newController autorelease];
-	[newController setParams:query];
+	[newController setQuery:query];
 	return newController;
 }
 

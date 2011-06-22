@@ -43,16 +43,13 @@
 #import "MyItem.h"
 #import "MyLongPressGestureDelegate.h"
 
-@interface MyThumbsViewController2 : TTTableViewController <MyLongPressGestureDelegate,                    
-	                                                    UINavigationControllerDelegate,
-	                                                    UIImagePickerControllerDelegate,
+@interface MyThumbsViewController2 : TTTableViewController <MyLongPressGestureDelegate,                    	                                                    
                                                                     UIActionSheetDelegate> {
 	NSString *_itemID;
 	id <MyItem> _selectedAlbumItem;
 	UIView *_backViewOld;
 	UIView *_selectedCell;
 	int _cntTags;
-	UIImagePickerController *_pickerController;
     BOOL _goBack;
     BOOL _isEmpty;
     BOOL _isInEditingState;

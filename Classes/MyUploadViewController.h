@@ -30,9 +30,12 @@
 #import "Three20/Three20.h"
 #import "MyViewController.h"
 
-@interface MyUploadViewController : TTBaseViewController <TTPostControllerDelegate> {
+@interface MyUploadViewController : UIViewController <UINavigationControllerDelegate,
+UIImagePickerControllerDelegate,TTPostControllerDelegate> {
 	id <MyViewController> _delegate;
-	NSDictionary *_params;
+    UIImagePickerController* _pickerController;
+    UIImagePickerControllerSourceType _sourceType;
+	NSDictionary *_query;
 	UIImageView *_imageView;
 	UILabel *_caption;
 	UIImage *_screenShot;
@@ -42,6 +45,6 @@
 	UIProgressView *_progressView;
 }
 
-@property (nonatomic, retain) NSDictionary* params;
+@property (nonatomic, retain) NSDictionary* query;
 
 @end

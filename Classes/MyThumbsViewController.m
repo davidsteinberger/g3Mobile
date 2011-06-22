@@ -19,11 +19,6 @@
 
 @interface MyThumbsViewController ()
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
-
 // Disable all other buttons on the toolbar
 - (void)disableToolbarItemsExceptButton:(UIButton*)button;
 
@@ -43,7 +38,6 @@
     [[RKRequestQueue sharedQueue] cancelAllRequests];
 	self.albumID = nil;
 	TT_RELEASE_SAFELY(_photoSource);
-	TT_RELEASE_SAFELY(self->_pickerController);
 
 	[super dealloc];
 }
@@ -55,9 +49,6 @@
         photosource.photosOnly = NO;
 		self.photoSource = photosource;
 		TT_RELEASE_SAFELY(photosource);
-        
-        _pickerController = [[UIImagePickerController alloc] init];
-        _pickerController.delegate = self;
 	}
 	return self;
 }
@@ -143,18 +134,23 @@
 #pragma mark UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-  	if (buttonIndex == 0) {
-		if ( [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront] == YES) {
-            _pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-        } else {
-            _pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-        }
-        [self presentModalViewController:_pickerController animated:YES];
+  	NSMutableDictionary* query = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                   self, @"delegate",
+                                   self.albumID, @"albumID",
+                                   nil] autorelease];
+    
+    if (buttonIndex == 0) {
+        [query setValue:@"UIImagePickerControllerSourceTypeCamera" forKey:@"sourceType"];
 	}
     if (buttonIndex == 1) {
-        _pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-        [self presentModalViewController:_pickerController animated:YES];
+        [query setValue:@"UIImagePickerControllerSourceTypeSavedPhotosAlbum" forKey:@"sourceType"];
     }
+    if (buttonIndex == 2) {
+        return;
+    }
+    [[TTNavigator navigator] openURLAction:[[[TTURLAction actionWithURLPath:
+                                              @"tt://nib/MyUploadViewController"]
+                                             applyQuery:query] applyAnimated:YES]];
 }
 
 - (void)modalView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -245,40 +241,6 @@
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark -
-#pragma mark UIImagePickerController Methods
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-	PhotoSource* ps;
-	ps = (PhotoSource* ) self.photoSource;
-	
-	// get high-resolution picture (used for upload)
-	UIImage* image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    UIImage* finalImage = [image scaleAndRotateImageToMaxResolution:1024];
-    
-	// get screenshot (used for confirmation-dialog)
-    UIImage* screenshot = finalImage;
-    
-	// prepare params
-	NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
-							self, @"delegate",
-							finalImage, @"image",
-							screenshot, @"screenShot",
-							ps.albumID, @"albumID",
-							nil];
-	
-	[[TTNavigator navigator] openURLAction:[[[TTURLAction actionWithURLPath:@"tt://nib/MyUploadViewController"]
-											applyQuery:params] applyAnimated:YES]];
-}
-
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-	[picker dismissModalViewControllerAnimated:YES];
-}
-
-
 #pragma mark UINavigationController Methods
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
 }
@@ -354,7 +316,7 @@
      */
     if ([objects count] == 1 && show) {        
 		NSString* title = [_dataSource titleForEmpty];
-		NSString* subtitle = [_dataSource subtitleForEmpty];
+		NSString* subtitle = @""; //[_dataSource subtitleForEmpty];
 		UIImage* image = [_dataSource imageForEmpty];
         
 		if (title.length || subtitle.length || image) {

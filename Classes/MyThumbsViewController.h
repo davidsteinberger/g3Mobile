@@ -2,13 +2,8 @@
 #import "Three20UI/TTView.h"
 #import "Three20UI/UIViewAdditions.h"
 
-@interface MyThumbsViewController : TTThumbsViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
+@interface MyThumbsViewController : TTThumbsViewController <UIActionSheetDelegate> {
 	NSString* _albumID;
-	UIImagePickerController* _pickerController;
-	
-	UIAlertView* _progressAlert;
-	UIActivityIndicatorView* _activityView;
-	UIProgressView* _progressView;
     
     BOOL _goBack;
     BOOL _isEmpty;

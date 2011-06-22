@@ -40,4 +40,8 @@
 	}
 }
 
+- (CGRect)rectForOverlayView {
+    return [_tableView frameWithKeyboardSubtracted:0];
+}
+
 @end
