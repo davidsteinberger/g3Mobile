@@ -6,18 +6,24 @@
 //  Copyright 2010 -. All rights reserved.
 //
 
-#import "extThree20JSON/NSObject+YAJL.h"
-#import "extThree20JSON/extThree20JSON.h"
+#import "AddAlbumViewController.h"
 
-#import "AppDelegate.h"
+// RestKit
+#import "RestKit/RestKit.h"
+
+// Settings
 #import "MySettings.h"
 
-#import "AddAlbumViewController.h"
-#import "MyViewController.h"
+@interface AddAlbumViewController ()
+
+- (void)addAlbum;
+
+@end
 
 @implementation AddAlbumViewController
 
 @synthesize parentAlbumID = _parentAlbumID;
+@synthesize delegate = _delegate;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // NSObject
@@ -25,23 +31,27 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
 		self.title = @"Add Album";
-		self.navigationItem.backBarButtonItem =
-		[[[UIBarButtonItem alloc] initWithTitle:@"Album" style:UIBarButtonItemStyleBordered
-										 target:nil action:nil] autorelease];
-		
+        
+        self.statusBarStyle = UIStatusBarStyleBlackTranslucent;
+		self.navigationBarStyle = UIBarStyleBlack;
+		self.navigationBarTintColor = nil;
+		self.wantsFullScreenLayout = NO;
+		self.hidesBottomBarWhenPushed = NO;
+        
 		self.tableViewStyle = UITableViewStyleGrouped;
 	}
 	return self;
 }
 
-- (id)initWithParentAlbumID: (NSString* )albumID {
+- (id)initWithParentAlbumID: (NSString* )albumID andDelegate:(id<MyViewController>) delegate {
 	self.parentAlbumID = albumID;	
-
+    self.delegate = delegate;
+    
 	return [self initWithNibName:nil bundle: nil];
 }
 
 - (void)dealloc {
-	self.parentAlbumID = nil;
+    self.delegate = nil;
 	TT_RELEASE_SAFELY(_parentAlbumID);
 	TT_RELEASE_SAFELY(_albumTitle);
 	TT_RELEASE_SAFELY(_description);
@@ -88,72 +98,19 @@
 }
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark -
-#pragma mark TTModel
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (NSMutableArray*)delegates {
-	NSMutableArray* delegates = [[NSMutableArray alloc] init];
-	return [delegates autorelease];
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (BOOL)isLoaded {
-	return YES;
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (BOOL)isLoading {
-	return NO;
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (BOOL)isLoadingMore {
-	return NO;
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (BOOL)isOutdated {
-	return NO;
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)load:(TTURLRequestCachePolicy)cachePolicy more:(BOOL)more {
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)cancel {
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)invalidate:(BOOL)erase {
-}
-
-
 #pragma mark -
 #pragma mark UITextFieldDelegate methods
 
 - (BOOL) textFieldShouldBeginEditing:(UITextField *)textField {
 	if (textField == _description)	{
-		NSString *textForPostController = @"";
-		NSDictionary* paramsArray = [NSDictionary dictionaryWithObjectsAndKeys:
+		NSDictionary* query = [NSDictionary dictionaryWithObjectsAndKeys:
 									 self, @"delegate",
 									 @"Add Description", @"titleView",
-									 textForPostController, @"text",
+									 textField.text, @"text",
 									 nil];
 		
 		[[TTNavigator navigator] openURLAction:[[[TTURLAction actionWithURLPath:@"tt://loadFromVC/MyPostController"]
-												 applyQuery:paramsArray] applyAnimated:YES]];		
+												 applyQuery:query] applyAnimated:YES]];		
 		return NO;
 	}
 	else {
@@ -195,71 +152,45 @@
 #pragma mark helpers
 
 - (void)addAlbum {	
-	NSString *url = [[GlobalSettings.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self.parentAlbumID];
-	
-	TTURLRequest* request = [TTURLRequest
-                             requestWithURL: url
-                             delegate: self];
-	
-	//set http-headers
-	[request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
-	[request setValue:@"post" forHTTPHeaderField:@"X-Gallery-Request-Method"];
-	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
-	
-	//set 'post'-method
-	request.httpMethod = @"POST";
-	
-	// don't cache
-	request.cacheExpirationAge = 0;
-	
-	NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:    
+    RKClient *client = [RKObjectManager sharedManager].client;
+	[client setValue:@"post" forHTTPHeaderField:@"X-Gallery-Request-Method"];
+	RKParams *postParams = [RKParams params];
+    
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:    
 							@"album", @"type",
 							_albumTitle.text, @"name",
 							_albumTitle.text, @"title",
 							_description.text, @"description",
 							_internetAddress.text, @"slug",
-							nil];  
-	
-	//json-encode & urlencode parameters
-	NSString* requestString = [params yajl_JSONString];
-	requestString = [@"entity=" stringByAppendingString:[self urlEncodeValue:requestString]];
-	
-	request.httpBody = [requestString dataUsingEncoding:NSUTF8StringEncoding];
-	
-	request.userInfo = @"addAlbum";
-	
-	TTURLJSONResponse* response = [[TTURLJSONResponse alloc] init];
-    request.response = response;
-	TT_RELEASE_SAFELY(response);
-	
-	[request send];
+							nil]; 
+    
+    NSError *error = nil;
+	id <RKParser> parser = [[RKParserRegistry sharedRegistry] parserForMIMEType:RKMIMETypeJSON];
+	NSString *paramsString = [parser stringFromObject:params error:&error];
+    
+	[postParams setValue:paramsString forParam:@"entity"];
+    
+    NSString *resourcePath = [@"/rest/item/" stringByAppendingString:self.parentAlbumID];
+    
+	[client post:resourcePath params:postParams delegate:self];
+    
+	[client setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
+}
+
+- (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
+    [self.delegate reloadViewController:YES];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 
-- (void)requestDidFinishLoad:(TTURLRequest*)request {
-	if ([request.userInfo isEqual:@"addAlbum"]) {
-		NSArray* viewControllers = [self.navigationController viewControllers];
-		TTViewController* viewController = nil;
-		        
-        if ([viewControllers count] > 1) {
-			viewController = [viewControllers objectAtIndex:[viewControllers count]-2];
-			[self.navigationController popToViewController:viewController animated:YES];
-			[((id<MyViewController>)viewController) reloadViewController:NO];
-		}
-	}
-}
-
-- (void)request:(TTURLRequest *)request didFailLoadWithError:(NSError *)error {
-	TTAlertViewController* alert = [[[TTAlertViewController alloc] initWithTitle:@"Error" message:@"Please check fields for valid vaues!"] autorelease];
+- (void)request:(RKRequest *)request didFailLoadWithError:(NSError *)error {
+	NSLog(@"didFailLoadWithError");
+    
+    TTAlertViewController* alert = [[[TTAlertViewController alloc] initWithTitle:@"Error" message:@"Please check fields for valid vaues!"] autorelease];
     [alert addCancelButtonWithTitle:@"OK" URL:nil];
     [alert showInView:self.view animated:YES];
 	
-	[self showLoading:NO];	
-}
-
-- (NSString *)urlEncodeValue:(NSString *)str {
-	NSString *result = (NSString *) CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)str, NULL, CFSTR("?=&+"), kCFStringEncodingUTF8);
-	return [result autorelease];
+	[self showLoading:NO];
 }
 
 @end

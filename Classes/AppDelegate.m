@@ -256,9 +256,8 @@
 // Loads the given viewcontroller by name
 - (UIViewController *)loadFromVC:(NSString *)className query:(NSDictionary *)query {
 	UIViewController *newController = [[NSClassFromString (className)alloc] init];
-	[newController autorelease];
 	[newController setQuery:query];
-	return newController;
+	return [newController autorelease];
 }
 
 

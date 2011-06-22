@@ -7,6 +7,7 @@
 //
 
 #import "TTThumbsViewController+g3.h"
+#import "Three20UI/Three20UI+Additions.h"
 #import "MyPhotoViewController.h"
 #import "PhotoSource.h"
 

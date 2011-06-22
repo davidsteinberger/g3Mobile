@@ -1,8 +1,8 @@
-#import <Three20/Three20.h>
-#import "Three20UI/TTView.h"
-#import "Three20UI/UIViewAdditions.h"
 
-@interface MyThumbsViewController : TTThumbsViewController <UIActionSheetDelegate> {
+#import <Three20/Three20.h>
+#import "MyViewController.h"
+
+@interface MyThumbsViewController : TTThumbsViewController <MyViewController, UIActionSheetDelegate> {
 	NSString* _albumID;
     
     BOOL _goBack;

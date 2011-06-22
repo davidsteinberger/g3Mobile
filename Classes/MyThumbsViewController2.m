@@ -562,7 +562,7 @@
 
 	NSString *itemID = [self getItemID];
 	AddAlbumViewController *addAlbum =
-	        [[AddAlbumViewController alloc] initWithParentAlbumID:itemID];
+	        [[AddAlbumViewController alloc] initWithParentAlbumID:itemID andDelegate:self];
 	[self.navigationController pushViewController:addAlbum animated:YES];
 	TT_RELEASE_SAFELY(addAlbum);
 

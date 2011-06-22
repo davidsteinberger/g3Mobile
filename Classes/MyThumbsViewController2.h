@@ -40,10 +40,11 @@
  */
 
 #import "Three20/Three20.h"
+#import "MyViewController.h"
 #import "MyItem.h"
 #import "MyLongPressGestureDelegate.h"
 
-@interface MyThumbsViewController2 : TTTableViewController <MyLongPressGestureDelegate,                    	                                                    
+@interface MyThumbsViewController2 : TTTableViewController <MyViewController, MyLongPressGestureDelegate,                    	                                                    
                                                                     UIActionSheetDelegate> {
 	NSString *_itemID;
 	id <MyItem> _selectedAlbumItem;

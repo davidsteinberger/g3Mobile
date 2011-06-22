@@ -90,7 +90,7 @@
 
 // Handles the creation of a new album
 - (void)createAlbum:(id)sender {	
-	AddAlbumViewController* addAlbum = [[AddAlbumViewController alloc] initWithParentAlbumID: self.albumID];
+	AddAlbumViewController* addAlbum = [[AddAlbumViewController alloc] initWithParentAlbumID: self.albumID andDelegate:self];
 	[self.navigationController pushViewController:addAlbum animated:YES];
 	TT_RELEASE_SAFELY(addAlbum);
 }
@@ -260,6 +260,7 @@
 // Reloads after an action was taken
 - (void)reloadViewController:(BOOL)goBack {
     _isInEditingState = NO;
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [self.navigationController setNavigationBarHidden:NO animated:YES];      
     [self.navigationController setToolbarHidden:YES animated:YES];
     

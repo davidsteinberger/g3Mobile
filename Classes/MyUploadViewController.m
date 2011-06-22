@@ -36,7 +36,7 @@ static NSString *defaultCaption = @"Write a Caption ...";
 
 @interface MyUploadViewController ()
 
-@property (assign) id delegate;
+@property (nonatomic, assign) id<MyViewController> delegate;
 @property (nonatomic, retain) UIImagePickerController* pickerController;
 @property (nonatomic, assign) UIImagePickerControllerSourceType sourceType;
 @property (nonatomic, retain) IBOutlet UIImageView *imageView;

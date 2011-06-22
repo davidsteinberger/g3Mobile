@@ -24,19 +24,21 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 @implementation MyPostController
 
-@synthesize titleView = _titleView, params, uploadDelegate;
+@synthesize titleView = _titleView;
+@synthesize query = _query;
+@synthesize uploadDelegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
 		self.delegate = self; 
-		self.uploadDelegate = [self.params objectForKey:@"delegate"];		
+		self.uploadDelegate = [self.query objectForKey:@"delegate"];		
     }
     return self;
 }
 
 - (void) dealloc {
-	self.params = nil;
+	self.query = nil;
 	self.titleView = nil;
 	self.navigationItem.titleView = nil;
 	self.textView.text = nil;
@@ -48,13 +50,13 @@
   [super viewDidLoad];
 	
   self.delegate = self; 
-  self.uploadDelegate = [self.params objectForKey:@"delegate"];
+  self.uploadDelegate = [self.query objectForKey:@"delegate"];
 	
   if (self.titleView) {
-    self.navigationItem.titleView = [self.params objectForKey:@"titleView"];
+    self.navigationItem.titleView = [self.query objectForKey:@"titleView"];
   }
 
-	NSString *text = [self.params objectForKey:@"text"];
+	NSString *text = [self.query objectForKey:@"text"];
 	if (text && (NSNull*)text != [NSNull null]) {
 		self.textView.text = nil;
 		self.textView.text = text;
@@ -62,7 +64,7 @@
 }
 
 - (void)viewDidUnload {
-	self.params = nil;
+	self.query = nil;
 	self.titleView = nil;
 	self.navigationItem.titleView = nil;
 	self.textView.text = nil;
@@ -70,7 +72,7 @@
 }
 
 
-- (IBAction)Cancel:(id)sender {
+- (IBAction)cancel:(id)sender {
 		
 }
 

@@ -6,13 +6,14 @@
 //  Copyright 2010 -. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "Three20/Three20.h"
+#import "MyViewController.h"
 
 @class MyThumbsViewController;
 
 @interface AddAlbumViewController : TTTableViewController <UITextFieldDelegate> {
-	NSString* _parentAlbumID;
+	id <MyViewController> _delegate;
+    NSString* _parentAlbumID;
 	
 	UITextField* _albumTitle;
 	UITextField* _description;
@@ -20,19 +21,8 @@
 }
 
 @property(nonatomic, retain) NSString* parentAlbumID;
+@property(nonatomic, assign) id<MyViewController> delegate;
 
-- (id)initWithParentAlbumID: (NSString* )albumID;
-- (void)addAlbum;
-- (NSString *)urlEncodeValue:(NSString *)str;
-
-// required by TTModel protocol
-- (NSMutableArray*)delegates;
-- (BOOL)isLoaded;
-- (BOOL)isLoading;
-- (BOOL)isLoadingMore;
-- (BOOL)isOutdated;
-- (void)load:(TTURLRequestCachePolicy)cachePolicy more:(BOOL)more;
-- (void)cancel;
-- (void)invalidate:(BOOL)erase;
+- (id)initWithParentAlbumID: (NSString* )albumID andDelegate:(id<MyViewController>) delegate;
 
 @end

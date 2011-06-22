@@ -20,12 +20,12 @@
   id<TTPostControllerDelegate> uploadDelegate;
   UIView* _titleView;
 
-  NSDictionary* params;
+  NSDictionary* _query;
 }
 
-@property (assign) id uploadDelegate;
+@property (nonatomic, assign) id uploadDelegate;
 @property (nonatomic, retain) IBOutlet UIView* titleView;
-@property (nonatomic, retain) NSDictionary* params;
-- (IBAction)Cancel:(id)sender;
+@property (nonatomic, retain) NSDictionary* query;
+- (IBAction)cancel:(id)sender;
 
 @end
