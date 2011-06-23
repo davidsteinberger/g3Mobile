@@ -45,6 +45,7 @@
 - (id)initWithAlbumID:(NSString *)albumID {
 	if ((self = [super init])) {
 		self.albumID = albumID;
+        NSLog(@"Init with self.albumID: %@", self.albumID);
 		PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:albumID];
         photosource.photosOnly = NO;
 		self.photoSource = photosource;
@@ -197,7 +198,7 @@
     // stop the indicator ...
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-    [((id<MyViewController>)self) reloadViewController:NO];
+    [((id<MyViewController>)self) reloadViewController:YES];
 }
 
 - (void)disableToolbarItemsExceptButton:(UIButton*)button {
@@ -240,13 +241,6 @@
     }
 }
 
-
-#pragma mark UINavigationController Methods
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-}
-
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {	
-}
 
 // Reloads the data -> resets the detail-view
 - (void)reload {
@@ -306,16 +300,13 @@
 	}
 }
 
-- (void)showEmpty:(BOOL)show {    
-    RKObjectLoaderTTModel *model = (RKObjectLoaderTTModel *)self.photoSource;
-    NSArray* objects = model.objects;
-    
+- (void)showEmpty:(BOOL)show {        
     /*
      * We expect a tree-resource
      * Should the resource have only 1 object the load was complete and  no children found
      * --> empty album
      */
-    if ([objects count] == 1 && show) {        
+    if (show) {        
 		NSString* title = [_dataSource titleForEmpty];
 		NSString* subtitle = @""; //[_dataSource subtitleForEmpty];
 		UIImage* image = [_dataSource imageForEmpty];

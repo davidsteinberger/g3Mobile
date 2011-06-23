@@ -62,7 +62,6 @@
     
     RKObjectLoader* objectLoader = [[RKObjectManager sharedManager] objectLoaderWithResourcePath:treeResourcePath delegate:nil];
     objectLoader.objectMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForClass:[RKMTree class]];
-    [RKObjectLoaderTTModel modelWithObjectLoader:objectLoader];
     
     if ((self = [self initWithObjectLoader:objectLoader])) {
         self.title = @"Photos";
