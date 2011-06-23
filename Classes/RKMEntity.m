@@ -42,5 +42,6 @@
 @dynamic thumb_height;
 @dynamic created;
 @dynamic relative_position;
+@dynamic slug;
 
 @end

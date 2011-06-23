@@ -407,7 +407,7 @@
 		6358A4B912C880EB0043D18A /* MySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySettings.h; sourceTree = "<group>"; };
 		6358A4BA12C880EB0043D18A /* MySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySettings.m; sourceTree = "<group>"; };
 		6358A4C412C8810C0043D18A /* SynthesizeSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthesizeSingleton.h; sourceTree = "<group>"; };
-		636952D612D4FC5400CA3113 /* UIViewController+query.h */ = {isa = PBXFileReference; fileEncoding = 4; path = "UIViewController+query.h"; sourceTree = "<group>"; };
+		636952D612D4FC5400CA3113 /* UIViewController+query.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+query.h"; sourceTree = "<group>"; };
 		636952D712D4FC5400CA3113 /* UIViewController+query.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+query.m"; sourceTree = "<group>"; };
 		6369534712D50A1200CA3113 /* MyPostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPostController.h; sourceTree = "<group>"; };
 		6369534812D50A1200CA3113 /* MyPostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPostController.m; sourceTree = "<group>"; };

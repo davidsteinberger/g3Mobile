@@ -290,6 +290,8 @@
     if (!_isRestKitLoad) {
         _isRestKitLoad = YES;
         
+        //RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
+        
         RKObjectManager* objectManager = [RKObjectManager objectManagerWithBaseURL:GlobalSettings.baseURL];
         
         // Initialize object store
@@ -339,7 +341,7 @@
         entityMapping.primaryKeyAttribute = @"itemID";
         [entityMapping mapKeyPath:@"id" toAttribute:@"itemID"];
         [entityMapping mapKeyPath:@"description" toAttribute:@"desc"];
-        [entityMapping mapAttributes:@"title", @"type", @"thumb_url_public", @"thumb_url", @"resize_url_public", @"resize_url", @"file_url", @"file_url_public", @"thumb_width", @"thumb_height", @"created", @"relative_position", @"parent", nil];
+        [entityMapping mapAttributes:@"title", @"type", @"thumb_url_public", @"thumb_url", @"resize_url_public", @"resize_url", @"file_url", @"file_url_public", @"thumb_width", @"thumb_height", @"created", @"relative_position", @"parent", @"slug", nil];
         
         RKManagedObjectMapping* itemMapping = [RKManagedObjectMapping mappingForClass:[RKMItem class]];
         itemMapping.primaryKeyAttribute = @"url";

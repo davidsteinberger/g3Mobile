@@ -84,7 +84,8 @@
 
 
 - (void)postControllerDidCancel:(TTPostController*)postController {
-
+    if (self.uploadDelegate)
+		[self.uploadDelegate postControllerDidCancel:postController];
 }
 
 

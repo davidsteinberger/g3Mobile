@@ -55,7 +55,7 @@
 	TT_RELEASE_SAFELY(_parentAlbumID);
 	TT_RELEASE_SAFELY(_albumTitle);
 	TT_RELEASE_SAFELY(_description);
-	TT_RELEASE_SAFELY(_internetAddress);
+	TT_RELEASE_SAFELY(_slug);
 	[super dealloc];
 }
 
@@ -66,7 +66,8 @@
 	_albumTitle = [[UITextField alloc] init];
 	_albumTitle.placeholder = @"Title";
 	_albumTitle.delegate = self;
-	_albumTitle.returnKeyType = UIReturnKeyGo;
+    _albumTitle.tag = 0;
+	_albumTitle.returnKeyType = UIReturnKeyNext;
 	
 	TTTableControlItem* cAlbumName = [TTTableControlItem itemWithCaption:@"Title"
 															   control:_albumTitle];
@@ -74,18 +75,20 @@
 	_description = [[UITextField alloc] init];
 	_description.placeholder = @"Description";
 	_description.delegate = self;
-	_description.returnKeyType = UIReturnKeyGo;
+    _description.tag = 1;
+	_description.returnKeyType = UIReturnKeyNext;
 
 	TTTableControlItem* cAlbumTitle = [TTTableControlItem itemWithCaption:@"Description"
 																 control:_description];
 	
-	_internetAddress = [[UITextField alloc] init];
-	_internetAddress.placeholder = @"Address";
-	_internetAddress.delegate = self;
-	_internetAddress.returnKeyType = UIReturnKeyGo;
+	_slug = [[UITextField alloc] init];
+	_slug.placeholder = @"Address";
+	_slug.delegate = self;
+    _slug.tag = 2;
+	_slug.returnKeyType = UIReturnKeyGo;
 	
 	TTTableControlItem* cInternetAddress = [TTTableControlItem itemWithCaption:@"Internet Address"
-																  control:_internetAddress];
+																  control:_slug];
 	
 	self.dataSource = [TTSectionedDataSource dataSourceWithObjects:
 					   @"Album Details",
@@ -102,7 +105,7 @@
 #pragma mark UITextFieldDelegate methods
 
 - (BOOL) textFieldShouldBeginEditing:(UITextField *)textField {
-	if (textField == _description)	{
+    if (textField == _description)	{
 		NSDictionary* query = [NSDictionary dictionaryWithObjectsAndKeys:
 									 self, @"delegate",
 									 @"Add Description", @"titleView",
@@ -121,15 +124,19 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField.returnKeyType == UIReturnKeyGo) {
-        [textField resignFirstResponder];
-		[self addAlbum];
+    if (textField.returnKeyType == UIReturnKeyNext) {
+        switch (textField.tag) {
+            case 0:
+                [_description becomeFirstResponder];
+                break;                
+            default:
+                break;
+        }
+    } else {
+        [self addAlbum];
 		return YES;
     }
-	else {
-		return NO;
-	}
-	
+    return NO;	
 }
 
 #pragma mark -
@@ -139,11 +146,11 @@
 	_description.text = nil;
 	_description.text = text;
 	
-	[_albumTitle becomeFirstResponder];
+	[_slug becomeFirstResponder];
 }
 
 - (void)postControllerDidCancel:(TTPostController*)postController {
-	[_albumTitle becomeFirstResponder];
+	[_slug becomeFirstResponder];
 }
 
 
@@ -161,7 +168,7 @@
 							_albumTitle.text, @"name",
 							_albumTitle.text, @"title",
 							_description.text, @"description",
-							_internetAddress.text, @"slug",
+							_slug.text, @"slug",
 							nil]; 
     
     NSError *error = nil;

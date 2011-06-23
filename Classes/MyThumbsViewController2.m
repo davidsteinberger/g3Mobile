@@ -579,7 +579,7 @@
 	NSString *itemID = [self getItemID];
 
 	UpdateAlbumViewController *updateAlbum =
-	        [[UpdateAlbumViewController alloc] initWithAlbumID:itemID];
+	        [[UpdateAlbumViewController alloc] initWithAlbumID:itemID andDelegate:self];
 	[self.navigationController pushViewController:updateAlbum animated:YES];
 	TT_RELEASE_SAFELY(updateAlbum);
 

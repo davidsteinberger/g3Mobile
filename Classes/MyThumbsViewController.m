@@ -45,7 +45,6 @@
 - (id)initWithAlbumID:(NSString *)albumID {
 	if ((self = [super init])) {
 		self.albumID = albumID;
-        NSLog(@"Init with self.albumID: %@", self.albumID);
 		PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:albumID];
         photosource.photosOnly = NO;
 		self.photoSource = photosource;
@@ -98,7 +97,7 @@
 
 // Handles the modification of an album
 - (void)editAlbum:(id)sender {
-    UpdateAlbumViewController* updateAlbum = [[UpdateAlbumViewController alloc] initWithAlbumID: self.albumID];
+    UpdateAlbumViewController* updateAlbum = [[UpdateAlbumViewController alloc] initWithAlbumID: self.albumID andDelegate:self];
     [self.navigationController pushViewController:updateAlbum animated:YES];	
     TT_RELEASE_SAFELY(updateAlbum);
 }

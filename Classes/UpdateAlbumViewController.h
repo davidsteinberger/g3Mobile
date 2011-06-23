@@ -6,36 +6,24 @@
 //  Copyright 2010 -. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "Three20/Three20.h"
+#import "MyViewController.h"
+#import "RKMItem.h"
 
 @class MyThumbsViewController;
 
-@interface UpdateAlbumViewController : TTTableViewController <TTModel, UITextFieldDelegate> {
+@interface UpdateAlbumViewController : TTTableViewController <TTPostControllerDelegate, UITextFieldDelegate> {
 	NSString* _albumID;
-	NSDictionary* _entity;	
-	
+    id<MyViewController> _delegate;
+    
 	UITextField* _albumTitle;
 	UITextField* _description;
-	UITextField* _internetAddress;
+	UITextField* _slug;
 }
 
 @property(nonatomic, retain) NSString* albumID;
-@property(nonatomic, retain) NSDictionary* entity;
+@property (nonatomic, assign) id<MyViewController> delegate;
 
-- (id)initWithAlbumID: (NSString* )albumID;
-- (void)loadAlbum;
-- (void)updateAlbum;
-- (NSString *)urlEncodeValue:(NSString *)str;
-
-// required by RKObjectLoaderTTModelel protocol
-- (NSMutableArray*)delegates;
-- (BOOL)isLoaded;
-- (BOOL)isLoading;
-- (BOOL)isLoadingMore;
-- (BOOL)isOutdated;
-- (void)load:(TTURLRequestCachePolicy)cachePolicy more:(BOOL)more;
-- (void)cancel;
-- (void)invalidate:(BOOL)erase;
+- (id)initWithAlbumID: (NSString* )albumID andDelegate:(id<MyViewController>) delegate;
 
 @end

@@ -17,7 +17,7 @@
 	
 	UITextField* _albumTitle;
 	UITextField* _description;
-	UITextField* _internetAddress;
+	UITextField* _slug;
 }
 
 @property(nonatomic, retain) NSString* parentAlbumID;

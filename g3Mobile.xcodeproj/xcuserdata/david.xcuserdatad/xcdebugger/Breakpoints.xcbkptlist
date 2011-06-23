@@ -8,12 +8,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Classes/AddAlbumViewController.m"
-         timestampString = "330477715.656202"
+         filePath = "Classes/UpdateAlbumViewController.m"
+         timestampString = "330564740.076886"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "181"
-         endingLineNumber = "181"
+         startingLineNumber = "216"
+         endingLineNumber = "216"
          landmarkName = "-request:didLoadResponse:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -22,13 +22,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Classes/AddAlbumViewController.m"
-         timestampString = "330477715.656202"
+         filePath = "Classes/UpdateAlbumViewController.m"
+         timestampString = "330564740.076886"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "139"
-         endingLineNumber = "139"
-         landmarkName = "-postController:didPostText:withResult:"
+         startingLineNumber = "223"
+         endingLineNumber = "223"
+         landmarkName = "-request:didFailLoadWithError:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -36,13 +36,27 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Classes/MyThumbsViewController.m"
-         timestampString = "330477933.765586"
+         filePath = "Classes/UpdateAlbumViewController.m"
+         timestampString = "330563814.949614"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "263"
-         endingLineNumber = "263"
-         landmarkName = "-reloadViewController:"
+         startingLineNumber = "182"
+         endingLineNumber = "182"
+         landmarkName = "-postControllerDidCancel:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Classes/UpdateAlbumViewController.m"
+         timestampString = "330563814.949614"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "177"
+         endingLineNumber = "177"
+         landmarkName = "-postController:didPostText:withResult:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
