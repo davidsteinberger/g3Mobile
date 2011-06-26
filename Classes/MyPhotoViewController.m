@@ -7,6 +7,7 @@
 //
 
 #import "MyPhotoViewController.h"
+#import "MyViewController.h"
 #import "Three20UICommon/UIViewControllerAdditions.h"
 
 #import "AppDelegate.h"
@@ -159,12 +160,13 @@
 		NSArray* chunks = [url componentsSeparatedByString: @"/"];
 		NSString* albumID = [chunks objectAtIndex:[chunks count] - 1 ];
 
-		MyAlbumUpdater* updater = [[MyAlbumUpdater alloc] initWithItemID:albumID];
+		MyAlbumUpdater* updater = [[MyAlbumUpdater sharedMyAlbumUpdater] initWithItemID:albumID andDelegate:((id<MyViewController>)self.ttPreviousViewController)];
 		[updater setValue:[[appDelegate.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:p.photoID] param: @"album_cover"];
 		[updater update];
-		TT_RELEASE_SAFELY(updater);
+		//TT_RELEASE_SAFELY(updater);
 		
-        [((id<MyViewController>)self.ttPreviousViewController) reloadViewController:YES];
+        //[((id<MyViewController>)self.ttPreviousViewController) reloadViewController:YES];
+        [self dismissModalViewControllerAnimated:YES];
 	}
 	if (buttonIndex == 2) {		
 		NSString* url  = [_centerPhoto URLForVersion:TTPhotoVersionLarge];		
@@ -211,11 +213,11 @@
 	NSString* photoID = p.photoID;
 	[MyItemDeleter initWithItemID:photoID];	
 	
-	
 	// stop the indicator ...
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     [((id<MyViewController>)self.ttPreviousViewController) reloadViewController:YES];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 -(void) reload {

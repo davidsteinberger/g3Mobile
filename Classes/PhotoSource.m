@@ -17,16 +17,6 @@
 @synthesize albumID = _albumID;
 @synthesize photosOnly = _photosOnly;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// private
-
-- (NSMutableArray*)delegates {
-    if (nil == _delegates) {
-        _delegates = TTCreateNonRetainingArray();
-    }
-    return _delegates;
-}
-
 
 // see RKObjectLoaderTTModel
 - (void)modelsDidLoad:(NSArray*)models {

@@ -51,7 +51,6 @@
 	UIView *_backViewOld;
 	UIView *_selectedCell;
 	int _cntTags;
-    BOOL _goBack;
     BOOL _isEmpty;
     BOOL _isInEditingState;
     BOOL _isNavigationShown;

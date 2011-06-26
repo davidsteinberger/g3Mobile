@@ -5,7 +5,6 @@
 @interface MyThumbsViewController : TTThumbsViewController <MyViewController, UIActionSheetDelegate> {
 	NSString* _albumID;
     
-    BOOL _goBack;
     BOOL _isEmpty;
     BOOL _isInEditingState;
 }

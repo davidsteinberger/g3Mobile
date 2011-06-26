@@ -243,10 +243,6 @@
 
 // Reloads the data -> resets the detail-view
 - (void)reload {
-    PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:self.albumID];
-    photosource.photosOnly = NO;
-    self.photoSource = photosource;
-    TT_RELEASE_SAFELY(photosource);
 	[super reload];
 }
 
@@ -257,10 +253,8 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];      
     [self.navigationController setToolbarHidden:YES animated:YES];
     
-    self->_goBack = goBack;
-    
     if (_isEmpty) {
-        self->_goBack = YES;
+        goBack = YES;
     }
     
     RKObjectLoaderTTModel* model = (RKObjectLoaderTTModel *)self.photoSource;
@@ -274,30 +268,25 @@
         [[TTURLCache sharedCache] removeURL:entity.thumb_url fromDisk:YES];
     }
     
-    [((PhotoSource*)self.photoSource) load:TTURLRequestCachePolicyDefault more:NO];
+    MyThumbsViewController* prev = ((MyThumbsViewController *)self.ttPreviousViewController);
+    [self invalidateView];
+    [prev invalidateView];
     
-    [NSTimer scheduledTimerWithTimeInterval:2 target:self  
-                                   selector:@selector(finishUp) userInfo:nil repeats:NO];
+    NSArray *viewControllers = [self.navigationController viewControllers];
+    TTViewController* viewController;
+    if ([viewControllers count] > 1 && goBack) {
+        viewController = [viewControllers objectAtIndex:[viewControllers count] - 2];
+        [self.navigationController popToViewController:viewController animated:YES];
+	}
+    
+    [NSTimer scheduledTimerWithTimeInterval:1 target:self.photoSource
+                                   selector:@selector(load) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:2 target:prev.photoSource
+                                   selector:@selector(load) userInfo:nil repeats:NO];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
-- (void)finishUp {
-    PhotoSource* photosource = [[PhotoSource alloc] initWithItemID:self.albumID];
-    photosource.photosOnly = NO;
-    self.photoSource = photosource;
-    TT_RELEASE_SAFELY(photosource);
-    
-    [((MyThumbsViewController*)self.ttPreviousViewController) invalidateView];
-    
-    NSArray *viewControllers = [self.navigationController viewControllers];
-    TTViewController* viewController;
-    if ([viewControllers count] > 1 && self->_goBack) {
-        viewController = [viewControllers objectAtIndex:[viewControllers count] - 2];
-        [self.navigationController popToViewController:viewController animated:YES];
-        [(TTNavigator*)[TTNavigator navigator] performSelector:@selector(reload) withObject:nil afterDelay:1];
-	}
-}
 
 - (void)showEmpty:(BOOL)show {        
     /*

@@ -158,17 +158,12 @@
     [self setMetaDataHidden:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [self.navigationController setNavigationBarHidden:NO animated:YES];      
-
-	self->_goBack = goBack;
     
     if (_isEmpty) {
-        self->_goBack = YES;
+        goBack = YES;
     } else {
         [self.navigationController setToolbarHidden:YES animated:YES];
     }
-    
-	MyThumbsViewController2 *parent =
-	        ( (MyThumbsViewController2 *)self.ttPreviousViewController );
 
 	RKObjectLoaderTTModel *model = (RKObjectLoaderTTModel *)[self.dataSource model];
 	RKMTree *tree = (RKMTree *)[model.objects objectAtIndex:0];
@@ -181,31 +176,25 @@
 		[[TTURLCache sharedCache] removeURL:entity.thumb_url fromDisk:YES];
 	}
 
-    if (!_isEmpty) {
-        [self reload];
-    }
-	[parent.model load:TTURLRequestCachePolicyDefault more:NO];
-
-	[NSTimer scheduledTimerWithTimeInterval:2 target:self
-	                               selector:@selector(finishUp) userInfo:nil repeats:NO];
-}
-
-
-- (void)finishUp {
-	[( (MyThumbsViewController *)self.ttPreviousViewController )invalidateView];
-
-	NSArray *viewControllers = [self.navigationController viewControllers];
-	TTViewController *viewController;
-	if ([viewControllers count] > 1 && self->_goBack) {
-		viewController = [viewControllers objectAtIndex:[viewControllers count] - 2];
-		[self.navigationController popToViewController:viewController animated:YES];
-		[(TTNavigator *)[TTNavigator navigator] performSelector:@selector(reload)
-		                                             withObject:nil afterDelay:1];
+    MyThumbsViewController2* prev = ((MyThumbsViewController2 *)self.ttPreviousViewController);
+    [self invalidateView];
+    [prev invalidateView];
+    
+    NSArray *viewControllers = [self.navigationController viewControllers];
+    TTViewController* viewController;
+    if ([viewControllers count] > 1 && goBack) {
+        viewController = [viewControllers objectAtIndex:[viewControllers count] - 2];
+        [self.navigationController popToViewController:viewController animated:YES];
 	}
-
+    
+    [NSTimer scheduledTimerWithTimeInterval:1 target:self.model
+                                   selector:@selector(load) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:2 target:prev.model
+                                   selector:@selector(load) userInfo:nil repeats:NO];
+    
 	// Hide the network spinner ... might be activitated by a helper
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
+    
 	[self removeContextMenu];
 }
 
@@ -618,13 +607,13 @@
 	RKMEntity *entity = [tree root];
 	NSString *albumID = entity.itemID;
 
-	MyAlbumUpdater *updater = [[MyAlbumUpdater alloc] initWithItemID:albumID];
+	MyAlbumUpdater *updater = [[MyAlbumUpdater sharedMyAlbumUpdater] initWithItemID:albumID andDelegate:self];
 	[updater setValue:[[GlobalSettings.baseURL stringByAppendingString:@"/rest/item/"]
 	                   stringByAppendingString:[self getItemID]] param:@"album_cover"];
 	[updater update];
-	TT_RELEASE_SAFELY(updater);
+//	TT_RELEASE_SAFELY(updater);
 
-	[( (id < MyViewController >)self ) reloadViewController:NO];
+//	[( (id < MyViewController >)self ) reloadViewController:NO];
 }
 
 

@@ -6,18 +6,20 @@
 //  Copyright 2010 -. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 #import "Three20/Three20.h"
+#import "MyViewController.h"
 
 @interface MyAlbumUpdater : NSObject {
+    id<MyViewController> _delegate;
 	NSMutableDictionary* _params;
 	NSString* _albumID;
 }
 
-- (id) initWithItemID:(NSString *)itemID;
+@property (nonatomic, assign) id<MyViewController> delegate;
+- (id) initWithItemID:(NSString *)itemID andDelegate:(id<MyViewController>)delegate;
 - (void) setValue:(NSString* )value param:(NSString* )param;
 - (void) update;
-- (NSString *)urlEncodeValue:(NSString *)str;
+
++ (MyAlbumUpdater *)sharedMyAlbumUpdater;
 
 @end

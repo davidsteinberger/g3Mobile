@@ -9,18 +9,26 @@
 #import "extThree20JSON/NSObject+YAJL.h"
 
 #import "MyAlbumUpdater.h"
+#import "RestKit/RestKit.h"
 
 #import "AppDelegate.h"
+#import "SynthesizeSingleton.h"
 
 @implementation MyAlbumUpdater
 
-- (id) initWithItemID:(NSString *)itemID {
+@synthesize delegate = _delegate;
+
+SYNTHESIZE_SINGLETON_FOR_CLASS(MyAlbumUpdater);
+
+- (id) initWithItemID:(NSString *)itemID andDelegate:(id<MyViewController>)delegate {
 	_params = [[NSMutableDictionary alloc] init];
 	_albumID = [NSString stringWithString: itemID];
+    self.delegate = delegate;
 	return self;
 }
 
 - (void) dealloc {
+    self.delegate = nil;
 	TT_RELEASE_SAFELY(_params);
 	[super dealloc];
 }
@@ -31,47 +39,38 @@
 }
 
 - (void) update {
-	//NSLog(@"Update Album for albumID: %@", self->_albumID);
+	NSLog(@"Update Album for albumID: %@", self->_albumID);
 
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	
-	//prepare http post parameter: item, text
-	NSDictionary *params = [NSDictionary dictionaryWithDictionary: _params];  
-
-	//NSLog(@"value: %@", params);
-	
-	//json-encode & urlencode parameters
-	NSString* requestString = [params yajl_JSONString];
-	requestString = [@"entity=" stringByAppendingString:[self urlEncodeValue:requestString]];
-	
-	//create data for http-request body
-	NSData *requestData = [NSData dataWithBytes: [requestString UTF8String] length: [requestString length]];
-	
-	//---bring everything together
-	
-	//create http-request
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[[appDelegate.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:self->_albumID]]];
-	
-	//set http-headers
-	[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
-	[request setValue:@"put" forHTTPHeaderField:@"X-Gallery-Request-Method"];
-	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
-	
-	//set 'post'-method
-	[request setHTTPMethod: @"POST"];
-	
-	//set request body into HTTPBody.
-	[request setHTTPBody: requestData];
-	
-	[NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil ];
-	
-	[request release];
+	RKClient *client = [RKObjectManager sharedManager].client;
+	[client setValue:@"put" forHTTPHeaderField:@"X-Gallery-Request-Method"];
+	RKParams *postParams = [RKParams params];
+    
+    NSError *error = nil;
+	id <RKParser> parser = [[RKParserRegistry sharedRegistry] parserForMIMEType:RKMIMETypeJSON];
+	NSString *paramsString = [parser stringFromObject:_params error:&error];
+    
+	[postParams setValue:paramsString forParam:@"entity"];
+    
+    NSString *resourcePath = [@"/rest/item/" stringByAppendingString:self->_albumID];
+    
+	[client post:resourcePath params:postParams delegate:self];
+    
+	[client setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
 }
 
-- (NSString *)urlEncodeValue:(NSString *)str
-{
-	NSString *result = (NSString *) CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)str, NULL, CFSTR("?=&+"), kCFStringEncodingUTF8);
-	return [result autorelease];
+- (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
+    [self.delegate reloadViewController:YES];
 }
+
+
+- (void)request:(RKRequest *)request didFailLoadWithError:(NSError *)error {
+	NSLog(@"didFailLoadWithError");
+    
+    TTAlertViewController* alert = [[[TTAlertViewController alloc] initWithTitle:@"Error" message:@"Please check fields for valid vaues!"] autorelease];
+    [alert addCancelButtonWithTitle:@"OK" URL:nil];
+    [alert showInView:((UIViewController*)self.delegate).view animated:YES];
+	//[((UIViewController*)self.delegate) showLoading:NO];
+}
+
 
 @end
