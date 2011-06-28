@@ -41,7 +41,7 @@
 #pragma mark private
 
 - (NSArray*) sortEntitiesByRelativePosition {
-    NSSortDescriptor* descriptor1 = [NSSortDescriptor sortDescriptorWithKey:@"relative_position" ascending:YES];
+    NSSortDescriptor* descriptor1 = [NSSortDescriptor sortDescriptorWithKey:@"positionInAlbum" ascending:YES];
     NSArray* entities = [[self.rEntity allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor1, nil]];
     return entities;
 }

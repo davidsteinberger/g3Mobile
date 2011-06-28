@@ -41,7 +41,7 @@
 @dynamic thumb_width;
 @dynamic thumb_height;
 @dynamic created;
-@dynamic relative_position;
 @dynamic slug;
+@dynamic positionInAlbum;
 
 @end

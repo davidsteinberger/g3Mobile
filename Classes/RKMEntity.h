@@ -52,7 +52,7 @@
 @property (nonatomic, retain) NSString *thumb_width;
 @property (nonatomic, retain) NSString *thumb_height;
 @property (nonatomic, retain) NSString *created;
-@property (nonatomic, retain) NSNumber* relative_position;
 @property (nonatomic, retain) NSString* slug;
+@property (nonatomic, retain) NSNumber* positionInAlbum;
 
 @end
