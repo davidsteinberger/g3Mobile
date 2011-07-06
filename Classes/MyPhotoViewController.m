@@ -190,9 +190,10 @@
 	}
 	if (buttonIndex == 3) {
 		UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
-		[dialog setDelegate:self];
-		[dialog setTitle:@"Confirm Deletion"];
-		[dialog addButtonWithTitle:@"Cancel"];
+		dialog.delegate = self;
+        dialog.title = @"Confirm Deletion";
+        dialog.message = @"Do you really want to delete this photo?";
+ 		[dialog addButtonWithTitle:@"Cancel"];
 		[dialog addButtonWithTitle:@"OK"];
 		[dialog show];		
 	}

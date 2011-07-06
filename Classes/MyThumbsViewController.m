@@ -183,8 +183,9 @@
 // Confirms via dialog that the current item should be deleted
 - (void)deleteCurrentItem:(id)sender {
 	UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
-	[dialog setDelegate:self];
-	[dialog setTitle:@"Confirm Deletion"];
+	dialog.delegate = self;
+	dialog.title = @"Confirm Deletion";
+    dialog.message = @"Do you really want to delete this album?";                    
 	[dialog addButtonWithTitle:@"Cancel"];
 	[dialog addButtonWithTitle:@"OK"];
 	[dialog show];

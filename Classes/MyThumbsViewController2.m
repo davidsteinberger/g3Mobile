@@ -119,9 +119,6 @@
 - (id)initWithItemID:(NSString *)itemID {
 	if ( (self = [self initWithNibName:nil bundle:nil]) ) {
 		self.itemID = itemID;
-        
-        // start a reload in the background ... as the album might have changed
-		[self reload];
     }
 
 	return self;
@@ -191,7 +188,7 @@
                                    selector:@selector(load) userInfo:nil repeats:NO];
     [NSTimer scheduledTimerWithTimeInterval:2 target:prev.model
                                    selector:@selector(load) userInfo:nil repeats:NO];
-    
+
 	// Hide the network spinner ... might be activitated by a helper
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
@@ -652,10 +649,15 @@
 	// Set button to selected
 	UIButton *button = (UIButton *)sender;
 	button.selected = !button.selected;
-
+    
+    RKMEntity* entity = [self getEntity];
+    
 	UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
-	[dialog setDelegate:self];
-	[dialog setTitle:@"Confirm Deletion"];
+	dialog.delegate = self;
+	dialog.title = @"Confirm Deletion";
+    dialog.message = [[@"Do you really want to delete this " 
+                       stringByAppendingString:entity.type] 
+                      stringByAppendingString:@"?"];
 	[dialog addButtonWithTitle:@"Cancel"];
 	[dialog addButtonWithTitle:@"OK"];
 	[dialog show];
