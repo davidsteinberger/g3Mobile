@@ -32,9 +32,7 @@
 #import "RKMEntity.h"
 #import "RKMItem.h"
 #import "RKMTree.h"
-
-// SQLite
-#import <sqlite3.h>
+#import "RKMSites.h"
 
 // ViewControllers
 #import "AddAlbumViewController.h"
@@ -174,9 +172,7 @@
 	self.baseURL = GlobalSettings.baseURL;
 	self.challenge = GlobalSettings.challenge;
 
-	if (![GlobalSettings.baseURL isEqual:@ ""]) {
-		[self initRestKit];
-	}
+    [self initRestKit];
 	
 	// restore view-controllers otherwise login
 	if (![navigator restoreViewControllers]) {
@@ -292,7 +288,8 @@
         
         //RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
         
-        RKObjectManager* objectManager = [RKObjectManager objectManagerWithBaseURL:GlobalSettings.baseURL];
+        NSString* baseURL = ([GlobalSettings.baseURL isEqualToString:@""]) ? @"http://www.google.com" : GlobalSettings.baseURL; 
+        RKObjectManager* objectManager = [RKObjectManager objectManagerWithBaseURL:baseURL];
         
         // Initialize object store
         objectManager.objectStore =
@@ -304,20 +301,12 @@
         
         [RKRequestQueue sharedQueue].showsNetworkActivityIndicatorWhenBusy = YES;
         
-        // incorrect mime-type --> just a test
-        Class parserClass = nil;
-        NSSet* JSONParserClassNames = [NSSet setWithObjects:@"RKJSONParserJSONKit",
-                                       @"RKJSONParserYAJL",
-                                       @"RKJSONParserSBJSON", nil];    
-        for (NSString* parserClassName in JSONParserClassNames) {
-            parserClass = NSClassFromString(parserClassName);
-            if (parserClass) {
-                [[RKParserRegistry sharedRegistry] setParserClass:parserClass
-                                                      forMIMEType:@"text/html"];
-                break;
-            }
-        }
-        
+        // even strange mime types should be parsed with JSONKit        
+        [[RKParserRegistry sharedRegistry] setParserClass:NSClassFromString(@"RKJSONParserJSONKit")
+                                              forMIMEType:@"text/html"];
+        [[RKParserRegistry sharedRegistry] setParserClass:NSClassFromString(@"RKJSONParserJSONKit")
+                                              forMIMEType:@"text/plain"];
+
         // Set Gallery3 specific HTTP headers
         [[objectManager client] setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
         [[objectManager client] setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -326,7 +315,6 @@
         RKObjectMappingProvider* mappingProvider = [[RKObjectMappingProvider new] autorelease];
         
         RKManagedObjectMapping* tagMemberMapping = [RKManagedObjectMapping mappingForClass:[RKMTag_Member class]];
-        tagMemberMapping.setNilForMissingAttributes = YES;
         tagMemberMapping.setNilForMissingRelationships = YES;
         tagMemberMapping.primaryKeyAttribute = @"url";
         [tagMemberMapping mapKeyPathsToAttributes:
@@ -336,7 +324,6 @@
          nil];
         
         RKManagedObjectMapping* entityMapping = [RKManagedObjectMapping mappingForClass:[RKMEntity class]];
-        entityMapping.setNilForMissingAttributes = YES;
         entityMapping.setNilForMissingRelationships = YES;
         entityMapping.primaryKeyAttribute = @"itemID";
         [entityMapping mapKeyPath:@"id" toAttribute:@"itemID"];
@@ -354,13 +341,22 @@
         [treeMapping mapKeyPathsToAttributes:@"url", @"url", nil];
         [treeMapping mapKeyPath:@"entity.entity" toRelationship:@"rEntity" withObjectMapping:entityMapping];
         
+        RKManagedObjectMapping* siteMapping = [RKManagedObjectMapping mappingForClass:[RKMSite class]];
+        siteMapping.primaryKeyAttribute = @"url";
+        [siteMapping mapAttributes:@"title", @"url", nil];
+        
+        RKManagedObjectMapping* sitesMapping = [RKManagedObjectMapping mappingForClass:[RKMSites class]];
+        sitesMapping.primaryKeyAttribute = @"type";
+        [sitesMapping mapAttributes:@"type", nil];
+        [sitesMapping mapKeyPath:@"sites" toRelationship:@"rSite" withObjectMapping:siteMapping];
+        
+        [mappingProvider addObjectMapping:sitesMapping];
         [mappingProvider addObjectMapping:itemMapping];        
         [mappingProvider addObjectMapping:treeMapping];
         
         objectManager.mappingProvider = mappingProvider;
     } else if (_isRestKitLoad) {
         [RKObjectManager sharedManager].client.baseURL = GlobalSettings.baseURL;
-        [[RKObjectManager sharedManager].client.HTTPHeaders removeAllObjects];
         [[RKObjectManager sharedManager].client setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
         [[RKObjectManager sharedManager].client setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     }

@@ -12,6 +12,5 @@
 @protocol MyLoginDelegate
 
 - (void)finishedLogin;
-- (void)dispatchToRootController:(id)sender;
 
 @end

@@ -55,6 +55,7 @@
 		63707ACF1324103700A3198A /* makeCoverIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 63707ACE1324103700A3198A /* makeCoverIcon.png */; };
 		637452D512D3A162005FD8C6 /* UIImage+resizing.m in Sources */ = {isa = PBXBuildFile; fileRef = 637452D412D3A162005FD8C6 /* UIImage+resizing.m */; };
 		6374560612D3EFB2005FD8C6 /* StyleSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6374560512D3EFB2005FD8C6 /* StyleSheet.m */; };
+		63776A9213C27D2800A49074 /* RKManagedObjectSeeder+persist.m in Sources */ = {isa = PBXBuildFile; fileRef = 63776A9113C27D2800A49074 /* RKManagedObjectSeeder+persist.m */; };
 		6380E70E1329A47D00A99EDB /* G3CoreData.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */; };
 		6380E7111329A4A200A99EDB /* RKMItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6380E7101329A4A200A99EDB /* RKMItem.m */; };
 		638C2909132D6ACD009CFE41 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 638C2908132D6ACD009CFE41 /* Default.png */; };
@@ -67,7 +68,6 @@
 		639EACC8131C702F00FBAEF4 /* RKMTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 639EACC3131C702F00FBAEF4 /* RKMTree.m */; };
 		63A3B51C129C3BDE00E04981 /* MyLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B514129C3BDE00E04981 /* MyLogin.m */; };
 		63A3B51D129C3BDE00E04981 /* MyLoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B516129C3BDE00E04981 /* MyLoginModel.m */; };
-		63A3B51E129C3BDE00E04981 /* MyLoginDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B519129C3BDE00E04981 /* MyLoginDataSource.m */; };
 		63A3B51F129C3BDE00E04981 /* MyLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B51B129C3BDE00E04981 /* MyLoginViewController.m */; };
 		63A3B71C129C5EA200E04981 /* MyItemDeleter.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3B71B129C5EA200E04981 /* MyItemDeleter.m */; };
 		63AF930B12CA9161001092B5 /* G_LOGO.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF930A12CA9161001092B5 /* G_LOGO.png */; };
@@ -100,6 +100,8 @@
 		63BD778C130C6648001FC9AF /* MyMetaDataItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BD778B130C6648001FC9AF /* MyMetaDataItemCell.m */; };
 		63C266FD132EEAA10086729D /* NSData+base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C266FC132EEAA10086729D /* NSData+base64.m */; };
 		63C8858D135CF34A00BDCE89 /* UIImage+scaleAndRotate.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C8858C135CF34900BDCE89 /* UIImage+scaleAndRotate.m */; };
+		63D63EF713C09EC600D7D5D9 /* RKMSites.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D63EF613C09EC600D7D5D9 /* RKMSites.m */; };
+		63D63F1713C0A9B200D7D5D9 /* sites.json in Resources */ = {isa = PBXBuildFile; fileRef = 63D63F1613C0A9B200D7D5D9 /* sites.json */; };
 		63E13C7F12BED4C6003248F4 /* AddAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */; };
 		63EE22A7130EF51200E2D407 /* createIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 63EE22A6130EF51200E2D407 /* createIcon.png */; };
 		63F1561512DA6F5E00D85532 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 63F1561412DA6F5E00D85532 /* iTunesArtwork */; };
@@ -431,6 +433,8 @@
 		637452D412D3A162005FD8C6 /* UIImage+resizing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+resizing.m"; sourceTree = "<group>"; };
 		6374560412D3EFB2005FD8C6 /* StyleSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyleSheet.h; sourceTree = "<group>"; };
 		6374560512D3EFB2005FD8C6 /* StyleSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StyleSheet.m; sourceTree = "<group>"; };
+		63776A9013C27D2700A49074 /* RKManagedObjectSeeder+persist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RKManagedObjectSeeder+persist.h"; sourceTree = "<group>"; };
+		63776A9113C27D2800A49074 /* RKManagedObjectSeeder+persist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RKManagedObjectSeeder+persist.m"; sourceTree = "<group>"; };
 		6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = G3CoreData.xcdatamodel; sourceTree = "<group>"; };
 		6380E70F1329A4A200A99EDB /* RKMItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKMItem.h; sourceTree = "<group>"; };
 		6380E7101329A4A200A99EDB /* RKMItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKMItem.m; sourceTree = "<group>"; };
@@ -450,8 +454,6 @@
 		63A3B514129C3BDE00E04981 /* MyLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLogin.m; sourceTree = "<group>"; };
 		63A3B515129C3BDE00E04981 /* MyLoginModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLoginModel.h; sourceTree = "<group>"; };
 		63A3B516129C3BDE00E04981 /* MyLoginModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLoginModel.m; sourceTree = "<group>"; };
-		63A3B518129C3BDE00E04981 /* MyLoginDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLoginDataSource.h; sourceTree = "<group>"; };
-		63A3B519129C3BDE00E04981 /* MyLoginDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLoginDataSource.m; sourceTree = "<group>"; };
 		63A3B51A129C3BDE00E04981 /* MyLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLoginViewController.h; sourceTree = "<group>"; };
 		63A3B51B129C3BDE00E04981 /* MyLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLoginViewController.m; sourceTree = "<group>"; };
 		63A3B71A129C5EA200E04981 /* MyItemDeleter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyItemDeleter.h; sourceTree = "<group>"; };
@@ -507,6 +509,9 @@
 		63C5E14313537BE80053ED0A /* MyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyViewController.h; sourceTree = "<group>"; };
 		63C8858B135CF34800BDCE89 /* UIImage+scaleAndRotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+scaleAndRotate.h"; sourceTree = "<group>"; };
 		63C8858C135CF34900BDCE89 /* UIImage+scaleAndRotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+scaleAndRotate.m"; sourceTree = "<group>"; };
+		63D63EF513C09EC600D7D5D9 /* RKMSites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKMSites.h; sourceTree = "<group>"; };
+		63D63EF613C09EC600D7D5D9 /* RKMSites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKMSites.m; sourceTree = "<group>"; };
+		63D63F1613C0A9B200D7D5D9 /* sites.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sites.json; sourceTree = "<group>"; };
 		63D972A6132ED321008F6095 /* MyLongPressGestureDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLongPressGestureDelegate.h; sourceTree = "<group>"; };
 		63E13C7D12BED4C6003248F4 /* AddAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAlbumViewController.h; sourceTree = "<group>"; };
 		63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AddAlbumViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -881,6 +886,7 @@
 		638C290C132D6BC5009CFE41 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				63D63F1613C0A9B200D7D5D9 /* sites.json */,
 				6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */,
 				6312D3F3136F2510002091A3 /* Vars.h */,
 				6312D3F4136F2510002091A3 /* Vars.m */,
@@ -903,6 +909,10 @@
 				6380E7101329A4A200A99EDB /* RKMItem.m */,
 				6313383813B8F55E009CDFAB /* RKObjectLoaderTTModel.h */,
 				6313383913B8F55E009CDFAB /* RKObjectLoaderTTModel.m */,
+				63D63EF513C09EC600D7D5D9 /* RKMSites.h */,
+				63D63EF613C09EC600D7D5D9 /* RKMSites.m */,
+				63776A9013C27D2700A49074 /* RKManagedObjectSeeder+persist.h */,
+				63776A9113C27D2800A49074 /* RKManagedObjectSeeder+persist.m */,
 			);
 			name = RestKit;
 			sourceTree = "<group>";
@@ -913,8 +923,6 @@
 				638C2A30132D7D51009CFE41 /* MyLoginDelegate.h */,
 				63A3B51A129C3BDE00E04981 /* MyLoginViewController.h */,
 				63A3B51B129C3BDE00E04981 /* MyLoginViewController.m */,
-				63A3B518129C3BDE00E04981 /* MyLoginDataSource.h */,
-				63A3B519129C3BDE00E04981 /* MyLoginDataSource.m */,
 				63A3B515129C3BDE00E04981 /* MyLoginModel.h */,
 				63A3B516129C3BDE00E04981 /* MyLoginModel.m */,
 				63A3B513129C3BDE00E04981 /* MyLogin.h */,
@@ -1331,6 +1339,7 @@
 				631267A41368C72E00ADC5C5 /* makeCoverIcon_selected.png in Resources */,
 				634D198113ACE74F003165FA /* reorderIcon.png in Resources */,
 				634D198413ACE7C4003165FA /* uploadIcon.png in Resources */,
+				63D63F1713C0A9B200D7D5D9 /* sites.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1356,7 +1365,6 @@
 				63B254291299BD3100BA9323 /* MyThumbsViewController.m in Sources */,
 				63A3B51C129C3BDE00E04981 /* MyLogin.m in Sources */,
 				63A3B51D129C3BDE00E04981 /* MyLoginModel.m in Sources */,
-				63A3B51E129C3BDE00E04981 /* MyLoginDataSource.m in Sources */,
 				63A3B51F129C3BDE00E04981 /* MyLoginViewController.m in Sources */,
 				63A3B71C129C5EA200E04981 /* MyItemDeleter.m in Sources */,
 				63E13C7F12BED4C6003248F4 /* AddAlbumViewController.m in Sources */,
@@ -1389,6 +1397,8 @@
 				6312D3F5136F2510002091A3 /* Vars.m in Sources */,
 				63B5F3FD13A571FC00FAA82C /* Overlay.m in Sources */,
 				6313383A13B8F55E009CDFAB /* RKObjectLoaderTTModel.m in Sources */,
+				63D63EF713C09EC600D7D5D9 /* RKMSites.m in Sources */,
+				63776A9213C27D2800A49074 /* RKManagedObjectSeeder+persist.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
