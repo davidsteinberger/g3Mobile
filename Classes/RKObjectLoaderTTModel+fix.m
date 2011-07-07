@@ -6,10 +6,11 @@
 //  Copyright 2011 -. All rights reserved.
 //
 
-#import "RKObjectLoaderTTModel.h"
+#import "RKObjectLoaderTTModel+fix.h"
 #import "RKMTree.h"
+#import "RKMItem.h"
 
-@implementation RKObjectLoaderTTModel (positionInAlbum)
+@implementation RKObjectLoaderTTModel (fix)
 
 
 #pragma mark RKModelLoaderDelegate
@@ -40,6 +41,13 @@
          [*mappableData setObject:newEntity forKey:@"entity"];
          [newEntity release];
      }
+    
+    if (loader.objectMapping.objectClass == [RKMItem class]) {         
+        NSMutableDictionary* item = *mappableData;
+        if ([item valueForKeyPath:@"relationships.tags.member.entity.tag.url"] == nil) {
+            [item removeObjectForKey:@"relationships"];
+        }
+    }
  }
 
 

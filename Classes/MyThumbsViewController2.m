@@ -781,7 +781,7 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {    
     NSMutableDictionary* query = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
      self, @"delegate",
-     self.itemID, @"albumID",
+     [self getItemID], @"albumID",
      nil] autorelease];
     
     if (buttonIndex == 0) {

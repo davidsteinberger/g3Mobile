@@ -34,7 +34,7 @@
 		631267A41368C72E00ADC5C5 /* makeCoverIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 6312679D1368C72E00ADC5C5 /* makeCoverIcon_selected.png */; };
 		6312D3F2136F2510002091A3 /* Param.m in Sources */ = {isa = PBXBuildFile; fileRef = 6312D3F1136F2510002091A3 /* Param.m */; };
 		6312D3F5136F2510002091A3 /* Vars.m in Sources */ = {isa = PBXBuildFile; fileRef = 6312D3F4136F2510002091A3 /* Vars.m */; };
-		6313383A13B8F55E009CDFAB /* RKObjectLoaderTTModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6313383913B8F55E009CDFAB /* RKObjectLoaderTTModel.m */; };
+		6313383A13B8F55E009CDFAB /* RKObjectLoaderTTModel+fix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6313383913B8F55E009CDFAB /* RKObjectLoaderTTModel+fix.m */; };
 		631A7B3B130F49B0004A6110 /* TTTableViewController+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 631A7B3A130F49B0004A6110 /* TTTableViewController+g3.m */; };
 		632A448B12D25F0B0055F67B /* MyUploadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 632A448A12D25F0B0055F67B /* MyUploadViewController.xib */; };
 		632A449112D261390055F67B /* MyUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 632A448F12D261390055F67B /* MyUploadViewController.m */; };
@@ -399,8 +399,8 @@
 		6312D3F1136F2510002091A3 /* Param.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Param.m; sourceTree = "<group>"; };
 		6312D3F3136F2510002091A3 /* Vars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vars.h; sourceTree = "<group>"; };
 		6312D3F4136F2510002091A3 /* Vars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Vars.m; sourceTree = "<group>"; };
-		6313383813B8F55E009CDFAB /* RKObjectLoaderTTModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKObjectLoaderTTModel.h; sourceTree = "<group>"; };
-		6313383913B8F55E009CDFAB /* RKObjectLoaderTTModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKObjectLoaderTTModel.m; sourceTree = "<group>"; };
+		6313383813B8F55E009CDFAB /* RKObjectLoaderTTModel+fix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RKObjectLoaderTTModel+fix.h"; sourceTree = "<group>"; };
+		6313383913B8F55E009CDFAB /* RKObjectLoaderTTModel+fix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RKObjectLoaderTTModel+fix.m"; sourceTree = "<group>"; };
 		631A7B39130F49B0004A6110 /* TTTableViewController+g3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTTableViewController+g3.h"; sourceTree = "<group>"; };
 		631A7B3A130F49B0004A6110 /* TTTableViewController+g3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "TTTableViewController+g3.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		632A448A12D25F0B0055F67B /* MyUploadViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyUploadViewController.xib; sourceTree = "<group>"; };
@@ -907,8 +907,8 @@
 				639EACC1131C702F00FBAEF4 /* RKMEntity.m */,
 				6380E70F1329A4A200A99EDB /* RKMItem.h */,
 				6380E7101329A4A200A99EDB /* RKMItem.m */,
-				6313383813B8F55E009CDFAB /* RKObjectLoaderTTModel.h */,
-				6313383913B8F55E009CDFAB /* RKObjectLoaderTTModel.m */,
+				6313383813B8F55E009CDFAB /* RKObjectLoaderTTModel+fix.h */,
+				6313383913B8F55E009CDFAB /* RKObjectLoaderTTModel+fix.m */,
 				63D63EF513C09EC600D7D5D9 /* RKMSites.h */,
 				63D63EF613C09EC600D7D5D9 /* RKMSites.m */,
 				63776A9013C27D2700A49074 /* RKManagedObjectSeeder+persist.h */,
@@ -1396,7 +1396,7 @@
 				6312D3F2136F2510002091A3 /* Param.m in Sources */,
 				6312D3F5136F2510002091A3 /* Vars.m in Sources */,
 				63B5F3FD13A571FC00FAA82C /* Overlay.m in Sources */,
-				6313383A13B8F55E009CDFAB /* RKObjectLoaderTTModel.m in Sources */,
+				6313383A13B8F55E009CDFAB /* RKObjectLoaderTTModel+fix.m in Sources */,
 				63D63EF713C09EC600D7D5D9 /* RKMSites.m in Sources */,
 				63776A9213C27D2800A49074 /* RKManagedObjectSeeder+persist.m in Sources */,
 			);

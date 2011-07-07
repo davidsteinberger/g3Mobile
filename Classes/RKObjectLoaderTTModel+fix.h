@@ -9,7 +9,7 @@
 #import <RestKit/RestKit.h>
 #import <RestKit/Three20/RKObjectLoaderTTModel.h>
 
-@interface RKObjectLoaderTTModel (positionInAlbum)
+@interface RKObjectLoaderTTModel (fix)
 
 - (void)objectLoader:(RKObjectLoader*)loader willMapData:(inout id *)mappableData;
 
