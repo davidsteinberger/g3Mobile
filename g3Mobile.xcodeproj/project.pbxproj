@@ -25,6 +25,12 @@
 		630FBE8112FD7A3400B4629A /* MyThumbsViewDataSource2.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FBE8012FD7A3400B4629A /* MyThumbsViewDataSource2.m */; };
 		630FC45512FF3CCA00B4629A /* MyAlbumItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FC45412FF3CCA00B4629A /* MyAlbumItemCell.m */; };
 		630FC46B12FF3F4400B4629A /* MyAlbumItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FC46A12FF3F4400B4629A /* MyAlbumItem.m */; };
+		63107E0F13C7920F007E6E86 /* libRestKitCoreData.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63107E0913C7920F007E6E86 /* libRestKitCoreData.a */; };
+		63107E1013C7920F007E6E86 /* libRestKitJSONParserJSONKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63107E0A13C7920F007E6E86 /* libRestKitJSONParserJSONKit.a */; };
+		63107E1113C79210007E6E86 /* libRestKitNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63107E0B13C7920F007E6E86 /* libRestKitNetwork.a */; };
+		63107E1213C79210007E6E86 /* libRestKitObjectMapping.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63107E0C13C7920F007E6E86 /* libRestKitObjectMapping.a */; };
+		63107E1313C79210007E6E86 /* libRestKitSupport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63107E0D13C7920F007E6E86 /* libRestKitSupport.a */; };
+		63107E1413C79210007E6E86 /* libRestKitThree20.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63107E0E13C7920F007E6E86 /* libRestKitThree20.a */; };
 		6312679E1368C72E00ADC5C5 /* addIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 631267971368C72E00ADC5C5 /* addIcon_selected.png */; };
 		6312679F1368C72E00ADC5C5 /* commentIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 631267981368C72E00ADC5C5 /* commentIcon_selected.png */; };
 		631267A01368C72E00ADC5C5 /* editIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 631267991368C72E00ADC5C5 /* editIcon_selected.png */; };
@@ -85,12 +91,6 @@
 		63B254281299BD3100BA9323 /* TTThumbsViewController+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254121299BD3100BA9323 /* TTThumbsViewController+g3.m */; };
 		63B254291299BD3100BA9323 /* MyThumbsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B254141299BD3100BA9323 /* MyThumbsViewController.m */; };
 		63B255F01299C63300BA9323 /* Three20.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 63B255EF1299C63300BA9323 /* Three20.bundle */; };
-		63B53C7B133FE0C500460020 /* libRestKitCoreData.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B53C75133FE0C500460020 /* libRestKitCoreData.a */; };
-		63B53C7C133FE0C500460020 /* libRestKitJSONParserJSONKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B53C76133FE0C500460020 /* libRestKitJSONParserJSONKit.a */; };
-		63B53C7D133FE0C500460020 /* libRestKitNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B53C77133FE0C500460020 /* libRestKitNetwork.a */; };
-		63B53C7E133FE0C500460020 /* libRestKitObjectMapping.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B53C78133FE0C500460020 /* libRestKitObjectMapping.a */; };
-		63B53C7F133FE0C500460020 /* libRestKitSupport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B53C79133FE0C500460020 /* libRestKitSupport.a */; };
-		63B53C80133FE0C500460020 /* libRestKitThree20.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B53C7A133FE0C500460020 /* libRestKitThree20.a */; };
 		63B5F3FD13A571FC00FAA82C /* Overlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B5F3FC13A571FC00FAA82C /* Overlay.m */; };
 		63BB542212CE434600764C23 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 63BB542112CE434600764C23 /* Reachability.m */; };
 		63BB544612CE43AB00764C23 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63BB544512CE43AB00764C23 /* SystemConfiguration.framework */; };
@@ -221,75 +221,82 @@
 			remoteGlobalIDString = BEF31F3A0F352DF5000DE5D2;
 			remoteInfo = Three20UI;
 		};
-		6385AF5C13525D9E00314D68 /* PBXContainerItemProxy */ = {
+		63107DF313C791C6007E6E86 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 63B53B0B133FDECA00460020 /* RestKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 25BD43BD1340315800DBACDD;
-			remoteInfo = "RestKitXMLParser+Libxml";
-		};
-		63B53B18133FDECB00460020 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 63B53B0B133FDECA00460020 /* RestKit.xcodeproj */;
+			containerPortal = 63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 253A07FC1255161B00976E89;
 			remoteInfo = RestKitNetwork;
 		};
-		63B53B1A133FDECB00460020 /* PBXContainerItemProxy */ = {
+		63107DF513C791C6007E6E86 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 63B53B0B133FDECA00460020 /* RestKit.xcodeproj */;
+			containerPortal = 63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 253A08031255162C00976E89;
 			remoteInfo = RestKitObjectMapping;
 		};
-		63B53B1C133FDECB00460020 /* PBXContainerItemProxy */ = {
+		63107DF713C791C6007E6E86 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 63B53B0B133FDECA00460020 /* RestKit.xcodeproj */;
+			containerPortal = 63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 253A080C12551D3000976E89;
 			remoteInfo = RestKitSupport;
 		};
-		63B53B1E133FDECB00460020 /* PBXContainerItemProxy */ = {
+		63107DF913C791C6007E6E86 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 63B53B0B133FDECA00460020 /* RestKit.xcodeproj */;
+			containerPortal = 63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 2590E64F125231F600531FA8;
 			remoteInfo = "RestKitJSONParser+YAJL";
 		};
-		63B53B20133FDECB00460020 /* PBXContainerItemProxy */ = {
+		63107DFB13C791C6007E6E86 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 63B53B0B133FDECA00460020 /* RestKit.xcodeproj */;
+			containerPortal = 63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 2590E66B1252353700531FA8;
 			remoteInfo = "RestKitJSONParser+SBJSON";
 		};
-		63B53B22133FDECB00460020 /* PBXContainerItemProxy */ = {
+		63107DFD13C791C6007E6E86 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 63B53B0B133FDECA00460020 /* RestKit.xcodeproj */;
+			containerPortal = 63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 73057FD11331AD2E001908EE;
 			remoteInfo = "RestKitJSONParser+JSONKit";
 		};
-		63B53B24133FDECB00460020 /* PBXContainerItemProxy */ = {
+		63107DFF13C791C6007E6E86 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 63B53B0B133FDECA00460020 /* RestKit.xcodeproj */;
+			containerPortal = 63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25BD43BD1340315800DBACDD;
+			remoteInfo = "RestKitXMLParser+Libxml";
+		};
+		63107E0113C791C6007E6E86 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 253A081412551D5300976E89;
 			remoteInfo = RestKitCoreData;
 		};
-		63B53B26133FDECB00460020 /* PBXContainerItemProxy */ = {
+		63107E0313C791C6007E6E86 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 63B53B0B133FDECA00460020 /* RestKit.xcodeproj */;
+			containerPortal = 63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 2523360511E79F090048F9B4;
 			remoteInfo = RestKitThree20;
 		};
-		63B53B28133FDECB00460020 /* PBXContainerItemProxy */ = {
+		63107E0513C791C6007E6E86 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 63B53B0B133FDECA00460020 /* RestKit.xcodeproj */;
+			containerPortal = 63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 3F6C39A510FE5C95008F47C5;
 			remoteInfo = UISpec;
+		};
+		63107E0713C791E7007E6E86 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 255B7588133BABBF00ED76AD;
+			remoteInfo = RestKit;
 		};
 		63B53C15133FDF5900460020 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -340,13 +347,6 @@
 			remoteGlobalIDString = EB9E6C6210B6A8F800DE563C;
 			remoteInfo = Three20UINavigatorUnitTests;
 		};
-		63B53C73133FE0B300460020 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 63B53B0B133FDECA00460020 /* RestKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 255B7588133BABBF00ED76AD;
-			remoteInfo = RestKit;
-		};
 		63B53CC0133FE27600460020 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 32005DD2DD4BE82AFAA88C80 /* extThree20JSON.xcodeproj */;
@@ -388,6 +388,13 @@
 		630FC45412FF3CCA00B4629A /* MyAlbumItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAlbumItemCell.m; sourceTree = "<group>"; };
 		630FC46912FF3F4400B4629A /* MyAlbumItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAlbumItem.h; sourceTree = "<group>"; };
 		630FC46A12FF3F4400B4629A /* MyAlbumItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAlbumItem.m; sourceTree = "<group>"; };
+		63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = RestKit/RestKit.xcodeproj; sourceTree = "<group>"; };
+		63107E0913C7920F007E6E86 /* libRestKitCoreData.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRestKitCoreData.a; sourceTree = SOURCE_ROOT; };
+		63107E0A13C7920F007E6E86 /* libRestKitJSONParserJSONKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRestKitJSONParserJSONKit.a; sourceTree = SOURCE_ROOT; };
+		63107E0B13C7920F007E6E86 /* libRestKitNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRestKitNetwork.a; sourceTree = SOURCE_ROOT; };
+		63107E0C13C7920F007E6E86 /* libRestKitObjectMapping.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRestKitObjectMapping.a; sourceTree = SOURCE_ROOT; };
+		63107E0D13C7920F007E6E86 /* libRestKitSupport.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRestKitSupport.a; sourceTree = SOURCE_ROOT; };
+		63107E0E13C7920F007E6E86 /* libRestKitThree20.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRestKitThree20.a; sourceTree = SOURCE_ROOT; };
 		631267971368C72E00ADC5C5 /* addIcon_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addIcon_selected.png; sourceTree = "<group>"; };
 		631267981368C72E00ADC5C5 /* commentIcon_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = commentIcon_selected.png; sourceTree = "<group>"; };
 		631267991368C72E00ADC5C5 /* editIcon_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editIcon_selected.png; sourceTree = "<group>"; };
@@ -485,13 +492,6 @@
 		63B254131299BD3100BA9323 /* MyThumbsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyThumbsViewController.h; sourceTree = "<group>"; };
 		63B254141299BD3100BA9323 /* MyThumbsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyThumbsViewController.m; sourceTree = "<group>"; };
 		63B255EF1299C63300BA9323 /* Three20.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Three20.bundle; path = ../three20/src/Three20.bundle; sourceTree = SOURCE_ROOT; };
-		63B53B0B133FDECA00460020 /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = ../RestKit/RestKit.xcodeproj; sourceTree = "<group>"; };
-		63B53C75133FE0C500460020 /* libRestKitCoreData.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRestKitCoreData.a; sourceTree = SOURCE_ROOT; };
-		63B53C76133FE0C500460020 /* libRestKitJSONParserJSONKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRestKitJSONParserJSONKit.a; sourceTree = SOURCE_ROOT; };
-		63B53C77133FE0C500460020 /* libRestKitNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRestKitNetwork.a; sourceTree = SOURCE_ROOT; };
-		63B53C78133FE0C500460020 /* libRestKitObjectMapping.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRestKitObjectMapping.a; sourceTree = SOURCE_ROOT; };
-		63B53C79133FE0C500460020 /* libRestKitSupport.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRestKitSupport.a; sourceTree = SOURCE_ROOT; };
-		63B53C7A133FE0C500460020 /* libRestKitThree20.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRestKitThree20.a; sourceTree = SOURCE_ROOT; };
 		63B5F3FB13A571FC00FAA82C /* Overlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Overlay.h; sourceTree = "<group>"; };
 		63B5F3FC13A571FC00FAA82C /* Overlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Overlay.m; sourceTree = "<group>"; };
 		63BB542012CE434600764C23 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -527,13 +527,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63107E0F13C7920F007E6E86 /* libRestKitCoreData.a in Frameworks */,
+				63107E1013C7920F007E6E86 /* libRestKitJSONParserJSONKit.a in Frameworks */,
+				63107E1113C79210007E6E86 /* libRestKitNetwork.a in Frameworks */,
+				63107E1213C79210007E6E86 /* libRestKitObjectMapping.a in Frameworks */,
+				63107E1313C79210007E6E86 /* libRestKitSupport.a in Frameworks */,
+				63107E1413C79210007E6E86 /* libRestKitThree20.a in Frameworks */,
 				32005DD2DD4BE82AFAA88C85 /* libextThree20JSON+YAJL.a in Frameworks */,
-				63B53C7B133FE0C500460020 /* libRestKitCoreData.a in Frameworks */,
-				63B53C7C133FE0C500460020 /* libRestKitJSONParserJSONKit.a in Frameworks */,
-				63B53C7D133FE0C500460020 /* libRestKitNetwork.a in Frameworks */,
-				63B53C7E133FE0C500460020 /* libRestKitObjectMapping.a in Frameworks */,
-				63B53C7F133FE0C500460020 /* libRestKitSupport.a in Frameworks */,
-				63B53C80133FE0C500460020 /* libRestKitThree20.a in Frameworks */,
 				3201088596B4756681693705 /* libThree20UICommon.a in Frameworks */,
 				320D7DCCE32703ACAB9A45E5 /* libThree20.a in Frameworks */,
 				320A737074758E53BA54BE95 /* libThree20UINavigator.a in Frameworks */,
@@ -637,13 +637,13 @@
 				320F2C48872C2E2C4DF86200 /* Three20UI.xcodeproj */,
 				320A5A189C235877202780D0 /* Three20Network.xcodeproj */,
 				320CC833B8AF0ACFD35E6220 /* Three20Style.xcodeproj */,
-				63B53B0B133FDECA00460020 /* RestKit.xcodeproj */,
-				63B53C75133FE0C500460020 /* libRestKitCoreData.a */,
-				63B53C76133FE0C500460020 /* libRestKitJSONParserJSONKit.a */,
-				63B53C77133FE0C500460020 /* libRestKitNetwork.a */,
-				63B53C78133FE0C500460020 /* libRestKitObjectMapping.a */,
-				63B53C79133FE0C500460020 /* libRestKitSupport.a */,
-				63B53C7A133FE0C500460020 /* libRestKitThree20.a */,
+				63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */,
+				63107E0913C7920F007E6E86 /* libRestKitCoreData.a */,
+				63107E0A13C7920F007E6E86 /* libRestKitJSONParserJSONKit.a */,
+				63107E0B13C7920F007E6E86 /* libRestKitNetwork.a */,
+				63107E0C13C7920F007E6E86 /* libRestKitObjectMapping.a */,
+				63107E0D13C7920F007E6E86 /* libRestKitSupport.a */,
+				63107E0E13C7920F007E6E86 /* libRestKitThree20.a */,
 				320AF8492C47A4D819F7C450 /* QuartzCore.framework */,
 				63BB544512CE43AB00764C23 /* SystemConfiguration.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
@@ -744,6 +744,23 @@
 				63BD778B130C6648001FC9AF /* MyMetaDataItemCell.m */,
 			);
 			name = AlbumView;
+			sourceTree = "<group>";
+		};
+		63107DE013C791C5007E6E86 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				63107DF413C791C6007E6E86 /* libRestKitNetwork.a */,
+				63107DF613C791C6007E6E86 /* libRestKitObjectMapping.a */,
+				63107DF813C791C6007E6E86 /* libRestKitSupport.a */,
+				63107DFA13C791C6007E6E86 /* libRestKitJSONParserYAJL.a */,
+				63107DFC13C791C6007E6E86 /* libRestKitJSONParserSBJSON.a */,
+				63107DFE13C791C6007E6E86 /* libRestKitJSONParserJSONKit.a */,
+				63107E0013C791C6007E6E86 /* libRestKitXMLParserLibxml.a */,
+				63107E0213C791C6007E6E86 /* libRestKitCoreData.a */,
+				63107E0413C791C6007E6E86 /* libRestKitThree20.a */,
+				63107E0613C791C6007E6E86 /* UISpec.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		6348605713101B6A00385A46 /* Additions */ = {
@@ -999,23 +1016,6 @@
 			name = "Rest Helpers";
 			sourceTree = "<group>";
 		};
-		63B53B0C133FDECA00460020 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				63B53B19133FDECB00460020 /* libRestKitNetwork.a */,
-				63B53B1B133FDECB00460020 /* libRestKitObjectMapping.a */,
-				63B53B1D133FDECB00460020 /* libRestKitSupport.a */,
-				63B53B1F133FDECB00460020 /* libRestKitJSONParserYAJL.a */,
-				63B53B21133FDECB00460020 /* libRestKitJSONParserSBJSON.a */,
-				63B53B23133FDECB00460020 /* libRestKitJSONParserJSONKit.a */,
-				6385AF5D13525D9E00314D68 /* libRestKitXMLParserLibxml.a */,
-				63B53B25133FDECB00460020 /* libRestKitCoreData.a */,
-				63B53B27133FDECB00460020 /* libRestKitThree20.a */,
-				63B53B29133FDECB00460020 /* UISpec.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		63C8858E135CFA9200BDCE89 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -1039,6 +1039,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				63107E0813C791E7007E6E86 /* PBXTargetDependency */,
 				32005DD2DD4BE82AFAA88C81 /* PBXTargetDependency */,
 				3201088596B4756681693701 /* PBXTargetDependency */,
 				320D7DCCE32703ACAB9A45E1 /* PBXTargetDependency */,
@@ -1047,7 +1048,6 @@
 				320F2C48872C2E2C4DF86201 /* PBXTargetDependency */,
 				320A5A189C235877202780D1 /* PBXTargetDependency */,
 				320CC833B8AF0ACFD35E6221 /* PBXTargetDependency */,
-				63B53C74133FE0B300460020 /* PBXTargetDependency */,
 			);
 			name = g3Mobile;
 			productName = Gallery3;
@@ -1077,8 +1077,8 @@
 					ProjectRef = 32005DD2DD4BE82AFAA88C80 /* extThree20JSON.xcodeproj */;
 				},
 				{
-					ProductGroup = 63B53B0C133FDECA00460020 /* Products */;
-					ProjectRef = 63B53B0B133FDECA00460020 /* RestKit.xcodeproj */;
+					ProductGroup = 63107DE013C791C5007E6E86 /* Products */;
+					ProjectRef = 63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */;
 				},
 				{
 					ProductGroup = 320D7DCCE32703ACAB9A45E3 /* Products */;
@@ -1173,74 +1173,74 @@
 			remoteRef = 320F2C48872C2E2C4DF86206 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6385AF5D13525D9E00314D68 /* libRestKitXMLParserLibxml.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRestKitXMLParserLibxml.a;
-			remoteRef = 6385AF5C13525D9E00314D68 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		63B53B19133FDECB00460020 /* libRestKitNetwork.a */ = {
+		63107DF413C791C6007E6E86 /* libRestKitNetwork.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRestKitNetwork.a;
-			remoteRef = 63B53B18133FDECB00460020 /* PBXContainerItemProxy */;
+			remoteRef = 63107DF313C791C6007E6E86 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		63B53B1B133FDECB00460020 /* libRestKitObjectMapping.a */ = {
+		63107DF613C791C6007E6E86 /* libRestKitObjectMapping.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRestKitObjectMapping.a;
-			remoteRef = 63B53B1A133FDECB00460020 /* PBXContainerItemProxy */;
+			remoteRef = 63107DF513C791C6007E6E86 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		63B53B1D133FDECB00460020 /* libRestKitSupport.a */ = {
+		63107DF813C791C6007E6E86 /* libRestKitSupport.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRestKitSupport.a;
-			remoteRef = 63B53B1C133FDECB00460020 /* PBXContainerItemProxy */;
+			remoteRef = 63107DF713C791C6007E6E86 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		63B53B1F133FDECB00460020 /* libRestKitJSONParserYAJL.a */ = {
+		63107DFA13C791C6007E6E86 /* libRestKitJSONParserYAJL.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRestKitJSONParserYAJL.a;
-			remoteRef = 63B53B1E133FDECB00460020 /* PBXContainerItemProxy */;
+			remoteRef = 63107DF913C791C6007E6E86 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		63B53B21133FDECB00460020 /* libRestKitJSONParserSBJSON.a */ = {
+		63107DFC13C791C6007E6E86 /* libRestKitJSONParserSBJSON.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRestKitJSONParserSBJSON.a;
-			remoteRef = 63B53B20133FDECB00460020 /* PBXContainerItemProxy */;
+			remoteRef = 63107DFB13C791C6007E6E86 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		63B53B23133FDECB00460020 /* libRestKitJSONParserJSONKit.a */ = {
+		63107DFE13C791C6007E6E86 /* libRestKitJSONParserJSONKit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRestKitJSONParserJSONKit.a;
-			remoteRef = 63B53B22133FDECB00460020 /* PBXContainerItemProxy */;
+			remoteRef = 63107DFD13C791C6007E6E86 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		63B53B25133FDECB00460020 /* libRestKitCoreData.a */ = {
+		63107E0013C791C6007E6E86 /* libRestKitXMLParserLibxml.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRestKitXMLParserLibxml.a;
+			remoteRef = 63107DFF13C791C6007E6E86 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		63107E0213C791C6007E6E86 /* libRestKitCoreData.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRestKitCoreData.a;
-			remoteRef = 63B53B24133FDECB00460020 /* PBXContainerItemProxy */;
+			remoteRef = 63107E0113C791C6007E6E86 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		63B53B27133FDECB00460020 /* libRestKitThree20.a */ = {
+		63107E0413C791C6007E6E86 /* libRestKitThree20.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRestKitThree20.a;
-			remoteRef = 63B53B26133FDECB00460020 /* PBXContainerItemProxy */;
+			remoteRef = 63107E0313C791C6007E6E86 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		63B53B29133FDECB00460020 /* UISpec.app */ = {
+		63107E0613C791C6007E6E86 /* UISpec.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = UISpec.app;
-			remoteRef = 63B53B28133FDECB00460020 /* PBXContainerItemProxy */;
+			remoteRef = 63107E0513C791C6007E6E86 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		63B53C16133FDF5900460020 /* Three20UnitTests.octest */ = {
@@ -1445,10 +1445,10 @@
 			name = Three20UI;
 			targetProxy = 320F2C48872C2E2C4DF86202 /* PBXContainerItemProxy */;
 		};
-		63B53C74133FE0B300460020 /* PBXTargetDependency */ = {
+		63107E0813C791E7007E6E86 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = RestKit;
-			targetProxy = 63B53C73133FE0B300460020 /* PBXContainerItemProxy */;
+			targetProxy = 63107E0713C791E7007E6E86 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1469,13 +1469,13 @@
 					"$(BUILT_PRODUCTS_DIR)/../three20",
 					"$(BUILT_PRODUCTS_DIR)/../../three20",
 					../three20/Build/Products/three20,
-					"\"$(SOURCE_ROOT)/../RestKit/Build\"",
+					"\"$(SOURCE_ROOT)/RestKit/Build\"",
 				);
 				INFOPLIST_FILE = "g3Mobile-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
-					"\"$(SOURCE_ROOT)/../RestKit/Build/$(BUILD_STYLE)-$(PLATFORM_NAME)\"",
+					"\"$(SOURCE_ROOT)/RestKit/Build/$(BUILD_STYLE)-$(PLATFORM_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -1501,13 +1501,13 @@
 					"$(BUILT_PRODUCTS_DIR)/../three20",
 					"$(BUILT_PRODUCTS_DIR)/../../three20",
 					../three20/Build/Products/three20,
-					"\"$(SOURCE_ROOT)/../RestKit/Build\"",
+					"\"$(SOURCE_ROOT)/RestKit/Build\"",
 				);
 				INFOPLIST_FILE = "g3Mobile-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
-					"\"$(SOURCE_ROOT)/../RestKit/Build/$(BUILD_STYLE)-$(PLATFORM_NAME)\"",
+					"\"$(SOURCE_ROOT)/RestKit/Build/$(BUILD_STYLE)-$(PLATFORM_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -1534,7 +1534,7 @@
 					"$(BUILT_PRODUCTS_DIR)/../three20",
 					"$(BUILT_PRODUCTS_DIR)/../../three20",
 					../three20/Build/Products/three20,
-					../RestKit/build,
+					"\"$(SOURCE_ROOT)/RestKit/Build\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -1559,13 +1559,13 @@
 					"$(BUILT_PRODUCTS_DIR)/../three20",
 					"$(BUILT_PRODUCTS_DIR)/../../three20",
 					../three20/Build/Products/three20,
-					"\"$(SOURCE_ROOT)/../RestKit/Build\"",
+					"\"$(SOURCE_ROOT)/RestKit/Build\"",
 				);
 				INFOPLIST_FILE = "g3Mobile-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
-					"\"$(SOURCE_ROOT)/../RestKit/Build/$(BUILD_STYLE)-$(PLATFORM_NAME)\"",
+					"\"$(SOURCE_ROOT)/RestKit/Build/$(BUILD_STYLE)-$(PLATFORM_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-all_load",
