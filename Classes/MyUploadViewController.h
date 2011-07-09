@@ -41,8 +41,7 @@ UIImagePickerControllerDelegate,TTPostControllerDelegate> {
 	UIImage *_screenShot;
 	UIImage *_image;
 	NSString *_albumID;
-	UIAlertView *_progressAlert;
-	UIProgressView *_progressView;
+    TTActivityLabel* _uploadProgress;
 }
 
 @property (nonatomic, retain) NSDictionary* query;

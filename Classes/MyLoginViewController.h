@@ -44,6 +44,7 @@
 	UITextField *_usernameField;
 	UITextField *_passwordField;
 	UISlider *_imageQualityField;
+    UISlider *_slideshowTimeout;
 	TTView *_segmentedControlFrame;
 	UITextField *_buildDateField;
 	UITextField *_buildVersionField;

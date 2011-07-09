@@ -16,7 +16,8 @@
 #pragma mark RKModelLoaderDelegate
 
 - (void)objectLoader:(RKObjectLoader*)loader willMapData:(inout id *)mappableData {
-     if (loader.objectMapping.objectClass == [RKMTree class]) {         
+    if ([*mappableData count] > 0) {
+        if (loader.objectMapping.objectClass == [RKMTree class]) {         
          NSArray* origEntities = [*mappableData valueForKeyPath:@"entity"];         
          NSMutableArray* newEntity = [[NSMutableArray alloc] initWithCapacity:[origEntities count]];
          
@@ -40,12 +41,13 @@
          [*mappableData removeObjectForKey:@"entity"];
          [*mappableData setObject:newEntity forKey:@"entity"];
          [newEntity release];
-     }
-    
-    if (loader.objectMapping.objectClass == [RKMItem class]) {         
+        }
+
+        if (loader.objectMapping.objectClass == [RKMItem class]) {         
         NSMutableDictionary* item = *mappableData;
         if ([item valueForKeyPath:@"relationships.tags.member.entity.tag.url"] == nil) {
             [item removeObjectForKey:@"relationships"];
+        }
         }
     }
  }

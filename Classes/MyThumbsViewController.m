@@ -26,7 +26,7 @@
 - (void)enableToolbarItems;
 
 // Sets the default button with default behavior
-- (void)setStandartRightBarButtonItem;
+- (void)setStandardRightBarButtonItem;
 
 @end
 
@@ -113,7 +113,9 @@
             ] autorelease];
 	}
     
-	[self setStandartRightBarButtonItem];
+    if (!GlobalSettings.viewOnly) {
+        [self setStandardRightBarButtonItem];
+    }
     
     self.navigationController.toolbar.barStyle = self.navigationBarStyle;
     [self.navigationController.toolbar sizeToFit];
@@ -215,7 +217,7 @@
     }
 }
 
-- (void)setStandartRightBarButtonItem {
+- (void)setStandardRightBarButtonItem {
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(toggleEditing:)] autorelease];
 }
 

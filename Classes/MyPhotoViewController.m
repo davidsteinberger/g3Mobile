@@ -138,12 +138,6 @@
     [actionSheet showInView:self.view];
 }
 
-- (NSString *)urlEncodeValue:(NSString *)str
-{
-	NSString *result = (NSString *) CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)str, NULL, CFSTR("?=&+"), kCFStringEncodingUTF8);
-	return [result autorelease];
-}
-
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	Photo* p = (Photo *) self.centerPhoto;
 	NSString* itemID = p.photoID;
@@ -163,9 +157,7 @@
 		MyAlbumUpdater* updater = [[MyAlbumUpdater sharedMyAlbumUpdater] initWithItemID:albumID andDelegate:((id<MyViewController>)self.ttPreviousViewController)];
 		[updater setValue:[[appDelegate.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:p.photoID] param: @"album_cover"];
 		[updater update];
-		//TT_RELEASE_SAFELY(updater);
-		
-        //[((id<MyViewController>)self.ttPreviousViewController) reloadViewController:YES];
+
         [self dismissModalViewControllerAnimated:YES];
 	}
 	if (buttonIndex == 2) {		
@@ -222,9 +214,10 @@
 }
 
 -(void) reload {
-	TTNavigator* navigator = [TTNavigator navigator];
+	/*TTNavigator* navigator = [TTNavigator navigator];
 	[navigator removeAllViewControllers];
-	[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://thumbs/1"]];
+	[navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://thumbs/1"]];*/
+    [super reload];
 }
 
 // see TTPhotoViewController

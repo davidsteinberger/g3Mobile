@@ -89,7 +89,7 @@
 - (void)enableToolbarItems;
 
 // Sets the default button with default behavior
-- (void)setStandartRightBarButtonItem;
+- (void)setStandardRightBarButtonItem;
 
 @end
 
@@ -305,8 +305,10 @@
 		                                           target:self action:@selector(setSettings)
 		           ] autorelease];
 	}
-
-	[self setStandartRightBarButtonItem];
+    
+    if (!GlobalSettings.viewOnly) {
+        [self setStandardRightBarButtonItem];
+    }
     
     self.navigationController.toolbar.barStyle = self.navigationBarStyle;
     [self.navigationController.toolbar sizeToFit];
@@ -341,7 +343,7 @@
 // MyLongPressGestureDelegate that handles long tabs on cell
 - (void)longPress:(UILongPressGestureRecognizer *)recognizer {
 	// only when gesture was recognized, not when ended
-	if (recognizer.state == UIGestureRecognizerStateBegan) {
+	if (recognizer.state == UIGestureRecognizerStateBegan && !GlobalSettings.viewOnly) {
 		CGPoint gestureStartPoint = [recognizer
 		                             locationInView:self.tableView];
 
@@ -699,7 +701,7 @@
     [self.navigationController setToolbarHidden:NO];
     
     [self enableToolbarItems];
-    [self setStandartRightBarButtonItem];
+    [self setStandardRightBarButtonItem];
     [self.tableView setEditing:NO animated:YES];
 }
 
@@ -717,7 +719,7 @@
     }
 }
 
-- (void)setStandartRightBarButtonItem {
+- (void)setStandardRightBarButtonItem {
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(toggleEditing:)] autorelease];
 }
 

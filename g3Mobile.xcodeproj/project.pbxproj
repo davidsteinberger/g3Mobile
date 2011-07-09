@@ -38,12 +38,12 @@
 		631267A21368C72E00ADC5C5 /* trashIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 6312679B1368C72E00ADC5C5 /* trashIcon_selected.png */; };
 		631267A31368C72E00ADC5C5 /* uploadIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 6312679C1368C72E00ADC5C5 /* uploadIcon_selected.png */; };
 		631267A41368C72E00ADC5C5 /* makeCoverIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 6312679D1368C72E00ADC5C5 /* makeCoverIcon_selected.png */; };
-		6312D3F2136F2510002091A3 /* Param.m in Sources */ = {isa = PBXBuildFile; fileRef = 6312D3F1136F2510002091A3 /* Param.m */; };
-		6312D3F5136F2510002091A3 /* Vars.m in Sources */ = {isa = PBXBuildFile; fileRef = 6312D3F4136F2510002091A3 /* Vars.m */; };
 		6313383A13B8F55E009CDFAB /* RKObjectLoaderTTModel+fix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6313383913B8F55E009CDFAB /* RKObjectLoaderTTModel+fix.m */; };
 		631A7B3B130F49B0004A6110 /* TTTableViewController+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 631A7B3A130F49B0004A6110 /* TTTableViewController+g3.m */; };
 		632A448B12D25F0B0055F67B /* MyUploadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 632A448A12D25F0B0055F67B /* MyUploadViewController.xib */; };
 		632A449112D261390055F67B /* MyUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 632A448F12D261390055F67B /* MyUploadViewController.m */; };
+		633F18E513C8AEFC00B41E58 /* Param.m in Sources */ = {isa = PBXBuildFile; fileRef = 633F18E213C8AEFC00B41E58 /* Param.m */; };
+		633F18E613C8AEFC00B41E58 /* Vars.m in Sources */ = {isa = PBXBuildFile; fileRef = 633F18E413C8AEFC00B41E58 /* Vars.m */; };
 		634D198113ACE74F003165FA /* reorderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 634D197F13ACE74E003165FA /* reorderIcon.png */; };
 		634D198413ACE7C4003165FA /* uploadIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 634D198313ACE7C4003165FA /* uploadIcon.png */; };
 		6358A4BB12C880EB0043D18A /* MySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6358A4BA12C880EB0043D18A /* MySettings.m */; };
@@ -103,6 +103,7 @@
 		63D63EF713C09EC600D7D5D9 /* RKMSites.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D63EF613C09EC600D7D5D9 /* RKMSites.m */; };
 		63D63F1713C0A9B200D7D5D9 /* sites.json in Resources */ = {isa = PBXBuildFile; fileRef = 63D63F1613C0A9B200D7D5D9 /* sites.json */; };
 		63E13C7F12BED4C6003248F4 /* AddAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */; };
+		63EAC89113C852D6008C04B9 /* TTPhotoViewController+slideshow.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EAC89013C852D6008C04B9 /* TTPhotoViewController+slideshow.m */; };
 		63EE22A7130EF51200E2D407 /* createIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 63EE22A6130EF51200E2D407 /* createIcon.png */; };
 		63F1561512DA6F5E00D85532 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 63F1561412DA6F5E00D85532 /* iTunesArtwork */; };
 		63F4602212C8161C00116221 /* UpdateAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F4602112C8161C00116221 /* UpdateAlbumViewController.m */; };
@@ -402,10 +403,6 @@
 		6312679B1368C72E00ADC5C5 /* trashIcon_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trashIcon_selected.png; sourceTree = "<group>"; };
 		6312679C1368C72E00ADC5C5 /* uploadIcon_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uploadIcon_selected.png; sourceTree = "<group>"; };
 		6312679D1368C72E00ADC5C5 /* makeCoverIcon_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = makeCoverIcon_selected.png; sourceTree = "<group>"; };
-		6312D3F0136F2510002091A3 /* Param.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Param.h; sourceTree = "<group>"; };
-		6312D3F1136F2510002091A3 /* Param.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Param.m; sourceTree = "<group>"; };
-		6312D3F3136F2510002091A3 /* Vars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vars.h; sourceTree = "<group>"; };
-		6312D3F4136F2510002091A3 /* Vars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Vars.m; sourceTree = "<group>"; };
 		6313383813B8F55E009CDFAB /* RKObjectLoaderTTModel+fix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RKObjectLoaderTTModel+fix.h"; sourceTree = "<group>"; };
 		6313383913B8F55E009CDFAB /* RKObjectLoaderTTModel+fix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RKObjectLoaderTTModel+fix.m"; sourceTree = "<group>"; };
 		631A7B39130F49B0004A6110 /* TTTableViewController+g3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTTableViewController+g3.h"; sourceTree = "<group>"; };
@@ -413,6 +410,10 @@
 		632A448A12D25F0B0055F67B /* MyUploadViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyUploadViewController.xib; sourceTree = "<group>"; };
 		632A448E12D261390055F67B /* MyUploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyUploadViewController.h; sourceTree = "<group>"; };
 		632A448F12D261390055F67B /* MyUploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyUploadViewController.m; sourceTree = "<group>"; };
+		633F18E113C8AEFC00B41E58 /* Param.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Param.h; path = Classes/Param.h; sourceTree = "<group>"; };
+		633F18E213C8AEFC00B41E58 /* Param.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Param.m; path = Classes/Param.m; sourceTree = "<group>"; };
+		633F18E313C8AEFC00B41E58 /* Vars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vars.h; path = Classes/Vars.h; sourceTree = "<group>"; };
+		633F18E413C8AEFC00B41E58 /* Vars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Vars.m; path = Classes/Vars.m; sourceTree = "<group>"; };
 		63454A4012DA51850070DB81 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		634D197F13ACE74E003165FA /* reorderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reorderIcon.png; sourceTree = "<group>"; };
 		634D198313ACE7C4003165FA /* uploadIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uploadIcon.png; sourceTree = "<group>"; };
@@ -515,6 +516,8 @@
 		63D972A6132ED321008F6095 /* MyLongPressGestureDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLongPressGestureDelegate.h; sourceTree = "<group>"; };
 		63E13C7D12BED4C6003248F4 /* AddAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAlbumViewController.h; sourceTree = "<group>"; };
 		63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AddAlbumViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		63EAC88F13C852D6008C04B9 /* TTPhotoViewController+slideshow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTPhotoViewController+slideshow.h"; sourceTree = "<group>"; };
+		63EAC89013C852D6008C04B9 /* TTPhotoViewController+slideshow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TTPhotoViewController+slideshow.m"; sourceTree = "<group>"; };
 		63EE22A6130EF51200E2D407 /* createIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = createIcon.png; sourceTree = "<group>"; };
 		63F1561412DA6F5E00D85532 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		63F4602012C8161C00116221 /* UpdateAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateAlbumViewController.h; sourceTree = "<group>"; };
@@ -789,6 +792,8 @@
 				63C8858C135CF34900BDCE89 /* UIImage+scaleAndRotate.m */,
 				636952D612D4FC5400CA3113 /* UIViewController+query.h */,
 				636952D712D4FC5400CA3113 /* UIViewController+query.m */,
+				63EAC88F13C852D6008C04B9 /* TTPhotoViewController+slideshow.h */,
+				63EAC89013C852D6008C04B9 /* TTPhotoViewController+slideshow.m */,
 			);
 			name = Additions;
 			sourceTree = "<group>";
@@ -903,12 +908,12 @@
 		638C290C132D6BC5009CFE41 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				633F18E113C8AEFC00B41E58 /* Param.h */,
+				633F18E213C8AEFC00B41E58 /* Param.m */,
+				633F18E313C8AEFC00B41E58 /* Vars.h */,
+				633F18E413C8AEFC00B41E58 /* Vars.m */,
 				63D63F1613C0A9B200D7D5D9 /* sites.json */,
 				6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */,
-				6312D3F3136F2510002091A3 /* Vars.h */,
-				6312D3F4136F2510002091A3 /* Vars.m */,
-				6312D3F0136F2510002091A3 /* Param.h */,
-				6312D3F1136F2510002091A3 /* Param.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -1393,12 +1398,13 @@
 				6380E7111329A4A200A99EDB /* RKMItem.m in Sources */,
 				63C266FD132EEAA10086729D /* NSData+base64.m in Sources */,
 				63C8858D135CF34A00BDCE89 /* UIImage+scaleAndRotate.m in Sources */,
-				6312D3F2136F2510002091A3 /* Param.m in Sources */,
-				6312D3F5136F2510002091A3 /* Vars.m in Sources */,
 				63B5F3FD13A571FC00FAA82C /* Overlay.m in Sources */,
 				6313383A13B8F55E009CDFAB /* RKObjectLoaderTTModel+fix.m in Sources */,
 				63D63EF713C09EC600D7D5D9 /* RKMSites.m in Sources */,
 				63776A9213C27D2800A49074 /* RKManagedObjectSeeder+persist.m in Sources */,
+				63EAC89113C852D6008C04B9 /* TTPhotoViewController+slideshow.m in Sources */,
+				633F18E513C8AEFC00B41E58 /* Param.m in Sources */,
+				633F18E613C8AEFC00B41E58 /* Vars.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

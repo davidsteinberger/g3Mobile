@@ -40,6 +40,7 @@
 @synthesize challenge = _challenge;
 @synthesize baseURL = _baseURL;
 @synthesize imageQuality = _imageQuality;
+@synthesize slideshowTimeout = _slideshowTimeout;
 @synthesize viewStyle = _viewStyle;
 @synthesize uploadCounter = _uploadCounter;
 
@@ -180,6 +181,26 @@ withImageQuality:(float) imageQuality {
     
     self->_imageQuality = imageQuality;
     return imageQuality;
+}
+
+- (void)setSlideshowTimeout:(int)slideshowTimeout {
+    NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
+	
+	[prefs setFloat:slideshowTimeout forKey:@"slideshowTimeout"];
+	[self storeName:@"slideshowTimeout" withValue:[NSString stringWithFormat:@"%i",slideshowTimeout]];
+	[prefs synchronize];	
+}
+
+- (int)slideshowTimeout {
+    NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
+	int slideshowTimeout = [prefs integerForKey:@"slideshowTimeout"];
+    
+    if (slideshowTimeout == 0) {
+        slideshowTimeout = [[self getValue:@"imageQuality"] intValue];
+    }
+    
+    self->_slideshowTimeout = slideshowTimeout;
+    return slideshowTimeout;
 }
 
 - (void)setViewStyle:(MyViewStyle)viewStyle {

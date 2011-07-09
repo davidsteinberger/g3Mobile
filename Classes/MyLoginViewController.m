@@ -24,6 +24,9 @@
 #import "MyLoginViewController.h"
 #import "AppDelegate.h"
 
+// Three20
+#import <Three20UI/UIViewAdditions.h>
+
 // Others
 #import <CoreData/CoreData.h>
 #import "MyLoginModel.h"
@@ -195,8 +198,18 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 0) {
+        TTActivityLabel* label = [[[TTActivityLabel alloc] initWithStyle:TTActivityLabelStyleBlackBox] autorelease];
+        UIView* lastView = [self.view.subviews lastObject];
+        label.text = @"Clearing the cache ...";
+        [label sizeToFit];
+        label.frame = CGRectMake(0, lastView.bottom+10, self.view.width, label.height);
+        [self.view addSubview:label];        
+        
 		[self deleteFromCoreData:@"RKMTree"];
 		[self deleteFromCoreData:@"RKMItem"];
+        [self deleteFromCoreData:@"RKMTag_Member"];
+        [self deleteFromCoreData:@"RKMEntity"];
+        [self deleteFromCoreData:@"RKMSites"];
 
 		TTNavigator *navigator = [TTNavigator navigator];
 		[navigator removeAllViewControllers];
@@ -452,6 +465,12 @@
 }
 
 
+- (void)slideshowTimeoutChanged:(UISlider *)control {
+    NSNumber *number = [NSNumber numberWithFloat:control.value];
+	GlobalSettings.slideshowTimeout = [number intValue];
+}
+
+
 - (void)createDataSource {
 	_autocompleteUrls = [[NSMutableArray alloc] init];
 	_autocompleteTitles = [[NSMutableArray alloc] init];
@@ -469,6 +488,7 @@
 	_baseURL.clearButtonMode = UITextFieldViewModeWhileEditing;
 	_baseURL.clearsOnBeginEditing = NO;
 	_baseURL.delegate = self;
+    _baseURL.text = GlobalSettings.baseURL;
 
 	// username field
 	_usernameField = [[UITextField alloc] init];
@@ -491,13 +511,52 @@
 	_passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	_passwordField.clearsOnBeginEditing = NO;
 	_passwordField.delegate = self;
+    
+    // image quality field
+	_imageQualityField = [[[UISlider alloc] init] autorelease];
+	_imageQualityField.minimumValue = 0;
+	_imageQualityField.maximumValue = 1;
+	_imageQualityField.value = GlobalSettings.imageQuality ? GlobalSettings.imageQuality : 0.5;
+	[_imageQualityField addTarget:self
+	                       action:@selector(imageQualityChanged:)
+	             forControlEvents:UIControlEventTouchUpInside];
+    
+    // Slideshow timeout
+    _slideshowTimeout = [[[UISlider alloc] init] autorelease];
+    _slideshowTimeout.minimumValue = 2;
+    _slideshowTimeout.maximumValue = 6;
+    _slideshowTimeout.value = GlobalSettings.slideshowTimeout ? GlobalSettings.slideshowTimeout : 4;
+    [_slideshowTimeout addTarget:self
+	                       action:@selector(slideshowTimeoutChanged:)
+	             forControlEvents:UIControlEventTouchUpInside];
 
 	// layout switcher
 	_segmentedControlFrame =
 	        [[TTView alloc] initWithFrame:CGRectMake(-1.0f, -1.0f, 302.0f, 46.0f)];
+    
+    _segmentedControlFrame.backgroundColor = [UIColor clearColor];
+	UISegmentedControl *segmentedControl =
+    [[UISegmentedControl alloc] initWithFrame:_segmentedControlFrame.bounds];
+	[segmentedControl insertSegmentWithTitle:@"Album" atIndex:0 animated:NO];
+	[segmentedControl insertSegmentWithTitle:@"Thumbs" atIndex:1 animated:NO];
+	segmentedControl.selectedSegmentIndex = (GlobalSettings.viewStyle == kAlbumView) ? 0 : 1;
+	[segmentedControl addTarget:(AppDelegate *)[[UIApplication sharedApplication] delegate]
+	                     action:@selector(dispatchToRootController:)
+	           forControlEvents:UIControlEventValueChanged];
+	[_segmentedControlFrame addSubview:segmentedControl];
+	TT_RELEASE_SAFELY(segmentedControl);
 
-	_baseURL.text = GlobalSettings.baseURL;
+    // a button to clear all cache
+	CGRect appFrame = [UIScreen mainScreen].applicationFrame;
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+	[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+	button.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
+	[button setTitle:@"Delete all Cache" forState:UIControlStateNormal];
+	[button addTarget:@"tt://removeAllCache" action:@selector(openURL)
+	 forControlEvents:UIControlEventTouchUpInside];
+	button.frame = CGRectMake(20, 20, appFrame.size.width - 40, 50);
 
+    // build info
 	_buildDateField = [[UITextField alloc] init];
 	_buildDateField.text = @"";
 	_buildDateField.textAlignment = UITextAlignmentRight;
@@ -507,7 +566,8 @@
 	_buildVersionField.text = @"";
 	_buildVersionField.textAlignment = UITextAlignmentRight;
 	_buildVersionField.enabled = NO;
-
+        
+    // autocompleteview
 	_autocompleteTableView = [[UITableView alloc]  initWithFrame:
 	                          CGRectMake(0, 160, 320, 120) style:UITableViewStylePlain];
 	self.autocompleteTableView.delegate = self;
@@ -516,6 +576,7 @@
 	self.autocompleteTableView.hidden = YES;
 	[self.tableView addSubview:self.autocompleteTableView];
 
+    
 	// create ui-elements
 	if (!GlobalSettings.viewOnly) {
 		_viewOnly.on = NO;
@@ -541,45 +602,15 @@
 	TTTableControlItem *cPasswordField = [TTTableControlItem itemWithCaption:@"Password"
 	                                                                 control:_passwordField];
 
-	// image quality field
-	_imageQualityField = [[[UISlider alloc] init] autorelease];
-	_imageQualityField.minimumValue = 0;
-	_imageQualityField.maximumValue = 1;
-
-	_imageQualityField.value = GlobalSettings.imageQuality ? GlobalSettings.imageQuality : 0.5;
-
-	[_imageQualityField addTarget:self
-	                       action:@selector(imageQualityChanged:)
-	             forControlEvents:UIControlEventTouchUpInside];
-
 	TTTableControlItem *cImageQuality =
 	        [TTTableControlItem itemWithCaption:@"Image Quality" control:_imageQualityField];
+    
+    TTTableControlItem *cSlideshowTimeout =
+            [TTTableControlItem itemWithCaption:@"Slideshow Timeout" control:_slideshowTimeout];
 
-	// a button to clear all cache
-	CGRect appFrame = [UIScreen mainScreen].applicationFrame;
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-	[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-	button.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
-	[button setTitle:@"Delete all Cache" forState:UIControlStateNormal];
-	[button addTarget:@"tt://removeAllCache" action:@selector(openURL)
-	 forControlEvents:UIControlEventTouchUpInside];
-	button.frame = CGRectMake(20, 20, appFrame.size.width - 40, 50);
-
-	_segmentedControlFrame.backgroundColor = [UIColor clearColor];
-	UISegmentedControl *segmentedControl =
-	        [[UISegmentedControl alloc] initWithFrame:_segmentedControlFrame.bounds];
-	[segmentedControl insertSegmentWithTitle:@"Album" atIndex:0 animated:NO];
-	[segmentedControl insertSegmentWithTitle:@"Thumbs" atIndex:1 animated:NO];
-	segmentedControl.selectedSegmentIndex = (GlobalSettings.viewStyle == kAlbumView) ? 0 : 1;
-	[segmentedControl addTarget:(AppDelegate *)[[UIApplication sharedApplication] delegate]
-	                     action:@selector(dispatchToRootController:)
-	           forControlEvents:UIControlEventValueChanged];
-	[_segmentedControlFrame addSubview:segmentedControl];
-	TT_RELEASE_SAFELY(segmentedControl);
-
-	// build version
 	TTTableControlItem *cBuildDate =
 	        [TTTableControlItem itemWithCaption:@"Build-Date" control:_buildDateField];
+    
 	TTTableControlItem *cBuildVersion =
 	        [TTTableControlItem itemWithCaption:@"Build-Version" control:_buildVersionField];
 
@@ -609,6 +640,7 @@
 	// section 2 will hold the image quality slider
 	NSMutableArray *section2 = [[NSMutableArray alloc] init];
 	[section2 addObject:cImageQuality];
+    [section2 addObject:cSlideshowTimeout];
 
 	// section 3 will hold button for clearing the cache
 	NSMutableArray *section3 = [[NSMutableArray alloc] init];

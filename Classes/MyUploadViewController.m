@@ -23,6 +23,9 @@
 
 #import "MyUploadViewController.h"
 
+// Three20
+#import <Three20UI/UIViewAdditions.h>
+
 // RestKit
 #import "RestKit/RestKit.h"
 
@@ -76,25 +79,13 @@ static NSString *defaultCaption = @"Write a Caption ...";
 	TT_RELEASE_SAFELY(_screenShot);
 	TT_RELEASE_SAFELY(_image);
 	TT_RELEASE_SAFELY(_albumID);
-	TT_RELEASE_SAFELY(_progressView);
-	TT_RELEASE_SAFELY(_progressAlert);
+	TT_RELEASE_SAFELY(_uploadProgress);
 	[super dealloc];
 }
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if ( (self = [super initWithNibName:nibNameOrNil bundle:nil]) ) {
-		_progressAlert = [[UIAlertView alloc] initWithTitle:@"Image upload"
-		                                            message:@"Please wait..."
-		                                           delegate:self
-		                                  cancelButtonTitle:nil
-		                                  otherButtonTitles:nil];
-		_progressView =
-		        [[UIProgressView alloc] initWithFrame:CGRectMake(30.0f, 80.0f, 225.0f,
-		                                                         90.0f)];
-		[_progressAlert addSubview:_progressView];
-		[_progressView setProgressViewStyle:UIProgressViewStyleBar];
-        
+    if ( (self = [super initWithNibName:nibNameOrNil bundle:nil]) ) {        
         _pickerController = [[UIImagePickerController alloc] init];
         _pickerController.delegate = self;
     }
@@ -124,6 +115,13 @@ static NSString *defaultCaption = @"Write a Caption ...";
     } else {
         _pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
     }
+    
+    _uploadProgress = [[TTActivityLabel alloc] initWithStyle:TTActivityLabelStyleBlackBox];
+    UIView* lastView = [self.view.subviews lastObject];
+    _uploadProgress.text = @"Uploading ...";
+    [_uploadProgress sizeToFit];
+    _uploadProgress.frame = CGRectMake(0, lastView.bottom-55, self.view.width, 75);
+    
     [self presentModalViewController:_pickerController animated:YES];
 }
 
@@ -218,7 +216,7 @@ static NSString *defaultCaption = @"Write a Caption ...";
 
 
 - (void)requestDidStartLoad:(RKRequest *)request {
-	[_progressAlert show];
+    [self.view addSubview:_uploadProgress];    
 }
 
 
@@ -226,20 +224,18 @@ static NSString *defaultCaption = @"Write a Caption ...";
        totalBytesWritten:(NSInteger)totalBytesWritten
        totalBytesExpectedToWrite:(NSInteger)
        totalBytesExpectedToWrite {
-	_progressView.progress = ( (float)totalBytesWritten / (float)totalBytesExpectedToWrite );
+    _uploadProgress.progress = ( (float)totalBytesWritten / (float)totalBytesExpectedToWrite );
 }
 
 
 - (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
 	[self.delegate reloadViewController:NO];
-	[_progressAlert dismissWithClickedButtonIndex:0 animated:YES];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 
 - (void)request:(RKRequest *)request didFailLoadWithError:(NSError *)error {
 	NSLog(@"didFailLoadWithError");
-	[_progressAlert dismissWithClickedButtonIndex:0 animated:YES];
 	[self.delegate reloadViewController:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }

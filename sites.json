@@ -10,8 +10,12 @@
             "url": "http://g3.shaibn.com/index.php/"
         },
         {
-            "title": "jacksonbean",
+            "title": "jacksonbean.com",
             "url": "http://www.jacksonbean.com/photos/index.php"
+        },
+        {
+            "title": "menalto.com",
+            "url": "http://www.menalto.com/photos/index.php"
         }
     ]
 }

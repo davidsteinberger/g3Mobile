@@ -25,6 +25,7 @@ typedef enum {
 	NSString* _baseURL;
 	
 	float _imageQuality;
+    int _slideshowTimeout;
 	int _uploadCounter;
     
 	//UI settings
@@ -39,6 +40,7 @@ typedef enum {
 @property (nonatomic, readonly, retain) NSString* challenge;
 @property (nonatomic, readonly, retain) NSString* baseURL;
 @property (nonatomic, assign) float imageQuality;
+@property (nonatomic, assign) int slideshowTimeout;
 @property (nonatomic, assign) MyViewStyle viewStyle;
 @property (nonatomic, assign) int uploadCounter;
 
