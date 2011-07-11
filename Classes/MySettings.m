@@ -179,6 +179,10 @@ withImageQuality:(float) imageQuality {
         imageQuality = [[self getValue:@"imageQuality"] floatValue];
     }
     
+    if (imageQuality == 0) {
+        imageQuality = 0.5;
+    }
+    
     self->_imageQuality = imageQuality;
     return imageQuality;
 }
@@ -197,6 +201,10 @@ withImageQuality:(float) imageQuality {
     
     if (slideshowTimeout == 0) {
         slideshowTimeout = [[self getValue:@"imageQuality"] intValue];
+    }
+    
+    if (slideshowTimeout == 0) {
+        slideshowTimeout = 4;
     }
     
     self->_slideshowTimeout = slideshowTimeout;

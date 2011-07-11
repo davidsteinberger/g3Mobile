@@ -6,7 +6,7 @@
             "url": "http://david-steinberger.at/gallery3/index.php"
         },
         {
-            "title": "g3.shaibn.com",
+            "title": "shaibn.com",
             "url": "http://g3.shaibn.com/index.php/"
         },
         {
@@ -16,6 +16,10 @@
         {
             "title": "menalto.com",
             "url": "http://www.menalto.com/photos/index.php"
+        },
+        {
+            "title": "softcat.org",
+            "url": "https://photo.softcat.org"
         }
     ]
 }

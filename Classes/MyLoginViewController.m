@@ -238,7 +238,7 @@
 			[_passwordField resignFirstResponder];
 
 			NSString *url = nil;
-			if ([[_baseURL.text substringToIndex:7] isEqualToString:@"http://"]) {
+			if ([[_baseURL.text substringToIndex:4] isEqualToString:@"http"]) {
 				url = _baseURL.text;
 			}
 			else {
@@ -516,7 +516,8 @@
 	_imageQualityField = [[[UISlider alloc] init] autorelease];
 	_imageQualityField.minimumValue = 0;
 	_imageQualityField.maximumValue = 1;
-	_imageQualityField.value = GlobalSettings.imageQuality ? GlobalSettings.imageQuality : 0.5;
+    
+	_imageQualityField.value = GlobalSettings.imageQuality;
 	[_imageQualityField addTarget:self
 	                       action:@selector(imageQualityChanged:)
 	             forControlEvents:UIControlEventTouchUpInside];
@@ -525,7 +526,8 @@
     _slideshowTimeout = [[[UISlider alloc] init] autorelease];
     _slideshowTimeout.minimumValue = 2;
     _slideshowTimeout.maximumValue = 6;
-    _slideshowTimeout.value = GlobalSettings.slideshowTimeout ? GlobalSettings.slideshowTimeout : 4;
+    
+    _slideshowTimeout.value = GlobalSettings.slideshowTimeout;
     [_slideshowTimeout addTarget:self
 	                       action:@selector(slideshowTimeoutChanged:)
 	             forControlEvents:UIControlEventTouchUpInside];
