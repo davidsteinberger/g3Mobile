@@ -6,6 +6,10 @@
             "url": "http://david-steinberger.at/gallery3/index.php"
         },
         {
+            "title": "localhost",
+            "url": "http://localhost/~david/gallery3/index.php"
+        },
+        {
             "title": "shaibn.com",
             "url": "http://g3.shaibn.com/index.php/"
         },
