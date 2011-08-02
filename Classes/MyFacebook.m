@@ -39,12 +39,7 @@ static Facebook *sharedFacebook;
 #pragma mark Singleton
 
 + (Facebook *)sharedFacebook {
-	@synchronized(self) {
-		if (sharedFacebook == nil) {
-			sharedFacebook = [Facebook sharedFacebookWithAppId:kAppId];
-		}
-	}
-	return sharedFacebook;
+	return [Facebook sharedFacebookWithAppId:kAppId];
 }
 
 
@@ -52,16 +47,15 @@ static Facebook *sharedFacebook;
 	@synchronized(self) {
 		if (sharedFacebook == nil) {
 			sharedFacebook = [[self alloc] initWithAppId:app_id];
-
-			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-			if ([defaults objectForKey:@"FBAccessTokenKey"]
-			    && [defaults objectForKey:@"FBExpirationDateKey"]) {
-				sharedFacebook.accessToken =
-				        [defaults objectForKey:@"FBAccessTokenKey"];
-				sharedFacebook.expirationDate =
-				        [defaults objectForKey:@"FBExpirationDateKey"];
-			}
 		}
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if ([defaults objectForKey:@"FBAccessTokenKey"]
+            && [defaults objectForKey:@"FBExpirationDateKey"]) {
+            sharedFacebook.accessToken =
+            [defaults objectForKey:@"FBAccessTokenKey"];
+            sharedFacebook.expirationDate =
+            [defaults objectForKey:@"FBExpirationDateKey"];
+        }
 	}
 
 	return sharedFacebook;
@@ -126,17 +120,17 @@ static Facebook *sharedFacebook;
 - (void)setupNotification:(id <FBSessionDelegate>)sessionDelegate {
 	[[NSNotificationCenter defaultCenter] removeObserver:sessionDelegate];
 
-	[[NSNotificationCenter defaultCenter]
-	 addObserver:sessionDelegate
-	    selector:@selector(fbDidLogin)
-	        name:@"fbDidLogin"
-	      object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:sessionDelegate
+        selector:@selector(fbDidLogin)
+            name:@"fbDidLogin"
+          object:nil];
 
-	[[NSNotificationCenter defaultCenter]
-	 addObserver:sessionDelegate
-	    selector:@selector(fbDidLogout)
-	        name:@"fbDidLogout"
-	      object:nil];    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:sessionDelegate
+        selector:@selector(fbDidLogout)
+            name:@"fbDidLogout"
+          object:nil];    
 }
 
 
@@ -159,13 +153,13 @@ static Facebook *sharedFacebook;
 	[defaults removeObjectForKey:@"FBExpirationDateKey"];
 	[defaults synchronize];
 
-	[[NSNotificationCenter defaultCenter]
-	 postNotificationName:@"fbDidLogout"
-	               object:nil];
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"fbDidLogout"
+                   object:nil];
 }
 
 -(void)fbDidNotLogin:(BOOL)cancelled {
-    NSLog(@"dammit");
+    NSLog(@"fbDidNotLogin");
 }
 
 @end

@@ -40,6 +40,7 @@
 #pragma mark LifeCycle
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super dealloc];
 }
 
