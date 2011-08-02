@@ -31,9 +31,12 @@
 
 #import "Three20/Three20.h"
 
+// RestKit
+#import <RestKit/RestKit.h>
+
 @class RKObjectLoaderTTModel;
 
-@interface MyThumbsViewDataSource2 : TTListDataSource {
+@interface MyThumbsViewDataSource2 : TTListDataSource<RKRequestDelegate> {
     NSString* _itemID;
     RKObjectLoaderTTModel* _itemModel;
 }

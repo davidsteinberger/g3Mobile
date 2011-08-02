@@ -190,8 +190,12 @@
 
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)URL {
-	[[TTNavigator navigator] openURLAction:[TTURLAction actionWithURLPath:URL.absoluteString]];
-	return YES;
+    if ([URL.scheme isEqualToString:[@"fb" stringByAppendingString:kAppId]])
+        return [[Facebook sharedFacebook] handleOpenURL:URL];
+    else {
+        [[TTNavigator navigator] openURLAction:[TTURLAction actionWithURLPath:URL.absoluteString]];
+        return YES;
+    }
 }
 
 
@@ -328,7 +332,7 @@
         entityMapping.primaryKeyAttribute = @"itemID";
         [entityMapping mapKeyPath:@"id" toAttribute:@"itemID"];
         [entityMapping mapKeyPath:@"description" toAttribute:@"desc"];
-        [entityMapping mapAttributes:@"title", @"type", @"thumb_url_public", @"thumb_url", @"resize_url_public", @"resize_url", @"file_url", @"file_url_public", @"thumb_width", @"thumb_height", @"created", @"positionInAlbum", @"parent", @"slug", nil];
+        [entityMapping mapAttributes:@"title", @"type", @"thumb_url_public", @"thumb_url", @"resize_url_public", @"resize_url", @"file_url", @"file_url_public", @"thumb_width", @"thumb_height", @"created", @"positionInAlbum", @"parent", @"slug", @"web_url", nil];
         
         RKManagedObjectMapping* itemMapping = [RKManagedObjectMapping mappingForClass:[RKMItem class]];
         itemMapping.primaryKeyAttribute = @"url";
@@ -397,6 +401,5 @@
 		break;
 	}
 }
-
 
 @end

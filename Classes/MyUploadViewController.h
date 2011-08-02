@@ -30,8 +30,11 @@
 #import "Three20/Three20.h"
 #import "MyViewController.h"
 
+// RestKit
+#import "RestKit/RestKit.h"
+
 @interface MyUploadViewController : UIViewController <UINavigationControllerDelegate,
-UIImagePickerControllerDelegate,TTPostControllerDelegate> {
+UIImagePickerControllerDelegate,TTPostControllerDelegate, RKRequestDelegate> {
 	id <MyViewController> _delegate;
     UIImagePickerController* _pickerController;
     UIImagePickerControllerSourceType _sourceType;

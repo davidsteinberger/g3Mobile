@@ -8,11 +8,12 @@
 
 #import "Three20/Three20.h"
 #import "MyViewController.h"
+#import <RestKit/RestKit.h>
 #import "RKMItem.h"
 
 @class MyThumbsViewController;
 
-@interface UpdateAlbumViewController : TTTableViewController <TTPostControllerDelegate, UITextFieldDelegate> {
+@interface UpdateAlbumViewController : TTTableViewController <TTPostControllerDelegate, UITextFieldDelegate, RKRequestDelegate> {
 	NSString* _albumID;
     id<MyViewController> _delegate;
     

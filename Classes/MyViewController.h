@@ -14,4 +14,7 @@
 // Reloads after an action was taken
 - (void)reloadViewController:(BOOL)goBack;
 
+// Dialog to post something on the FB wall
+- (void)postToFB: (id)sender;
+
 @end

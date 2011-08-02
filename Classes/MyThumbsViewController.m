@@ -16,6 +16,7 @@
 #import "UIImage+scaleAndRotate.h"
 #import "TTTableViewController+g3.h"
 #import "Overlay.h"
+#import "MyFacebook.h"
 
 @interface MyThumbsViewController ()
 
@@ -64,7 +65,7 @@
     
     self.hidesBottomBarWhenPushed = NO;
     
-    self.statusBarStyle = UIBarStyleDefault;
+    self.statusBarStyle = UIStatusBarStyleDefault;
     self.navigationBarStyle = UIBarStyleBlack;
     self.navigationBarTintColor = nil;
     [self setWantsFullScreenLayout:YES];
@@ -100,6 +101,18 @@
     UpdateAlbumViewController* updateAlbum = [[UpdateAlbumViewController alloc] initWithAlbumID: self.albumID andDelegate:self];
     [self.navigationController pushViewController:updateAlbum animated:YES];	
     TT_RELEASE_SAFELY(updateAlbum);
+}
+
+- (void)postToFB:(id)sender {    
+    RKObjectLoaderTTModel *model = (RKObjectLoaderTTModel *)[self.dataSource model];
+	RKMTree *tree = (RKMTree *)[model.objects objectAtIndex:0];
+	RKMEntity *entity = [tree root];
+    
+    NSString* albumName = [@"Checkout my Album: " stringByAppendingString:entity.title];
+    
+    if (![entity.thumb_url_public isEqualToString:@""] && entity.thumb_url_public != nil) {
+        [Facebook postToFBWithName:albumName andLink:entity.web_url andPicture:entity.thumb_url_public];
+    }
 }
 
 - (void)viewDidLoad {

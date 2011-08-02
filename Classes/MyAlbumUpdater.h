@@ -8,8 +8,9 @@
 
 #import "Three20/Three20.h"
 #import "MyViewController.h"
+#import "RestKit/RestKit.h"
 
-@interface MyAlbumUpdater : NSObject {
+@interface MyAlbumUpdater : NSObject<RKRequestDelegate> {
     id<MyViewController> _delegate;
 	NSMutableDictionary* _params;
 	NSString* _albumID;

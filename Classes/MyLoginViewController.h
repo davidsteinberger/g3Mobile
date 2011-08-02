@@ -28,6 +28,7 @@
  */
 
 #import "Three20/Three20.h"
+#import "FBLoginButton.h"
 
 @protocol MyLoginDataSource;
 
@@ -43,6 +44,7 @@
 	UITextField *_baseURL;
 	UITextField *_usernameField;
 	UITextField *_passwordField;
+    FBLoginButton* _FBLoginButton;
 	UISlider *_imageQualityField;
     UISlider *_slideshowTimeout;
 	TTView *_segmentedControlFrame;

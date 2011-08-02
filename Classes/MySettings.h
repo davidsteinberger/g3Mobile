@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "CoreData/CoreData.h"
 
+static NSString* kAppId = @"153647701377559";
+
 #define GlobalSettings \
 ((MySettings *)[MySettings sharedMySettings])
 

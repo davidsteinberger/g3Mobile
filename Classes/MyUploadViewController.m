@@ -26,9 +26,6 @@
 // Three20
 #import <Three20UI/UIViewAdditions.h>
 
-// RestKit
-#import "RestKit/RestKit.h"
-
 // Settings
 #import "MySettings.h"
 
@@ -239,6 +236,7 @@ static NSString *defaultCaption = @"Write a Caption ...";
 
 - (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
 	[self.delegate reloadViewController:NO];
+    [self.delegate postToFB:nil];
 	[self.navigationController popViewControllerAnimated:YES];
 }
 

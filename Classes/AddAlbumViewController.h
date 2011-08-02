@@ -9,9 +9,12 @@
 #import "Three20/Three20.h"
 #import "MyViewController.h"
 
+// RestKit
+#import "RestKit/RestKit.h"
+
 @class MyThumbsViewController;
 
-@interface AddAlbumViewController : TTTableViewController <UITextFieldDelegate> {
+@interface AddAlbumViewController : TTTableViewController <UITextFieldDelegate, RKRequestDelegate> {
 	id <MyViewController> _delegate;
     NSString* _parentAlbumID;
 	

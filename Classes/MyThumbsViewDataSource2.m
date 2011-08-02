@@ -33,7 +33,6 @@
 #import "MySettings.h"
 
 // RestKit
-#import <RestKit/RestKit.h>
 #import <RestKit/Three20/RKObjectLoaderTTModel.h>
 #import "RKMTree.h"
 #import "RKMItem.h"

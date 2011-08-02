@@ -54,5 +54,6 @@
 @property (nonatomic, retain) NSString *created;
 @property (nonatomic, retain) NSString* slug;
 @property (nonatomic, retain) NSNumber* positionInAlbum;
+@property (nonatomic, retain) NSString* web_url;
 
 @end

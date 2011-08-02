@@ -6,10 +6,7 @@
 //  Copyright 2010 -. All rights reserved.
 //
 
-#import "extThree20JSON/extThree20JSON.h"
-#import "extThree20JSON/NSObject+YAJL.h"
 #import "MySettings.h"
-#import <RestKit/RestKit.h>
 #import <RestKit/Three20/RKObjectLoaderTTModel.h>
 #import "AppDelegate.h"
 
