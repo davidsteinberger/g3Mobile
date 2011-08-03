@@ -333,13 +333,13 @@
         RKManagedObjectMapping* itemMapping = [RKManagedObjectMapping mappingForClass:[RKMItem class]];
         itemMapping.primaryKeyAttribute = @"url";
         [itemMapping mapAttributes:@"url", @"members", nil];
-        [itemMapping mapKeyPath:@"entity" toRelationship:@"rEntity" withObjectMapping:entityMapping];
-        [itemMapping mapKeyPath:@"relationships.tags.members" toRelationship:@"rTags" withObjectMapping:tagMemberMapping];
+        [itemMapping mapKeyPath:@"entity" toRelationship:@"rEntity" withMapping:entityMapping];
+        [itemMapping mapKeyPath:@"relationships.tags.members" toRelationship:@"rTags" withMapping:tagMemberMapping];
         
         RKManagedObjectMapping* treeMapping = [RKManagedObjectMapping mappingForClass:[RKMTree class]];
         treeMapping.primaryKeyAttribute = @"url";
         [treeMapping mapKeyPathsToAttributes:@"url", @"url", nil];
-        [treeMapping mapKeyPath:@"entity.entity" toRelationship:@"rEntity" withObjectMapping:entityMapping];
+        [treeMapping mapKeyPath:@"entity.entity" toRelationship:@"rEntity" withMapping:entityMapping];
         
         RKManagedObjectMapping* siteMapping = [RKManagedObjectMapping mappingForClass:[RKMSite class]];
         siteMapping.primaryKeyAttribute = @"url";
@@ -348,7 +348,7 @@
         RKManagedObjectMapping* sitesMapping = [RKManagedObjectMapping mappingForClass:[RKMSites class]];
         sitesMapping.primaryKeyAttribute = @"type";
         [sitesMapping mapAttributes:@"type", nil];
-        [sitesMapping mapKeyPath:@"sites" toRelationship:@"rSite" withObjectMapping:siteMapping];
+        [sitesMapping mapKeyPath:@"sites" toRelationship:@"rSite" withMapping:siteMapping];
         
         [mappingProvider addObjectMapping:sitesMapping];
         [mappingProvider addObjectMapping:itemMapping];        
