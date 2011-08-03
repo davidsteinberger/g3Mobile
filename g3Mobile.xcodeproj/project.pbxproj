@@ -116,6 +116,7 @@
 		63C8858D135CF34A00BDCE89 /* UIImage+scaleAndRotate.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C8858C135CF34900BDCE89 /* UIImage+scaleAndRotate.m */; };
 		63D63EF713C09EC600D7D5D9 /* RKMSites.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D63EF613C09EC600D7D5D9 /* RKMSites.m */; };
 		63D63F1713C0A9B200D7D5D9 /* sites.json in Resources */ = {isa = PBXBuildFile; fileRef = 63D63F1613C0A9B200D7D5D9 /* sites.json */; };
+		63D98EFC13E9F56A000C6313 /* NSURLRequest+ssl.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D98EFB13E9F56A000C6313 /* NSURLRequest+ssl.m */; };
 		63E13C7F12BED4C6003248F4 /* AddAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */; };
 		63EAC89113C852D6008C04B9 /* TTPhotoViewController+slideshow.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EAC89013C852D6008C04B9 /* TTPhotoViewController+slideshow.m */; };
 		63EE22A7130EF51200E2D407 /* createIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 63EE22A6130EF51200E2D407 /* createIcon.png */; };
@@ -397,6 +398,13 @@
 			remoteGlobalIDString = EB9E6C6210B6A8F800DE563C;
 			remoteInfo = "extThree20JSONUnitTests+SBJSON";
 		};
+		63D98EEA13E9F3D9000C6313 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63107DDF13C791C5007E6E86 /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 20808DBD13DE8CDC000A156A;
+			remoteInfo = "RestKitJSONParser+NXJSON";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -580,6 +588,8 @@
 		63D63EF613C09EC600D7D5D9 /* RKMSites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKMSites.m; sourceTree = "<group>"; };
 		63D63F1613C0A9B200D7D5D9 /* sites.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sites.json; sourceTree = "<group>"; };
 		63D972A6132ED321008F6095 /* MyLongPressGestureDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLongPressGestureDelegate.h; sourceTree = "<group>"; };
+		63D98EFA13E9F56A000C6313 /* NSURLRequest+ssl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLRequest+ssl.h"; sourceTree = "<group>"; };
+		63D98EFB13E9F56A000C6313 /* NSURLRequest+ssl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLRequest+ssl.m"; sourceTree = "<group>"; };
 		63E13C7D12BED4C6003248F4 /* AddAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAlbumViewController.h; sourceTree = "<group>"; };
 		63E13C7E12BED4C6003248F4 /* AddAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AddAlbumViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		63EAC88F13C852D6008C04B9 /* TTPhotoViewController+slideshow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTPhotoViewController+slideshow.h"; sourceTree = "<group>"; };
@@ -823,6 +833,7 @@
 				63107DF413C791C6007E6E86 /* libRestKitNetwork.a */,
 				63107DF613C791C6007E6E86 /* libRestKitObjectMapping.a */,
 				63107DF813C791C6007E6E86 /* libRestKitSupport.a */,
+				63D98EEB13E9F3D9000C6313 /* libRestKitJSONParser+NXJSON.a */,
 				63107DFA13C791C6007E6E86 /* libRestKitJSONParserYAJL.a */,
 				63107DFC13C791C6007E6E86 /* libRestKitJSONParserSBJSON.a */,
 				63107DFE13C791C6007E6E86 /* libRestKitJSONParserJSONKit.a */,
@@ -840,6 +851,8 @@
 				63D972A6132ED321008F6095 /* MyLongPressGestureDelegate.h */,
 				63C266FB132EEAA10086729D /* NSData+base64.h */,
 				63C266FC132EEAA10086729D /* NSData+base64.m */,
+				63D98EFA13E9F56A000C6313 /* NSURLRequest+ssl.h */,
+				63D98EFB13E9F56A000C6313 /* NSURLRequest+ssl.m */,
 				63B254061299BD3100BA9323 /* TTButtonContent+g3.h */,
 				63B254071299BD3100BA9323 /* TTButtonContent+g3.m */,
 				63B2540A1299BD3100BA9323 /* TTImageView+g3.h */,
@@ -850,6 +863,8 @@
 				63BD76C1130C5A31001FC9AF /* TTTableViewDataSource+g3.m */,
 				63B254111299BD3100BA9323 /* TTThumbsViewController+g3.h */,
 				63B254121299BD3100BA9323 /* TTThumbsViewController+g3.m */,
+				63EAC88F13C852D6008C04B9 /* TTPhotoViewController+slideshow.h */,
+				63EAC89013C852D6008C04B9 /* TTPhotoViewController+slideshow.m */,
 				63B254081299BD3100BA9323 /* TTURLImageResponse+g3.h */,
 				63B254091299BD3100BA9323 /* TTURLImageResponse+g3.m */,
 				636954B212D52ACD00CA3113 /* UIImage+cropping.h */,
@@ -860,8 +875,6 @@
 				63C8858C135CF34900BDCE89 /* UIImage+scaleAndRotate.m */,
 				636952D612D4FC5400CA3113 /* UIViewController+query.h */,
 				636952D712D4FC5400CA3113 /* UIViewController+query.m */,
-				63EAC88F13C852D6008C04B9 /* TTPhotoViewController+slideshow.h */,
-				63EAC89013C852D6008C04B9 /* TTPhotoViewController+slideshow.m */,
 			);
 			name = Additions;
 			sourceTree = "<group>";
@@ -1470,6 +1483,14 @@
 			remoteRef = 63B53CC2133FE27600460020 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		63D98EEB13E9F3D9000C6313 /* libRestKitJSONParser+NXJSON.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			name = "libRestKitJSONParser+NXJSON.a";
+			path = libRestKitJSONParserNXJSON.a;
+			remoteRef = 63D98EEA13E9F3D9000C6313 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1579,6 +1600,7 @@
 				63AAAE7213E200CA00DDD263 /* SBJsonWriter.m in Sources */,
 				6373D2A813E8A3650075BF46 /* MyFacebook.m in Sources */,
 				6373D2A913E8A3650075BF46 /* FBLoginButton.m in Sources */,
+				63D98EFC13E9F56A000C6313 /* NSURLRequest+ssl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
