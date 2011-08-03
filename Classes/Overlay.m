@@ -36,7 +36,7 @@
 	int buttonY = backView.frame.size.height / 2 - (buttonWidth / 2);
     
 	if (album) {
-		int cntButtons = 5;
+		int cntButtons = 6;
 		int xDist = backView.frame.size.width / (cntButtons);
 		int buttonX = xDist / 2 - (buttonHeight / 2);
         
@@ -94,11 +94,23 @@
 		[button4 addTarget:delegate action:@selector(deleteCurrentItem:)
 		  forControlEvents:UIControlEventTouchUpInside];
         
+        buttonX += xDist;
+		UIButton *button6 = [UIButton buttonWithType:UIButtonTypeCustom];
+		button6.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
+		[button6 setBackgroundImage:[UIImage imageNamed:@"fbIcon.png"]
+		                   forState:UIControlStateNormal];
+		[button6 setBackgroundImage:[UIImage imageNamed:@"fbIcon_selected.png"]
+		                   forState:UIControlStateSelected];
+		[button6 setShowsTouchWhenHighlighted:YES];
+		[button6 addTarget:delegate action:@selector(postToFB:)
+		  forControlEvents:UIControlEventTouchUpInside];
+        
 		[backView addSubview:button1];
 		[backView addSubview:button2];
 		[backView addSubview:button3];
 		[backView addSubview:button4];
 		[backView addSubview:button5];
+        [backView addSubview:button6];
 	}
 	else {
 		int cntButtons = 4;
@@ -175,12 +187,12 @@
     UIBarButtonItem* bbiButton3 = [self makeToolbarButtonWithImageNamed:@"editIcon.png" target:delegate action:@"editAlbum:"];                
     UIBarButtonItem* bbiButton4 = [self makeToolbarButtonWithImageNamed:@"reorderIcon.png" target:delegate action:@"reorder:"];
     UIBarButtonItem* bbiButton5 = [self makeToolbarButtonWithImageNamed:@"trashIcon.png" target:delegate action:@"deleteCurrentItem:"];
+    UIBarButtonItem* bbiButton6 = [self makeToolbarButtonWithImageNamed:@"fbIcon.png" target:delegate action:@"postToFB:"];
+    
     UIBarItem* space = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:
 						 UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-    
-    UIBarButtonItem* done = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:delegate action:@selector(toggleEditing:)] autorelease];
-    
-    NSArray* array = [NSArray arrayWithObjects:bbiButton1, space, bbiButton2, space, bbiButton3, space, bbiButton4, space, bbiButton5, space, done, nil];
+        
+    NSArray* array = [NSArray arrayWithObjects:bbiButton1, space, bbiButton2, space, bbiButton3, space, bbiButton4, space, bbiButton5, space, bbiButton6, nil];
     
     return array;
 }
@@ -190,12 +202,13 @@
     UIBarButtonItem* bbiButton2 = [self makeToolbarButtonWithImageNamed:@"addIcon.png" target:delegate action:@"createAlbum:"];
     UIBarButtonItem* bbiButton3 = [self makeToolbarButtonWithImageNamed:@"editIcon.png" target:delegate action:@"editAlbum:"];                
     UIBarButtonItem* bbiButton5 = [self makeToolbarButtonWithImageNamed:@"trashIcon.png" target:delegate action:@"deleteCurrentItem:"];
+    UIBarButtonItem* bbiButton6 = [self makeToolbarButtonWithImageNamed:@"fbIcon.png" target:delegate action:@"postToFB:"];
+    
     UIBarItem* space = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:
 						 UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
     
-    UIBarButtonItem* done = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:delegate action:@selector(toggleEditing:)] autorelease];
-    
-    NSArray* array = [NSArray arrayWithObjects:bbiButton1, space, bbiButton2, space, bbiButton3, space, bbiButton5, space, done, nil];
+    NSArray* array = [NSArray arrayWithObjects:bbiButton1, space, bbiButton2, space, bbiButton3, space, bbiButton5, space, 
+                      bbiButton6, nil];
     
     return array;
 }

@@ -6,10 +6,7 @@
 //  Copyright 2010 -. All rights reserved.
 //
 
-#import "extThree20JSON/NSObject+YAJL.h"
-
 #import "MyAlbumUpdater.h"
-#import "RestKit/RestKit.h"
 
 #import "AppDelegate.h"
 #import "SynthesizeSingleton.h"

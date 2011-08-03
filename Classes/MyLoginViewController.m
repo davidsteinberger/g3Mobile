@@ -48,6 +48,7 @@
 @property (nonatomic, readonly) UITextField *baseURL;
 @property (nonatomic, readonly) UITextField *usernameField;
 @property (nonatomic, retain) UITextField *passwordField;
+@property (nonatomic, retain) FBLoginButton* FBLoginButton;
 @property (nonatomic, retain) UISlider *imageQualityField;
 @property (nonatomic, retain) TTView *segmentedControlFrame;
 
@@ -70,6 +71,7 @@
 @synthesize baseURL = _baseURL;
 @synthesize passwordField = _passwordField;
 @synthesize usernameField = _usernameField;
+@synthesize FBLoginButton = _FBLoginButton;
 @synthesize imageQualityField = _imageQualityField;
 @synthesize segmentedControlFrame = _segmentedControlFrame;
 
@@ -91,9 +93,11 @@
 	TT_RELEASE_SAFELY(_baseURL);
 	TT_RELEASE_SAFELY(_usernameField);
 	TT_RELEASE_SAFELY(_passwordField);
+    TT_RELEASE_SAFELY(_FBLoginButton);
 	TT_RELEASE_SAFELY(_segmentedControlFrame);
 	TT_RELEASE_SAFELY(_buildDateField);
 	TT_RELEASE_SAFELY(_buildVersionField);
+    
 	[super dealloc];
 }
 
@@ -198,7 +202,7 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 0) {
-        TTActivityLabel* label = [[[TTActivityLabel alloc] initWithStyle:TTActivityLabelStyleBlackBox] autorelease];
+        TTActivityLabel* label = [[[TTActivityLabel alloc] initWithStyle:(UITableViewStyle)TTActivityLabelStyleBlackBox] autorelease];
         UIView* lastView = [self.view.subviews lastObject];
         label.text = @"Clearing the cache ...";
         [label sizeToFit];
@@ -512,6 +516,9 @@
 	_passwordField.clearsOnBeginEditing = NO;
 	_passwordField.delegate = self;
     
+    // Facebook
+    _FBLoginButton = [[FBLoginButton alloc] init];
+    
     // image quality field
 	_imageQualityField = [[[UISlider alloc] init] autorelease];
 	_imageQualityField.minimumValue = 0;
@@ -604,6 +611,8 @@
 	TTTableControlItem *cPasswordField = [TTTableControlItem itemWithCaption:@"Password"
 	                                                                 control:_passwordField];
 
+    TTTableControlItem *cFBLoginButton = [TTTableControlItem itemWithCaption:@"Facebook" 
+                                                                     control:_FBLoginButton];
 	TTTableControlItem *cImageQuality =
 	        [TTTableControlItem itemWithCaption:@"Image Quality" control:_imageQualityField];
     
@@ -621,6 +630,7 @@
 	NSMutableArray *sections = [[NSMutableArray alloc] init];
 	[sections addObject:@""];
 	[sections addObject:@"Global"];
+    [sections addObject:@"Facebook"];
 	[sections addObject:@"Other"];
 	[sections addObject:@"Cache Settings"];
 	[sections addObject:@"View Settings"];
@@ -638,24 +648,28 @@
 		[section1 addObject:cUsernameField];
 		[section1 addObject:cPasswordField];
 	}
-
-	// section 2 will hold the image quality slider
-	NSMutableArray *section2 = [[NSMutableArray alloc] init];
-	[section2 addObject:cImageQuality];
-    [section2 addObject:cSlideshowTimeout];
-
-	// section 3 will hold button for clearing the cache
+    
+    // section 2 will hold the Facebook things
+    NSMutableArray *section2 = [[NSMutableArray alloc] init];
+    [section2 addObject:cFBLoginButton];
+    
+	// section 3 will hold the image quality slider
 	NSMutableArray *section3 = [[NSMutableArray alloc] init];
-	[section3 addObject:button];
+	[section3 addObject:cImageQuality];
+    [section3 addObject:cSlideshowTimeout];
 
-	// section 4 will hold button for chossing the view-style
+	// section 4 will hold button for clearing the cache
 	NSMutableArray *section4 = [[NSMutableArray alloc] init];
-	[section4 addObject:_segmentedControlFrame];
+	[section4 addObject:button];
 
-	// section 5 will hold version info
+	// section 5 will hold button for chossing the view-style
 	NSMutableArray *section5 = [[NSMutableArray alloc] init];
-	[section5 addObject:cBuildDate];
-	[section5 addObject:cBuildVersion];
+	[section5 addObject:_segmentedControlFrame];
+
+	// section 6 will hold version info
+	NSMutableArray *section6 = [[NSMutableArray alloc] init];
+	[section6 addObject:cBuildDate];
+	[section6 addObject:cBuildVersion];
 
 	// create array for ttsectioneddatasource
 	NSMutableArray *items = [[NSMutableArray alloc] init];
@@ -665,12 +679,14 @@
 	[items addObject:section3];
 	[items addObject:section4];
 	[items addObject:section5];
+    [items addObject:section6];
 	TT_RELEASE_SAFELY(section0);
 	TT_RELEASE_SAFELY(section1);
 	TT_RELEASE_SAFELY(section2);
 	TT_RELEASE_SAFELY(section3);
 	TT_RELEASE_SAFELY(section4);
 	TT_RELEASE_SAFELY(section5);
+    TT_RELEASE_SAFELY(section6);
 
 	TTSectionedDataSource *ds =
 	        [[TTSectionedDataSource alloc] initWithItems:items sections:sections];

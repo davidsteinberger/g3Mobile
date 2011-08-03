@@ -1,11 +1,9 @@
 /*
- * RKOEntity.m
+ * MyFacebook.h
  * g3Mobile - an iPhone client for gallery3
  *
- * Created by David Steinberger on 4/4/2011.
- *
+ * Created by David Steinberger on 14/3/2011.
  * Copyright (c) 2011 David Steinberger
- * All rights reserved.
  *
  * This file is part of g3Mobile.
  *
@@ -22,27 +20,20 @@
  * You should have received a copy of the GNU General Public License
  * along with g3Mobile.  If not, see <http://www.gnu.org/licenses/>.
  */
+/*
+ * Singleton that makes it easier to interact with Facebook
+ */
 
-#import "RKMEntity.h"
+#import "FBConnect.h"
 
-@implementation RKMEntity
+@interface Facebook (shared)
 
-@dynamic itemID;
-@dynamic parent;
-@dynamic title;
-@dynamic desc;
-@dynamic type;
-@dynamic thumb_url_public;
-@dynamic thumb_url;
-@dynamic resize_url_public;
-@dynamic resize_url;
-@dynamic file_url_public;
-@dynamic file_url;
-@dynamic thumb_width;
-@dynamic thumb_height;
-@dynamic created;
-@dynamic slug;
-@dynamic positionInAlbum;
-@dynamic web_url;
++ (Facebook *)sharedFacebook;
++ (Facebook *)sharedFacebookWithAppId:(NSString *)app_id;
++ (void)postToFBWithName:(NSString *)name andLink:(NSString *)link andPicture:(NSString *)picture;
+
+// low level access to perform login & logout
+- (void)loginWithDelegate:(id <FBSessionDelegate>)delegate;
+- (void)logoutWithDelegate:(id <FBSessionDelegate>)delegate;
 
 @end

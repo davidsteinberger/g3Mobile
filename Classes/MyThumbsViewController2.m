@@ -52,6 +52,9 @@
 // Settings
 #import "MySettings.h"
 
+// Facebook
+#import "MyFacebook.h"
+
 // Others
 #import "Three20UICommon/UIViewControllerAdditions.h"
 #import "TTTableViewController+g3.h"
@@ -681,8 +684,9 @@
     }
 }
 
+
 // Allows to reorder
-- (void)reorder: (id)sender {
+- (void)reorder:(id)sender {
     [self setMetaDataHidden:YES];
     [self.navigationController setToolbarHidden:NO];
     
@@ -696,7 +700,8 @@
     [self.tableView setEditing:YES animated:YES];
 }
 
-- (void)reorderDone: (id)sender {
+
+- (void)reorderDone:(id)sender {
     [self setMetaDataHidden:NO];  
     [self.navigationController setToolbarHidden:NO];
     
@@ -704,6 +709,20 @@
     [self setStandardRightBarButtonItem];
     [self.tableView setEditing:NO animated:YES];
 }
+
+
+- (void)postToFB:(id)sender {    
+    RKObjectLoaderTTModel *model = (RKObjectLoaderTTModel *)[self.dataSource model];
+	RKMTree *tree = (RKMTree *)[model.objects objectAtIndex:0];
+	RKMEntity *entity = [tree root];
+    
+    NSString* albumName = [@"Checkout my Album: " stringByAppendingString:entity.title];
+    
+    if (![entity.thumb_url_public isEqualToString:@""] && entity.thumb_url_public != nil) {
+        [Facebook postToFBWithName:albumName andLink:entity.web_url andPicture:entity.thumb_url_public];
+    }
+}
+
 
 - (void)disableToolbarItemsExceptButton:(UIButton*)button {
     for (UIBarButtonItem* item in self.toolbarItems) {
@@ -713,15 +732,18 @@
     }
 }
 
+
 - (void)enableToolbarItems {
     for (UIBarButtonItem* item in self.toolbarItems) {
         item.enabled = YES;   
     }
 }
 
+
 - (void)setStandardRightBarButtonItem {
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(toggleEditing:)] autorelease];
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,11 +1,9 @@
 /*
- * RKOEntity.m
+ * FBLoginButton.h
  * g3Mobile - an iPhone client for gallery3
  *
- * Created by David Steinberger on 4/4/2011.
- *
+ * Created by David Steinberger on 14/3/2011.
  * Copyright (c) 2011 David Steinberger
- * All rights reserved.
  *
  * This file is part of g3Mobile.
  *
@@ -22,27 +20,21 @@
  * You should have received a copy of the GNU General Public License
  * along with g3Mobile.  If not, see <http://www.gnu.org/licenses/>.
  */
+/*
+ * A standard button that allows the user to login/logout to Facebook
+ *
+ * The button will automatically change to reflect the state of the session, showing
+ * "login" if the session is not connected, and "logout" if the session is connected.
+ */
 
-#import "RKMEntity.h"
+#import "MyFacebook.h"
 
-@implementation RKMEntity
+@interface FBLoginButton : UIButton <FBSessionDelegate, FBDialogDelegate> {
+	BOOL _isLoggedIn;
+}
 
-@dynamic itemID;
-@dynamic parent;
-@dynamic title;
-@dynamic desc;
-@dynamic type;
-@dynamic thumb_url_public;
-@dynamic thumb_url;
-@dynamic resize_url_public;
-@dynamic resize_url;
-@dynamic file_url_public;
-@dynamic file_url;
-@dynamic thumb_width;
-@dynamic thumb_height;
-@dynamic created;
-@dynamic slug;
-@dynamic positionInAlbum;
-@dynamic web_url;
+@property (nonatomic) BOOL isLoggedIn;
+
+- (void)updateImage;
 
 @end

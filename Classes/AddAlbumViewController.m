@@ -8,9 +8,6 @@
 
 #import "AddAlbumViewController.h"
 
-// RestKit
-#import "RestKit/RestKit.h"
-
 // Settings
 #import "MySettings.h"
 

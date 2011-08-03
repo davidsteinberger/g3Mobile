@@ -28,5 +28,14 @@
 	<string></string>
 	<key>UIPrerenderedIcon</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb153647701377559</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
