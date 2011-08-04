@@ -69,7 +69,7 @@ static CGFloat kPadding = 5;
 	
 	UIBarButtonItem *rightButton = [[[UIBarButtonItem alloc]
 									 initWithTitle:@"Edit"
-									 style:UIBarButtonSystemItemEdit
+									 style:UIBarButtonItemStylePlain
 									 target:self
 									 action:@selector(toggleEdit)]
 									autorelease];
@@ -209,7 +209,7 @@ static CGFloat kPadding = 5;
     NSString *label = self.tableView.editing == YES ? @"Done" : @"Edit";
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
 											   initWithTitle:label
-											   style:UIBarButtonSystemItemEdit
+											   style:UIBarButtonItemStylePlain
 											   target:self
 											   action:@selector(toggleEdit)]
 											   autorelease];

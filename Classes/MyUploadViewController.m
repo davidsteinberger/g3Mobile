@@ -117,7 +117,7 @@ static NSString *defaultCaption = @"Write a Caption ...";
 		_pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
 	}
 
-	_uploadProgress = [[TTActivityLabel alloc] initWithStyle:TTActivityLabelStyleBlackBox];
+	_uploadProgress = [[TTActivityLabel alloc] initWithStyle:(UITableViewStyle)TTActivityLabelStyleBlackBox];
 	UIView *lastView = [self.view viewWithTag:777];
 	_uploadProgress.text = @"Uploading ...";
 	[_uploadProgress sizeToFit];
