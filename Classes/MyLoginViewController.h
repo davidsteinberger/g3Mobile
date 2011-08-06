@@ -47,7 +47,8 @@
     FBLoginButton* _FBLoginButton;
 	UISlider *_imageQualityField;
     UISlider *_slideshowTimeout;
-	TTView *_segmentedControlFrame;
+	UISwitch *_showThumbsView;
+    UIButton *_clearCache;
 	UITextField *_buildDateField;
 	UITextField *_buildVersionField;
 

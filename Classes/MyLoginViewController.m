@@ -50,7 +50,7 @@
 @property (nonatomic, retain) UITextField *passwordField;
 @property (nonatomic, retain) FBLoginButton* FBLoginButton;
 @property (nonatomic, retain) UISlider *imageQualityField;
-@property (nonatomic, retain) TTView *segmentedControlFrame;
+@property (nonatomic, retain) UISwitch *showThumbsView;
 
 @property (nonatomic, retain) NSMutableArray *autocompleteUrls;
 @property (nonatomic, retain) NSMutableArray *autocompleteTitles;
@@ -73,7 +73,7 @@
 @synthesize usernameField = _usernameField;
 @synthesize FBLoginButton = _FBLoginButton;
 @synthesize imageQualityField = _imageQualityField;
-@synthesize segmentedControlFrame = _segmentedControlFrame;
+@synthesize showThumbsView = _showThumbsView;
 
 @synthesize autocompleteUrls = _autocompleteUrls;
 @synthesize autocompleteTitles = _autocompleteTitles;
@@ -94,9 +94,12 @@
 	TT_RELEASE_SAFELY(_usernameField);
 	TT_RELEASE_SAFELY(_passwordField);
     TT_RELEASE_SAFELY(_FBLoginButton);
-	TT_RELEASE_SAFELY(_segmentedControlFrame);
+	TT_RELEASE_SAFELY(_showThumbsView);
+    TT_RELEASE_SAFELY(_clearCache);
 	TT_RELEASE_SAFELY(_buildDateField);
 	TT_RELEASE_SAFELY(_buildVersionField);
+    TT_RELEASE_SAFELY(_imageQualityField);
+    TT_RELEASE_SAFELY(_slideshowTimeout);
     
 	[super dealloc];
 }
@@ -120,6 +123,121 @@
 
 		[self seedGalleryNames];
 	}
+    
+    // AlbumView / ThumbView switch
+    _showThumbsView = [[UISwitch alloc] init];
+    [_showThumbsView addTarget:self 
+                        action:@selector(toggleThumbsView:) 
+              forControlEvents:UIControlEventValueChanged];
+    if (GlobalSettings.viewStyle == kAlbumView) {
+        _showThumbsView.on = NO;
+    } else {
+        _showThumbsView.on = YES;
+    }
+
+	// View-only switch
+	_viewOnly = [[UISwitch alloc] init];
+    [_viewOnly addTarget:self 
+                  action:@selector(toggleViewOnly:)
+	    forControlEvents:UIControlEventValueChanged];
+    if (!GlobalSettings.viewOnly) {
+		_viewOnly.on = NO;
+	}
+	else {
+		_viewOnly.on = YES;
+		_usernameField.text = @"";
+		_passwordField.text = @"";
+	}
+    
+	// Url for website
+	_baseURL = [[UITextField alloc] init];
+	_baseURL.placeholder = @"http://example.com";
+	_baseURL.keyboardType = UIKeyboardTypeURL;
+	_baseURL.returnKeyType = UIReturnKeyNext;
+	_baseURL.autocorrectionType = UITextAutocorrectionTypeNo;
+	_baseURL.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	_baseURL.clearButtonMode = UITextFieldViewModeWhileEditing;
+	_baseURL.clearsOnBeginEditing = NO;
+	_baseURL.delegate = self;
+    _baseURL.text = GlobalSettings.baseURL;
+    
+	// Username field
+	_usernameField = [[UITextField alloc] init];
+	_usernameField.placeholder = @"*****";
+	_usernameField.keyboardType = UIKeyboardTypeDefault;
+	_usernameField.returnKeyType = UIReturnKeyNext;
+	_usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
+	_usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	_usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
+	_usernameField.clearsOnBeginEditing = NO;
+	_usernameField.delegate = self;
+    
+	// Password field
+	_passwordField = [[UITextField alloc] init];
+	_passwordField.placeholder = @"*****";
+	_passwordField.returnKeyType = UIReturnKeyGo;
+	_passwordField.secureTextEntry = YES;
+	_passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
+	_passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	_passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
+	_passwordField.clearsOnBeginEditing = NO;
+	_passwordField.delegate = self;
+    
+    // Facebook button
+    _FBLoginButton = [[FBLoginButton alloc] init];
+    
+    // Image quality field
+	_imageQualityField = [[UISlider alloc] init];
+	_imageQualityField.minimumValue = 0;
+	_imageQualityField.maximumValue = 1;
+    
+	_imageQualityField.value = GlobalSettings.imageQuality;
+	[_imageQualityField addTarget:self
+	                       action:@selector(imageQualityChanged:)
+	             forControlEvents:UIControlEventTouchUpInside];
+    
+    // Slideshow timeout
+    _slideshowTimeout = [[UISlider alloc] init];
+    _slideshowTimeout.minimumValue = 2;
+    _slideshowTimeout.maximumValue = 6;
+    
+    _slideshowTimeout.value = GlobalSettings.slideshowTimeout;
+    [_slideshowTimeout addTarget:self
+                          action:@selector(slideshowTimeoutChanged:)
+                forControlEvents:UIControlEventTouchUpInside];
+        
+    // a button to clear all cache
+	CGRect appFrame = [UIScreen mainScreen].applicationFrame;
+	_clearCache = [[UIButton alloc] init];
+    //buttonType = UIButtonTypeCustom;
+	[_clearCache setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+	_clearCache.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
+	[_clearCache setTitle:@"Delete all Cache" forState:UIControlStateNormal];
+	[_clearCache addTarget:@"tt://removeAllCache" action:@selector(openURL)
+	 forControlEvents:UIControlEventTouchUpInside];
+	_clearCache.frame = CGRectMake(20, 20, appFrame.size.width - 40, 50);
+    
+    // Build info
+	_buildDateField = [[UITextField alloc] init];
+	_buildDateField.text = @"";
+	_buildDateField.textAlignment = UITextAlignmentRight;
+	_buildDateField.enabled = NO;
+    
+	_buildVersionField = [[UITextField alloc] init];
+	_buildVersionField.text = @"";
+	_buildVersionField.textAlignment = UITextAlignmentRight;
+	_buildVersionField.enabled = NO;
+    
+    // Autocomplete
+    _autocompleteUrls = [[NSMutableArray alloc] init];
+	_autocompleteTitles = [[NSMutableArray alloc] init];
+	_autocompleteTableView = [[UITableView alloc]  initWithFrame:
+	                          CGRectMake(0, 160, 320, 120) style:UITableViewStylePlain];
+	self.autocompleteTableView.delegate = self;
+	self.autocompleteTableView.dataSource = self;
+	self.autocompleteTableView.scrollEnabled = YES;
+	self.autocompleteTableView.hidden = YES;
+	[self.tableView addSubview:self.autocompleteTableView];
 
 	return self;
 }
@@ -135,20 +253,79 @@
 	self.model = [[[MyLoginModel alloc] init] autorelease];
 }
 
+- (void)toggleThumbsView:(id)sender {
+    if (sender == _showThumbsView) {
+        if (_showThumbsView.on) {
+            GlobalSettings.viewStyle = kThumbView;
+        } else {
+            GlobalSettings.viewStyle = kAlbumView;
+        }
+        
+        TTNavigator *navigator = [TTNavigator navigator];
+		[navigator removeAllViewControllers];
+		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://root/1"]
+		                          applyAnimated:YES]];
+    }
+}
 
-- (void)toggleViewOnly:(UISwitch *)control {
-	NSIndexPath *switchPath = [NSIndexPath indexPathForRow:0 inSection:0];
-
-	if (control.on) {
-		[self     tableView:self.tableView
-		 commitEditingStyle:UITableViewCellEditingStyleDelete
-		  forRowAtIndexPath:switchPath];
-	}
-	else {
-		[self     tableView:self.tableView
-		 commitEditingStyle:UITableViewCellEditingStyleInsert
-		  forRowAtIndexPath:switchPath];
-	}
+- (void)toggleViewOnly:(id)sender {
+    if (sender == _viewOnly) {
+        if (_viewOnly.on) {
+            GlobalSettings.viewOnly = YES;
+            
+            NSIndexPath *userPath = [NSIndexPath indexPathForRow:2 inSection:1];
+            NSIndexPath *passwordPath = [NSIndexPath indexPathForRow:3 inSection:1];
+            
+            [[self.dataSource.items objectAtIndex:userPath.section]
+             removeObjectAtIndex:userPath.row];
+            [[self.dataSource.items objectAtIndex:userPath.section]
+             removeObjectAtIndex:userPath.row];
+            
+            _baseURL.returnKeyType = UIReturnKeyGo;
+            _usernameField.text = @"";
+            _passwordField.text = @"";
+            
+            [self.tableView deleteRowsAtIndexPaths:[NSArray
+                                               arrayWithObjects:userPath, passwordPath, nil]
+                             withRowAnimation:UITableViewRowAnimationFade];
+            
+            [self.tableView endUpdates];
+            
+            [_baseURL becomeFirstResponder];
+        }
+        else {
+            GlobalSettings.viewOnly = NO;
+            
+            [self.tableView beginUpdates];
+            
+            NSIndexPath *userPath = [NSIndexPath indexPathForRow:2 inSection:1];
+            NSIndexPath *passwordPath = [NSIndexPath indexPathForRow:3 inSection:1];
+            
+            TTTableControlItem *cUsernameField =
+            [TTTableControlItem itemWithCaption:@"Username"
+                                        control:_usernameField];
+            TTTableControlItem *cPasswordField =
+            [TTTableControlItem itemWithCaption:@"Password"
+                                        control:_passwordField];
+            
+            _usernameField.enabled = YES;
+            _passwordField.enabled = YES;
+            
+            [[self.dataSource.items objectAtIndex:userPath.section]
+             insertObject:cUsernameField
+             atIndex:userPath.row];
+            [[self.dataSource.items objectAtIndex:passwordPath.section]
+             insertObject:cPasswordField
+             atIndex:passwordPath.row];
+            [self.tableView
+             insertRowsAtIndexPaths:[NSArray arrayWithObjects:userPath, passwordPath, nil]
+             withRowAnimation:UITableViewRowAnimationFade];
+            
+            [self.tableView endUpdates];
+            
+            [_usernameField becomeFirstResponder];
+        }
+    }
 }
 
 
@@ -214,12 +391,13 @@
         [self deleteFromCoreData:@"RKMTag_Member"];
         [self deleteFromCoreData:@"RKMEntity"];
         [self deleteFromCoreData:@"RKMSites"];
-
-		TTNavigator *navigator = [TTNavigator navigator];
-		[navigator removeAllViewControllers];
-		[[TTURLCache sharedCache] removeAll:YES];
-		[navigator openURLAction:[[TTURLAction actionWithURLPath:@"tt://root/1"]
-		                          applyAnimated:YES]];
+        TTNavigator *navigator = [TTNavigator navigator];
+        [navigator removeAllViewControllers];
+        [[TTURLCache sharedCache] removeAll:YES];
+        
+        // To-Do: find better solution
+        // for now a controlled crash seems to be best
+        exit(0);		
 	}
 }
 
@@ -326,61 +504,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)
        editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		GlobalSettings.viewOnly = YES;
-
-		NSIndexPath *userPath = [NSIndexPath indexPathForRow:1 inSection:1];
-		NSIndexPath *passwordPath = [NSIndexPath indexPathForRow:2 inSection:1];
-
-		[[self.dataSource.items objectAtIndex:userPath.section]
-		 removeObjectAtIndex:userPath.row];
-		[[self.dataSource.items objectAtIndex:userPath.section]
-		 removeObjectAtIndex:userPath.row];
-
-		_baseURL.returnKeyType = UIReturnKeyGo;
-		_usernameField.text = @"";
-		_passwordField.text = @"";
-
-		[tableView deleteRowsAtIndexPaths:[NSArray
-		                                   arrayWithObjects:userPath, passwordPath, nil]
-		                 withRowAnimation:UITableViewRowAnimationFade];
-
-		[tableView endUpdates];
-
-		[_baseURL becomeFirstResponder];
-	}
-	if (editingStyle == UITableViewCellEditingStyleInsert) {
-		GlobalSettings.viewOnly = NO;
-
-		[tableView beginUpdates];
-
-		NSIndexPath *userPath = [NSIndexPath indexPathForRow:1 inSection:1];
-		NSIndexPath *passwordPath = [NSIndexPath indexPathForRow:2 inSection:1];
-
-		TTTableControlItem *cUsernameField =
-		        [TTTableControlItem itemWithCaption:@"Username"
-		                                    control:_usernameField];
-		TTTableControlItem *cPasswordField =
-		        [TTTableControlItem itemWithCaption:@"Password"
-		                                    control:_passwordField];
-
-		_usernameField.enabled = YES;
-		_passwordField.enabled = YES;
-
-		[[self.dataSource.items objectAtIndex:userPath.section]
-		 insertObject:cUsernameField
-		      atIndex:userPath.row];
-		[[self.dataSource.items objectAtIndex:passwordPath.section]
-		 insertObject:cPasswordField
-		      atIndex:passwordPath.row];
-		[tableView
-		 insertRowsAtIndexPaths:[NSArray arrayWithObjects:userPath, passwordPath, nil]
-		       withRowAnimation:UITableViewRowAnimationFade];
-
-		[tableView endUpdates];
-
-		[_usernameField becomeFirstResponder];
-	}
+    return;
 }
 
 
@@ -453,7 +577,9 @@
 		}
 	}
 
-	if (![context save:&error]) {
+    BOOL fail = ![context save:&error];
+    
+	if (fail) {
 		NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
 		return YES;
 	}
@@ -476,131 +602,11 @@
 
 
 - (void)createDataSource {
-	_autocompleteUrls = [[NSMutableArray alloc] init];
-	_autocompleteTitles = [[NSMutableArray alloc] init];
-
-	// view-only switch
-	_viewOnly = [[UISwitch alloc] init];
-
-	// url for website
-	_baseURL = [[UITextField alloc] init];
-	_baseURL.placeholder = @"http://example.com";
-	_baseURL.keyboardType = UIKeyboardTypeURL;
-	_baseURL.returnKeyType = UIReturnKeyNext;
-	_baseURL.autocorrectionType = UITextAutocorrectionTypeNo;
-	_baseURL.autocapitalizationType = UITextAutocapitalizationTypeNone;
-	_baseURL.clearButtonMode = UITextFieldViewModeWhileEditing;
-	_baseURL.clearsOnBeginEditing = NO;
-	_baseURL.delegate = self;
-    _baseURL.text = GlobalSettings.baseURL;
-
-	// username field
-	_usernameField = [[UITextField alloc] init];
-	_usernameField.placeholder = @"*****";
-	_usernameField.keyboardType = UIKeyboardTypeDefault;
-	_usernameField.returnKeyType = UIReturnKeyNext;
-	_usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
-	_usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-	_usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
-	_usernameField.clearsOnBeginEditing = NO;
-	_usernameField.delegate = self;
-
-	// password field
-	_passwordField = [[UITextField alloc] init];
-	_passwordField.placeholder = @"*****";
-	_passwordField.returnKeyType = UIReturnKeyGo;
-	_passwordField.secureTextEntry = YES;
-	_passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
-	_passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-	_passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
-	_passwordField.clearsOnBeginEditing = NO;
-	_passwordField.delegate = self;
+	TTTableControlItem *cViewOnly = [TTTableControlItem itemWithCaption:@"View Only" 
+                                                                control:_viewOnly];
     
-    // Facebook
-    _FBLoginButton = [[FBLoginButton alloc] init];
-    
-    // image quality field
-	_imageQualityField = [[[UISlider alloc] init] autorelease];
-	_imageQualityField.minimumValue = 0;
-	_imageQualityField.maximumValue = 1;
-    
-	_imageQualityField.value = GlobalSettings.imageQuality;
-	[_imageQualityField addTarget:self
-	                       action:@selector(imageQualityChanged:)
-	             forControlEvents:UIControlEventTouchUpInside];
-    
-    // Slideshow timeout
-    _slideshowTimeout = [[[UISlider alloc] init] autorelease];
-    _slideshowTimeout.minimumValue = 2;
-    _slideshowTimeout.maximumValue = 6;
-    
-    _slideshowTimeout.value = GlobalSettings.slideshowTimeout;
-    [_slideshowTimeout addTarget:self
-	                       action:@selector(slideshowTimeoutChanged:)
-	             forControlEvents:UIControlEventTouchUpInside];
-
-	// layout switcher
-	_segmentedControlFrame =
-	        [[TTView alloc] initWithFrame:CGRectMake(-1.0f, -1.0f, 302.0f, 46.0f)];
-    
-    _segmentedControlFrame.backgroundColor = [UIColor clearColor];
-	UISegmentedControl *segmentedControl =
-    [[UISegmentedControl alloc] initWithFrame:_segmentedControlFrame.bounds];
-	[segmentedControl insertSegmentWithTitle:@"Album" atIndex:0 animated:NO];
-	[segmentedControl insertSegmentWithTitle:@"Thumbs" atIndex:1 animated:NO];
-	segmentedControl.selectedSegmentIndex = (GlobalSettings.viewStyle == kAlbumView) ? 0 : 1;
-	[segmentedControl addTarget:(AppDelegate *)[[UIApplication sharedApplication] delegate]
-	                     action:@selector(dispatchToRootController:)
-	           forControlEvents:UIControlEventValueChanged];
-	[_segmentedControlFrame addSubview:segmentedControl];
-	TT_RELEASE_SAFELY(segmentedControl);
-
-    // a button to clear all cache
-	CGRect appFrame = [UIScreen mainScreen].applicationFrame;
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-	[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-	button.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
-	[button setTitle:@"Delete all Cache" forState:UIControlStateNormal];
-	[button addTarget:@"tt://removeAllCache" action:@selector(openURL)
-	 forControlEvents:UIControlEventTouchUpInside];
-	button.frame = CGRectMake(20, 20, appFrame.size.width - 40, 50);
-
-    // build info
-	_buildDateField = [[UITextField alloc] init];
-	_buildDateField.text = @"";
-	_buildDateField.textAlignment = UITextAlignmentRight;
-	_buildDateField.enabled = NO;
-
-	_buildVersionField = [[UITextField alloc] init];
-	_buildVersionField.text = @"";
-	_buildVersionField.textAlignment = UITextAlignmentRight;
-	_buildVersionField.enabled = NO;
-        
-    // autocompleteview
-	_autocompleteTableView = [[UITableView alloc]  initWithFrame:
-	                          CGRectMake(0, 160, 320, 120) style:UITableViewStylePlain];
-	self.autocompleteTableView.delegate = self;
-	self.autocompleteTableView.dataSource = self;
-	self.autocompleteTableView.scrollEnabled = YES;
-	self.autocompleteTableView.hidden = YES;
-	[self.tableView addSubview:self.autocompleteTableView];
-
-    
-	// create ui-elements
-	if (!GlobalSettings.viewOnly) {
-		_viewOnly.on = NO;
-	}
-	else {
-		_viewOnly.on = YES;
-		_usernameField.text = @"";
-		_passwordField.text = @"";
-	}
-
-	TTTableControlItem *cViewOnly =
-	        [TTTableControlItem itemWithCaption:@"View Only" control:_viewOnly];
-
-	[_viewOnly addTarget:self.tableView.delegate action:@selector(toggleViewOnly:)
-	    forControlEvents:UIControlEventValueChanged];
+    TTTableControlItem *cShowThumbsView = [TTTableControlItem itemWithCaption:@"Thumbs View" 
+                                                                      control:_showThumbsView];
 
 	TTTableControlItem *cBaseURL = [TTTableControlItem itemWithCaption:@"Website"
 	                                                           control:_baseURL];
@@ -625,23 +631,24 @@
 	TTTableControlItem *cBuildVersion =
 	        [TTTableControlItem itemWithCaption:@"Build-Version" control:_buildVersionField];
 
-	// put everything together (for the ttsectioneddatasource)
-	// create sections
+	// Put everything together (for the ttsectioneddatasource)
+	// Create sections
 	NSMutableArray *sections = [[NSMutableArray alloc] init];
 	[sections addObject:@""];
-	[sections addObject:@"Global"];
+	[sections addObject:@"Gallery3"];
     [sections addObject:@"Facebook"];
 	[sections addObject:@"Other"];
 	[sections addObject:@"Cache Settings"];
-	[sections addObject:@"View Settings"];
 	[sections addObject:@"Version Info"];
 
-	NSMutableArray *section0 = [[NSMutableArray alloc] init];
-	[section0 addObject:cViewOnly];
-
-	// create section items
-	// section 1 will hold items for login details
+	// Create section items
+    // Section 1 allows to switch between Album- and ThumbsView
+    NSMutableArray *section0 = [[NSMutableArray alloc] init];
+    [section0 addObject:cShowThumbsView];
+    
+	// Section 1 holds items for login
 	NSMutableArray *section1 = [[NSMutableArray alloc] init];
+    [section1 addObject:cViewOnly];
 	[section1 addObject:cBaseURL];
 
 	if (!GlobalSettings.viewOnly) {
@@ -649,44 +656,38 @@
 		[section1 addObject:cPasswordField];
 	}
     
-    // section 2 will hold the Facebook things
+    // Section 2 holds the Facebook things
     NSMutableArray *section2 = [[NSMutableArray alloc] init];
     [section2 addObject:cFBLoginButton];
     
-	// section 3 will hold the image quality slider
+	// Section 3 holds the image quality slider
 	NSMutableArray *section3 = [[NSMutableArray alloc] init];
 	[section3 addObject:cImageQuality];
     [section3 addObject:cSlideshowTimeout];
 
-	// section 4 will hold button for clearing the cache
+	// Section 4 holds button for clearing the cache
 	NSMutableArray *section4 = [[NSMutableArray alloc] init];
-	[section4 addObject:button];
+	[section4 addObject:_clearCache];
 
-	// section 5 will hold button for chossing the view-style
+	// Section 5 holds version info
 	NSMutableArray *section5 = [[NSMutableArray alloc] init];
-	[section5 addObject:_segmentedControlFrame];
+	[section5 addObject:cBuildDate];
+	[section5 addObject:cBuildVersion];
 
-	// section 6 will hold version info
-	NSMutableArray *section6 = [[NSMutableArray alloc] init];
-	[section6 addObject:cBuildDate];
-	[section6 addObject:cBuildVersion];
-
-	// create array for ttsectioneddatasource
+	// Create array for ttsectioneddatasource
 	NSMutableArray *items = [[NSMutableArray alloc] init];
 	[items addObject:section0];
 	[items addObject:section1];
 	[items addObject:section2];
 	[items addObject:section3];
 	[items addObject:section4];
-	[items addObject:section5];
-    [items addObject:section6];
+    [items addObject:section5];
 	TT_RELEASE_SAFELY(section0);
 	TT_RELEASE_SAFELY(section1);
 	TT_RELEASE_SAFELY(section2);
 	TT_RELEASE_SAFELY(section3);
 	TT_RELEASE_SAFELY(section4);
-	TT_RELEASE_SAFELY(section5);
-    TT_RELEASE_SAFELY(section6);
+    TT_RELEASE_SAFELY(section5);
 
 	TTSectionedDataSource *ds =
 	        [[TTSectionedDataSource alloc] initWithItems:items sections:sections];
