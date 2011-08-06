@@ -40,7 +40,7 @@
 #pragma mark LifeCycle
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super dealloc];
 }
 
@@ -64,6 +64,24 @@
 			[self addTarget:self action:@selector(fbLogin:) forControlEvents:
 			 UIControlEventTouchUpInside];
 		}
+
+		[[NSNotificationCenter defaultCenter]
+		 addObserver:self
+		    selector:@selector(fbDidLogin:)
+		        name:MyFBDidLogin
+		      object:nil];
+
+		[[NSNotificationCenter defaultCenter]
+		 addObserver:self
+		    selector:@selector(fbDidLogout:)
+		        name:MyFBDidLogout
+		      object:nil];
+
+		[[NSNotificationCenter defaultCenter]
+		 addObserver:self
+		    selector:@selector(fbDidNotLogin:)
+		        name:MyFBDidNotLogin
+		      object:nil];
 	}
 	return self;
 }
@@ -114,20 +132,20 @@
 
 // Perform FB login
 - (void)fbLogin:(id)sender {
-	[[Facebook sharedFacebook] loginWithDelegate:self];
+	[[Facebook sharedFacebook] login];
 }
 
 
 // Perform FB logout
 - (void)fbLogout:(id)sender {
-	[[Facebook sharedFacebook] logoutWithDelegate:self];
+	[[Facebook sharedFacebook] logout];
 }
 
 
 /**
  * Called when the user has logged in successfully.
  */
-- (void)fbDidLogin {
+- (void)fbDidLogin:(NSNotification *)notification {
 	_isLoggedIn = [[Facebook sharedFacebook] isSessionValid];
 	[self updateImage];
 	[self removeTarget:self action:@selector(fbLogin:) forControlEvents:
@@ -175,7 +193,7 @@
 /**
  * Called when the user canceled the authorization dialog.
  */
-- (void)fbDidNotLogin:(BOOL)cancelled {
+- (void)fbDidNotLogin:(NSNotification *)notification {
 	_isLoggedIn = NO;
 	[self updateImage];
 }
@@ -184,7 +202,7 @@
 /**
  * Called when the user logged out.
  */
-- (void)fbDidLogout {
+- (void)fbDidLogout:(NSNotification *)notification {
 	_isLoggedIn = [[Facebook sharedFacebook] isSessionValid];
 	[self updateImage];
 	[self removeTarget:self action:@selector(fbLogout:) forControlEvents:

@@ -29,7 +29,7 @@
 
 #import "MyFacebook.h"
 
-@interface FBLoginButton : UIButton <FBSessionDelegate, FBDialogDelegate> {
+@interface FBLoginButton : UIButton <FBDialogDelegate> {
 	BOOL _isLoggedIn;
 }
 

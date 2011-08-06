@@ -24,6 +24,10 @@
 #import "MyFacebook.h"
 #import "MySettings.h"
 
+NSString *const MyFBDidLogin = @"MyFBDidLogin";
+NSString *const MyFBDidLogout = @"MyFBDidLogout";
+NSString *const MyFBDidNotLogin = @"MyFBDidNotLogin";
+
 static Facebook *sharedFacebook;
 
 @interface Facebook (private)
@@ -99,22 +103,17 @@ static Facebook *sharedFacebook;
 }
 
 
-- (void)loginWithDelegate:(id <FBSessionDelegate>)delegate {
-	[self setupNotification:delegate];
-
+- (void)login {
 	if (![self isSessionValid]) {
 		NSArray *permissions = [NSArray arrayWithObjects:
 		                        @"read_stream", @"publish_stream", @"offline_access", nil];
 
-		// Utilize the notification center to forward the notification to the session
-		// delegate; the singleton needs to get notified to store the credentials
 		[self authorize:permissions delegate:(id < FBSessionDelegate >)self];
 	}
 }
 
 
-- (void)logoutWithDelegate:(id <FBSessionDelegate>)delegate {
-	[self setupNotification:delegate];
+- (void)logout {
 	[self logout:(id < FBSessionDelegate >)self];
 }
 
@@ -123,23 +122,6 @@ static Facebook *sharedFacebook;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark Private
 
-- (void)setupNotification:(id <FBSessionDelegate>)sessionDelegate {
-	[[NSNotificationCenter defaultCenter] removeObserver:sessionDelegate];
-
-	[[NSNotificationCenter defaultCenter]
-	 addObserver:sessionDelegate
-	    selector:@selector(fbDidLogin)
-	        name:@"fbDidLogin"
-	      object:nil];
-
-	[[NSNotificationCenter defaultCenter]
-	 addObserver:sessionDelegate
-	    selector:@selector(fbDidLogout)
-	        name:@"fbDidLogout"
-	      object:nil];
-}
-
-
 - (void)fbDidLogin {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject:[[Facebook sharedFacebook] accessToken] forKey:@"FBAccessTokenKey"];
@@ -147,8 +129,9 @@ static Facebook *sharedFacebook;
 	 @"FBExpirationDateKey"];
 	[defaults synchronize];
 
+	// Utilize the notification center to let observers know about the login
 	[[NSNotificationCenter defaultCenter]
-	 postNotificationName:@"fbDidLogin"
+	 postNotificationName:MyFBDidLogin
 	               object:nil];
 }
 
@@ -159,14 +142,18 @@ static Facebook *sharedFacebook;
 	[defaults removeObjectForKey:@"FBExpirationDateKey"];
 	[defaults synchronize];
 
+	// Utilize the notification center to let observers know about the logout
 	[[NSNotificationCenter defaultCenter]
-	 postNotificationName:@"fbDidLogout"
+	 postNotificationName:MyFBDidLogout
 	               object:nil];
 }
 
 
 - (void)fbDidNotLogin:(BOOL)cancelled {
-	NSLog(@"fbDidNotLogin");
+	// Utilize the notification center to let observers know about the logout
+	[[NSNotificationCenter defaultCenter]
+	 postNotificationName:MyFBDidNotLogin
+	               object:nil];
 }
 
 
