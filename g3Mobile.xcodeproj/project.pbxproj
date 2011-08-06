@@ -68,6 +68,8 @@
 		63776A9213C27D2800A49074 /* RKManagedObjectSeeder+persist.m in Sources */ = {isa = PBXBuildFile; fileRef = 63776A9113C27D2800A49074 /* RKManagedObjectSeeder+persist.m */; };
 		6380E70E1329A47D00A99EDB /* G3CoreData.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */; };
 		6380E7111329A4A200A99EDB /* RKMItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6380E7101329A4A200A99EDB /* RKMItem.m */; };
+		638884E413EDD50600596FE8 /* TTPhotoViewController+preload.m in Sources */ = {isa = PBXBuildFile; fileRef = 638884E313EDD50600596FE8 /* TTPhotoViewController+preload.m */; };
+		638884E713EDD6C100596FE8 /* TTPhotoView+preload.m in Sources */ = {isa = PBXBuildFile; fileRef = 638884E613EDD6C100596FE8 /* TTPhotoView+preload.m */; };
 		638C2909132D6ACD009CFE41 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 638C2908132D6ACD009CFE41 /* Default.png */; };
 		639788D012BEBA24000FBD09 /* defaultPerson.png in Resources */ = {isa = PBXBuildFile; fileRef = 639788CF12BEBA24000FBD09 /* defaultPerson.png */; };
 		639EACAC131C6EE300FBAEF4 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 639EACAB131C6EE300FBAEF4 /* CFNetwork.framework */; };
@@ -495,6 +497,10 @@
 		6380E70D1329A47D00A99EDB /* G3CoreData.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = G3CoreData.xcdatamodel; sourceTree = "<group>"; };
 		6380E70F1329A4A200A99EDB /* RKMItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKMItem.h; sourceTree = "<group>"; };
 		6380E7101329A4A200A99EDB /* RKMItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKMItem.m; sourceTree = "<group>"; };
+		638884E213EDD50600596FE8 /* TTPhotoViewController+preload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTPhotoViewController+preload.h"; sourceTree = "<group>"; };
+		638884E313EDD50600596FE8 /* TTPhotoViewController+preload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TTPhotoViewController+preload.m"; sourceTree = "<group>"; };
+		638884E513EDD6C100596FE8 /* TTPhotoView+preload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTPhotoView+preload.h"; sourceTree = "<group>"; };
+		638884E613EDD6C100596FE8 /* TTPhotoView+preload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TTPhotoView+preload.m"; sourceTree = "<group>"; };
 		638C2908132D6ACD009CFE41 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		638C2A30132D7D51009CFE41 /* MyLoginDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLoginDelegate.h; sourceTree = "<group>"; };
 		639788CF12BEBA24000FBD09 /* defaultPerson.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultPerson.png; sourceTree = "<group>"; };
@@ -651,7 +657,7 @@
 				63C8858E135CFA9200BDCE89 /* Protocols */,
 				639EACBD131C700D00FBAEF4 /* RestKit */,
 				63B254151299BD3100BA9323 /* Rest Helpers */,
-				6348605713101B6A00385A46 /* Additions */,
+				6348605713101B6A00385A46 /* Categories */,
 				636954B112D52A1600CA3113 /* Helpers */,
 				6374560312D3EFB2005FD8C6 /* Style Sheets */,
 			);
@@ -845,7 +851,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		6348605713101B6A00385A46 /* Additions */ = {
+		6348605713101B6A00385A46 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
 				63D972A6132ED321008F6095 /* MyLongPressGestureDelegate.h */,
@@ -857,6 +863,10 @@
 				63B254071299BD3100BA9323 /* TTButtonContent+g3.m */,
 				63B2540A1299BD3100BA9323 /* TTImageView+g3.h */,
 				63B2540B1299BD3100BA9323 /* TTImageView+g3.m */,
+				638884E513EDD6C100596FE8 /* TTPhotoView+preload.h */,
+				638884E613EDD6C100596FE8 /* TTPhotoView+preload.m */,
+				638884E213EDD50600596FE8 /* TTPhotoViewController+preload.h */,
+				638884E313EDD50600596FE8 /* TTPhotoViewController+preload.m */,
 				631A7B39130F49B0004A6110 /* TTTableViewController+g3.h */,
 				631A7B3A130F49B0004A6110 /* TTTableViewController+g3.m */,
 				63BD76C0130C5A31001FC9AF /* TTTableViewDataSource+g3.h */,
@@ -876,7 +886,7 @@
 				636952D612D4FC5400CA3113 /* UIViewController+query.h */,
 				636952D712D4FC5400CA3113 /* UIViewController+query.m */,
 			);
-			name = Additions;
+			name = Categories;
 			sourceTree = "<group>";
 		};
 		636954B112D52A1600CA3113 /* Helpers */ = {
@@ -1601,6 +1611,8 @@
 				6373D2A813E8A3650075BF46 /* MyFacebook.m in Sources */,
 				6373D2A913E8A3650075BF46 /* FBLoginButton.m in Sources */,
 				63D98EFC13E9F56A000C6313 /* NSURLRequest+ssl.m in Sources */,
+				638884E413EDD50600596FE8 /* TTPhotoViewController+preload.m in Sources */,
+				638884E713EDD6C100596FE8 /* TTPhotoView+preload.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
