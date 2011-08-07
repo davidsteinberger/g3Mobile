@@ -28,7 +28,10 @@
         {
             "title": "floatingpenguins.com",
             "url": "https://floatingpenguins.com/gallery3/index.php"
-        }
-              
+        },
+        {
+            "title": "hemmings.selfip.com",
+            "url": "http://hemmings.selfip.com/gallery3/index.php"
+        }     
     ]
 }
