@@ -329,7 +329,7 @@
         
         RKManagedObjectMapping* entityMapping = [RKManagedObjectMapping mappingForClass:[RKMEntity class]];
         entityMapping.setNilForMissingRelationships = YES;
-        entityMapping.primaryKeyAttribute = @"itemID";
+        entityMapping.primaryKeyAttribute = @"created";
         [entityMapping mapKeyPath:@"id" toAttribute:@"itemID"];
         [entityMapping mapKeyPath:@"description" toAttribute:@"desc"];
         [entityMapping mapAttributes:@"title", @"type", @"thumb_url_public", @"thumb_url", @"resize_url_public", @"resize_url", @"file_url", @"file_url_public", @"thumb_width", @"thumb_height", @"created", @"positionInAlbum", @"parent", @"slug", @"web_url", nil];

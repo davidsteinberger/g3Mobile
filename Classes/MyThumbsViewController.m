@@ -108,10 +108,19 @@
 	RKMTree *tree = (RKMTree *)[model.objects objectAtIndex:0];
 	RKMEntity *entity = [tree root];
     
-    NSString* albumName = [@"Checkout my Album: " stringByAppendingString:entity.title];
+    NSString* albumName = [@"Checkout Album: " stringByAppendingString:entity.title];
     
     if (![entity.thumb_url_public isEqualToString:@""] && entity.thumb_url_public != nil) {
         [Facebook postToFBWithName:albumName andLink:entity.web_url andPicture:entity.thumb_url_public];
+    } else {
+        TTAlertViewController *alert =
+        [[[TTAlertViewController alloc] initWithTitle:@"Permission Problem!" message:
+          @"The item must be public viewable before it can be posted on FB."]
+         autorelease];
+        [alert addCancelButtonWithTitle:@"OK" URL:nil];
+        [alert showInView:self.view animated:YES];
+        
+        [self showLoading:NO];
     }
 }
 

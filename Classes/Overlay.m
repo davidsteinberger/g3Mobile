@@ -37,8 +37,8 @@
     
 	if (album) {
 		int cntButtons = 6;
-		int xDist = backView.frame.size.width / (cntButtons);
-		int buttonX = xDist / 2 - (buttonHeight / 2);
+		int xDist = (backView.frame.size.width - 14) / (cntButtons);
+		int buttonX = (xDist / 2 - (buttonHeight / 2) ) + 7;
         
 		UIButton *button1 = [UIButton buttonWithType:UIButtonTypeCustom];
 		button1.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
@@ -113,7 +113,7 @@
         [backView addSubview:button6];
 	}
 	else {
-		int cntButtons = 4;
+		int cntButtons = 5;
 		int xDist = backView.frame.size.width / (cntButtons);
 		int buttonX = xDist / 2 - (buttonHeight / 2);
         
@@ -160,10 +160,22 @@
 		[button4 addTarget:delegate action:@selector(deleteCurrentItem:)
 		  forControlEvents:UIControlEventTouchUpInside];
         
+        buttonX += xDist;
+		UIButton *button5 = [UIButton buttonWithType:UIButtonTypeCustom];
+		button5.frame = CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight);
+		[button5 setBackgroundImage:[UIImage imageNamed:@"fbIcon.png"]
+		                   forState:UIControlStateNormal];
+		[button5 setBackgroundImage:[UIImage imageNamed:@"fbIcon_selected.png"]
+		                   forState:UIControlStateSelected];
+		[button5 setShowsTouchWhenHighlighted:YES];
+		[button5 addTarget:delegate action:@selector(postToFB:)
+		  forControlEvents:UIControlEventTouchUpInside];
+        
 		[backView addSubview:button1];
 		[backView addSubview:button2];
 		[backView addSubview:button3];
 		[backView addSubview:button4];
+        [backView addSubview:button5];
 	}
     
 	return [backView autorelease];

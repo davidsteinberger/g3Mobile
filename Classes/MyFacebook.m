@@ -89,7 +89,9 @@ static Facebook *sharedFacebook;
 	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 	                               kAppId, @"app_id",
 	                               link, @"link",
-	                               picture, @"picture",
+	                               [picture
+	                                stringByReplacingPercentEscapesUsingEncoding:
+	                                NSUTF8StringEncoding], @"picture",
 	                               name, @"name",
 	                               @"", @"caption",
 	                               @"", @"description",
