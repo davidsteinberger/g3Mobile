@@ -178,7 +178,11 @@
         request.response = response;
         TT_RELEASE_SAFELY(response);
         
-        [request send];
+        [request sendSynchronously];
+        
+        UIImageWriteToSavedPhotosAlbum(((TTURLImageResponse*)request.response).image, nil, nil, nil);
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;            
 	}
 	if (buttonIndex == 3) {
 		UIAlertView *dialog = [[[UIAlertView alloc] init] autorelease];
@@ -231,23 +235,6 @@
 	id<TTPhoto> previousPhoto = [_centerPhoto autorelease];
 	_centerPhoto = [photo retain];
 	[self didMoveToPhoto:_centerPhoto fromPhoto:previousPhoto];
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark -
-#pragma mark TTURLRequestDelegate
-
-/*
- * So far only used to fetch images
- * -> Save them to the camera roll
- */
-- (void)requestDidFinishLoad:(TTURLRequest *)request {
-	TTURLImageResponse *response = request.response;
-	UIImageWriteToSavedPhotosAlbum(response.image, nil, nil, nil);
-    
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 @end

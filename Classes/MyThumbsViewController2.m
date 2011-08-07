@@ -645,7 +645,9 @@
 	request.response = response;
 	TT_RELEASE_SAFELY(response);
 
-	[request send];
+	[request sendSynchronously];
+    
+    UIImageWriteToSavedPhotosAlbum(((TTURLImageResponse*)request.response).image, nil, nil, nil);
 }
 
 
@@ -831,24 +833,6 @@
     [[TTNavigator navigator] openURLAction:[[[TTURLAction actionWithURLPath:
                                               @"tt://nib/MyUploadViewController"]
                                              applyQuery:query] applyAnimated:YES]];
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark -
-#pragma mark TTURLRequestDelegate
-
-/*
- * So far only used to fetch images
- * -> Save them to the camera roll
- */
-- (void)requestDidFinishLoad:(TTURLRequest *)request {
-	TTURLImageResponse *response = request.response;
-	UIImageWriteToSavedPhotosAlbum(response.image, nil, nil, nil);
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	[self removeContextMenu];
 }
 
 

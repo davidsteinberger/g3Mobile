@@ -219,12 +219,12 @@
     
     // Build info
 	_buildDateField = [[UITextField alloc] init];
-	_buildDateField.text = @"";
+	_buildDateField.text = @"07-AUG-2011";
 	_buildDateField.textAlignment = UITextAlignmentRight;
 	_buildDateField.enabled = NO;
     
 	_buildVersionField = [[UITextField alloc] init];
-	_buildVersionField.text = @"";
+	_buildVersionField.text = @"21b39ae";
 	_buildVersionField.textAlignment = UITextAlignmentRight;
 	_buildVersionField.enabled = NO;
     
