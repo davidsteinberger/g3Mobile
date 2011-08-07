@@ -22,9 +22,17 @@
  */
 /*
  * Singleton that makes it easier to interact with Facebook
+ *
+ * This category on Facebook adds single sign-on to the framework.
+ * It exposes NSNotifications 'MyFBDidLogin', 'MyFBDidLogout' 
+ * and 'MyFBDidNotLogin'.
  */
 
 #import "FBConnect.h"
+
+extern NSString *const MyFBDidLogin;
+extern NSString *const MyFBDidLogout;
+extern NSString *const MyFBDidNotLogin;
 
 @interface Facebook (shared)
 
@@ -32,8 +40,16 @@
 + (Facebook *)sharedFacebookWithAppId:(NSString *)app_id;
 + (void)postToFBWithName:(NSString *)name andLink:(NSString *)link andPicture:(NSString *)picture;
 
-// low level access to perform login & logout
-- (void)loginWithDelegate:(id <FBSessionDelegate>)delegate;
-- (void)logoutWithDelegate:(id <FBSessionDelegate>)delegate;
+/*
+ * login to FB
+ * posts notification 'MyFBDidLogin'
+ */
+- (void)login;
+
+/*
+ * logout from FB
+ * posts notification 'MyFBDidLogout'
+ */
+- (void)logout;
 
 @end

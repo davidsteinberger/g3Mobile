@@ -675,7 +675,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				63F009C413E4064500DE922E /* Facebook */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -735,6 +734,7 @@
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				63B253331299BC7600BA9323 /* QuartzCore.framework */,
+				63F009C413E4064500DE922E /* Facebook */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
