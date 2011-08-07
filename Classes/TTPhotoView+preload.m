@@ -21,7 +21,12 @@
         || !_photo
         || self.urlPath != [_photo URLForVersion:TTPhotoVersionLarge]) {
         
-        self.contentMode = UIViewContentModeScaleAspectFill;
+        if (image == nil) {
+            image = TTIMAGE(@"bundle://Three20.bundle/images/photoDefault.png");
+            self.contentMode = UIViewContentModeCenter;
+        } else {
+            self.contentMode = UIViewContentModeScaleAspectFill;
+        }
     }
     
     [super setImage:image];

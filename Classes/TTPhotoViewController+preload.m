@@ -12,6 +12,7 @@
 @interface TTPhotoViewController()
 
 - (void)showPhoto:(id<TTPhoto>)photo inView:(TTPhotoView*)photoView;
+- (void)fetchThumbsAheadIfNeeded:(NSInteger)pageIndex;
 
 @end
 
@@ -32,25 +33,37 @@
         photoView.hidesCaption = _toolbar.alpha == 0;
     }
     
-    NSString* url = [photo URLForVersion:TTPhotoVersionThumbnail];
+    [self fetchThumbsAheadIfNeeded:pageIndex];
     
+    NSString* url = [photo URLForVersion:TTPhotoVersionThumbnail];
     UIImage  *img = [[TTURLCache sharedCache] imageForURL:url];
     
-    if (!img) {
-        TTURLRequest* request = [TTURLRequest requestWithURL:url delegate:self];
-        request.response = [[[TTURLImageResponse alloc] init] autorelease];
-        [request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
-        
-        [request sendSynchronously];        
-        
-        img = ((TTURLImageResponse*)request.response).image;
-    }
+    TTDASSERT(img);
     
     photoView.defaultImage = img;
     
     [self showPhoto:photo inView:photoView];
     
     return photoView;
+}
+
+- (void)fetchThumbsAheadIfNeeded:(NSInteger)pageIndex {
+    int index = pageIndex;
+    int mod = index % 3;
+    
+    if (mod == 0) {
+        for (int i=0; i<3+3 && index + i < [_photoSource maxPhotoIndex] + 1; i++) {
+            int pos = index + i;
+            id<TTPhoto> photo = [_photoSource photoAtIndex:pos];
+            NSString* url = [photo URLForVersion:TTPhotoVersionThumbnail];
+            
+            TTURLRequest* request = [TTURLRequest requestWithURL:url delegate:self];
+            request.response = [[[TTURLImageResponse alloc] init] autorelease];
+            [request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+            
+            [[TTURLRequestQueue mainQueue] sendRequest:request];
+        }
+    }
 }
 
 - (void)showPhoto:(id<TTPhoto>)photo inView:(TTPhotoView*)photoView {
