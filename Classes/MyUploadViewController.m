@@ -282,11 +282,12 @@ static NSString *defaultCaption = @"Write a Caption ...";
 	RKMItem *item = (RKMItem *)[objects objectAtIndex:0];
 	RKMEntity *entity = item.rEntity;
 
-	[self.delegate
-	 postToFBWithName:[@"New Photo uploaded: " stringByAppendingString:entity.name]
-	          andLink:[entity.web_url copy]
-	       andPicture:[entity.thumb_url_public copy]];
-
+    if (GlobalSettings.showFBOnUploader) {
+        [self.delegate
+         postToFBWithName:[@"New Photo uploaded: " stringByAppendingString:entity.name]
+                  andLink:[entity.web_url copy]
+               andPicture:[entity.thumb_url_public copy]];
+    }
 	[self.delegate reloadViewController:NO];
 	[self.navigationController popViewControllerAnimated:YES];
 }

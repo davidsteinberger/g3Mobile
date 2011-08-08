@@ -43,6 +43,7 @@
 @synthesize slideshowTimeout = _slideshowTimeout;
 @synthesize viewStyle = _viewStyle;
 @synthesize uploadCounter = _uploadCounter;
+@synthesize showFBOnUploader = _showFBOnUploader;
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(MySettings);
 
@@ -200,7 +201,7 @@ withImageQuality:(float) imageQuality {
 	int slideshowTimeout = [prefs integerForKey:@"slideshowTimeout"];
     
     if (slideshowTimeout == 0) {
-        slideshowTimeout = [[self getValue:@"imageQuality"] intValue];
+        slideshowTimeout = [[self getValue:@"slideshowTimeout"] intValue];
     }
     
     if (slideshowTimeout == 0) {
@@ -209,6 +210,19 @@ withImageQuality:(float) imageQuality {
     
     self->_slideshowTimeout = slideshowTimeout;
     return slideshowTimeout;
+}
+
+- (void)setShowFBOnUploader:(BOOL)showFBOnUploader {
+    NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
+	
+	[prefs setBool:showFBOnUploader forKey:@"showFBOnUploader"];
+	[self storeName:@"showFBOnUploader" withValue:[NSString stringWithFormat:@"%i",showFBOnUploader]];
+	[prefs synchronize];
+}
+
+- (BOOL)showFBOnUploader {
+	BOOL showFBOnUploader = [[self getValue:@"showFBOnUploader"] intValue];
+    return showFBOnUploader;
 }
 
 - (void)setViewStyle:(MyViewStyle)viewStyle {

@@ -29,6 +29,7 @@ typedef enum {
 	float _imageQuality;
     int _slideshowTimeout;
 	int _uploadCounter;
+    BOOL _showFBOnUploader;
     
 	//UI settings
 	MyViewStyle _viewStyle;
@@ -45,6 +46,7 @@ typedef enum {
 @property (nonatomic, assign) int slideshowTimeout;
 @property (nonatomic, assign) MyViewStyle viewStyle;
 @property (nonatomic, assign) int uploadCounter;
+@property (nonatomic, assign) BOOL showFBOnUploader;
 
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;

@@ -32,6 +32,8 @@
 #import "MyLoginModel.h"
 #import "MyLogin.h"
 #import "MySettings.h"
+#import "CheckMarkTableItem.h"
+#import "CheckMarkTableItemCell.h"
 
 // RestKit
 #import <RestKit/RestKit.h>
@@ -39,6 +41,17 @@
 #import "RKManagedObjectSeeder+persist.h"
 #import "RKMItem.h"
 #import "RKMSites.h"
+
+@implementation TTSectionedDataSource (checkmark)
+
+-(Class) tableView:(UITableView *)tableView cellClassForObject:(id)object {
+    if([object isKindOfClass:[CheckMarkTableItem class]])
+        return [CheckMarkTableItemCell class];
+    else
+        return [super tableView:tableView cellClassForObject:object];
+}
+
+@end
 
 @interface MyLoginViewController ()
 
@@ -662,6 +675,7 @@
     // Section 2 holds the Facebook things
     NSMutableArray *section2 = [[NSMutableArray alloc] init];
     [section2 addObject:cFBLoginButton];
+    [section2 addObject:[CheckMarkTableItem itemWithText:@"Enable on Uploader"]];
     
 	// Section 3 holds the image quality slider
 	NSMutableArray *section3 = [[NSMutableArray alloc] init];
@@ -734,6 +748,28 @@
 	if ([self.autocompleteTitles count] == 0) {
 		self.autocompleteTableView.hidden = YES;
 	}
+}
+
+#pragma mark -
+#pragma mark TTTableViewController
+
+-(void) didSelectObject:(id)object atIndexPath:(NSIndexPath *)indexPath{
+    if([object isKindOfClass:[CheckMarkTableItem class]]) {
+        CheckMarkTableItemCell *selectedCell = (CheckMarkTableItemCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        
+        if (selectedCell.state == CheckmarkNone) {
+            selectedCell.state = CheckmarkChecked;
+        } else {
+            selectedCell.state = CheckmarkNone;
+        }
+        
+        // Reload table data
+        [self.tableView reloadData];
+        
+        [_tableView deselectRowAtIndexPath:indexPath animated:YES];
+    } else{
+        [super didSelectObject:object atIndexPath:indexPath];
+    }
 }
 
 

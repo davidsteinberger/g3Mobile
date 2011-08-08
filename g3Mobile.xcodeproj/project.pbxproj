@@ -42,6 +42,8 @@
 		631A7B3B130F49B0004A6110 /* TTTableViewController+g3.m in Sources */ = {isa = PBXBuildFile; fileRef = 631A7B3A130F49B0004A6110 /* TTTableViewController+g3.m */; };
 		632A448B12D25F0B0055F67B /* MyUploadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 632A448A12D25F0B0055F67B /* MyUploadViewController.xib */; };
 		632A449112D261390055F67B /* MyUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 632A448F12D261390055F67B /* MyUploadViewController.m */; };
+		63360F1813F0650A00FDC98E /* CheckMarkTableItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 63360F1713F0650A00FDC98E /* CheckMarkTableItem.m */; };
+		63360F1B13F0655200FDC98E /* CheckMarkTableItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63360F1A13F0655200FDC98E /* CheckMarkTableItemCell.m */; };
 		633F18E513C8AEFC00B41E58 /* Param.m in Sources */ = {isa = PBXBuildFile; fileRef = 633F18E213C8AEFC00B41E58 /* Param.m */; };
 		633F18E613C8AEFC00B41E58 /* Vars.m in Sources */ = {isa = PBXBuildFile; fileRef = 633F18E413C8AEFC00B41E58 /* Vars.m */; };
 		63494DEB13E8AFDF00F0D9F2 /* fbIcon_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 63494DEA13E8AFDF00F0D9F2 /* fbIcon_selected.png */; };
@@ -455,6 +457,10 @@
 		632A448A12D25F0B0055F67B /* MyUploadViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyUploadViewController.xib; sourceTree = "<group>"; };
 		632A448E12D261390055F67B /* MyUploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyUploadViewController.h; sourceTree = "<group>"; };
 		632A448F12D261390055F67B /* MyUploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyUploadViewController.m; sourceTree = "<group>"; };
+		63360F1613F0650A00FDC98E /* CheckMarkTableItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckMarkTableItem.h; sourceTree = "<group>"; };
+		63360F1713F0650A00FDC98E /* CheckMarkTableItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckMarkTableItem.m; sourceTree = "<group>"; };
+		63360F1913F0655200FDC98E /* CheckMarkTableItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckMarkTableItemCell.h; sourceTree = "<group>"; };
+		63360F1A13F0655200FDC98E /* CheckMarkTableItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckMarkTableItemCell.m; sourceTree = "<group>"; };
 		633F18E113C8AEFC00B41E58 /* Param.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Param.h; path = Classes/Param.h; sourceTree = "<group>"; };
 		633F18E213C8AEFC00B41E58 /* Param.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Param.m; path = Classes/Param.m; sourceTree = "<group>"; };
 		633F18E313C8AEFC00B41E58 /* Vars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vars.h; path = Classes/Vars.h; sourceTree = "<group>"; };
@@ -1042,6 +1048,10 @@
 				63A3B516129C3BDE00E04981 /* MyLoginModel.m */,
 				63A3B513129C3BDE00E04981 /* MyLogin.h */,
 				63A3B514129C3BDE00E04981 /* MyLogin.m */,
+				63360F1613F0650A00FDC98E /* CheckMarkTableItem.h */,
+				63360F1713F0650A00FDC98E /* CheckMarkTableItem.m */,
+				63360F1913F0655200FDC98E /* CheckMarkTableItemCell.h */,
+				63360F1A13F0655200FDC98E /* CheckMarkTableItemCell.m */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -1613,6 +1623,8 @@
 				63D98EFC13E9F56A000C6313 /* NSURLRequest+ssl.m in Sources */,
 				638884E413EDD50600596FE8 /* TTPhotoViewController+preload.m in Sources */,
 				638884E713EDD6C100596FE8 /* TTPhotoView+preload.m in Sources */,
+				63360F1813F0650A00FDC98E /* CheckMarkTableItem.m in Sources */,
+				63360F1B13F0655200FDC98E /* CheckMarkTableItemCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
