@@ -95,7 +95,8 @@
 	[TTStyleSheet setGlobalStyleSheet:[[[StyleSheet alloc] init] autorelease]];
 	[[TTURLRequestQueue mainQueue] setMaxContentLength:0];
 
-	// observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
+	// observe the kNetworkReachabilityChangedNotification. When that notification is posted,
+	// the
 	// method "reachabilityChanged" will be called.
 	[[NSNotificationCenter defaultCenter] addObserver:self
 	                                         selector:@selector(reachabilityChanged:)
@@ -166,14 +167,8 @@
 	       from:@ "tt://nib/(loadFromNib:)" toViewController:self
 	 transition:UIViewAnimationTransitionFlipFromLeft];
 
-	// temporary until everything is changed to GlobalSettings approach
-	self.baseURL = nil;
-	self.challenge = nil;
-	self.baseURL = GlobalSettings.baseURL;
-	self.challenge = GlobalSettings.challenge;
+	[self initRestKit];
 
-    [self initRestKit];
-	
 	// restore view-controllers otherwise login
 	if (![navigator restoreViewControllers]) {
 		if ([GlobalSettings.baseURL isEqual:@ ""] || GlobalSettings.baseURL == nil ||
@@ -190,12 +185,13 @@
 
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)URL {
-    if ([URL.scheme isEqualToString:[@"fb" stringByAppendingString:kAppId]])
-        return [[Facebook sharedFacebook] handleOpenURL:URL];
-    else {
-        [[TTNavigator navigator] openURLAction:[TTURLAction actionWithURLPath:URL.absoluteString]];
-        return YES;
-    }
+	if ([URL.scheme isEqualToString:[@"fb" stringByAppendingString:kAppId]])
+		return [[Facebook sharedFacebook] handleOpenURL:URL];
+	else {
+		[[TTNavigator navigator] openURLAction:[TTURLAction actionWithURLPath:URL.
+		                                        absoluteString]];
+		return YES;
+	}
 }
 
 
@@ -206,15 +202,9 @@
 
 // Login finished, re-init
 - (void)finishedLogin {
-	// temporary until everything is changed to GlobalSettings
-	self.baseURL = nil;
-	self.challenge = nil;
-	self.baseURL = GlobalSettings.baseURL;
-	self.challenge = GlobalSettings.challenge;
-    
-    [self initRestKit];
-    
-    TTNavigator *navigator = [TTNavigator navigator];
+	[self initRestKit];
+
+	TTNavigator *navigator = [TTNavigator navigator];
 	[navigator removeAllViewControllers];
 	[navigator openURLAction:[TTURLAction actionWithURLPath:@ "tt://root/1"]];
 }
@@ -242,7 +232,7 @@
        query {
 	UIViewController *newController = [[NSClassFromString (className)alloc]
 	                                   initWithNibName:nibName bundle:nil];
-    [newController setQuery:query];
+	[newController setQuery:query];
 	return [newController autorelease];
 }
 
@@ -264,9 +254,9 @@
 // Removes all viewcontrollers and redirects to album- or thumb-view
 - (void)rootController:(NSNull *)null {
 	TTNavigator *navigator = [TTNavigator navigator];
-    [navigator removeAllViewControllers];
+	[navigator removeAllViewControllers];
 	if (GlobalSettings.viewStyle == kAlbumView) {
-        [navigator openURLAction:[[TTURLAction actionWithURLPath:@ "tt://album/1"]
+		[navigator openURLAction:[[TTURLAction actionWithURLPath:@ "tt://album/1"]
 		                          applyAnimated:YES]];
 	}
 	if (GlobalSettings.viewStyle == kThumbView) {
@@ -278,92 +268,116 @@
 
 // Initializes RestKit
 - (void)initRestKit {
-    
-    /*
-     * If RestKit hasn't been loaded before 
-     *   -> full init of the library
-     * Else:
-     *   -> Only update the BaseURL and the new HTTP-Headers
-     *      (because those might have changed with the login)
-     *      see: http://groups.google.com/group/restkit/browse_thread/thread/0566b4a670b5355b/79cc36f28c4d63ea#79cc36f28c4d63ea
-     */
-    if (!_isRestKitLoad) {
-        _isRestKitLoad = YES;
-        
-        //RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
-        
-        NSString* baseURL = ([GlobalSettings.baseURL isEqualToString:@""]) ? @"http://www.google.com" : GlobalSettings.baseURL; 
-        RKObjectManager* objectManager = [RKObjectManager objectManagerWithBaseURL:baseURL];
-        
-        // Initialize object store
-        objectManager.objectStore =
-        [[[RKManagedObjectStore alloc] initWithStoreFilename:@ "g3CoreData.sqlite"]
-         autorelease];
-        objectManager.objectStore.managedObjectCache = [[DBManagedObjectCache new] autorelease];
-        
-        [RKObjectManager sharedManager].client.cachePolicy = RKRequestCachePolicyNone;
-        
-        [RKRequestQueue sharedQueue].showsNetworkActivityIndicatorWhenBusy = YES;
-        
-        // even strange mime types should be parsed with JSONKit        
-        [[RKParserRegistry sharedRegistry] setParserClass:NSClassFromString(@"RKJSONParserJSONKit")
-                                              forMIMEType:@"text/html"];
-        [[RKParserRegistry sharedRegistry] setParserClass:NSClassFromString(@"RKJSONParserJSONKit")
-                                              forMIMEType:@"text/plain"];
+	/*
+	 * If RestKit hasn't been loaded before
+	 *   -> full init of the library
+	 * Else:
+	 *   -> Only update the BaseURL and the new HTTP-Headers
+	 *      (because those might have changed with the login)
+	 *      see:
+	 *****http://groups.google.com/group/restkit/browse_thread/thread/0566b4a670b5355b/79cc36f28c4d63ea#79cc36f28c4d63ea
+	 */
+	if (!_isRestKitLoad) {
+		_isRestKitLoad = YES;
 
-        // Set Gallery3 specific HTTP headers
-        [[objectManager client] setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
-        [[objectManager client] setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-        
-        // Create the mappings
-        RKObjectMappingProvider* mappingProvider = [[RKObjectMappingProvider new] autorelease];
-        
-        RKManagedObjectMapping* tagMemberMapping = [RKManagedObjectMapping mappingForClass:[RKMTag_Member class]];
-        tagMemberMapping.setNilForMissingRelationships = YES;
-        tagMemberMapping.primaryKeyAttribute = @"url";
-        [tagMemberMapping mapKeyPathsToAttributes:
-         @"entity.tag.url", @"url", 
-         @"entity.tag.entity.name", @"name", 
-         @"entity.tag.entity.count", @"count", 
-         nil];
-        
-        RKManagedObjectMapping* entityMapping = [RKManagedObjectMapping mappingForClass:[RKMEntity class]];
-        entityMapping.setNilForMissingRelationships = YES;
-        entityMapping.primaryKeyAttribute = @"created";
-        [entityMapping mapKeyPath:@"id" toAttribute:@"itemID"];
-        [entityMapping mapKeyPath:@"description" toAttribute:@"desc"];
-        [entityMapping mapAttributes:@"title", @"type", @"thumb_url_public", @"thumb_url", @"resize_url_public", @"resize_url", @"file_url", @"file_url_public", @"thumb_width", @"thumb_height", @"created", @"positionInAlbum", @"parent", @"slug", @"web_url", nil];
-        
-        RKManagedObjectMapping* itemMapping = [RKManagedObjectMapping mappingForClass:[RKMItem class]];
-        itemMapping.primaryKeyAttribute = @"url";
-        [itemMapping mapAttributes:@"url", @"members", nil];
-        [itemMapping mapKeyPath:@"entity" toRelationship:@"rEntity" withMapping:entityMapping];
-        [itemMapping mapKeyPath:@"relationships.tags.members" toRelationship:@"rTags" withMapping:tagMemberMapping];
-        
-        RKManagedObjectMapping* treeMapping = [RKManagedObjectMapping mappingForClass:[RKMTree class]];
-        treeMapping.primaryKeyAttribute = @"url";
-        [treeMapping mapKeyPathsToAttributes:@"url", @"url", nil];
-        [treeMapping mapKeyPath:@"entity.entity" toRelationship:@"rEntity" withMapping:entityMapping];
-        
-        RKManagedObjectMapping* siteMapping = [RKManagedObjectMapping mappingForClass:[RKMSite class]];
-        siteMapping.primaryKeyAttribute = @"url";
-        [siteMapping mapAttributes:@"title", @"url", nil];
-        
-        RKManagedObjectMapping* sitesMapping = [RKManagedObjectMapping mappingForClass:[RKMSites class]];
-        sitesMapping.primaryKeyAttribute = @"type";
-        [sitesMapping mapAttributes:@"type", nil];
-        [sitesMapping mapKeyPath:@"sites" toRelationship:@"rSite" withMapping:siteMapping];
-        
-        [mappingProvider addObjectMapping:sitesMapping];
-        [mappingProvider addObjectMapping:itemMapping];        
-        [mappingProvider addObjectMapping:treeMapping];
-        
-        objectManager.mappingProvider = mappingProvider;
-    } else if (_isRestKitLoad) {
-        [RKObjectManager sharedManager].client.baseURL = GlobalSettings.baseURL;
-        [[RKObjectManager sharedManager].client setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
-        [[RKObjectManager sharedManager].client setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    }
+		//RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
+
+		NSString *baseURL =
+		        ([GlobalSettings.baseURL isEqualToString:@""]) ? @"http://www.google.com" :
+		        GlobalSettings.baseURL;
+		RKObjectManager *objectManager = [RKObjectManager objectManagerWithBaseURL:baseURL];
+
+		// Initialize object store
+		objectManager.objectStore =
+		        [[[RKManagedObjectStore alloc] initWithStoreFilename:@ "g3CoreData.sqlite"]
+		         autorelease];
+		objectManager.objectStore.managedObjectCache =
+		        [[DBManagedObjectCache new] autorelease];
+
+		[RKObjectManager sharedManager].client.cachePolicy = RKRequestCachePolicyNone;
+
+		[RKRequestQueue sharedQueue].showsNetworkActivityIndicatorWhenBusy = YES;
+
+		// even strange mime types should be parsed with JSONKit
+		[[RKParserRegistry sharedRegistry] setParserClass:NSClassFromString(
+		         @"RKJSONParserJSONKit")
+		                                      forMIMEType:@"text/html"];
+		[[RKParserRegistry sharedRegistry] setParserClass:NSClassFromString(
+		         @"RKJSONParserJSONKit")
+		                                      forMIMEType:@"text/plain"];
+
+		// Set Gallery3 specific HTTP headers
+		[[objectManager client] setValue:GlobalSettings.challenge forHTTPHeaderField:
+		 @"X-Gallery-Request-Key"];
+		[[objectManager client] setValue:@"application/x-www-form-urlencoded"
+		              forHTTPHeaderField:@"Content-Type"];
+
+		// Create the mappings
+		RKObjectMappingProvider *mappingProvider =
+		        [[RKObjectMappingProvider new] autorelease];
+
+		RKManagedObjectMapping *tagMemberMapping =
+		        [RKManagedObjectMapping mappingForClass:[RKMTag_Member class]];
+		tagMemberMapping.setNilForMissingRelationships = YES;
+		tagMemberMapping.primaryKeyAttribute = @"url";
+		[tagMemberMapping mapKeyPathsToAttributes:
+		 @"entity.tag.url", @"url",
+		 @"entity.tag.entity.name", @"name",
+		 @"entity.tag.entity.count", @"count",
+		 nil];
+
+		RKManagedObjectMapping *entityMapping =
+		        [RKManagedObjectMapping mappingForClass:[RKMEntity class]];
+		entityMapping.setNilForMissingRelationships = YES;
+		entityMapping.primaryKeyAttribute = @"created";
+		[entityMapping mapKeyPath:@"id" toAttribute:@"itemID"];
+		[entityMapping mapKeyPath:@"description" toAttribute:@"desc"];
+		[entityMapping mapAttributes:@"title", @"name", @"type", @"thumb_url_public",
+		 @"thumb_url", @"resize_url_public", @"resize_url", @"file_url", @"file_url_public",
+		 @"thumb_width", @"thumb_height", @"created", @"positionInAlbum", @"parent",
+		 @"slug", @"web_url",
+		 nil];
+
+		RKManagedObjectMapping *itemMapping =
+		        [RKManagedObjectMapping mappingForClass:[RKMItem class]];
+		itemMapping.primaryKeyAttribute = @"url";
+		[itemMapping mapAttributes:@"url", @"members", nil];
+		[itemMapping mapKeyPath:@"entity" toRelationship:@"rEntity" withMapping:
+		 entityMapping];
+		[itemMapping mapKeyPath:@"relationships.tags.members" toRelationship:@"rTags"
+		            withMapping:tagMemberMapping];
+
+		RKManagedObjectMapping *treeMapping =
+		        [RKManagedObjectMapping mappingForClass:[RKMTree class]];
+		treeMapping.primaryKeyAttribute = @"url";
+		[treeMapping mapKeyPathsToAttributes:@"url", @"url", nil];
+		[treeMapping mapKeyPath:@"entity.entity" toRelationship:@"rEntity" withMapping:
+		 entityMapping];
+
+		RKManagedObjectMapping *siteMapping =
+		        [RKManagedObjectMapping mappingForClass:[RKMSite class]];
+		siteMapping.primaryKeyAttribute = @"url";
+		[siteMapping mapAttributes:@"title", @"url", nil];
+
+		RKManagedObjectMapping *sitesMapping =
+		        [RKManagedObjectMapping mappingForClass:[RKMSites class]];
+		sitesMapping.primaryKeyAttribute = @"type";
+		[sitesMapping mapAttributes:@"type", nil];
+		[sitesMapping mapKeyPath:@"sites" toRelationship:@"rSite" withMapping:siteMapping];
+
+		[mappingProvider addObjectMapping:sitesMapping];
+		[mappingProvider addObjectMapping:itemMapping];
+		[mappingProvider addObjectMapping:treeMapping];
+
+		objectManager.mappingProvider = mappingProvider;
+	}
+	else if (_isRestKitLoad) {
+		[RKObjectManager sharedManager].client.baseURL = GlobalSettings.baseURL;
+		[[RKObjectManager sharedManager].client
+		 setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+		[[RKObjectManager sharedManager].client
+		 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+	}
 }
 
 
@@ -401,5 +415,6 @@
 		break;
 	}
 }
+
 
 @end

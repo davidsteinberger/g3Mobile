@@ -713,17 +713,9 @@
 }
 
 
-- (void)postToFB:(id)sender {    
-    RKMEntity *entity = [self getEntity];
-
-    NSString* name;
-    if ([entity.type isEqualToString:@"album"]) {
-        name = [@"Checkout Album: " stringByAppendingString:entity.title];
-    } else {
-        name = [@"Checkout Photo: " stringByAppendingString:entity.title];
-    }
-    if (![entity.thumb_url_public isEqualToString:@""] && entity.thumb_url_public != nil) {
-        [Facebook postToFBWithName:name andLink:entity.web_url andPicture:entity.thumb_url_public];
+- (void)postToFBWithName:(NSString *)name andLink:(NSString *)link andPicture:(NSString *)picture {
+    if (![picture isEqualToString:@""] && picture != nil) {
+        [Facebook postToFBWithName:name andLink:link andPicture:picture];
     } else {
         TTAlertViewController *alert =
         [[[TTAlertViewController alloc] initWithTitle:@"Permission Problem!" message:
@@ -734,6 +726,19 @@
         
         [self showLoading:NO];
     }
+}
+
+
+- (void)postToFB:(id)sender {    
+    RKMEntity *entity = [self getEntity];
+
+    NSString* name;
+    if ([entity.type isEqualToString:@"album"]) {
+        name = [@"Checkout Album: " stringByAppendingString:entity.title];
+    } else {
+        name = [@"Checkout Photo: " stringByAppendingString:entity.title];
+    }
+    [self postToFBWithName:name andLink:entity.web_url andPicture:entity.thumb_url_public];
 }
 
 

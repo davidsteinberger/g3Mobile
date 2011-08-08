@@ -148,14 +148,13 @@
 		[navigator openURLAction:[[TTURLAction actionWithURLPath:[@"tt://comments/" stringByAppendingString:itemID]] applyAnimated:YES]];
 	}
 	if (buttonIndex == 1) {
-		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		Photo* p = (Photo *) self.centerPhoto;
 		NSString* url = p.parentURL;
 		NSArray* chunks = [url componentsSeparatedByString: @"/"];
 		NSString* albumID = [chunks objectAtIndex:[chunks count] - 1 ];
 
 		MyAlbumUpdater* updater = [[MyAlbumUpdater sharedMyAlbumUpdater] initWithItemID:albumID andDelegate:((id<MyViewController>)self.ttPreviousViewController)];
-		[updater setValue:[[appDelegate.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:p.photoID] param: @"album_cover"];
+		[updater setValue:[[GlobalSettings.baseURL stringByAppendingString: @"/rest/item/"] stringByAppendingString:p.photoID] param: @"album_cover"];
 		[updater update];
 
         [self dismissModalViewControllerAnimated:YES];

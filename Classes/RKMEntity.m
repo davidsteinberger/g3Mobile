@@ -30,6 +30,7 @@
 @dynamic itemID;
 @dynamic parent;
 @dynamic title;
+@dynamic name;
 @dynamic desc;
 @dynamic type;
 @dynamic thumb_url_public;

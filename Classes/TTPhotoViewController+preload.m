@@ -38,7 +38,7 @@
     NSString* url = [photo URLForVersion:TTPhotoVersionThumbnail];
     UIImage  *img = [[TTURLCache sharedCache] imageForURL:url];
     
-    TTDASSERT(img);
+    //TTDASSERT(img);
     
     photoView.defaultImage = img;
     

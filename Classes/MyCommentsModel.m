@@ -7,6 +7,7 @@
 #import "AppDelegate.h"
 
 #import <CommonCrypto/CommonDigest.h>
+#import "MySettings.h"
 
 NSString *md5 (NSString *str) {
 	const char *cStr = [str UTF8String];
@@ -66,7 +67,6 @@ NSString *md5 (NSString *str) {
 	}
 	
 	if (self.isLoading && TTIsStringWithAnyText(_searchQuery)) {
-		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		NSString* url = [NSString stringWithString:_searchQuery];
 
 		TTURLRequest* request = [TTURLRequest
@@ -74,7 +74,7 @@ NSString *md5 (NSString *str) {
 							 delegate: self];
 
 		//set http-headers
-		[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+		[request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
 		[request setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
 		[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
 
@@ -98,15 +98,13 @@ NSString *md5 (NSString *str) {
 	return loading;
 }
 
-- (void)loadMembers:(NSString* )url {
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	
+- (void)loadMembers:(NSString* )url {	
     TTURLRequest* request = [TTURLRequest
                              requestWithURL: url
                              delegate: self];
 	
 	//set http-headers
-	[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+	[request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
 	[request setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
 	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
 	
@@ -121,15 +119,13 @@ NSString *md5 (NSString *str) {
     [request send];
 }
 
-- (void)getUserDetails:(NSString* )author_id {
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	
+- (void)getUserDetails:(NSString* )author_id {	
 	TTURLRequest* request = [TTURLRequest
-                             requestWithURL: [[appDelegate.baseURL stringByAppendingString:@"/rest/user/"] stringByAppendingString:author_id]
+                             requestWithURL: [[GlobalSettings.baseURL stringByAppendingString:@"/rest/user/"] stringByAppendingString:author_id]
                              delegate: self];
 	
 	//set http-headers
-	[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+	[request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
 	[request setValue:@"get" forHTTPHeaderField:@"X-Gallery-Request-Method"];
 	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
 	

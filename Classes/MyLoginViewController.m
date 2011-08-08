@@ -219,12 +219,12 @@
     
     // Build info
 	_buildDateField = [[UITextField alloc] init];
-	_buildDateField.text = @"07-AUG-2011";
+	_buildDateField.text = @"";
 	_buildDateField.textAlignment = UITextAlignmentRight;
 	_buildDateField.enabled = NO;
     
 	_buildVersionField = [[UITextField alloc] init];
-	_buildVersionField.text = @"21b39ae";
+	_buildVersionField.text = @"";
 	_buildVersionField.textAlignment = UITextAlignmentRight;
 	_buildVersionField.enabled = NO;
     
@@ -427,11 +427,14 @@
 				url = [@"http://" stringByAppendingString:_baseURL.text];
 			}
 
-			NSString *ending = @"/index.php";
+            // Commenting this out as some mod_rewrite rules don't allow this
+			/* 
+             NSString *ending = @"/index.php";
 			NSRange substringRange = [url rangeOfString:ending];
 			if (substringRange.length == 0) {
 				url = [url stringByAppendingString:ending];
 			}
+             */
 
 			MyLogin *settings = [[MyLogin alloc] init];
 			settings.viewOnly = _viewOnly.on;

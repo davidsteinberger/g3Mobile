@@ -7,7 +7,7 @@
 #import "MyCommentsDataSource.h"
 
 #import "PhotoSource.h"
-#import "AppDelegate.h"
+#import "MySettings.h"
 
 static CGFloat kMargin  = 1;
 static CGFloat kPadding = 5;
@@ -51,9 +51,8 @@ static CGFloat kPadding = 5;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)createModel {
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	MyCommentsDataSource* ds = [[MyCommentsDataSource alloc] initWithSearchQuery:
-					   [[appDelegate.baseURL stringByAppendingString: @"/rest/item_comments/"] stringByAppendingString:self.itemID]];
+					   [[GlobalSettings.baseURL stringByAppendingString: @"/rest/item_comments/"] stringByAppendingString:self.itemID]];
 	self.dataSource = ds;
 	TT_RELEASE_SAFELY(ds);
 }
@@ -164,11 +163,10 @@ static CGFloat kPadding = 5;
 
 - (void)postController:(TTPostController*)postController didPostText:(NSString *)text withResult:(id)result {
 	NSString* itemID = self.itemID;
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	
 	//prepare http post parameter: item, text
 	NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:  
-							[[appDelegate.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:itemID] , @"item",  
+							[[GlobalSettings.baseURL stringByAppendingString:@"/rest/item/"] stringByAppendingString:itemID] , @"item",  
 							text, @"text",
 							nil];  
 	
@@ -182,10 +180,10 @@ static CGFloat kPadding = 5;
 	//---bring everything together
 	
 	//create http-request
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[appDelegate.baseURL stringByAppendingString:@"/rest/comments"]]];
+	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[GlobalSettings.baseURL stringByAppendingString:@"/rest/comments"]]];
 	
 	//set http-headers
-	[request setValue:appDelegate.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
+	[request setValue:GlobalSettings.challenge forHTTPHeaderField:@"X-Gallery-Request-Key"];
 	[request setValue:@"post" forHTTPHeaderField:@"X-Gallery-Request-Method"];
 	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];	
 	
@@ -199,7 +197,7 @@ static CGFloat kPadding = 5;
 	
 	[request release];
 	
-	[[TTURLCache sharedCache] removeURL:[[appDelegate.baseURL stringByAppendingString: @"/rest/item_comments/"] stringByAppendingString:self.itemID] fromDisk:YES];
+	[[TTURLCache sharedCache] removeURL:[[GlobalSettings.baseURL stringByAppendingString: @"/rest/item_comments/"] stringByAppendingString:self.itemID] fromDisk:YES];
 		
 	[[self navigationController] popViewControllerAnimated:YES];
 } 

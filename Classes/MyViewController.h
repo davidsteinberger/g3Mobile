@@ -17,4 +17,6 @@
 // Dialog to post something on the FB wall
 - (void)postToFB: (id)sender;
 
+- (void)postToFBWithName:(NSString *)name andLink:(NSString *)link andPicture:(NSString *)picture;
+
 @end

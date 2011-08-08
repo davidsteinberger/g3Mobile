@@ -29,6 +29,12 @@
 // Settings
 #import "MySettings.h"
 
+// RestKit
+#import "RKMItem.h"
+
+// Facebook
+#import "MyFacebook.h"
+
 // Others
 #import "UIImage+scaleAndRotate.h"
 
@@ -85,6 +91,7 @@ static NSString *defaultCaption = @"Write a Caption ...";
 	if ( (self = [super initWithNibName:nibNameOrNil bundle:nil]) ) {
 		_pickerController = [[UIImagePickerController alloc] init];
 		_pickerController.delegate = self;
+		_isPhotoUploaded = NO;
 	}
 	return self;
 }
@@ -117,7 +124,9 @@ static NSString *defaultCaption = @"Write a Caption ...";
 		_pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
 	}
 
-	_uploadProgress = [[TTActivityLabel alloc] initWithStyle:(UITableViewStyle)TTActivityLabelStyleBlackBox];
+	_uploadProgress =
+	        [[TTActivityLabel alloc] initWithStyle:(UITableViewStyle)
+	         TTActivityLabelStyleBlackBox];
 	UIView *lastView = [self.view viewWithTag:777];
 	_uploadProgress.text = @"Uploading ...";
 	[_uploadProgress sizeToFit];
@@ -158,7 +167,8 @@ static NSString *defaultCaption = @"Write a Caption ...";
 	[_pickerController dismissModalViewControllerAnimated:YES];
 
 	// update the nib
-	[self.imageView performSelector:@selector(setImage:) withObject:self.screenShot afterDelay:0.3];
+	[self.imageView performSelector:@selector(setImage:) withObject:self.screenShot afterDelay:
+	 0.3];
 }
 
 
@@ -185,20 +195,16 @@ static NSString *defaultCaption = @"Write a Caption ...";
 	NSData *imageData =
 	        UIImageJPEGRepresentation(
 	                self.image,
-	                GlobalSettings.imageQuality ? GlobalSettings.
-	                imageQuality : 0.5);
-
+	                GlobalSettings.imageQuality ? GlobalSettings.imageQuality : 0.5);
 	NSString *imageName =
-	        [@"Mobile_Upload_" stringByAppendingString:[NSString stringWithFormat:@"%d",
-	                                                    GlobalSettings.uploadCounter++]];
-
+	        [@"Mobile_" stringByAppendingString:[NSString stringWithFormat:@"%d",
+	                                             GlobalSettings.uploadCounter++]];
 	NSString *imageCaption =
 	        ([self.caption.text isEqual:defaultCaption]) ? @"" : self.caption.text;
 	NSDictionary *metaData =
 	        [NSDictionary dictionaryWithObjectsAndKeys:
-	         [imageName stringByAppendingString:@".jpg"], @"name",
-	         (imageCaption == nil) ? @""              :imageCaption,
-	         @"description",
+	         imageName, @"name",
+	         (imageCaption == nil) ? @""              :imageCaption, @"description",
 	         @"photo", @"type",
 	         nil];
 
@@ -221,6 +227,11 @@ static NSString *defaultCaption = @"Write a Caption ...";
 }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark RKRequestDelegate
+
 - (void)requestDidStartLoad:(RKRequest *)request {
 	[self.view addSubview:_uploadProgress];
 }
@@ -235,14 +246,54 @@ static NSString *defaultCaption = @"Write a Caption ...";
 
 
 - (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
-	[self.delegate reloadViewController:NO];
-    [self.delegate postToFB:nil];
-	[self.navigationController popViewControllerAnimated:YES];
+	// Only the image upload request is handled here
+	if (_isPhotoUploaded == NO) {
+		_isPhotoUploaded = YES;
+		int length = [GlobalSettings.baseURL length];
+		NSString *urlString = [[response parsedBody:nil] objectForKey:@"url"];
+		NSString *resourcePath = [urlString substringFromIndex:length];
+
+		// Load the entity of the item details
+		RKObjectManager *objectManager = [RKObjectManager sharedManager];
+		RKObjectLoader *objectLoader =
+		        [objectManager objectLoaderWithResourcePath:resourcePath delegate:self];
+		objectLoader.objectMapping =
+		        [objectManager.mappingProvider objectMappingForClass:[RKMItem class]];
+
+		[objectLoader send];
+	}
 }
 
 
 - (void)request:(RKRequest *)request didFailLoadWithError:(NSError *)error {
-	NSLog(@"didFailLoadWithError");
+	NSLog(@"request:didFailLoadWithError: %@", error.localizedDescription);
+	[self.delegate reloadViewController:NO];
+	[self.navigationController popViewControllerAnimated:YES];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark RKObjectLoaderDelegate
+
+// Called when the uploaded Item got loaded and mapped
+- (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {
+	RKMItem *item = (RKMItem *)[objects objectAtIndex:0];
+	RKMEntity *entity = item.rEntity;
+
+	[self.delegate
+	 postToFBWithName:[@"New Photo uploaded: " stringByAppendingString:entity.name]
+	          andLink:[entity.web_url copy]
+	       andPicture:[entity.thumb_url_public copy]];
+
+	[self.delegate reloadViewController:NO];
+	[self.navigationController popViewControllerAnimated:YES];
+}
+
+
+- (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
+	NSLog(@"objectLoader:didFailWithError: %@", error.localizedDescription);
 	[self.delegate reloadViewController:NO];
 	[self.navigationController popViewControllerAnimated:YES];
 }

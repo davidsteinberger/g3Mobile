@@ -41,6 +41,7 @@
 @property (nonatomic, retain) NSString *itemID;
 @property (nonatomic, retain) NSString *parent;
 @property (nonatomic, retain) NSString *title;
+@property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *desc;
 @property (nonatomic, retain) NSString *type;
 @property (nonatomic, retain) NSString *thumb_url_public;

@@ -103,15 +103,9 @@
     TT_RELEASE_SAFELY(updateAlbum);
 }
 
-- (void)postToFB:(id)sender {    
-    RKObjectLoaderTTModel *model = (RKObjectLoaderTTModel *)[self.dataSource model];
-	RKMTree *tree = (RKMTree *)[model.objects objectAtIndex:0];
-	RKMEntity *entity = [tree root];
-    
-    NSString* albumName = [@"Checkout Album: " stringByAppendingString:entity.title];
-    
-    if (![entity.thumb_url_public isEqualToString:@""] && entity.thumb_url_public != nil) {
-        [Facebook postToFBWithName:albumName andLink:entity.web_url andPicture:entity.thumb_url_public];
+- (void)postToFBWithName:(NSString *)name andLink:(NSString *)link andPicture:(NSString *)picture {
+    if (![picture isEqualToString:@""] && picture != nil) {
+        [Facebook postToFBWithName:name andLink:link andPicture:picture];
     } else {
         TTAlertViewController *alert =
         [[[TTAlertViewController alloc] initWithTitle:@"Permission Problem!" message:
@@ -123,6 +117,22 @@
         [self showLoading:NO];
     }
 }
+
+
+- (void)postToFB:(id)sender {    
+    RKObjectLoaderTTModel *model = (RKObjectLoaderTTModel *)[self.dataSource model];
+	RKMTree *tree = (RKMTree *)[model.objects objectAtIndex:0];
+	RKMEntity *entity = [tree root];
+    
+    NSString* name;
+    if ([entity.type isEqualToString:@"album"]) {
+        name = [@"Checkout Album: " stringByAppendingString:entity.title];
+    } else {
+        name = [@"Checkout Photo: " stringByAppendingString:entity.title];
+    }
+    [self postToFBWithName:name andLink:entity.web_url andPicture:entity.thumb_url_public];
+}
+
 
 - (void)viewDidLoad {
 	[super viewDidLoad];

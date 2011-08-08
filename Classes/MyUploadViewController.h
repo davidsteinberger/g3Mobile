@@ -34,7 +34,7 @@
 #import "RestKit/RestKit.h"
 
 @interface MyUploadViewController : UIViewController <UINavigationControllerDelegate,
-UIImagePickerControllerDelegate,TTPostControllerDelegate, RKRequestDelegate> {
+UIImagePickerControllerDelegate,TTPostControllerDelegate, RKRequestDelegate, RKObjectLoaderDelegate> {
 	id <MyViewController> _delegate;
     UIImagePickerController* _pickerController;
     UIImagePickerControllerSourceType _sourceType;
@@ -45,6 +45,7 @@ UIImagePickerControllerDelegate,TTPostControllerDelegate, RKRequestDelegate> {
 	UIImage *_image;
 	NSString *_albumID;
     TTActivityLabel* _uploadProgress;
+    BOOL _isPhotoUploaded;
 }
 
 @property (nonatomic, retain) NSDictionary* query;
