@@ -120,6 +120,7 @@
 
 
 - (void)request:(TTURLRequest *)request didFailLoadWithError:(NSError *)error {
+    NSLog(@"login error: %@", error); 
 	[super didFailLoadWithError:nil];
 }
 

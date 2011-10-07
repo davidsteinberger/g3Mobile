@@ -110,7 +110,6 @@
         objectLoader.objectMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForClass:[RKMItem class]];
 
         self.itemModel = [RKObjectLoaderTTModel modelWithObjectLoader:objectLoader];
-        [self.itemModel load];
 	}
 
 	return self;

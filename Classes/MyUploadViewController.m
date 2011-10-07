@@ -250,7 +250,8 @@ static NSString *defaultCaption = @"Write a Caption ...";
 	if (_isPhotoUploaded == NO) {
 		_isPhotoUploaded = YES;
 		int length = [GlobalSettings.baseURL length];
-		NSString *urlString = [[response parsedBody:nil] objectForKey:@"url"];
+        NSError* error;
+		NSString *urlString = [[response parsedBody:&error] objectForKey:@"url"];
 		NSString *resourcePath = [urlString substringFromIndex:length];
 
 		// Load the entity of the item details

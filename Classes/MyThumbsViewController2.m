@@ -109,7 +109,6 @@
 #pragma mark LifeCycle
 
 - (void)dealloc {
-	[[RKRequestQueue sharedQueue] cancelAllRequests];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	TT_RELEASE_SAFELY(_itemID);
 	TT_RELEASE_SAFELY(_backViewOld);

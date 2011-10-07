@@ -67,7 +67,6 @@
 }
 
 - (void)dealloc {
-    [[RKRequestQueue sharedQueue] cancelAllRequests];
 	TT_RELEASE_SAFELY(_newPhotos);
 	TT_RELEASE_SAFELY(_photos);
 	TT_RELEASE_SAFELY(_title);

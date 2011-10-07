@@ -296,8 +296,6 @@
 
 		[RKObjectManager sharedManager].client.cachePolicy = RKRequestCachePolicyNone;
 
-		[RKRequestQueue sharedQueue].showsNetworkActivityIndicatorWhenBusy = YES;
-
 		// even strange mime types should be parsed with JSONKit
 		[[RKParserRegistry sharedRegistry] setParserClass:NSClassFromString(
 		         @"RKJSONParserJSONKit")

@@ -36,7 +36,6 @@
 @synthesize albumID = _albumID;
 
 - (void)dealloc {
-    [[RKRequestQueue sharedQueue] cancelAllRequests];
 	self.albumID = nil;
 	TT_RELEASE_SAFELY(_photoSource);
 

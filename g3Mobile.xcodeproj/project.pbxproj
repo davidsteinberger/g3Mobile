@@ -318,20 +318,6 @@
 			remoteGlobalIDString = 255B7588133BABBF00ED76AD;
 			remoteInfo = RestKit;
 		};
-		63A49ACB13E452EF00B9A17A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 320A5A189C235877202780D0 /* Three20Network.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 662D81EF12630516005851C2;
-			remoteInfo = "Three20Network-Xcode3.2.5";
-		};
-		63A49ACD13E452EF00B9A17A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 320A5A189C235877202780D0 /* Three20Network.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 662D81B2126304EB005851C2;
-			remoteInfo = "Three20NetworkUnitTests-Xcode3.2.5";
-		};
 		63AAAE7413E200CA00DDD263 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 63AAAE4913E200CA00DDD263 /* facebook-ios-sdk.xcodeproj */;
@@ -777,9 +763,7 @@
 			isa = PBXGroup;
 			children = (
 				320A5A189C235877202780D4 /* libThree20Network.a */,
-				63A49ACC13E452EF00B9A17A /* libThree20Network-Xcode3.2.5.a */,
 				63B53C1C133FDF5900460020 /* NetworkUnitTests.octest */,
-				63A49ACE13E452EF00B9A17A /* NetworkUnitTests-Xcode3.2.5.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -845,14 +829,14 @@
 				63107DF413C791C6007E6E86 /* libRestKitNetwork.a */,
 				63107DF613C791C6007E6E86 /* libRestKitObjectMapping.a */,
 				63107DF813C791C6007E6E86 /* libRestKitSupport.a */,
-				63D98EEB13E9F3D9000C6313 /* libRestKitJSONParser+NXJSON.a */,
+				63D98EEB13E9F3D9000C6313 /* libRestKitJSONParserNXJSON.a */,
 				63107DFA13C791C6007E6E86 /* libRestKitJSONParserYAJL.a */,
 				63107DFC13C791C6007E6E86 /* libRestKitJSONParserSBJSON.a */,
 				63107DFE13C791C6007E6E86 /* libRestKitJSONParserJSONKit.a */,
 				63107E0013C791C6007E6E86 /* libRestKitXMLParserLibxml.a */,
 				63107E0213C791C6007E6E86 /* libRestKitCoreData.a */,
 				63107E0413C791C6007E6E86 /* libRestKitThree20.a */,
-				63107E0613C791C6007E6E86 /* UISpec.app */,
+				63107E0613C791C6007E6E86 /* RestKitSpecs.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1412,25 +1396,11 @@
 			remoteRef = 63107E0313C791C6007E6E86 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		63107E0613C791C6007E6E86 /* UISpec.app */ = {
+		63107E0613C791C6007E6E86 /* RestKitSpecs.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			path = UISpec.app;
+			path = RestKitSpecs.app;
 			remoteRef = 63107E0513C791C6007E6E86 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		63A49ACC13E452EF00B9A17A /* libThree20Network-Xcode3.2.5.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libThree20Network-Xcode3.2.5.a";
-			remoteRef = 63A49ACB13E452EF00B9A17A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		63A49ACE13E452EF00B9A17A /* NetworkUnitTests-Xcode3.2.5.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "NetworkUnitTests-Xcode3.2.5.octest";
-			remoteRef = 63A49ACD13E452EF00B9A17A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		63AAAE7513E200CA00DDD263 /* libfacebook_ios_sdk.a */ = {
@@ -1503,10 +1473,9 @@
 			remoteRef = 63B53CC2133FE27600460020 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		63D98EEB13E9F3D9000C6313 /* libRestKitJSONParser+NXJSON.a */ = {
+		63D98EEB13E9F3D9000C6313 /* libRestKitJSONParserNXJSON.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			name = "libRestKitJSONParser+NXJSON.a";
 			path = libRestKitJSONParserNXJSON.a;
 			remoteRef = 63D98EEA13E9F3D9000C6313 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;

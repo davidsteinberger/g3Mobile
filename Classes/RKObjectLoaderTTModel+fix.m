@@ -43,11 +43,17 @@
          [newEntity release];
         }
 
-        if (loader.objectMapping.objectClass == [RKMItem class]) {         
+        else if (loader.objectMapping.objectClass == [RKMItem class]) {         
         NSMutableDictionary* item = *mappableData;
-        if ([item valueForKeyPath:@"relationships.tags.member.entity.tag.url"] == nil) {
-            [item removeObjectForKey:@"relationships"];
-        }
+            if ([item valueForKeyPath:@"relationships.tags.member.entity.tag.url"] == nil) {
+                [item removeObjectForKey:@"relationships"];
+            } else {
+                *mappableData = nil;
+            }
+        } 
+        
+        else {
+            *mappableData = nil;
         }
     }
  }
