@@ -106,7 +106,7 @@ static NSString *defaultCaption = @"Write a Caption ...";
 	[super viewDidLoad];
 
 	[self.navigationController setNavigationBarHidden:YES];
-	[[UIApplication sharedApplication] setStatusBarHidden:YES];
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
 	[self.navigationController setToolbarHidden:YES];
 
 	self.albumID = [self.query objectForKey:@"albumID"];
@@ -142,7 +142,7 @@ static NSString *defaultCaption = @"Write a Caption ...";
 - (void)viewDidUnload {
 	[super viewDidUnload];
 	[self.navigationController setNavigationBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
 	[self.navigationController setToolbarHidden:NO];
 }
 
