@@ -71,10 +71,8 @@
 // TTModelViewController
 
 - (void)createModel {
-    NSString* resourcePath = [[[@""
-                                stringByAppendingString:@"/rest/item/"]
-                               stringByAppendingString:self.albumID]
-                              stringByAppendingString:@"?fields=tag_item.tag"];
+    NSString* resourcePath = [@"/rest/item/"
+                              stringByAppendingString:self.albumID];
     RKObjectLoader* objectLoader = [[RKObjectManager sharedManager] objectLoaderWithResourcePath:resourcePath delegate:nil];
     objectLoader.objectMapping = [[RKObjectManager sharedManager].mappingProvider objectMappingForClass:[RKMItem class]];
     self.model = [RKObjectLoaderTTModel modelWithObjectLoader:objectLoader];

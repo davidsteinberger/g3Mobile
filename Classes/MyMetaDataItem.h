@@ -25,13 +25,14 @@
 #import "Three20/Three20.h"
 
 // RestKit
-#import "RKMEntity.h"
+#import <RestKit/RestKit.h>
+#import <RestKit/Three20/RKObjectLoaderTTModel.h>
+#import "RKMItem.h"
 
-// Others
-#import "MyItem.h"
-
-@interface MyMetaDataItem : TTTableLinkedItem <MyItem> {
-	RKMEntity *_model;
+@interface MyMetaDataItem : TTTableLinkedItem <TTModelDelegate> {
+	RKObjectLoaderTTModel *_model;
+	RKMItem *_item;
+	NSString *_itemID;
 	NSString *_title;
 	NSString *_description;
 	NSString *_autor;
@@ -39,14 +40,17 @@
 	NSString *_tags;
 }
 
-@property (nonatomic, retain) RKMEntity *model;
+@property (nonatomic, retain) RKObjectLoaderTTModel *model;
+@property (nonatomic, retain) RKMItem *item;
+@property (nonatomic, retain) NSString *itemID;
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSString *description;
 @property (nonatomic, retain) NSString *autor;
 @property (nonatomic, retain) NSDate *timestamp;
 @property (nonatomic, retain) NSString *tags;
 
-+ (id)itemWithTitle:(NSString *)title model:(RKMEntity *)model description:(NSString *)description
-       autor:(NSString *)autor timestamp:(NSDate *)timestamp tags:(NSString *)tags;
++ (id)itemWithItemID:(NSString *)itemID delegate:(TTTableViewController *)delegate title:(NSString
+                                                                                          *)title
+       description:(NSString *)description autor:(NSString *)autor timestamp:(NSDate *)timestamp;
 
 @end

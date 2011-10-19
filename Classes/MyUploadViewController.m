@@ -125,8 +125,7 @@ static NSString *defaultCaption = @"Write a Caption ...";
 	}
 
 	_uploadProgress =
-	        [[TTActivityLabel alloc] initWithStyle:(UITableViewStyle)
-	         TTActivityLabelStyleBlackBox];
+	        [[TTActivityLabel alloc] initWithStyle:TTActivityLabelStyleBlackBox];
 	UIView *lastView = [self.view viewWithTag:777];
 	_uploadProgress.text = @"Uploading ...";
 	[_uploadProgress sizeToFit];

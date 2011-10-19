@@ -1,35 +1,64 @@
-//
-//  CheckMarkTableItem.m
-//  g3Mobile
-//
-//  Created by David Steinberger on 8/8/11.
-//  Copyright 2011 -. All rights reserved.
-//
+/*
+ * CheckMarkTableItem.m
+ * g3Mobile - an iPhone client for gallery3
+ *
+ * Created by David Steinberger on 14/3/2011.
+ * Copyright (c) 2011 David Steinberger
+ *
+ * This file is part of g3Mobile.
+ *
+ * g3Mobile is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * g3Mobile is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with g3Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #import "CheckMarkTableItem.h"
+
+// Other
 #import "MySettings.h"
 
 @implementation CheckMarkTableItem
 @synthesize state;
 
-+ (id)itemWithText:(NSString *)text {
-    CheckMarkTableItem *item = [[[self alloc] init] autorelease];
-    item.text = text;
-    
-    return item;
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark LifeCycle
+
+- (void)dealloc {
+	[super dealloc];
 }
+
+
++ (id)itemWithText:(NSString *)text {
+	CheckMarkTableItem *item = [[[self alloc] init] autorelease];
+	item.text = text;
+
+	return item;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
 
 - (void)setState:(CheckmarkState)checked {
-    state = checked;
-    GlobalSettings.showFBOnUploader = checked;
+	state = checked;
+	GlobalSettings.showFBOnUploader = checked;
 }
 
-- (CheckmarkState) state {
-    return GlobalSettings.showFBOnUploader;
+
+- (CheckmarkState)state {
+	return GlobalSettings.showFBOnUploader;
 }
 
--(void) dealloc{
-    [super dealloc];
-}
 
 @end

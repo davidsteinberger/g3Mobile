@@ -77,6 +77,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark LifeCycle
+
 - (void)dealloc {
 	TT_RELEASE_SAFELY(_user);
 	TT_RELEASE_SAFELY(_password);
@@ -90,6 +91,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark UIApplicationDelegate
+
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	// set stylesheet
 	[TTStyleSheet setGlobalStyleSheet:[[[StyleSheet alloc] init] autorelease]];
@@ -275,8 +277,12 @@
 	 *   -> Only update the BaseURL and the new HTTP-Headers
 	 *      (because those might have changed with the login)
 	 *      see:
-	 *****http://groups.google.com/group/restkit/browse_thread/thread/0566b4a670b5355b/79cc36f28c4d63ea#79cc36f28c4d63ea
+	 *
+	 *http://groups.google.com/group/restkit/browse_thread/thread/0566b4a670b5355b/79cc36f28c4d63ea#79cc36f28c4d63ea
 	 */
+
+	//RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
+	//RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
 	if (!_isRestKitLoad) {
 		_isRestKitLoad = YES;
 
@@ -289,8 +295,7 @@
 
 		// Initialize object store
 		objectManager.objectStore =
-		        [[[RKManagedObjectStore alloc] initWithStoreFilename:@ "g3CoreData.sqlite"]
-		         autorelease];
+		        [RKManagedObjectStore objectStoreWithStoreFilename:@"g3CoreData.sqlite"];
 		objectManager.objectStore.managedObjectCache =
 		        [[DBManagedObjectCache new] autorelease];
 
@@ -342,8 +347,9 @@
 		[itemMapping mapAttributes:@"url", @"members", nil];
 		[itemMapping mapKeyPath:@"entity" toRelationship:@"rEntity" withMapping:
 		 entityMapping];
-		[itemMapping mapKeyPath:@"relationships.tags.members" toRelationship:@"rTags"
-		            withMapping:tagMemberMapping];
+
+		//[itemMapping mapKeyPath:@"relationships.tags.members" toRelationship:@"rTags"
+		//            withMapping:tagMemberMapping];
 
 		RKManagedObjectMapping *treeMapping =
 		        [RKManagedObjectMapping mappingForClass:[RKMTree class]];

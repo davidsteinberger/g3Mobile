@@ -141,6 +141,7 @@
 - (void)createModel {
 	self.dataSource = [[[MyThumbsViewDataSource2 alloc]
 	                    initWithItemID:self.itemID] autorelease];
+    
     [super createModel];
 }
 
@@ -206,7 +207,6 @@
 // The model has finished loading the data -> set the title of the view
 - (void)modelDidFinishLoad:(id <TTModel>)model {
 	if ([( (RKObjectLoaderTTModel *)self.model ).objects count] > 0) {
-        [((MyThumbsViewDataSource2*)self.dataSource).itemModel load];
 		RKMTree *tree = [( (RKObjectLoaderTTModel *)self.model ).objects objectAtIndex:0];
 		RKMEntity *entity = [tree root];
 		self.title = entity.title;
@@ -440,17 +440,15 @@
 	if (![[ds.items objectAtIndex:0] isKindOfClass:[MyMetaDataItem class]] && !answer) {
         _isMetaDataShown = YES;
         
-		RKObjectLoaderTTModel *model2 = ((RKObjectLoaderTTModel *)((MyThumbsViewDataSource2*)self.dataSource).itemModel);
-		RKMItem *item = (RKMItem *)[model2.objects objectAtIndex:0];
+		RKMEntity* entity = [self getEntity];
         
 		MyMetaDataItem *mdItem = [MyMetaDataItem
-		                          itemWithTitle:item.rEntity.title
-                                  model:item.rEntity
-                                  description:item.rEntity.desc
+		                          itemWithItemID:self.itemID
+                                  delegate:self
+                                  title:entity.title
+                                  description:entity.desc
                                   autor:@""
-                                  timestamp:[NSDate dateWithTimeIntervalSince1970:[
-                                                                                   item.rEntity.created floatValue]]
-                                  tags:[item concatenatedTagInfo]];
+                                  timestamp:[NSDate dateWithTimeIntervalSince1970:[entity.created floatValue]]];
         
 		[ds.items insertObject:mdItem atIndex:0];
 		[self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:
@@ -568,12 +566,13 @@
 
 	NSString *itemID = [self getItemID];
 
-	UpdateAlbumViewController *updateAlbum =
-	        [[UpdateAlbumViewController alloc] initWithAlbumID:itemID andDelegate:self];
-	[self.navigationController pushViewController:updateAlbum animated:YES];
-	TT_RELEASE_SAFELY(updateAlbum);
-
-	[self removeContextMenu];
+    if (itemID != nil && ![itemID isEqualToString:@""]) {
+        UpdateAlbumViewController *updateAlbum =
+                [[UpdateAlbumViewController alloc] initWithAlbumID:itemID andDelegate:self];
+        [self.navigationController pushViewController:updateAlbum animated:YES];
+        TT_RELEASE_SAFELY(updateAlbum);
+        [self removeContextMenu];
+    }
 }
 
 

@@ -392,7 +392,7 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 0) {
-        TTActivityLabel* label = [[[TTActivityLabel alloc] initWithStyle:(UITableViewStyle)TTActivityLabelStyleBlackBox] autorelease];
+        TTActivityLabel* label = [[[TTActivityLabel alloc] initWithStyle:TTActivityLabelStyleBlackBox] autorelease];
         UIView* lastView = [self.view.subviews lastObject];
         label.text = @"Clearing the cache ...";
         [label sizeToFit];

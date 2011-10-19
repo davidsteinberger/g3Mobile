@@ -17,7 +17,7 @@ typedef enum {
 @interface PhotoSource : RKObjectLoaderTTModel <TTPhotoSource> {
 	MockPhotoSourceType _type;
 	NSMutableArray* _newPhotos;
-	NSMutableArray* _photos;
+	NSArray* _photos;
 	NSString* _albumID;
 	NSString* _title;
     BOOL _photosOnly;

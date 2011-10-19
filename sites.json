@@ -3,11 +3,11 @@
     "sites": [
         {
             "title": "david-steinberger.at",
-            "url": "http://david-steinberger.at/gallery3/index.php"
+            "url": "http://david-steinberger.at/gallery3"
         },
         {
             "title": "localhost",
-            "url": "http://localhost/~david/gallery3/index.php"
+            "url": "http://david.local/gallery3/index.php"
         },
         {
             "title": "shaibn.com",
@@ -36,6 +36,10 @@
         {
             "title": "c2photobooth.com",
             "url": "http://photos.c2photobooth.com"
+        },
+        {
+            "title": "familie-grieb",
+            "url": "http://galerie.familie-grieb.de/"
         }
     ]
 }
