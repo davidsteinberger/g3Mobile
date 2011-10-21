@@ -27,10 +27,13 @@
 
 // RestKit
 #import "RKMTree.h"
-#import "RKMItem.h"
+#import "RKMEntity.h"
 
 @implementation RKObjectLoaderTTModel (fix)
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
 #pragma mark RKModelLoaderDelegate
 
 - (void)objectLoader:(RKObjectLoader *)loader willMapData:(inout id *)mappableData {
@@ -40,20 +43,54 @@
 			NSMutableArray *newEntity =
 			        [[NSMutableArray alloc] initWithCapacity:[origEntities count]];
 
-			NSDictionary *entity =
-			        [( (NSDictionary *)[origEntities objectAtIndex:0] ) objectForKey:
-			         @"entity"];
-			int i = [[entity objectForKey:@"id"] intValue];
+			int i = 0;
 			for (NSDictionary *origEntity in origEntities) {
 				NSMutableDictionary *oneEntity = [origEntity mutableCopy];
 
-				// inject the position in the array
 				NSMutableDictionary *entity =
 				        ([(NSDictionary *)[oneEntity objectForKey:@"entity"]
 				          mutableCopy]);
-				[entity setObject:[NSString stringWithFormat:@"%i",
-				                   i] forKey:@"positionInAlbum"];
 
+				/*
+				 * Each album is at a certain position within it's parent album.
+				 * If we just iterate over the album and enumerate the items the
+				 *position in
+				 * the parent album is lost.
+				 * For that reason the position index of the album (root) must be
+				 *preserved.
+				 */
+				if (i == 0) {
+					RKManagedObjectStore *store =
+					        [RKObjectManager sharedManager].objectStore;
+					NSString *predicateString = [entity objectForKey:@"id"];
+
+					NSFetchRequest *request = [RKMEntity fetchRequest];
+					NSPredicate *predicate =
+					        [NSPredicate predicateWithFormat:@
+					         "itemID = %@", predicateString, nil];
+					[request setPredicate:predicate];
+
+					NSError *error;
+					NSArray *objects =
+					        [[store managedObjectContext]
+					         executeFetchRequest:
+					         request       error:&error];
+					if ([objects count] > 0) {
+						RKMEntity *object =
+						        [objects objectAtIndex:0];
+
+						NSNumber *positionInAlbum =
+						        [NSNumber numberWithInt:
+						         [object.positionInAlbum intValue]];
+
+						[entity setObject:positionInAlbum forKey:
+						 @"positionInAlbum"];
+					}
+				}
+				else {
+					[entity setObject:[NSString stringWithFormat:@"%i",
+					                   i] forKey:@"positionInAlbum"];
+				}
 				[oneEntity removeObjectForKey:@"entity"];
 				[oneEntity setObject:entity forKey:@"entity"];
 

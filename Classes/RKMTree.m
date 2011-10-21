@@ -25,10 +25,10 @@
 
 #import "RKMTree.h"
 
-@interface RKMTree()
+@interface RKMTree ()
 
-- (NSArray*) sortEntitiesByRelativePosition;
-- (NSString*)getItemIDFromURL;
+- (NSArray *)sortEntitiesByRelativePosition;
+- (NSString *)getItemIDFromURL;
 
 @end
 
@@ -37,39 +37,60 @@
 @dynamic url;
 @dynamic rEntity;
 
-#pragma mark - 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+
+- (RKMEntity *)root {
+	if ([self.rEntity count] > 0) {
+		NSArray *filtered =
+		        [[self sortEntitiesByRelativePosition]
+		         filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:
+		                                      @"(itemID == %@)", [self getItemIDFromURL]]];
+		RKMEntity *entity = [filtered objectAtIndex:0];
+		return entity;
+	}
+	else {
+		return nil;
+	}
+}
+
+
+- (NSArray *)children {
+	if ([self.rEntity count] > 1) {
+		NSArray *filtered =
+		        [[self sortEntitiesByRelativePosition]
+		         filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:
+		                                      @"(itemID != %@)", [self getItemIDFromURL]]];
+		return filtered;
+	}
+	else {
+		return nil;
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
 #pragma mark private
 
-- (NSArray*) sortEntitiesByRelativePosition {
-    NSSortDescriptor* descriptor1 = [NSSortDescriptor sortDescriptorWithKey:@"positionInAlbum" ascending:YES];
-    NSArray* entities = [[self.rEntity allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor1, nil]];
-    return entities;
+- (NSArray *)sortEntitiesByRelativePosition {
+	NSSortDescriptor *descriptor =
+	        [NSSortDescriptor sortDescriptorWithKey:@"positionInAlbum" ascending:YES];
+	NSArray *entities =
+	        [[self.rEntity allObjects] sortedArrayUsingDescriptors:
+	         [NSArray arrayWithObjects:descriptor, nil]];
+	return entities;
 }
 
-- (NSString*)getItemIDFromURL {
-    NSArray *urlComponents = [self.url componentsSeparatedByString:@ "/"];
-    NSString *tmp = [urlComponents lastObject];
-    NSString * itemID = [tmp stringByReplacingOccurrencesOfString:@"?depth=1" withString:@""];
-    return itemID;
+
+- (NSString *)getItemIDFromURL {
+	NSArray *urlComponents = [self.url componentsSeparatedByString:@ "/"];
+	NSString *tmp = [urlComponents lastObject];
+	NSString *itemID = [tmp stringByReplacingOccurrencesOfString:@"?depth=1" withString:@""];
+	return itemID;
 }
 
-- (RKMEntity*) root {
-    if ([self.rEntity count] > 0) {
-        NSArray *filtered = [[self sortEntitiesByRelativePosition] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(itemID == %@)", [self getItemIDFromURL]]];
-        RKMEntity* entity = [filtered objectAtIndex:0];
-        return entity;
-    } else {
-        return nil;
-    }
-}
-
-- (NSArray*) children {
-    if ([self.rEntity count] > 1) {
-        NSArray *filtered = [[self sortEntitiesByRelativePosition] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(itemID != %@)", [self getItemIDFromURL]]];
-        return filtered;
-    } else {
-        return nil;
-    }
-}
 
 @end
