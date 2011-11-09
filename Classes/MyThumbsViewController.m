@@ -136,7 +136,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-    if ([self.albumID isEqual:@"1"]) {
+    if ([self.albumID isEqual:rootAlbumID]) {
 		self.navigationItem.leftBarButtonItem
         = [[[UIBarButtonItem alloc] initWithTitle:@"Settings" style:
             UIBarButtonItemStyleBordered

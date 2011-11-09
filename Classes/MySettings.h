@@ -10,6 +10,7 @@
 #import "CoreData/CoreData.h"
 
 static NSString* kAppId = @"153647701377559";
+static NSString* rootAlbumID = @"16684";
 
 #define GlobalSettings \
 ((MySettings *)[MySettings sharedMySettings])

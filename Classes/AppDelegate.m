@@ -258,11 +258,13 @@
 	TTNavigator *navigator = [TTNavigator navigator];
 	[navigator removeAllViewControllers];
 	if (GlobalSettings.viewStyle == kAlbumView) {
-		[navigator openURLAction:[[TTURLAction actionWithURLPath:@ "tt://album/1"]
+		[navigator openURLAction:[[TTURLAction actionWithURLPath:
+                                   [@"tt://album/" stringByAppendingString:rootAlbumID]]
 		                          applyAnimated:YES]];
 	}
 	if (GlobalSettings.viewStyle == kThumbView) {
-		[navigator openURLAction:[[TTURLAction actionWithURLPath:@ "tt://thumbs/1"]
+		[navigator openURLAction:[[TTURLAction actionWithURLPath:
+                                   [@"tt://thumbs/" stringByAppendingString:rootAlbumID]]
 		                          applyAnimated:YES]];
 	}
 }

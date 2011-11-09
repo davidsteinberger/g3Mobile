@@ -133,6 +133,12 @@
 
 		[[TTNavigator navigator].URLMap from:@"tt://removeAllCache"
 		                            toObject:self selector:@selector(removeAllCache)];
+        
+        UIImage* homeIcon = [UIImage imageNamed:@"homeIcon.png"];
+        UIButton* loginButton = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)] autorelease];
+        [loginButton setImage:homeIcon forState:UIControlStateNormal];
+        [loginButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:loginButton];
 
 		[self seedGalleryNames];
 	}
@@ -164,7 +170,8 @@
     
 	// Url for website
 	_baseURL = [[UITextField alloc] init];
-	_baseURL.placeholder = @"http://example.com";
+    _baseURL.text = @"http://myshooting.lu/index.php";
+    _baseURL.enabled = NO;
 	_baseURL.keyboardType = UIKeyboardTypeURL;
 	_baseURL.returnKeyType = UIReturnKeyNext;
 	_baseURL.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -172,11 +179,12 @@
 	_baseURL.clearButtonMode = UITextFieldViewModeWhileEditing;
 	_baseURL.clearsOnBeginEditing = NO;
 	_baseURL.delegate = self;
-    _baseURL.text = GlobalSettings.baseURL;
+    //_baseURL.text = GlobalSettings.baseURL;
     
 	// Username field
 	_usernameField = [[UITextField alloc] init];
-	_usernameField.placeholder = @"*****";
+	_usernameField.text = @"itunes";
+    _usernameField.enabled = NO;
 	_usernameField.keyboardType = UIKeyboardTypeDefault;
 	_usernameField.returnKeyType = UIReturnKeyNext;
 	_usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -187,7 +195,8 @@
     
 	// Password field
 	_passwordField = [[UITextField alloc] init];
-	_passwordField.placeholder = @"*****";
+	_passwordField.text = @"itunes";
+    //_passwordField.enabled = NO;
 	_passwordField.returnKeyType = UIReturnKeyGo;
 	_passwordField.secureTextEntry = YES;
 	_passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -195,7 +204,7 @@
 	_passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	_passwordField.clearsOnBeginEditing = NO;
 	_passwordField.delegate = self;
-    
+        
     // Facebook button
     _FBLoginButton = [[FBLoginButton alloc] init];
     
@@ -255,6 +264,17 @@
 	return self;
 }
 
+- (void)login {
+    MyLogin *settings = [[MyLogin alloc] init];
+    settings.viewOnly = _viewOnly.on;
+    settings.baseURL = _baseURL.text;
+    settings.username = _usernameField.text;
+    settings.password = _passwordField.text;
+    settings.imageQuality = _imageQualityField.value;
+    
+    // login
+    [(MyLoginModel *)self.model login:[settings autorelease]];
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -618,20 +638,8 @@
 
 
 - (void)createDataSource {
-	TTTableControlItem *cViewOnly = [TTTableControlItem itemWithCaption:@"View Only" 
-                                                                control:_viewOnly];
-    
     TTTableControlItem *cShowThumbsView = [TTTableControlItem itemWithCaption:@"Thumbs View" 
                                                                       control:_showThumbsView];
-
-	TTTableControlItem *cBaseURL = [TTTableControlItem itemWithCaption:@"Website"
-	                                                           control:_baseURL];
-
-	TTTableControlItem *cUsernameField = [TTTableControlItem itemWithCaption:@"Username"
-	                                                                 control:_usernameField];
-
-	TTTableControlItem *cPasswordField = [TTTableControlItem itemWithCaption:@"Password"
-	                                                                 control:_passwordField];
 
     TTTableControlItem *cFBLoginButton = [TTTableControlItem itemWithCaption:@"Facebook" 
                                                                      control:_FBLoginButton];
@@ -651,7 +659,6 @@
 	// Create sections
 	NSMutableArray *sections = [[NSMutableArray alloc] init];
 	[sections addObject:@""];
-	[sections addObject:@"Gallery3"];
     [sections addObject:@"Facebook"];
 	[sections addObject:@"Other"];
 	[sections addObject:@"Cache Settings"];
@@ -661,17 +668,7 @@
     // Section 1 allows to switch between Album- and ThumbsView
     NSMutableArray *section0 = [[NSMutableArray alloc] init];
     [section0 addObject:cShowThumbsView];
-    
-	// Section 1 holds items for login
-	NSMutableArray *section1 = [[NSMutableArray alloc] init];
-    [section1 addObject:cViewOnly];
-	[section1 addObject:cBaseURL];
-
-	if (!GlobalSettings.viewOnly) {
-		[section1 addObject:cUsernameField];
-		[section1 addObject:cPasswordField];
-	}
-    
+        
     // Section 2 holds the Facebook things
     NSMutableArray *section2 = [[NSMutableArray alloc] init];
     [section2 addObject:cFBLoginButton];
@@ -694,13 +691,11 @@
 	// Create array for ttsectioneddatasource
 	NSMutableArray *items = [[NSMutableArray alloc] init];
 	[items addObject:section0];
-	[items addObject:section1];
 	[items addObject:section2];
 	[items addObject:section3];
 	[items addObject:section4];
     [items addObject:section5];
 	TT_RELEASE_SAFELY(section0);
-	TT_RELEASE_SAFELY(section1);
 	TT_RELEASE_SAFELY(section2);
 	TT_RELEASE_SAFELY(section3);
 	TT_RELEASE_SAFELY(section4);

@@ -300,7 +300,7 @@
 
 // View has loaded -> add the navigation button
 - (void)viewDidLoad {
-	if ([self.itemID isEqual:@"1"]) {
+	if ([self.itemID isEqual:rootAlbumID]) {
 		self.navigationItem.leftBarButtonItem
 		        = [[[UIBarButtonItem alloc] initWithTitle:@"Settings" style:
 		            UIBarButtonItemStyleBordered
