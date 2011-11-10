@@ -1,3 +1,6 @@
 [submodule "RestKit"]
 	path = RestKit
 	url = https://github.com/RestKit/RestKit.git
+[submodule "facebook-ios-sdk"]
+	path = facebook-ios-sdk
+	url = https://github.com/facebook/facebook-ios-sdk.git
