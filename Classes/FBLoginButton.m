@@ -171,7 +171,6 @@
 	NSString *finalactions = [jsonWriter stringWithObject:actions];
 
 	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-	                               kAppId, @"app_id",
 	                               GlobalSettings.baseURL, @"link",
 	                               @"https://fbcdn-photos-a.akamaihd.net/photos-ak-snc1/v43/151/153647701377559/app_1_153647701377559_3550.gif",
 	                               @"picture",

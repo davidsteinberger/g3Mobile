@@ -50,7 +50,9 @@ static Facebook *sharedFacebook;
 + (Facebook *)sharedFacebookWithAppId:(NSString *)app_id {
 	@synchronized(self) {
 		if (sharedFacebook == nil) {
-			sharedFacebook = [[self alloc] initWithAppId:app_id];
+			sharedFacebook = [[self alloc] 
+                              initWithAppId:app_id 
+                              andDelegate:(id<FBSessionDelegate>)self];
 		}
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		if ([defaults objectForKey:@"FBAccessTokenKey"]
@@ -87,7 +89,7 @@ static Facebook *sharedFacebook;
 	NSString *finalactions = [jsonWriter stringWithObject:actions];
 
 	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-	                               kAppId, @"app_id",
+	                               //kAppId, @"app_id",
 	                               link, @"link",
 	                               [picture
 	                                stringByReplacingPercentEscapesUsingEncoding:
@@ -110,7 +112,7 @@ static Facebook *sharedFacebook;
 		NSArray *permissions = [NSArray arrayWithObjects:
 		                        @"read_stream", @"publish_stream", @"offline_access", nil];
 
-		[self authorize:permissions delegate:(id < FBSessionDelegate >)self];
+		[self authorize:permissions];
 	}
 }
 
@@ -119,13 +121,16 @@ static Facebook *sharedFacebook;
 	[self logout:(id < FBSessionDelegate >)self];
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark Private
+#pragma mark -
+#pragma mark FBLoginDialogDelegate
 
-- (void)fbDidLogin {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+- (void)fbDialogLogin:(NSString *)token expirationDate:(NSDate *)expirationDate {
+    self.accessToken = token;
+    self.expirationDate = expirationDate;
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject:[[Facebook sharedFacebook] accessToken] forKey:@"FBAccessTokenKey"];
 	[defaults setObject:[[Facebook sharedFacebook] expirationDate] forKey:
 	 @"FBExpirationDateKey"];
@@ -137,6 +142,13 @@ static Facebook *sharedFacebook;
 	               object:nil];
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark FBSessionDelegate
+
+- (void)fbDidLogin {
+    // do nothing
+}
 
 - (void)fbDidLogout {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
