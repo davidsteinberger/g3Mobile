@@ -160,17 +160,18 @@
                   action:@selector(toggleViewOnly:)
 	    forControlEvents:UIControlEventValueChanged];
     if (!GlobalSettings.viewOnly) {
-		_viewOnly.on = NO;
+        _viewOnly.on = NO;
 	}
 	else {
 		_viewOnly.on = YES;
-		_usernameField.text = @"";
-		_passwordField.text = @"";
+		_usernameField.text = _usernameField.text;
+		_passwordField.text = _passwordField.text;
 	}
     
 	// Url for website
 	_baseURL = [[UITextField alloc] init];
-    _baseURL.text = @"http://myshooting.lu/index.php";
+    _baseURL.text = @"http://myshooting.lu";
+    _baseURL.textColor = [UIColor lightGrayColor];
     _baseURL.enabled = NO;
 	_baseURL.keyboardType = UIKeyboardTypeURL;
 	_baseURL.returnKeyType = UIReturnKeyNext;
@@ -183,7 +184,7 @@
     
 	// Username field
 	_usernameField = [[UITextField alloc] init];
-	_usernameField.text = @"itunes";
+	_usernameField.text = defaultUsername;
     _usernameField.enabled = NO;
 	_usernameField.keyboardType = UIKeyboardTypeDefault;
 	_usernameField.returnKeyType = UIReturnKeyNext;
@@ -195,7 +196,7 @@
     
 	// Password field
 	_passwordField = [[UITextField alloc] init];
-	_passwordField.text = @"itunes";
+	_passwordField.text = defaultPassword;
     //_passwordField.enabled = NO;
 	_passwordField.returnKeyType = UIReturnKeyGo;
 	_passwordField.secureTextEntry = YES;
@@ -315,8 +316,8 @@
              removeObjectAtIndex:userPath.row];
             
             _baseURL.returnKeyType = UIReturnKeyGo;
-            _usernameField.text = @"";
-            _passwordField.text = @"";
+            _usernameField.text = defaultUsername;
+            _passwordField.text = defaultPassword;
             
             [self.tableView deleteRowsAtIndexPaths:[NSArray
                                                arrayWithObjects:userPath, passwordPath, nil]
@@ -638,8 +639,20 @@
 
 
 - (void)createDataSource {
+    TTTableControlItem *cViewOnly = [TTTableControlItem itemWithCaption:@"View Only" 
+                                                                control:_viewOnly];
+    
     TTTableControlItem *cShowThumbsView = [TTTableControlItem itemWithCaption:@"Thumbs View" 
                                                                       control:_showThumbsView];
+    
+    TTTableControlItem *cBaseURL = [TTTableControlItem itemWithCaption:@"Website"
+                                                               control:_baseURL];
+
+    TTTableControlItem *cUsernameField = [TTTableControlItem itemWithCaption:@"Username"
+                                                                     control:_usernameField];
+
+    TTTableControlItem *cPasswordField = [TTTableControlItem itemWithCaption:@"Password"
+                                                                     control:_passwordField];
 
     TTTableControlItem *cFBLoginButton = [TTTableControlItem itemWithCaption:@"Facebook" 
                                                                      control:_FBLoginButton];
@@ -659,15 +672,27 @@
 	// Create sections
 	NSMutableArray *sections = [[NSMutableArray alloc] init];
 	[sections addObject:@""];
+    [sections addObject:@"Gallery3"];
     [sections addObject:@"Facebook"];
 	[sections addObject:@"Other"];
 	[sections addObject:@"Cache Settings"];
 	[sections addObject:@"Version Info"];
 
 	// Create section items
-    // Section 1 allows to switch between Album- and ThumbsView
+    // Section 0 allows to switch between Album- and ThumbsView
     NSMutableArray *section0 = [[NSMutableArray alloc] init];
     [section0 addObject:cShowThumbsView];
+    
+        
+    // Section 1 holds items for login
+    NSMutableArray *section1 = [[NSMutableArray alloc] init];
+    [section1 addObject:cViewOnly];
+    [section1 addObject:cBaseURL];
+    
+    if (!GlobalSettings.viewOnly) {
+        [section1 addObject:cUsernameField];
+        [section1 addObject:cPasswordField];
+    }
         
     // Section 2 holds the Facebook things
     NSMutableArray *section2 = [[NSMutableArray alloc] init];
@@ -691,11 +716,13 @@
 	// Create array for ttsectioneddatasource
 	NSMutableArray *items = [[NSMutableArray alloc] init];
 	[items addObject:section0];
+    [items addObject:section1];
 	[items addObject:section2];
 	[items addObject:section3];
 	[items addObject:section4];
     [items addObject:section5];
 	TT_RELEASE_SAFELY(section0);
+    TT_RELEASE_SAFELY(section1);
 	TT_RELEASE_SAFELY(section2);
 	TT_RELEASE_SAFELY(section3);
 	TT_RELEASE_SAFELY(section4);

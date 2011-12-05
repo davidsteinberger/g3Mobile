@@ -11,6 +11,8 @@
 
 static NSString* kAppId = @"153647701377559";
 static NSString* rootAlbumID = @"16684";
+static NSString* defaultUsername = @"itunes";
+static NSString* defaultPassword = @"itunes";
 
 #define GlobalSettings \
 ((MySettings *)[MySettings sharedMySettings])
